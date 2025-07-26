@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI PM Readiness Assessment - CRTX</title>
+    <meta name="description" content="Discover your AI Product Management readiness with our comprehensive 5-question assessment. Get personalized insights and next steps.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        .gradient-text-mentoring {
+            background: linear-gradient(135deg, #764ba2 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .gradient-mentoring {
+            background: linear-gradient(135deg, #764ba2 0%, #ffffff 100%);
+        }
+        .btn-mentoring {
+            background: linear-gradient(135deg, #764ba2 0%, #8b5cf6 100%);
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        .pulse-subtle {
+            animation: pulse-subtle 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold">
+                        <span class="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">CRTX</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/#services" class="text-gray-700 hover:text-purple-600 transition">Services</a>
+                    <a href="/#expertise" class="text-gray-700 hover:text-purple-600 transition">Expertise</a>
+                    <a href="/about.html" class="text-gray-700 hover:text-purple-600 transition">About</a>
+                    <a href="/" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">Home</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-purple-600 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="/#services" class="block px-3 py-2 text-gray-700 hover:text-purple-600">Services</a>
+                <a href="/#expertise" class="block px-3 py-2 text-gray-700 hover:text-purple-600">Expertise</a>
+                <a href="/about.html" class="block px-3 py-2 text-gray-700 hover:text-purple-600">About</a>
+                <a href="/" class="block px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div class="min-h-screen bg-gray-50 py-8 px-4">
+        <div class="container mx-auto">
+            
+            <!-- Intro Step -->
+            <div id="intro-step" class="max-w-3xl mx-auto text-center">
+                <div class="mb-8">
+                    <div class="w-20 h-20 mx-auto mb-6 bg-purple-100 rounded-full flex items-center justify-center pulse-subtle">
+                        <svg class="w-10 h-10 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                        🧠 Think You're Ready for an <span class="gradient-text-mentoring">AI PM Role?</span>
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-6">
+                        This 5-question assessment will tell you exactly where you stand
+                    </p>
+                    <p class="text-gray-500 mb-8 max-w-2xl mx-auto">
+                        I've assessed hundreds of PMs transitioning to AI-first roles. This quiz uses the same frameworks that Google, Meta, and Netflix use to evaluate AI PM candidates.
+                    </p>
+                </div>
+
+                <div class="text-center mb-8">
+                    <button onclick="startAssessment()" class="btn-mentoring text-white px-8 py-4 rounded-xl font-semibold text-lg hover:opacity-90 transition-all shadow-lg">
+                        Start Assessment (3 minutes)
+                        <svg class="w-5 h-5 ml-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                        </svg>
+                    </button>
+                    <p class="text-sm text-gray-500 mt-4">No email required to start • Get results instantly</p>
+                </div>
+                
+                <div class="bg-purple-50 p-8 rounded-2xl mb-8 max-w-2xl mx-auto">
+                    <h3 class="font-semibold mb-4 text-lg">What This Assessment Tests:</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div class="flex items-center bg-white p-3 rounded-lg">
+                            <svg class="w-5 h-5 mr-3 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 00-2-2m0 0V5a2 2 0 012-2h2a2 2 0 00-2-2m0 0V9a2 2 0 012-2h2a2 2 0 00-2-2"></path>
+                            </svg>
+                            <span>Model Performance Analysis</span>
+                        </div>
+                        <div class="flex items-center bg-white p-3 rounded-lg">
+                            <svg class="w-5 h-5 mr-3 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                            <span>Technical Translation</span>
+                        </div>
+                        <div class="flex items-center bg-white p-3 rounded-lg">
+                            <svg class="w-5 h-5 mr-3 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path>
+                            </svg>
+                            <span>AI Ethics & Compliance</span>
+                        </div>
+                        <div class="flex items-center bg-white p-3 rounded-lg">
+                            <svg class="w-5 h-5 mr-3 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                            <span>Strategic Prioritization</span>
+                        </div>
+                        <div class="flex items-center bg-white p-3 rounded-lg md:col-span-2">
+                            <svg class="w-5 h-5 mr-3 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span>Technical Problem-Solving</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Collection Step -->
+            <div id="info-step" class="max-w-lg mx-auto hidden">
+                <div class="bg-white rounded-2xl shadow-xl p-8">
+                    <h2 class="text-2xl font-bold mb-6 text-center">Quick Info <span class="text-gray-500 font-normal">(Optional)</span></h2>
+                    <p class="text-gray-600 mb-6 text-center">Help us personalize your results and follow-up</p>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Name</label>
+                            <input type="text" id="user-name" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500 transition-colors" placeholder="Your name">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Email <span class="text-red-500">*</span></label>
+                            <input type="email" id="user-email" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500 transition-colors" placeholder="your.email@company.com">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-700">PM Experience Level</label>
+                            <select id="user-experience" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500 transition-colors">
+                                <option value="">Select experience</option>
+                                <option value="0-2 years">0-2 years</option>
+                                <option value="3-5 years">3-5 years</option>
+                                <option value="6-10 years">6-10 years</option>
+                                <option value="10+ years">10+ years</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Why do you want to connect?</label>
+                            <textarea id="user-aspirations" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-purple-500 transition-colors" placeholder="What are you hoping to achieve with AI PM skills?" rows="3"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3 mt-8">
+                        <button onclick="skipInfo()" class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors">
+                            Skip
+                        </button>
+                        <button onclick="continueToQuiz()" class="flex-1 btn-mentoring text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-colors">
+                            Continue
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Steps -->
+            <div id="quiz-step" class="max-w-4xl mx-auto hidden">
+                <!-- Progress Bar -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-500">Question <span id="current-q">1</span> of 5</span>
+                        <span class="text-sm text-purple-600 font-medium" id="competency-label"></span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div id="progress-bar" class="btn-mentoring h-3 rounded-full transition-all duration-300" style="width: 20%"></div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-8 shadow-xl">
+                    <div class="flex items-center mb-6">
+                        <div id="question-icon" class="w-8 h-8 mr-4 text-purple-600"></div>
+                        <h2 id="question-title" class="text-2xl font-bold"></h2>
+                    </div>
+                    
+                    <p id="question-text" class="text-gray-700 mb-8 whitespace-pre-line leading-relaxed"></p>
+                    
+                    <div id="options-container" class="space-y-4">
+                        <!-- Options will be dynamically inserted -->
+                    </div>
+                </div>
+
+                <div class="flex justify-between mt-8">
+                    <button id="prev-btn" onclick="previousQuestion()" class="px-6 py-3 text-gray-600 hover:text-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        ← Previous
+                    </button>
+                    <button id="next-btn" onclick="nextQuestion()" class="btn-mentoring text-white px-8 py-3 rounded-lg font-semibold hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all" disabled>
+                        Next Question →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Step -->
+            <div id="results-step" class="max-w-3xl mx-auto hidden">
+                <div class="text-center mb-8">
+                    <div id="score-display" class="text-7xl font-bold gradient-text-mentoring mb-4">0/5</div>
+                    <h1 id="results-title" class="text-3xl font-bold mb-4"></h1>
+                    <p id="results-description" class="text-lg text-gray-600 mb-8"></p>
+                </div>
+                
+                <div class="bg-white rounded-2xl p-8 shadow-xl mb-8">
+                    <h3 class="font-bold mb-4 text-xl">Your Assessment Breakdown:</h3>
+                    <div id="breakdown-container" class="space-y-3">
+                        <!-- Breakdown will be dynamically inserted -->
+                    </div>
+                </div>
+
+                <div class="bg-purple-50 p-8 rounded-2xl mb-8">
+                    <h3 class="font-bold mb-3 text-lg">Your Strengths:</h3>
+                    <p id="strengths-text" class="text-gray-700 mb-4"></p>
+                    <h3 class="font-bold mb-3 text-lg">Recommended Next Step:</h3>
+                    <p id="next-step-text" class="text-gray-700"></p>
+                </div>
+
+                <div class="space-y-4">
+                    <a href="https://calendly.com/shivang-crtx/ai-pm-intro" target="_blank" class="block w-full btn-mentoring text-white text-center py-4 rounded-xl font-semibold text-lg hover:opacity-90 transition-all shadow-lg">
+                        <svg class="w-6 h-6 inline mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        Schedule 15-min Results Review
+                    </a>
+                    
+                    <button id="email-results-btn" onclick="emailResults()" class="w-full bg-gray-200 text-gray-700 py-4 rounded-xl font-semibold text-lg hover:bg-gray-300 transition-all">
+                        <svg class="w-6 h-6 inline mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        Email Me These Results
+                    </button>
+                </div>
+
+                <div class="text-center mt-8">
+                    <p class="text-gray-500 mb-4">Share your results and help others:</p>
+                    <button onclick="retakeAssessment()" class="text-purple-600 hover:text-purple-700 font-medium">
+                        Retake Assessment
+                    </button>
+                </div>
+            </div>
+
+            <!-- Email Modal -->
+            <div id="email-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+                <div class="bg-white rounded-2xl p-8 max-w-md w-full">
+                    <h3 class="text-xl font-bold mb-4">Email Your Results</h3>
+                    <div id="email-form">
+                        <p class="text-gray-600 mb-4">
+                            We'll send your detailed results and personalized insights to your email.
+                        </p>
+                        <input type="email" id="results-email" class="w-full border border-gray-300 rounded-lg px-4 py-3 mb-4 focus:outline-none focus:border-purple-500" placeholder="your.email@company.com">
+                        <div class="flex gap-3">
+                            <button onclick="closeEmailModal()" class="flex-1 border border-gray-300 py-3 rounded-lg hover:bg-gray-50 transition-colors">
+                                Cancel
+                            </button>
+                            <button onclick="sendResults()" class="flex-1 btn-mentoring text-white py-3 rounded-lg hover:opacity-90 transition-colors">
+                                Send Results
+                            </button>
+                        </div>
+                    </div>
+                    <div id="email-success" class="hidden text-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <p class="text-green-600 mb-4">Results sent successfully!</p>
+                        <button onclick="closeEmailModal()" class="btn-mentoring text-white px-6 py-2 rounded-lg">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Assessment State
+        let currentStep = 'intro';
+        let currentQuestion = 0;
+        let answers = {};
+        let userInfo = {
+            name: '',
+            email: '',
+            experience: '',
+            aspirations: ''
+        };
+
+        // Questions Data
+        const questions = [
+            {
+                id: 1,
+                icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 00-2-2m0 0V5a2 2 0 012-2h2a2 2 0 00-2-2m0 0V9a2 2 0 012-2h2a2 2 0 00-2-2"></path></svg>`,
+                title: "Model Performance Decision",
+                question: "Your AI recommendation system achieves 85% accuracy in testing, but user engagement is only 60% of the target. Your data scientist wants to retrain the model, your engineer says ship it, and your stakeholder wants to scrap it.\n\nWhat's your next step?",
+                options: [
+                    { id: 'A', text: "Ship immediately - 85% accuracy is good enough", correct: false },
+                    { id: 'B', text: "Analyze the gap between technical accuracy and user engagement metrics", correct: true },
+                    { id: 'C', text: "Retrain the model until you hit 90%+ accuracy", correct: false },
+                    { id: 'D', text: "Run A/B tests comparing current system vs. no AI", correct: false }
+                ],
+                competency: "Model Performance Analysis"
+            },
+            {
+                id: 2,
+                icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>`,
+                title: "Cross-Functional Collaboration",
+                question: "Your data scientist says \"The model's F1-score improved from 0.76 to 0.82, but precision dropped to 0.71.\" Your stakeholder asks what this means for the business.\n\nHow do you translate this?",
+                options: [
+                    { id: 'A', text: "The model got better overall", correct: false },
+                    { id: 'B', text: "We're catching more relevant items but also more false positives", correct: true },
+                    { id: 'C', text: "Technical performance improved by 8%", correct: false },
+                    { id: 'D', text: "We need to discuss metrics alignment with the team", correct: false }
+                ],
+                competency: "Technical Translation"
+            },
+            {
+                id: 3,
+                icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg>`,
+                title: "AI Ethics & Compliance",
+                question: "You discover your hiring AI shows 15% lower recommendation rates for candidates from certain zip codes. Legal says it's not explicitly using protected characteristics, so it's fine.\n\nWhat's your action?",
+                options: [
+                    { id: 'A', text: "Continue - no protected characteristics are being used", correct: false },
+                    { id: 'B', text: "Investigate correlation between zip codes and protected characteristics", correct: true },
+                    { id: 'C', text: "Remove zip code data entirely", correct: false },
+                    { id: 'D', text: "Document the finding and continue monitoring", correct: false }
+                ],
+                competency: "AI Ethics & Compliance"
+            },
+            {
+                id: 4,
+                icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>`,
+                title: "Product Strategy",
+                question: "Your CEO wants to \"add AI to everything.\" You have limited engineering resources and three potential AI features: personalized recommendations (3-month effort), automated content moderation (6-month effort), and AI-powered search (9-month effort).\n\nHow do you prioritize?",
+                options: [
+                    { id: 'A', text: "Start with the quickest win (recommendations)", correct: false },
+                    { id: 'B', text: "Focus on the most technically impressive (AI-powered search)", correct: false },
+                    { id: 'C', text: "Evaluate each against user impact, technical feasibility, and business value", correct: true },
+                    { id: 'D', text: "Build all three in parallel with different teams", correct: false }
+                ],
+                competency: "Strategic Prioritization"
+            },
+            {
+                id: 5,
+                icon: `<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>`,
+                title: "Technical Implementation",
+                question: "Your AI feature launches and immediately shows a 40% spike in processing costs. Users love it, but the CFO is concerned about scalability.\n\nWhat's your first step?",
+                options: [
+                    { id: 'A', text: "Reduce the AI model complexity to cut costs", correct: false },
+                    { id: 'B', text: "Analyze cost drivers: inference volume, model size, or infrastructure", correct: true },
+                    { id: 'C', text: "Limit feature access to reduce usage", correct: false },
+                    { id: 'D', text: "Negotiate a bigger budget with the CFO", correct: false }
+                ],
+                competency: "Technical Problem-Solving"
+            }
+        ];
+
+        // Navigation functions
+        function startAssessment() {
+            document.getElementById('intro-step').classList.add('hidden');
+            document.getElementById('info-step').classList.remove('hidden');
+            currentStep = 'info';
+        }
+
+        function skipInfo() {
+            // Email is now required, so redirect to continue function
+            continueToQuiz();
+        }
+
+        function continueToQuiz() {
+            // Make email required
+            const email = document.getElementById('user-email').value;
+            if (!email) {
+                alert('Email is required to continue with the assessment.');
+                return;
+            }
+
+            // Collect user info
+            userInfo.name = document.getElementById('user-name').value;
+            userInfo.email = email;
+            userInfo.experience = document.getElementById('user-experience').value;
+            userInfo.aspirations = document.getElementById('user-aspirations').value;
+
+            document.getElementById('info-step').classList.add('hidden');
+            document.getElementById('quiz-step').classList.remove('hidden');
+            currentStep = 'quiz';
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const question = questions[currentQuestion];
+            
+            // Update progress
+            document.getElementById('current-q').textContent = currentQuestion + 1;
+            document.getElementById('progress-bar').style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+            document.getElementById('competency-label').textContent = question.competency;
+            
+            // Update question content
+            document.getElementById('question-icon').innerHTML = question.icon;
+            document.getElementById('question-title').textContent = question.title;
+            document.getElementById('question-text').textContent = question.question;
+            
+            // Create options
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            question.options.forEach(option => {
+                const optionElement = document.createElement('button');
+                optionElement.className = 'w-full text-left p-4 rounded-xl border-2 transition-all hover:border-purple-300 focus:outline-none';
+                optionElement.innerHTML = `
+                    <span class="font-semibold mr-3 text-purple-600">${option.id})</span>
+                    ${option.text}
+                `;
+                optionElement.onclick = () => selectAnswer(option);
+                container.appendChild(optionElement);
+            });
+            
+            // Update navigation buttons
+            document.getElementById('prev-btn').disabled = currentQuestion === 0;
+            document.getElementById('next-btn').disabled = !answers[currentQuestion];
+            document.getElementById('next-btn').textContent = currentQuestion === questions.length - 1 ? 'Get Results →' : 'Next Question →';
+            
+            // Highlight selected answer if exists
+            updateSelectedAnswer();
+        }
+
+        function selectAnswer(option) {
+            answers[currentQuestion] = option;
+            updateSelectedAnswer();
+            document.getElementById('next-btn').disabled = false;
+        }
+
+        function updateSelectedAnswer() {
+            const buttons = document.getElementById('options-container').children;
+            Array.from(buttons).forEach((button, index) => {
+                const option = questions[currentQuestion].options[index];
+                if (answers[currentQuestion] && answers[currentQuestion].id === option.id) {
+                    button.className = 'w-full text-left p-4 rounded-xl border-2 border-purple-500 bg-purple-50 transition-all';
+                } else {
+                    button.className = 'w-full text-left p-4 rounded-xl border-2 border-gray-200 transition-all hover:border-purple-300 focus:outline-none';
+                }
+            });
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quiz-step').classList.add('hidden');
+            document.getElementById('results-step').classList.remove('hidden');
+            currentStep = 'results';
+            
+            const score = calculateScore();
+            const level = getScoreLevel(score);
+            const results = getResultsContent(level);
+            
+            // Update results display
+            document.getElementById('score-display').textContent = `${score}/5`;
+            document.getElementById('results-title').textContent = results.title;
+            document.getElementById('results-description').textContent = results.description;
+            document.getElementById('strengths-text').textContent = results.strengths;
+            document.getElementById('next-step-text').textContent = results.nextStep;
+            
+            // Create breakdown
+            const breakdown = document.getElementById('breakdown-container');
+            breakdown.innerHTML = '';
+            
+            questions.forEach((question, index) => {
+                const userAnswer = answers[index];
+                const correctOption = question.options.find(opt => opt.correct);
+                const isCorrect = userAnswer && userAnswer.id === correctOption.id;
+                
+                const breakdownElement = document.createElement('div');
+                breakdownElement.className = 'flex items-center justify-between p-4 bg-gray-50 rounded-lg';
+                breakdownElement.innerHTML = `
+                    <span class="text-sm font-medium">${question.competency}</span>
+                    <div class="flex items-center">
+                        ${isCorrect ? 
+                            '<svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>' :
+                            '<div class="w-5 h-5 rounded-full border-2 border-red-300"></div>'
+                        }
+                    </div>
+                `;
+                breakdown.appendChild(breakdownElement);
+            });
+            
+            // Show/hide email button based on whether email was provided
+            document.getElementById('email-results-btn').style.display = userInfo.email ? 'none' : 'block';
+            
+            // Submit to tracking
+            submitAssessment(score, level);
+        }
+
+        function calculateScore() {
+            let correct = 0;
+            questions.forEach((question, index) => {
+                const userAnswer = answers[index];
+                const correctOption = question.options.find(opt => opt.correct);
+                if (userAnswer && userAnswer.id === correctOption.id) {
+                    correct++;
+                }
+            });
+            return correct;
+        }
+
+        function getScoreLevel(score) {
+            if (score >= 4) return 'ai-ready';
+            if (score >= 2) return 'getting-there';
+            return 'starting-point';
+        }
+
+        function getResultsContent(level) {
+            const results = {
+                'ai-ready': {
+                    title: '🚀 AI-Ready Leader',
+                    description: 'You demonstrate strong AI PM intuition across technical, strategic, and ethical dimensions. You\'re ready for senior AI PM roles at top companies.',
+                    strengths: 'Technical fluency, strategic thinking, ethical awareness',
+                    nextStep: 'Advanced AI PM strategies and team leadership coaching'
+                },
+                'getting-there': {
+                    title: '🎯 Getting There',
+                    description: 'You have solid PM fundamentals but need focused development in AI-specific areas. With targeted learning, you could be ready for AI PM roles in 6-12 months.',
+                    strengths: 'Strong PM foundation with AI growth potential',
+                    nextStep: 'AI fundamentals training and cross-functional collaboration skills'
+                },
+                'starting-point': {
+                    title: '📚 Starting Point',
+                    description: 'You\'re early in your AI PM journey. The good news? You\'re recognizing the shift before most PMs. With systematic skill development, you can build AI PM capabilities from the ground up.',
+                    strengths: 'Growth mindset and early recognition of AI importance',
+                    nextStep: 'Foundation-level AI PM training and mentorship program'
+                }
+            };
+            return results[level];
+        }
+
+        async function submitAssessment(score, level) {
+            // Calculate score out of 100
+            const scoreOutOf100 = Math.round((score / questions.length) * 100);
+            
+            // Submit core fields plus individual question answers
+            const submission = {
+                'Name': userInfo.name || 'Anonymous',
+                'Email': userInfo.email || '',
+                'Experience Level': userInfo.experience || '',
+                'Career Goals': userInfo.aspirations || '',
+                'Score': scoreOutOf100,
+                'Score Level': level,
+                'Total Questions': questions.length,
+                'Source': 'AI PM Assessment',
+                'Status': 'New Lead',
+                
+                // Individual question answers
+                'Q1 Answer': answers[0] ? `${answers[0].id}) ${answers[0].text}` : 'Not answered',
+                'Q1 Correct': answers[0] && questions[0].options.find(opt => opt.correct).id === answers[0].id ? 'Yes' : 'No',
+                
+                'Q2 Answer': answers[1] ? `${answers[1].id}) ${answers[1].text}` : 'Not answered',
+                'Q2 Correct': answers[1] && questions[1].options.find(opt => opt.correct).id === answers[1].id ? 'Yes' : 'No',
+                
+                'Q3 Answer': answers[2] ? `${answers[2].id}) ${answers[2].text}` : 'Not answered',
+                'Q3 Correct': answers[2] && questions[2].options.find(opt => opt.correct).id === answers[2].id ? 'Yes' : 'No',
+                
+                'Q4 Answer': answers[3] ? `${answers[3].id}) ${answers[3].text}` : 'Not answered',
+                'Q4 Correct': answers[3] && questions[3].options.find(opt => opt.correct).id === answers[3].id ? 'Yes' : 'No',
+                
+                'Q5 Answer': answers[4] ? `${answers[4].id}) ${answers[4].text}` : 'Not answered',
+                'Q5 Correct': answers[4] && questions[4].options.find(opt => opt.correct).id === answers[4].id ? 'Yes' : 'No'
+            };
+            
+            console.log('Submitting complete assessment data to Airtable:', submission);
+            
+            try {
+                await submitToAirtable(submission);
+                console.log('✅ Assessment submitted successfully');
+                alert('✅ Complete assessment data submitted successfully!');
+            } catch (error) {
+                console.error('❌ Error submitting assessment:', error);
+                alert('❌ Error submitting data: ' + error.message);
+            }
+        }
+
+        async function submitToAirtable(data) {
+            // Replace with your actual Airtable credentials
+            const AIRTABLE_BASE_ID = 'appO9FfCydHCovk8w';
+            const AIRTABLE_API_KEY = 'patp9C71uq2QZOH6g.5d6f1679ee5dd4f7a125ee5e417c47cda63be789ced84b4333dd82e174421226';
+            const TABLE_NAME = 'AI PM Assessments'; // Replace with your table name
+            
+            const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${TABLE_NAME}`;
+            
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    fields: data
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            return await response.json();
+        }
+
+        function emailResults() {
+            if (userInfo.email) {
+                sendResultsToEmail(userInfo.email);
+            } else {
+                document.getElementById('email-modal').classList.remove('hidden');
+            }
+        }
+
+        function closeEmailModal() {
+            document.getElementById('email-modal').classList.add('hidden');
+        }
+
+        function sendResults() {
+            const email = document.getElementById('results-email').value;
+            if (email) {
+                sendResultsToEmail(email);
+            }
+        }
+
+        async function sendResultsToEmail(email) {
+            // Show success state
+            document.getElementById('email-form').classList.add('hidden');
+            document.getElementById('email-success').classList.remove('hidden');
+            
+            // Submit email request to Airtable
+            const emailSubmission = {
+                'Name': userInfo.name || 'Anonymous',
+                'Email': email,
+                'Experience Level': userInfo.experience,
+                'Career Goals': userInfo.aspirations,
+                'Score': calculateScore(),
+                'Score Level': getScoreLevel(calculateScore()),
+                'Date Taken': new Date().toISOString(),
+                'Source': 'AI PM Assessment - Email Results',
+                'Status': 'Requested Results Email'
+            };
+            
+            try {
+                await submitToAirtable(emailSubmission);
+                console.log('Email request submitted to Airtable');
+            } catch (error) {
+                console.error('Error submitting email request:', error);
+            }
+            
+            setTimeout(() => {
+                closeEmailModal();
+                document.getElementById('email-form').classList.remove('hidden');
+                document.getElementById('email-success').classList.add('hidden');
+            }, 2000);
+        }
+
+        function retakeAssessment() {
+            currentQuestion = 0;
+            answers = {};
+            userInfo = { name: '', email: '', experience: '', aspirations: '' };
+            
+            document.getElementById('results-step').classList.add('hidden');
+            document.getElementById('intro-step').classList.remove('hidden');
+            currentStep = 'intro';
+        }
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Any initialization code
+        });
+    </script>
+</body>
+</html>
