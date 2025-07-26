@@ -498,11 +498,12 @@
             currentStep = 'results';
             
             const score = calculateScore();
+            const scoreOutOf100 = Math.round((score / questions.length) * 100);
             const level = getScoreLevel(score);
             const results = getResultsContent(level);
             
             // Update results display
-            document.getElementById('score-display').textContent = `${score}/5`;
+            document.getElementById('score-display').textContent = `${scoreOutOf100}%`;
             document.getElementById('results-title').textContent = results.title;
             document.getElementById('results-description').textContent = results.description;
             document.getElementById('strengths-text').textContent = results.strengths;
@@ -618,9 +619,10 @@
             try {
                 await submitToAirtable(submission);
                 console.log('✅ Assessment submitted successfully');
-                alert('✅ Complete assessment data submitted successfully!');
+                // Removed alert popup for cleaner user experience
             } catch (error) {
                 console.error('❌ Error submitting assessment:', error);
+                // Only show error if there's actually a problem
                 alert('❌ Error submitting data: ' + error.message);
             }
         }
