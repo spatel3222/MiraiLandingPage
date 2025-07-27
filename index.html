@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRTX - Build AI Once. Scale Everywhere.</title>
-    <meta name="description" content="Enterprise-proven AI strategies from Walmart scale. Agentic AI, conversational commerce, and reusable AI services for ambitious companies.">
+    <meta name="description" content="Enterprise-proven AI strategies from Walmart scale. Venture capital, AI mentoring, and consulting services for ambitious companies.">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -20,6 +20,11 @@
         .gradient-bg {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
+        /* Service-specific gradients */
+        .gradient-vc { background: linear-gradient(135deg, #667eea 0%, #3b82f6 100%); }
+        .gradient-mentoring { background: linear-gradient(135deg, #764ba2 0%, #8b5cf6 100%); }
+        .gradient-consulting { background: linear-gradient(135deg, #059669 0%, #10b981 100%); }
+        
         .card-hover {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -46,9 +51,8 @@
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#services" class="text-gray-700 hover:text-purple-600 transition">Services</a>
-                    <a href="#expertise" class="text-gray-700 hover:text-purple-600 transition">Expertise</a>
+                    <a href="#insights" class="text-gray-700 hover:text-purple-600 transition">Insights</a>
                     <a href="#approach" class="text-gray-700 hover:text-purple-600 transition">Approach</a>
-                    <a href="#success-stories" class="text-gray-700 hover:text-purple-600 transition">Success Stories</a>
                     <a href="/about.html" class="text-gray-700 hover:text-purple-600 transition">About</a>
                     <button id="contact-button" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">Get Started</button>
                 </div>
@@ -65,9 +69,8 @@
         <div id="mobile-menu" class="hidden md:hidden">
             <div class="px-2 pt-2 pb-3 space-y-1">
                 <a href="#services" class="block px-3 py-2 text-gray-700 hover:text-purple-600">Services</a>
-                <a href="#expertise" class="block px-3 py-2 text-gray-700 hover:text-purple-600">Expertise</a>
+                <a href="#insights" class="block px-3 py-2 text-gray-700 hover:text-purple-600">Insights</a>
                 <a href="#approach" class="block px-3 py-2 text-gray-700 hover:text-purple-600">Approach</a>
-                <a href="#success-stories" class="block px-3 py-2 text-gray-700 hover:text-purple-600">Success Stories</a>
                 <a href="/about.html" class="block px-3 py-2 text-gray-700 hover:text-purple-600">About</a>
                 <button id="contact-button-mobile" class="block w-full text-left px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Get Started</button>
             </div>
@@ -84,29 +87,29 @@
                         <span class="gradient-text">Scale Everywhere.</span>
                     </h1>
                     <p class="mt-6 text-xl text-gray-600 leading-relaxed">
-                        Transform your business with enterprise-proven AI strategies. 
-                        Join industry leaders achieving measurable ROI through intelligent automation and data-driven insights.
+                        Enterprise-proven AI strategies from Walmart scale. 
+                        Whether you're building, investing, or transforming with AI, we provide the expertise to succeed.
                     </p>
                     <div class="mt-8 flex flex-col sm:flex-row gap-4">
-                        <a href="https://calendly.com/shivang-crtx/30min" target="_blank" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white gradient-bg hover:opacity-90 transition">
-                            Schedule AI Assessment
+                        <a href="#services" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white gradient-bg hover:opacity-90 transition">
+                            Explore Services
                         </a>
-                        <a href="#approach" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition">
-                            Learn Our Approach
+                        <a href="/ai-pm-assessment.html" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition">
+                            Take AI PM Assessment
                         </a>
                     </div>
-                    <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+                    <div class="mt-8 grid grid-cols-3 gap-6 text-center">
                         <div>
-                            <div class="text-2xl font-bold gradient-text">63%</div>
-                            <div class="text-sm text-gray-600">Average productivity gain with AI</div>
+                            <div class="text-2xl font-bold gradient-text">100M+</div>
+                            <div class="text-sm text-gray-600">Interactions Scaled</div>
                         </div>
                         <div>
-                            <div class="text-2xl font-bold gradient-text">40%</div>
-                            <div class="text-sm text-gray-600">Reduction in operational costs</div>
+                            <div class="text-2xl font-bold gradient-text">2x</div>
+                            <div class="text-sm text-gray-600">Conversion Rate</div>
                         </div>
                         <div>
-                            <div class="text-2xl font-bold gradient-text">3.5x</div>
-                            <div class="text-sm text-gray-600">ROI within 18 months</div>
+                            <div class="text-2xl font-bold gradient-text">200+</div>
+                            <div class="text-sm text-gray-600">Teams Led</div>
                         </div>
                     </div>
                 </div>
@@ -121,12 +124,12 @@
                                     <div class="h-4 bg-purple-100 rounded w-5/6"></div>
                                     <div class="mt-6 grid grid-cols-2 gap-4">
                                         <div class="bg-purple-50 rounded-lg p-4">
-                                            <div class="text-2xl font-bold gradient-text">2x</div>
-                                            <div class="text-sm text-gray-600">Conversion Rate</div>
+                                            <div class="text-2xl font-bold gradient-text">AI</div>
+                                            <div class="text-sm text-gray-600">First</div>
                                         </div>
                                         <div class="bg-purple-50 rounded-lg p-4">
-                                            <div class="text-2xl font-bold gradient-text">100M+</div>
-                                            <div class="text-sm text-gray-600">Interactions</div>
+                                            <div class="text-2xl font-bold gradient-text">Scale</div>
+                                            <div class="text-sm text-gray-600">Ready</div>
                                         </div>
                                     </div>
                                 </div>
@@ -138,326 +141,128 @@
         </div>
     </section>
 
-    <!-- Problem/Solution Section -->
-    <section class="py-20 bg-gray-50">
+    <!-- Three Services Section -->
+    <section id="services" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">
-                    78% of Companies Use AI. Only 1% Do It Well.
+                    Three Ways We Can Help
                 </h2>
                 <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
-                    Most organizations waste resources building redundant AI solutions. 
-                    Our "Building Blocks" approach creates reusable services that scale across your entire business.
-                </p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white rounded-xl p-8 shadow-sm">
-                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">The Problem</h3>
-                    <p class="text-gray-600">Teams build the same AI capabilities over and over, wasting time and budget on redundant development.</p>
-                </div>
-                
-                <div class="bg-white rounded-xl p-8 shadow-sm">
-                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Our Solution</h3>
-                    <p class="text-gray-600">Build once, deploy everywhere. Create reusable AI services that work across all your teams and use cases.</p>
-                </div>
-                
-                <div class="bg-white rounded-xl p-8 shadow-sm">
-                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">The Result</h3>
-                    <p class="text-gray-600">50% faster implementation, reduced costs, and proven outcomes like 2x conversion improvements.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">
-                    AI Services That Scale With You
-                </h2>
-                <p class="mt-4 text-xl text-gray-600">
-                    From assessment to transformation, we provide the building blocks for AI success.
-                </p>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-8">
-                <!-- Service 1 -->
-                <div class="bg-gray-50 rounded-xl p-8 card-hover">
-                    <h3 class="text-2xl font-bold mb-4">AI Readiness Assessment</h3>
-                    <p class="text-gray-600 mb-6">Evaluate your AI maturity and identify high-impact opportunities.</p>
-                    <ul class="space-y-2 mb-6">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="text-gray-700">Current state analysis</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="text-gray-700">Opportunity mapping</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="text-gray-700">Strategic roadmap</span>
-                        </li>
-                    </ul>
-                    <a href="#contact" class="text-purple-600 font-medium hover:text-purple-700 transition">Learn more →</a>
-                </div>
-                
-                <!-- Service 2 -->
-                <div class="bg-gray-50 rounded-xl p-8 card-hover">
-                    <h3 class="text-2xl font-bold mb-4">Reusable AI Services</h3>
-                    <p class="text-gray-600 mb-6">Build foundational AI components that power multiple use cases.</p>
-                    <ul class="space-y-2 mb-6">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="text-gray-700">Microservices architecture</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="text-gray-700">API development</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="text-gray-700">Platform integration</span>
-                        </li>
-                    </ul>
-                    <a href="#contact" class="text-purple-600 font-medium hover:text-purple-700 transition">Learn more →</a>
-                </div>
-                
-                <!-- Service 3 -->
-                <div class="bg-gray-50 rounded-xl p-8 card-hover">
-                    <h3 class="text-2xl font-bold mb-4">Enterprise AI Transformation</h3>
-                    <p class="text-gray-600 mb-6">Complete AI platform implementation with proven methodologies.</p>
-                    <ul class="space-y-2 mb-6">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="text-gray-700">End-to-end implementation</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="text-gray-700">Team enablement</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="text-gray-700">Success metrics</span>
-                        </li>
-                    </ul>
-                    <a href="#contact" class="text-purple-600 font-medium hover:text-purple-700 transition">Learn more →</a>
-                </div>
-                
-                <!-- Service 4 -->
-                <div class="bg-gray-50 rounded-xl p-8 card-hover">
-                    <h3 class="text-2xl font-bold mb-4">Innovation Partnership</h3>
-                    <p class="text-gray-600 mb-6">Ongoing advisory and platform evolution support.</p>
-                    <ul class="space-y-2 mb-6">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="text-gray-700">Strategic guidance</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="text-gray-700">Platform optimization</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="text-gray-700">Innovation roadmap</span>
-                        </li>
-                    </ul>
-                    <a href="#contact" class="text-purple-600 font-medium hover:text-purple-700 transition">Learn more →</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Industry Expertise -->
-    <section id="expertise" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">
-                    Focused Industry Expertise
-                </h2>
-                <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
-                    We specialize in high-impact sectors where AI drives measurable transformation, 
-                    backed by proven methodologies from Fortune 1 implementations.
+                    From deep tech investments to AI transformation, we bring Fortune 1 expertise to your biggest challenges
                 </p>
             </div>
             
             <div class="grid lg:grid-cols-3 gap-8">
-                <!-- Financial Services -->
-                <div class="bg-white rounded-xl shadow-lg p-8 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1 rounded-bl-lg">
-                        22.3% Market Share
+                <!-- VC Investment -->
+                <div class="bg-white rounded-xl p-8 shadow-sm card-hover">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
                     </div>
-                    <div class="mt-4">
-                        <div class="w-14 h-14 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                            <svg class="w-7 h-7 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                    <h3 class="text-2xl font-bold mb-4">Venture Capital Investment</h3>
+                    <p class="text-gray-600 mb-6">Partner with IIMA Ventures to fund and scale deep tech startups with transformative potential.</p>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                             </svg>
-                        </div>
-                        <h3 class="text-2xl font-bold mb-3">Financial Services</h3>
-                        <p class="text-gray-600 mb-6">Transform banking and finance with AI-powered solutions that enhance security and customer experience.</p>
-                        <div class="space-y-3">
-                            <div class="flex items-start">
-                                <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="text-sm text-gray-700">Fraud detection & prevention systems</span>
-                            </div>
-                            <div class="flex items-start">
-                                <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="text-sm text-gray-700">Conversational banking assistants</span>
-                            </div>
-                            <div class="flex items-start">
-                                <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="text-sm text-gray-700">Risk assessment automation</span>
-                            </div>
-                            <div class="flex items-start">
-                                <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="text-sm text-gray-700">Regulatory compliance AI</span>
-                            </div>
-                        </div>
-                    </div>
+                            <span class="text-gray-700">Deep tech & AI focus</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700">Seed to Series A</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700">Strategic mentorship</span>
+                        </li>
+                    </ul>
+                    <a href="/investment.html" class="inline-flex items-center text-blue-600 font-medium hover:text-blue-700 transition">
+                        Learn about investment
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a>
                 </div>
                 
-                <!-- Healthcare -->
-                <div class="bg-white rounded-xl shadow-lg p-8 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1 rounded-bl-lg">
-                        30% of $23B VC Funding
+                <!-- AI PM Mentoring -->
+                <div class="bg-white rounded-xl p-8 shadow-sm card-hover">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
                     </div>
-                    <div class="mt-4">
-                        <div class="w-14 h-14 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                            <svg class="w-7 h-7 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    <h3 class="text-2xl font-bold mb-4">AI PM Mentoring</h3>
+                    <p class="text-gray-600 mb-6">Transition from traditional PM to AI-first product leadership with personalized coaching.</p>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                             </svg>
-                        </div>
-                        <h3 class="text-2xl font-bold mb-3">Healthcare</h3>
-                        <p class="text-gray-600 mb-6">HIPAA-compliant AI solutions that improve patient outcomes while maintaining privacy and security.</p>
-                        <div class="space-y-3">
-                            <div class="flex items-start">
-                                <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="text-sm text-gray-700">Patient experience platforms</span>
-                            </div>
-                            <div class="flex items-start">
-                                <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="text-sm text-gray-700">Clinical decision support systems</span>
-                            </div>
-                            <div class="flex items-start">
-                                <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="text-sm text-gray-700">Human-in-the-loop monitoring</span>
-                            </div>
-                            <div class="flex items-start">
-                                <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="text-sm text-gray-700">Healthcare data governance</span>
-                            </div>
-                        </div>
-                    </div>
+                            <span class="text-gray-700">1-on-1 coaching</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700">Career acceleration</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700">Fortune 1 frameworks</span>
+                        </li>
+                    </ul>
+                    <a href="/mentoring.html" class="inline-flex items-center text-purple-600 font-medium hover:text-purple-700 transition">
+                        Start your AI PM journey
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a>
                 </div>
                 
-                <!-- Manufacturing -->
-                <div class="bg-white rounded-xl shadow-lg p-8 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 bg-purple-100 text-purple-700 text-xs font-semibold px-3 py-1 rounded-bl-lg">
-                        30% Downtime Reduction
+                <!-- AI Consulting -->
+                <div class="bg-white rounded-xl p-8 shadow-sm card-hover">
+                    <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
                     </div>
-                    <div class="mt-4">
-                        <div class="w-14 h-14 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                            <svg class="w-7 h-7 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                    <h3 class="text-2xl font-bold mb-4">AI Consulting Services</h3>
+                    <p class="text-gray-600 mb-6">Transform your enterprise with battle-tested AI strategies that create reusable, scalable solutions.</p>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                             </svg>
-                        </div>
-                        <h3 class="text-2xl font-bold mb-3">Manufacturing</h3>
-                        <p class="text-gray-600 mb-6">AI-powered automation and computer vision solutions that optimize production and quality.</p>
-                        <div class="space-y-3">
-                            <div class="flex items-start">
-                                <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="text-sm text-gray-700">Computer vision quality control</span>
-                            </div>
-                            <div class="flex items-start">
-                                <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="text-sm text-gray-700">Predictive maintenance systems</span>
-                            </div>
-                            <div class="flex items-start">
-                                <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="text-sm text-gray-700">Supply chain optimization</span>
-                            </div>
-                            <div class="flex items-start">
-                                <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="text-sm text-gray-700">Production line automation</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Additional Context -->
-            <div class="mt-12 bg-purple-50 rounded-xl p-8">
-                <div class="text-center">
-                    <h4 class="text-xl font-semibold mb-3">Plus Proven Retail & eCommerce Excellence</h4>
-                    <p class="text-gray-600 max-w-3xl mx-auto">
-                        Our foundation in retail AI at Walmart scale - processing 100M+ interactions and achieving 2x conversions - 
-                        provides battle-tested methodologies we apply across all industries.
-                    </p>
+                            <span class="text-gray-700">Enterprise AI transformation</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700">Reusable AI services</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700">50% faster implementation</span>
+                        </li>
+                    </ul>
+                    <a href="/consulting.html" class="inline-flex items-center text-emerald-600 font-medium hover:text-emerald-700 transition">
+                        Transform with AI
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a>
                 </div>
             </div>
         </div>
@@ -479,7 +284,7 @@
             <div class="grid lg:grid-cols-3 gap-8">
                 <div class="text-center">
                     <div class="mx-auto w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
-                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
                         </svg>
                     </div>
@@ -489,7 +294,7 @@
                 
                 <div class="text-center">
                     <div class="mx-auto w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
-                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
                         </svg>
                     </div>
@@ -499,7 +304,7 @@
                 
                 <div class="text-center">
                     <div class="mx-auto w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
-                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
                         </svg>
                     </div>
@@ -507,146 +312,138 @@
                     <p class="text-gray-600">Grow your AI capabilities efficiently with 50% faster implementation times.</p>
                 </div>
             </div>
-            
-            <div class="mt-16 bg-gray-50 rounded-2xl p-8">
-                <h3 class="text-2xl font-bold mb-6 text-center">Proven Results at Enterprise Scale</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                    <div>
-                        <div class="text-3xl font-bold gradient-text">100M+</div>
-                        <div class="text-sm text-gray-600 mt-1">Customer Interactions</div>
-                    </div>
-                    <div>
-                        <div class="text-3xl font-bold gradient-text">2x</div>
-                        <div class="text-sm text-gray-600 mt-1">Conversion Rate</div>
-                    </div>
-                    <div>
-                        <div class="text-3xl font-bold gradient-text">15+</div>
-                        <div class="text-sm text-gray-600 mt-1">Teams Supported</div>
-                    </div>
-                    <div>
-                        <div class="text-3xl font-bold gradient-text">50%</div>
-                        <div class="text-sm text-gray-600 mt-1">Faster Implementation</div>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
-    <!-- Success Stories Section -->
-    <section id="success-stories" class="py-20 bg-white">
+    <!-- Blog/Insights Section -->
+    <section id="insights" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">
-                    Industry Success with AI
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+                    Latest Insights
                 </h2>
-                <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
-                    Real results from organizations leveraging AI to transform their operations
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Practical AI insights from building products at scale
                 </p>
             </div>
             
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- Financial Services Success -->
-                <div class="bg-gray-50 rounded-xl p-8 card-hover cursor-pointer" onclick="openSuccessModal('financial')">
-                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                <!-- Blog Post 1 -->
+                <article class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+                    <div class="h-48 bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">Regional Bank Transformation</h3>
-                    <p class="text-gray-600 mb-4">AI-powered fraud detection and customer service</p>
-                    <div class="space-y-2">
-                        <div class="flex justify-between">
-                            <span class="text-sm text-gray-600">Fraud Detection</span>
-                            <span class="text-sm font-semibold gradient-text">91% accuracy</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-sm text-gray-600">Cost Reduction</span>
-                            <span class="text-sm font-semibold gradient-text">35%</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-sm text-gray-600">Processing Time</span>
-                            <span class="text-sm font-semibold gradient-text">-67%</span>
+                    <div class="p-6">
+                        <div class="text-sm text-purple-600 mb-2">AI Product Management</div>
+                        <h3 class="text-xl font-bold mb-2">
+                            <a href="https://www.linkedin.com/pulse/why-netflixs-pm-job-descriptions-look-nothing-like-yours-patel-acz7c" target="_blank" class="hover:text-purple-600 transition">
+                                Why Netflix's PM Job Descriptions Look Nothing Like Yours
+                            </a>
+                        </h3>
+                        <p class="text-gray-600 mb-4">
+                            Discover why the best PMs are T-shaped professionals and how Netflix thinks differently...
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">5 min read</span>
+                            <a href="https://www.linkedin.com/pulse/why-netflixs-pm-job-descriptions-look-nothing-like-yours-patel-acz7c" target="_blank" class="text-purple-600 text-sm font-medium hover:text-purple-700 flex items-center">
+                                Read on LinkedIn
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
                         </div>
                     </div>
-                    <p class="mt-4 text-purple-600 text-sm font-medium">Read full story →</p>
-                </div>
+                </article>
                 
-                <!-- Healthcare Success -->
-                <div class="bg-gray-50 rounded-xl p-8 card-hover cursor-pointer" onclick="openSuccessModal('healthcare')">
-                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                <!-- Blog Post 2 -->
+                <article class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+                    <div class="h-48 bg-gradient-to-br from-green-100 to-blue-100 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-emerald-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">Hospital System Optimization</h3>
-                    <p class="text-gray-600 mb-4">AI-enhanced patient care and operations</p>
-                    <div class="space-y-2">
-                        <div class="flex justify-between">
-                            <span class="text-sm text-gray-600">Patient Wait Time</span>
-                            <span class="text-sm font-semibold gradient-text">-43%</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-sm text-gray-600">Diagnostic Accuracy</span>
-                            <span class="text-sm font-semibold gradient-text">+18%</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-sm text-gray-600">Staff Efficiency</span>
-                            <span class="text-sm font-semibold gradient-text">+52%</span>
+                    <div class="p-6">
+                        <div class="text-sm text-emerald-600 mb-2">Enterprise AI</div>
+                        <h3 class="text-xl font-bold mb-2">
+                            <a href="https://www.linkedin.com/posts/activity-7352019328323551232-HLSL" target="_blank" class="hover:text-emerald-600 transition">
+                                The AI Product Manager's New Reality
+                            </a>
+                        </h3>
+                        <p class="text-gray-600 mb-4">
+                            Why traditional PM skills aren't enough in the AI era and what you need to succeed...
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">7 min read</span>
+                            <a href="https://www.linkedin.com/posts/activity-7352019328323551232-HLSL" target="_blank" class="text-emerald-600 text-sm font-medium hover:text-emerald-700 flex items-center">
+                                Read on LinkedIn
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
                         </div>
                     </div>
-                    <p class="mt-4 text-purple-600 text-sm font-medium">Read full story →</p>
-                </div>
+                </article>
                 
-                <!-- Manufacturing Success -->
-                <div class="bg-gray-50 rounded-xl p-8 card-hover cursor-pointer" onclick="openSuccessModal('manufacturing')">
-                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                <!-- Blog Post 3 -->
+                <article class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+                    <div class="h-48 bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">Smart Factory Implementation</h3>
-                    <p class="text-gray-600 mb-4">Computer vision and predictive maintenance</p>
-                    <div class="space-y-2">
-                        <div class="flex justify-between">
-                            <span class="text-sm text-gray-600">Downtime Reduction</span>
-                            <span class="text-sm font-semibold gradient-text">-30%</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-sm text-gray-600">Quality Defects</span>
-                            <span class="text-sm font-semibold gradient-text">-45%</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-sm text-gray-600">Production Output</span>
-                            <span class="text-sm font-semibold gradient-text">+28%</span>
+                    <div class="p-6">
+                        <div class="text-sm text-blue-600 mb-2">Deep Tech</div>
+                        <h3 class="text-xl font-bold mb-2">
+                            <a href="https://www.linkedin.com/posts/activity-7325195074277953536-hxbI" target="_blank" class="hover:text-blue-600 transition">
+                                Stop Building AI Like It's Software
+                            </a>
+                        </h3>
+                        <p class="text-gray-600 mb-4">
+                            The fundamental differences between AI and traditional software development...
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">10 min read</span>
+                            <a href="https://www.linkedin.com/posts/activity-7325195074277953536-hxbI" target="_blank" class="text-blue-600 text-sm font-medium hover:text-blue-700 flex items-center">
+                                Read on LinkedIn
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
                         </div>
                     </div>
-                    <p class="mt-4 text-purple-600 text-sm font-medium">Read full story →</p>
-                </div>
+                </article>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="https://www.linkedin.com/in/spatel3220/recent-activity/articles/" target="_blank" class="inline-flex items-center text-purple-600 font-semibold hover:text-purple-700">
+                    View all articles on LinkedIn
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                    </svg>
+                </a>
             </div>
         </div>
     </section>
 
     <!-- CTA Section -->
-    <section id="contact" class="py-20 bg-gray-900 text-white">
+    <section class="py-20 bg-gray-900 text-white">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl sm:text-4xl font-bold mb-4">
-                Ready to Build AI That Scales?
+                Ready to Transform with AI?
             </h2>
             <p class="text-xl text-gray-300 mb-8">
-                Join the 1% of companies doing AI right. Start with a strategic assessment 
-                to identify your highest-impact opportunities.
+                Whether you're investing, learning, or transforming, we have the expertise to help you succeed.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="https://calendly.com/shivang-crtx/30min" target="_blank" class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-lg text-gray-900 bg-white hover:bg-gray-100 transition">
-                    Schedule AI Assessment
+                    Schedule Consultation
                 </a>
                 <button id="contact-footer" class="inline-flex items-center justify-center px-8 py-4 border border-white text-lg font-medium rounded-lg text-white hover:bg-gray-800 transition">
                     Contact Us
                 </button>
             </div>
-            <p class="mt-8 text-gray-400">
-                Transform your business with AI that scales
-            </p>
         </div>
     </section>
 
@@ -659,7 +456,7 @@
                     <p class="text-gray-400 text-sm mt-1">Build AI Once. Scale Everywhere.</p>
                 </div>
                 <div class="flex space-x-6">
-                    <a href="https://linkedin.com/in/your-profile" class="text-gray-400 hover:text-white transition">
+                    <a href="https://linkedin.com/in/spatel3220" class="text-gray-400 hover:text-white transition">
                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
                         </svg>
@@ -667,12 +464,12 @@
                 </div>
             </div>
             <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400 text-sm">
-                <p>&copy; 2025 CRTX Consulting. All rights reserved.</p>
+                <p>&copy; 2025 CRTX. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Contact Form Modal -->
+    <!-- Contact Modal -->
     <div id="contact-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
         <div class="flex items-center justify-center min-h-screen p-4">
             <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-8 relative">
@@ -681,53 +478,70 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
-                <h3 class="text-2xl font-bold mb-6 text-center">Contact Us</h3>
+                <h3 class="text-2xl font-bold mb-6 text-center">Get Started with CRTX</h3>
                 <form id="contact-form" action="https://formspree.io/f/mdkdewyg" method="POST">
                     <div class="mb-4">
-                        <input type="text" name="name" placeholder="Name" required
+                        <label class="block text-sm font-medium mb-2 text-gray-700">Name <span class="text-red-500">*</span></label>
+                        <input type="text" name="name" required
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
                     </div>
                     <div class="mb-4">
-                        <input type="email" name="email" placeholder="Email" required
+                        <label class="block text-sm font-medium mb-2 text-gray-700">Email <span class="text-red-500">*</span></label>
+                        <input type="email" name="email" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 text-gray-700">Phone</label>
+                        <input type="tel" name="phone"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 text-gray-700">I'm interested in <span class="text-red-500">*</span></label>
+                        <select name="service" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                            <option value="">Select a service</option>
+                            <option value="AI Consulting">AI Consulting for my Company</option>
+                            <option value="AI PM Mentoring">AI PM Mentoring for my Career</option>
+                            <option value="VC Investment">Investment for my Startup</option>
+                            <option value="General Inquiry">General Inquiry</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 text-gray-700">Company/Organization</label>
+                        <input type="text" name="company"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
                     </div>
                     <div class="mb-6">
-                        <textarea name="message" placeholder="Message" rows="4" required
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"></textarea>
+                        <label class="block text-sm font-medium mb-2 text-gray-700">Message <span class="text-red-500">*</span></label>
+                        <textarea name="message" rows="4" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"
+                            placeholder="Tell us about your needs..."></textarea>
                     </div>
-                    <input type="hidden" name="_next" value="https://crtx.in">
-                    <input type="hidden" name="_subject" value="New contact from CRTX website">
-                    <button type="submit" class="w-full gradient-bg text-white py-3 rounded-lg font-medium hover:opacity-90 transition">
-                        Submit
+                    
+                    <!-- Hidden fields for tracking -->
+                    <input type="hidden" name="_subject" value="New CRTX Inquiry">
+                    <input type="hidden" name="_next" value="https://crtx.in/thank-you.html">
+                    <input type="text" name="_gotcha" style="display:none">
+                    
+                    <button type="submit" id="submit-button" class="w-full gradient-bg text-white py-3 rounded-lg font-medium hover:opacity-90 transition">
+                        Send Message
                     </button>
+                    
+                    <p class="text-xs text-gray-500 mt-4 text-center">
+                        By submitting, you agree to our privacy policy. We'll respond within 24 hours.
+                    </p>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Success Story Modals -->
-    <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-2xl shadow-xl max-w-3xl w-full p-8 relative max-h-[90vh] overflow-y-auto">
-                <button onclick="closeSuccessModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-                <div id="modal-content">
-                    <!-- Content will be dynamically inserted -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scripts -->
+    <!-- JavaScript -->
     <script>
         // Mobile menu toggle
         document.getElementById('mobile-menu-button').addEventListener('click', function() {
             document.getElementById('mobile-menu').classList.toggle('hidden');
         });
-        
+
         // Contact modal functions
         function openContactModal() {
             document.getElementById('contact-modal').classList.remove('hidden');
@@ -751,114 +565,7 @@
                 closeContactModal();
             }
         });
-        
-        // Form submission handling
-        document.getElementById('contact-form').addEventListener('submit', function(e) {
-            // Form will submit to Formspree and redirect back to homepage
-            // You'll need to sign up at formspree.io and replace YOUR_FORM_ID
-        });
-        
-        // Success story modal functions
-        const successStories = {
-            financial: {
-                title: 'Regional Bank Digital Transformation',
-                industry: 'Financial Services',
-                challenge: 'A mid-sized regional bank with $2.5B in assets struggled with increasing fraud attempts, slow customer service response times, and manual processes that couldn\'t scale with growth.',
-                solution: 'Implemented an AI-powered platform combining fraud detection, conversational banking assistants, and automated risk assessment. The reusable AI services were deployed across multiple departments within 12 weeks.',
-                results: [
-                    { metric: 'Fraud Detection Accuracy', value: '91%', detail: 'Up from 67% with rule-based systems' },
-                    { metric: 'Operational Cost Reduction', value: '35%', detail: 'Saved $4.2M annually through automation' },
-                    { metric: 'Transaction Processing Time', value: '-67%', detail: 'From 3 minutes to under 1 minute' },
-                    { metric: 'Customer Satisfaction', value: '+28%', detail: 'NPS increased from 42 to 54' }
-                ],
-                quote: 'The AI platform transformed our operations. What impressed us most was how quickly we could deploy the same core services across fraud, customer service, and compliance.',
-                quotee: 'Chief Digital Officer'
-            },
-            healthcare: {
-                title: 'Multi-Location Hospital System Optimization',
-                industry: 'Healthcare',
-                challenge: 'A healthcare system with 12 facilities faced long patient wait times, inconsistent diagnostic processes, and staff burnout from administrative tasks.',
-                solution: 'Deployed HIPAA-compliant AI platform with patient flow optimization, clinical decision support, and administrative automation. Human-in-the-loop systems ensured physician oversight.',
-                results: [
-                    { metric: 'Patient Wait Time', value: '-43%', detail: 'Average ER wait reduced by 52 minutes' },
-                    { metric: 'Diagnostic Accuracy', value: '+18%', detail: 'Especially in radiology and pathology' },
-                    { metric: 'Staff Efficiency', value: '+52%', detail: 'Nurses spend 3 more hours daily on patient care' },
-                    { metric: 'Patient Throughput', value: '+31%', detail: 'Serving 8,000 more patients annually' }
-                ],
-                quote: 'The AI doesn\'t replace our clinical judgment - it enhances it. Our staff can now focus on what matters most: patient care.',
-                quotee: 'Chief Medical Officer'
-            },
-            manufacturing: {
-                title: 'Smart Factory Implementation',
-                industry: 'Manufacturing',
-                challenge: 'A discrete manufacturer with $450M revenue experienced frequent unplanned downtime, quality control issues, and inability to predict maintenance needs.',
-                solution: 'Implemented computer vision quality control, predictive maintenance AI, and production optimization algorithms. The building blocks approach allowed rapid deployment across 3 facilities.',
-                results: [
-                    { metric: 'Unplanned Downtime', value: '-30%', detail: 'Saving 312 production hours annually' },
-                    { metric: 'Quality Defects', value: '-45%', detail: 'Detected 99.7% of defects before shipping' },
-                    { metric: 'Production Output', value: '+28%', detail: 'Without additional equipment investment' },
-                    { metric: 'Maintenance Costs', value: '-38%', detail: 'Through predictive intervention' }
-                ],
-                quote: 'We went from reactive to predictive operations. The ROI exceeded our expectations within the first year.',
-                quotee: 'VP of Operations'
-            }
-        };
-        
-        function openSuccessModal(industry) {
-            const story = successStories[industry];
-            const modalContent = document.getElementById('modal-content');
-            
-            modalContent.innerHTML = `
-                <div class="mb-4">
-                    <span class="text-sm font-medium text-purple-600 bg-purple-100 px-3 py-1 rounded-full">${story.industry}</span>
-                </div>
-                <h3 class="text-3xl font-bold mb-6">${story.title}</h3>
-                
-                <div class="mb-8">
-                    <h4 class="text-lg font-semibold mb-2 text-gray-700">The Challenge</h4>
-                    <p class="text-gray-600">${story.challenge}</p>
-                </div>
-                
-                <div class="mb-8">
-                    <h4 class="text-lg font-semibold mb-2 text-gray-700">Our Solution</h4>
-                    <p class="text-gray-600">${story.solution}</p>
-                </div>
-                
-                <div class="mb-8">
-                    <h4 class="text-lg font-semibold mb-4 text-gray-700">Results</h4>
-                    <div class="grid grid-cols-2 gap-4">
-                        ${story.results.map(result => `
-                            <div class="bg-gray-50 p-4 rounded-lg">
-                                <div class="text-2xl font-bold gradient-text">${result.value}</div>
-                                <div class="text-sm font-medium text-gray-700">${result.metric}</div>
-                                <div class="text-xs text-gray-500 mt-1">${result.detail}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-                
-                <div class="bg-purple-50 p-6 rounded-lg">
-                    <p class="text-gray-700 italic">"${story.quote}"</p>
-                    <p class="text-sm text-gray-600 mt-2">- ${story.quotee}</p>
-                </div>
-            `;
-            
-            document.getElementById('success-modal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeSuccessModal() {
-            document.getElementById('success-modal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-        
-        // Close success modal on outside click
-        document.getElementById('success-modal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeSuccessModal();
-            }
-        });
-        
+
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {

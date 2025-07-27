@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Consulting Services - CRTX</title>
+    <meta name="description" content="Enterprise AI transformation with Fortune 1 proven strategies. Build reusable AI services that scale across your organization.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        .gradient-text-consulting {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .gradient-consulting {
+            background: linear-gradient(135deg, #059669 0%, #ffffff 100%);
+        }
+        .btn-consulting {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold">
+                        <span class="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">CRTX</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/#services" class="text-gray-700 hover:text-emerald-600 transition">Services</a>
+                    <a href="/investment.html" class="text-gray-700 hover:text-emerald-600 transition">Investment</a>
+                    <a href="/mentoring.html" class="text-gray-700 hover:text-emerald-600 transition">Mentoring</a>
+                    <a href="/consulting.html" class="text-emerald-600">Consulting</a>
+                    <a href="/about.html" class="text-gray-700 hover:text-emerald-600 transition">About</a>
+                    <button onclick="openContactModal()" class="btn-consulting text-white px-4 py-2 rounded-lg hover:opacity-90 transition">Get AI Assessment</button>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-emerald-600 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="/#services" class="block px-3 py-2 text-gray-700 hover:text-emerald-600">Services</a>
+                <a href="/investment.html" class="block px-3 py-2 text-gray-700 hover:text-emerald-600">Investment</a>
+                <a href="/mentoring.html" class="block px-3 py-2 text-gray-700 hover:text-emerald-600">Mentoring</a>
+                <a href="/consulting.html" class="block px-3 py-2 text-emerald-600">Consulting</a>
+                <a href="/about.html" class="block px-3 py-2 text-gray-700 hover:text-emerald-600">About</a>
+                <button onclick="openContactModal()" class="block w-full text-left px-3 py-2 btn-consulting text-white rounded-lg hover:opacity-90">Get AI Assessment</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+                <div>
+                    <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+                        Enterprise AI at
+                        <span class="gradient-text-consulting"> Mid-Market Speed</span>
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-8">
+                        Transform your business with battle-tested AI strategies from Walmart scale. 
+                        Build reusable AI services that deliver 2x conversions and 50% faster implementation.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="https://calendly.com/shivang-crtx/30min" target="_blank" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white btn-consulting hover:opacity-90 transition">
+                            Schedule AI Assessment
+                        </a>
+                        <a href="#approach" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition">
+                            Our Approach
+                        </a>
+                    </div>
+                    
+                    <!-- Trust Indicators -->
+                    <div class="mt-12 grid grid-cols-3 gap-6">
+                        <div>
+                            <div class="text-2xl font-bold gradient-text-consulting">100M+</div>
+                            <div class="text-sm text-gray-600">Interactions Processed</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold gradient-text-consulting">2x</div>
+                            <div class="text-sm text-gray-600">Conversion Improvement</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold gradient-text-consulting">50%</div>
+                            <div class="text-sm text-gray-600">Faster Implementation</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-12 lg:mt-0">
+                    <div class="relative">
+                        <div class="absolute inset-0 gradient-consulting rounded-full blur-3xl opacity-20"></div>
+                        <div class="relative bg-white rounded-2xl shadow-xl p-8 float-animation">
+                            <h3 class="text-lg font-semibold mb-4">Your AI Transformation Journey</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center mr-4">
+                                        <span class="text-emerald-600 font-semibold">1</span>
+                                    </div>
+                                    <span class="text-gray-700">AI Readiness Assessment</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center mr-4">
+                                        <span class="text-emerald-600 font-semibold">2</span>
+                                    </div>
+                                    <span class="text-gray-700">Build Reusable AI Services</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center mr-4">
+                                        <span class="text-emerald-600 font-semibold">3</span>
+                                    </div>
+                                    <span class="text-gray-700">Scale Across Organization</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center mr-4">
+                                        <span class="text-emerald-600 font-semibold">4</span>
+                                    </div>
+                                    <span class="text-gray-700">Continuous Innovation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem/Solution -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+                    78% of Companies Use AI. Only 1% Do It Well.
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Most organizations waste resources building redundant AI solutions. 
+                    Our "Building Blocks" approach creates reusable services that scale.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl p-8 shadow-sm">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">The Problem</h3>
+                    <p class="text-gray-600">Teams rebuild the same AI capabilities repeatedly, wasting millions in redundant development.</p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-8 shadow-sm">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Our Solution</h3>
+                    <p class="text-gray-600">Build once, deploy everywhere. Create reusable AI building blocks that work across all teams.</p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-8 shadow-sm">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">The Result</h3>
+                    <p class="text-gray-600">50% faster implementation, reduced costs, and measurable outcomes like 2x conversion rates.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+                    AI Consulting Services
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    From assessment to transformation, we provide everything you need for AI

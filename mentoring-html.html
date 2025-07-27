@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI PM Mentoring - CRTX</title>
+    <meta name="description" content="Transform your product management career with AI-first mentoring. Learn from Fortune 1 experience to accelerate your journey.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        .gradient-text-mentoring {
+            background: linear-gradient(135deg, #764ba2 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .gradient-mentoring {
+            background: linear-gradient(135deg, #764ba2 0%, #ffffff 100%);
+        }
+        .btn-mentoring {
+            background: linear-gradient(135deg, #764ba2 0%, #8b5cf6 100%);
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        .pulse-subtle {
+            animation: pulse-subtle 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold">
+                        <span class="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">CRTX</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/#services" class="text-gray-700 hover:text-purple-600 transition">Services</a>
+                    <a href="/investment.html" class="text-gray-700 hover:text-purple-600 transition">Investment</a>
+                    <a href="/mentoring.html" class="text-purple-600">Mentoring</a>
+                    <a href="/consulting.html" class="text-gray-700 hover:text-purple-600 transition">Consulting</a>
+                    <a href="/about.html" class="text-gray-700 hover:text-purple-600 transition">About</a>
+                    <a href="/ai-pm-assessment.html" class="btn-mentoring text-white px-4 py-2 rounded-lg hover:opacity-90 transition">Take AI PM Assessment</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-purple-600 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="/#services" class="block px-3 py-2 text-gray-700 hover:text-purple-600">Services</a>
+                <a href="/investment.html" class="block px-3 py-2 text-gray-700 hover:text-purple-600">Investment</a>
+                <a href="/mentoring.html" class="block px-3 py-2 text-purple-600">Mentoring</a>
+                <a href="/consulting.html" class="block px-3 py-2 text-gray-700 hover:text-purple-600">Consulting</a>
+                <a href="/about.html" class="block px-3 py-2 text-gray-700 hover:text-purple-600">About</a>
+                <a href="/ai-pm-assessment.html" class="block px-3 py-2 btn-mentoring text-white rounded-lg hover:opacity-90">Take AI PM Assessment</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+                <div>
+                    <div class="mb-4">
+                        <a href="/ai-pm-assessment.html" class="inline-flex items-center text-purple-600 text-sm font-medium hover:text-purple-700 pulse-subtle">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                            </svg>
+                            Take the free AI PM Assessment first →
+                        </a>
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+                        From Traditional PM to
+                        <span class="gradient-text-mentoring"> AI Product Leader</span>
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-8">
+                        Master the skills that matter in the AI era. Get personalized mentoring from someone who's built AI products at Walmart scale and helped 100+ PMs make the transition.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="https://calendly.com/shivang-crtx/ai-pm-intro" target="_blank" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white btn-mentoring hover:opacity-90 transition">
+                            Book Free Intro Call
+                        </a>
+                        <a href="#programs" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition">
+                            View Programs
+                        </a>
+                    </div>
+                    
+                    <!-- Social Proof -->
+                    <div class="mt-8 grid grid-cols-3 gap-4 text-center">
+                        <div>
+                            <div class="text-2xl font-bold gradient-text-mentoring">100+</div>
+                            <div class="text-sm text-gray-600">PMs Mentored</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold gradient-text-mentoring">12+</div>
+                            <div class="text-sm text-gray-600">Years Experience</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold gradient-text-mentoring">Fortune 1</div>
+                            <div class="text-sm text-gray-600">Proven Methods</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-12 lg:mt-0">
+                    <div class="bg-purple-50 rounded-2xl p-8">
+                        <h3 class="text-lg font-semibold mb-6">What You'll Master</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <svg class="w-6 h-6 text-purple-600 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                </svg>
+                                <div>
+                                    <h4 class="font-semibold mb-1">AI Product Strategy</h4>
+                                    <p class="text-sm text-gray-600">Define AI-first roadmaps that deliver measurable business impact</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <svg class="w-6 h-6 text-purple-600 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                                <div>
+                                    <h4 class="font-semibold mb-1">Cross-functional Leadership</h4>
+                                    <p class="text-sm text-gray-600">Lead ML engineers, data scientists, and designers effectively</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <svg class="w-6 h-6 text-purple-600 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2
