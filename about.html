@@ -32,11 +32,10 @@
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="/#services" class="text-gray-700 hover:text-purple-600 transition">Services</a>
-                    <a href="/#expertise" class="text-gray-700 hover:text-purple-600 transition">Expertise</a>
+                    <a href="/#insights" class="text-gray-700 hover:text-purple-600 transition">Insights</a>
                     <a href="/#approach" class="text-gray-700 hover:text-purple-600 transition">Approach</a>
-                    <a href="/#success-stories" class="text-gray-700 hover:text-purple-600 transition">Success Stories</a>
                     <a href="/about.html" class="text-purple-600">About</a>
-                    <a href="/" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">Get Started</a>
+                    <button id="contact-button" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">Get Started</button>
                 </div>
                 <div class="md:hidden flex items-center">
                     <button id="mobile-menu-button" class="text-gray-700 hover:text-purple-600 focus:outline-none">
@@ -51,11 +50,10 @@
         <div id="mobile-menu" class="hidden md:hidden">
             <div class="px-2 pt-2 pb-3 space-y-1">
                 <a href="/#services" class="block px-3 py-2 text-gray-700 hover:text-purple-600">Services</a>
-                <a href="/#expertise" class="block px-3 py-2 text-gray-700 hover:text-purple-600">Expertise</a>
+                <a href="/#insights" class="block px-3 py-2 text-gray-700 hover:text-purple-600">Insights</a>
                 <a href="/#approach" class="block px-3 py-2 text-gray-700 hover:text-purple-600">Approach</a>
-                <a href="/#success-stories" class="block px-3 py-2 text-gray-700 hover:text-purple-600">Success Stories</a>
                 <a href="/about.html" class="block px-3 py-2 text-purple-600">About</a>
-                <a href="/" class="block px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Get Started</a>
+                <button id="contact-button-mobile" class="block w-full px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-center">Get Started</button>
             </div>
         </div>
     </nav>
@@ -231,10 +229,100 @@
         </div>
     </footer>
 
-    <!-- Mobile Menu Script -->
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-start justify-center min-h-screen p-4 pt-8">
+            <div class="bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto p-8 relative">
+                <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+                <h3 class="text-2xl font-bold mb-6 text-center">Get Started with CRTX</h3>
+                <form id="contact-form" action="https://formspree.io/f/mdkdewyg" method="POST">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 text-gray-700">Name <span class="text-red-500">*</span></label>
+                        <input type="text" name="name" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 text-gray-700">Email <span class="text-red-500">*</span></label>
+                        <input type="email" name="email" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 text-gray-700">Phone</label>
+                        <input type="tel" name="phone"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 text-gray-700">I'm interested in <span class="text-red-500">*</span></label>
+                        <select name="service" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                            <option value="">Select a service</option>
+                            <option value="AI Consulting">AI Consulting for my Company</option>
+                            <option value="AI PM Mentoring">AI PM Mentoring for my Career</option>
+                            <option value="VC Investment">Investment for my Startup</option>
+                            <option value="General Inquiry">General Inquiry</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 text-gray-700">Company/Organization</label>
+                        <input type="text" name="company"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium mb-2 text-gray-700">Message <span class="text-red-500">*</span></label>
+                        <textarea name="message" rows="4" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"
+                            placeholder="Tell us about your needs..."></textarea>
+                    </div>
+                    
+                    <!-- Hidden fields for tracking -->
+                    <input type="hidden" name="_subject" value="New CRTX Inquiry">
+                    <input type="hidden" name="_next" value="https://crtx.in/thank-you.html">
+                    <input type="text" name="_gotcha" style="display:none">
+                    
+                    <button type="submit" id="submit-button" class="w-full gradient-bg text-white py-3 rounded-lg font-medium hover:opacity-90 transition">
+                        Send Message
+                    </button>
+                    
+                    <p class="text-xs text-gray-500 mt-4 text-center">
+                        By submitting, you agree to our privacy policy. We'll respond within 24 hours.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
     <script>
+        // Mobile menu toggle
         document.getElementById('mobile-menu-button').addEventListener('click', function() {
             document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Contact modal functions
+        function openContactModal() {
+            document.getElementById('contact-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeContactModal() {
+            document.getElementById('contact-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Add event listeners for contact buttons
+        document.getElementById('contact-button').addEventListener('click', openContactModal);
+        document.getElementById('contact-button-mobile').addEventListener('click', openContactModal);
+        document.getElementById('close-modal').addEventListener('click', closeContactModal);
+        
+        // Close modal on outside click
+        document.getElementById('contact-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeContactModal();
+            }
         });
     </script>
 </body>
