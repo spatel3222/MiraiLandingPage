@@ -50,7 +50,36 @@
                     </a>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="/#services" class="text-gray-700 hover:text-purple-600 transition">Services</a>
+                    <!-- Services Dropdown -->
+                    <div class="relative group">
+                        <a href="/#services" class="text-gray-700 hover:text-purple-600 transition flex items-center">
+                            Services
+                            <svg class="w-4 h-4 ml-1 text-gray-400 group-hover:text-purple-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </a>
+                        <!-- Dropdown Menu -->
+                        <div class="absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <div class="py-2">
+                                <a href="/consulting.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition">
+                                    <div class="font-medium">AI Transformation Services</div>
+                                    <div class="text-xs text-gray-500">Enterprise consulting & implementation</div>
+                                </a>
+                                <a href="/investment.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition">
+                                    <div class="font-medium">VC Investment</div>
+                                    <div class="text-xs text-gray-500">Agentic AI startup funding</div>
+                                </a>
+                                <a href="/mentoring.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition">
+                                    <div class="font-medium">AI PM Mentoring</div>
+                                    <div class="text-xs text-gray-500">Career guidance & development</div>
+                                </a>
+                                <div class="border-t border-gray-100 my-1"></div>
+                                <a href="/#services" class="block px-4 py-2 text-sm text-purple-600 hover:bg-purple-50 transition">
+                                    View All Services →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                     <a href="/#insights" class="text-gray-700 hover:text-purple-600 transition">Insights</a>
                     <a href="/#approach" class="text-gray-700 hover:text-purple-600 transition">Approach</a>
                     <a href="/about.html" class="text-gray-700 hover:text-purple-600 transition">About</a>
