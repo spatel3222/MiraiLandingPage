@@ -1,9 +1,4 @@
-// Vercel serverless function for Claude API integration
 const Anthropic = require('@anthropic-ai/sdk');
-
-const anthropic = new Anthropic({
-  apiKey: process.env.CLAUDE_API_KEY,
-});
 
 module.exports = async function handler(req, res) {
   // Set CORS headers for cross-origin requests
@@ -36,6 +31,11 @@ module.exports = async function handler(req, res) {
 
     const mediaType = base64Match[1];
     const base64Data = base64Match[2];
+
+    // Initialize Claude client
+    const anthropic = new Anthropic({
+      apiKey: process.env.CLAUDE_API_KEY,
+    });
 
     // Claude prompt for intelligent task extraction
     const prompt = `You are an expert task management assistant that helps extract actionable tasks from handwritten notes and images. 
@@ -165,4 +165,4 @@ Focus on being practical and accurate rather than extracting everything possible
       message: error.message 
     });
   }
-}
+};
