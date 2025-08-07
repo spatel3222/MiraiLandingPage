@@ -99,6 +99,316 @@
             backdrop-filter: blur(4px);
         }
         
+        /* Enhanced Modal Footer Styles */
+        .modal-footer {
+            border-top: 1px solid #E5E7EB;
+            background: linear-gradient(to bottom, #FAFAFA, #F3F4F6);
+            border-radius: 0 0 0.5rem 0.5rem;
+        }
+        
+        .modal-footer-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+        
+        .modal-footer-primary {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .modal-footer-secondary {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        /* Enhanced Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2563EB, #1D4ED8);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+        }
+        
+        .btn-primary:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3), 0 2px 4px rgba(59, 130, 246, 0.2);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #6B7280;
+            border: 1px solid #D1D5DB;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #F9FAFB;
+            color: #4B5563;
+            border-color: #9CA3AF;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-secondary:focus {
+            outline: none;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .btn-destructive {
+            background: transparent;
+            color: #DC2626;
+            border: 1px solid transparent;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-destructive:hover {
+            background: #FEF2F2;
+            border-color: #FECACA;
+            color: #B91C1C;
+            transform: translateY(-1px);
+        }
+        
+        .btn-destructive:focus {
+            outline: none;
+            background: #FEF2F2;
+            border-color: #DC2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+        
+        .btn-icon {
+            width: 1rem;
+            height: 1rem;
+            transition: transform 0.2s ease;
+        }
+        
+        .btn-destructive:hover .btn-icon {
+            transform: scale(1.1);
+        }
+        
+        /* Mobile responsive styles */
+        @media (max-width: 640px) {
+            .modal-footer-actions {
+                flex-direction: column-reverse;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .modal-footer-primary,
+            .modal-footer-secondary {
+                width: 100%;
+            }
+            
+            .modal-footer-primary {
+                justify-content: stretch;
+            }
+            
+            .modal-footer-secondary {
+                justify-content: center;
+            }
+            
+            .btn-primary {
+                flex: 1;
+                justify-content: center;
+                padding: 0.875rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .btn-secondary {
+                padding: 0.75rem 1.25rem;
+            }
+            
+            .btn-destructive {
+                align-self: flex-start;
+            }
+        }
+        
+        /* Loading state for primary button */
+        .btn-primary.loading {
+            pointer-events: none;
+            position: relative;
+        }
+        
+        .btn-primary.loading::after {
+            content: '';
+            position: absolute;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .btn-primary.loading span {
+            opacity: 0;
+        }
+        
+        /* Modal Footer Improvements */
+        .modal-footer {
+            background: linear-gradient(to bottom, #f9fafb, #f3f4f6);
+            border-top: 1px solid #e5e7eb;
+            padding: 1.5rem;
+            margin: 0 -1.5rem -1.5rem -1.5rem;
+            border-radius: 0 0 0.5rem 0.5rem;
+        }
+        
+        .modal-footer-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .modal-footer-primary {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #6b7280;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #d1d5db;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #f9fafb;
+            color: #374151;
+            border-color: #9ca3af;
+        }
+        
+        .btn-destructive {
+            background: transparent;
+            color: #dc2626;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #fecaca;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-destructive:hover {
+            background: #fef2f2;
+            border-color: #fca5a5;
+            transform: translateY(-1px);
+        }
+        
+        .btn-destructive svg {
+            transition: transform 0.2s ease;
+        }
+        
+        .btn-destructive:hover svg {
+            transform: scale(1.1);
+        }
+        
+        .btn-loading {
+            position: relative;
+            color: transparent;
+        }
+        
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -8px 0 0 -8px;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* Mobile responsive */
         @media (max-width: 640px) {
             .kanban-container {
@@ -108,6 +418,32 @@
             .kanban-column {
                 width: 100%;
                 margin-bottom: 1rem;
+            }
+            
+            .modal-footer-actions {
+                flex-direction: column-reverse;
+                gap: 1rem;
+            }
+            
+            .modal-footer-primary {
+                width: 100%;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .modal-footer-primary .btn-primary {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .modal-footer-primary .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .btn-destructive {
+                align-self: flex-start;
+                padding: 0.625rem 1rem;
             }
         }
     </style>
@@ -337,17 +673,46 @@
                             </div>
                         </div>
                         
-                        <!-- Modal Footer - moved inside form -->
-                        <div class="flex justify-between items-center p-6 border-t bg-gray-50 -mx-6 -mb-6 mt-6">
-                            <button type="button" id="delete-task-btn" class="text-red-600 hover:text-red-800 transition flex items-center">
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                </svg>
-                                Delete Task
-                            </button>
-                            <div class="space-x-3">
-                                <button type="button" id="cancel-btn" class="px-4 py-2 text-gray-600 hover:text-gray-800 transition">Cancel</button>
-                                <button type="submit" id="save-task-btn" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">Save Changes</button>
+                        <!-- Enhanced Modal Footer -->
+                        <div class="modal-footer -mx-6 -mb-6 mt-6">
+                            <div class="modal-footer-actions">
+                                <!-- Destructive Action (Left Side) -->
+                                <div class="modal-footer-secondary">
+                                    <button 
+                                        type="button" 
+                                        id="delete-task-btn" 
+                                        class="btn-destructive"
+                                        aria-label="Delete this task permanently"
+                                        title="Delete Task"
+                                    >
+                                        <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                        <span>Delete Task</span>
+                                    </button>
+                                </div>
+                                
+                                <!-- Primary Actions (Right Side) -->
+                                <div class="modal-footer-primary">
+                                    <button 
+                                        type="button" 
+                                        id="cancel-btn" 
+                                        class="btn-secondary"
+                                        aria-label="Cancel and close without saving changes"
+                                        title="Cancel Changes"
+                                    >
+                                        <span>Cancel</span>
+                                    </button>
+                                    <button 
+                                        type="submit" 
+                                        id="save-task-btn" 
+                                        class="btn-primary"
+                                        aria-label="Save all changes to this task"
+                                        title="Save Task"
+                                    >
+                                        <span>Save Changes</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -664,6 +1029,17 @@
             currentEditingTaskId = null;
             addNoteInput.classList.add('hidden');
             newNoteText.value = '';
+            
+            // Reset button states
+            const saveBtn = document.getElementById('save-task-btn');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const deleteBtn = document.getElementById('delete-task-btn');
+            
+            saveBtn.classList.remove('loading');
+            cancelBtn.disabled = false;
+            deleteBtn.disabled = false;
+            cancelBtn.style.opacity = '';
+            deleteBtn.style.opacity = '';
         }
 
         function renderNotes(notes) {
@@ -917,41 +1293,62 @@
             e.preventDefault();
             console.log('Form submitted - starting save process');
             
-            try {
-                const title = document.getElementById('task-title').value;
-                const description = document.getElementById('task-description').value;
-                const category = document.getElementById('task-category').value;
-                const priority = document.getElementById('task-priority').value;
-                const status = document.getElementById('task-status').value;
-                const taskId = document.getElementById('task-id').value;
-                
-                console.log('Form values:', { title, description, category, priority, status, taskId });
-                
-                if (taskId) {
-                    // Update existing task
-                    console.log('Updating existing task:', taskId);
-                    updateTask(parseInt(taskId), {
-                        title,
-                        description,
-                        category,
-                        priority,
-                        status
-                    });
+            // Show loading state
+            const saveBtn = document.getElementById('save-task-btn');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const deleteBtn = document.getElementById('delete-task-btn');
+            
+            saveBtn.classList.add('loading');
+            cancelBtn.disabled = true;
+            deleteBtn.disabled = true;
+            cancelBtn.style.opacity = '0.5';
+            deleteBtn.style.opacity = '0.5';
+            
+            // Simulate async operation with setTimeout for better UX
+            setTimeout(() => {
+                try {
+                    const title = document.getElementById('task-title').value;
+                    const description = document.getElementById('task-description').value;
+                    const category = document.getElementById('task-category').value;
+                    const priority = document.getElementById('task-priority').value;
+                    const status = document.getElementById('task-status').value;
+                    const taskId = document.getElementById('task-id').value;
                     
-                    // Re-render all tasks to update position if status changed
-                    renderAllTasks();
-                } else {
-                    // Create new task
-                    console.log('Creating new task');
-                    createTask(title, description, category, priority, status);
+                    console.log('Form values:', { title, description, category, priority, status, taskId });
+                    
+                    if (taskId) {
+                        // Update existing task
+                        console.log('Updating existing task:', taskId);
+                        updateTask(parseInt(taskId), {
+                            title,
+                            description,
+                            category,
+                            priority,
+                            status
+                        });
+                        
+                        // Re-render all tasks to update position if status changed
+                        renderAllTasks();
+                    } else {
+                        // Create new task
+                        console.log('Creating new task');
+                        createTask(title, description, category, priority, status);
+                    }
+                    
+                    console.log('Task saved successfully, closing modal');
+                    closeTaskModal();
+                } catch (error) {
+                    console.error('Error saving task:', error);
+                    alert('Error saving task: ' + error.message);
+                } finally {
+                    // Reset button states
+                    saveBtn.classList.remove('loading');
+                    cancelBtn.disabled = false;
+                    deleteBtn.disabled = false;
+                    cancelBtn.style.opacity = '';
+                    deleteBtn.style.opacity = '';
                 }
-                
-                console.log('Task saved successfully, closing modal');
-                closeTaskModal();
-            } catch (error) {
-                console.error('Error saving task:', error);
-                alert('Error saving task: ' + error.message);
-            }
+            }, 300); // Brief delay for visual feedback
         });
 
         deleteTaskBtn.addEventListener('click', () => {
@@ -959,6 +1356,17 @@
                 deleteTask(currentEditingTaskId);
             }
         });
+
+        // Additional save button click handler for debugging
+        const saveTaskBtn = document.getElementById('save-task-btn');
+        if (saveTaskBtn) {
+            saveTaskBtn.addEventListener('click', (e) => {
+                console.log('Save button clicked directly');
+                console.log('Button type:', saveTaskBtn.type);
+                console.log('Form element:', taskForm);
+                console.log('Event target:', e.target);
+            });
+        }
 
         selectFilesBtn.addEventListener('click', () => {
             photoInput.click();
