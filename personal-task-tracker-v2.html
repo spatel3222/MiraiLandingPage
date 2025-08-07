@@ -756,6 +756,26 @@
             taskIdCounter = 1;
         }
 
+        // Migrate existing tasks to add notes property if missing
+        function migrateTasks() {
+            let needsMigration = false;
+            tasks.forEach(task => {
+                if (!task.notes) {
+                    task.notes = [];
+                    needsMigration = true;
+                    console.log('Migrated task to include notes:', task.title);
+                }
+            });
+            
+            if (needsMigration) {
+                saveTasksToStorage();
+                console.log('Task migration completed');
+            }
+        }
+
+        // Run migration
+        migrateTasks();
+
         // DOM Elements
         const addTaskBtn = document.getElementById('add-task-btn');
         const taskModal = document.getElementById('task-modal');
@@ -850,6 +870,10 @@
             
             const task = tasks.find(t => t && t.id === taskId);
             if (task) {
+                // Ensure notes property exists for backward compatibility
+                if (!task.notes) {
+                    task.notes = [];
+                }
                 Object.assign(task, updates);
                 task.updatedAt = new Date().toISOString();
                 saveTasksToStorage();
@@ -923,7 +947,7 @@
             taskCard.innerHTML = `
                 <div class="flex justify-between items-start mb-2">
                     <span class="text-xs px-2 py-1 rounded-full ${priorityColors[task.priority]}">${task.priority.toUpperCase()}</span>
-                    ${task.notes.length > 0 ? `<span class="text-xs text-gray-500">📝 ${task.notes.length}</span>` : ''}
+                    ${task.notes && task.notes.length > 0 ? `<span class="text-xs text-gray-500">📝 ${task.notes.length}</span>` : ''}
                 </div>
                 <h4 class="font-medium text-gray-900 mb-2">${task.title}</h4>
                 ${task.description ? `<p class="text-sm text-gray-600 mb-2">${task.description}</p>` : ''}
@@ -1076,7 +1100,7 @@
                 deleteTaskBtn.style.display = 'flex';
                 
                 // Render notes
-                renderNotes(task.notes);
+                renderNotes(task.notes || []);
             } else {
                 document.getElementById('modal-category-icon').textContent = '📋';
                 deleteTaskBtn.style.display = 'none';
