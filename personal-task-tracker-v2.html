@@ -723,10 +723,38 @@
 
     <!-- JavaScript -->
     <script>
-        // Task data storage
-        let tasks = JSON.parse(localStorage.getItem('personalTasks')) || [];
-        let taskIdCounter = parseInt(localStorage.getItem('taskIdCounter')) || 1;
+        // Task data storage with proper initialization
+        let tasks = [];
+        let taskIdCounter = 1;
         let currentEditingTaskId = null;
+
+        // Initialize tasks from localStorage with error handling
+        try {
+            const storedTasks = localStorage.getItem('personalTasks');
+            if (storedTasks) {
+                const parsedTasks = JSON.parse(storedTasks);
+                if (Array.isArray(parsedTasks)) {
+                    tasks = parsedTasks;
+                } else {
+                    console.warn('Stored tasks is not an array, resetting to empty array');
+                    tasks = [];
+                }
+            }
+        } catch (error) {
+            console.error('Error parsing stored tasks:', error);
+            tasks = [];
+        }
+
+        // Initialize task counter
+        try {
+            const storedCounter = localStorage.getItem('taskIdCounter');
+            if (storedCounter) {
+                taskIdCounter = parseInt(storedCounter) || 1;
+            }
+        } catch (error) {
+            console.error('Error parsing task counter:', error);
+            taskIdCounter = 1;
+        }
 
         // DOM Elements
         const addTaskBtn = document.getElementById('add-task-btn');
@@ -813,11 +841,21 @@
         }
 
         function updateTask(taskId, updates) {
-            const task = tasks.find(t => t.id === taskId);
+            // Ensure tasks array exists and is valid
+            if (!Array.isArray(tasks)) {
+                console.error('Tasks array is invalid, reinitializing');
+                tasks = [];
+                return;
+            }
+            
+            const task = tasks.find(t => t && t.id === taskId);
             if (task) {
                 Object.assign(task, updates);
                 task.updatedAt = new Date().toISOString();
                 saveTasksToStorage();
+                console.log('Task updated successfully:', taskId);
+            } else {
+                console.warn('Task not found for update:', taskId);
             }
         }
 
@@ -938,6 +976,12 @@
         }
 
         function updateTaskCounts() {
+            // Ensure tasks array is valid before processing
+            if (!Array.isArray(tasks)) {
+                console.error('Tasks array is invalid in updateTaskCounts, reinitializing');
+                tasks = [];
+            }
+            
             const counts = {
                 'to-do': 0,
                 'in-progress': 0,
@@ -945,7 +989,9 @@
             };
             
             tasks.forEach(task => {
-                counts[task.status] = (counts[task.status] || 0) + 1;
+                if (task && task.status) {
+                    counts[task.status] = (counts[task.status] || 0) + 1;
+                }
             });
             
             document.getElementById('todo-count').textContent = counts['to-do'];
@@ -976,7 +1022,26 @@
         }
 
         function saveTasksToStorage() {
-            localStorage.setItem('personalTasks', JSON.stringify(tasks));
+            try {
+                // Ensure tasks is a valid array before saving
+                if (!Array.isArray(tasks)) {
+                    console.error('Attempting to save invalid tasks array, reinitializing');
+                    tasks = [];
+                }
+                localStorage.setItem('personalTasks', JSON.stringify(tasks));
+                localStorage.setItem('taskIdCounter', taskIdCounter.toString());
+                console.log(`Saved ${tasks.length} tasks to localStorage`);
+            } catch (error) {
+                console.error('Error saving tasks to localStorage:', error);
+                // Try to recover by clearing storage
+                try {
+                    localStorage.removeItem('personalTasks');
+                    localStorage.removeItem('taskIdCounter');
+                    console.log('Cleared corrupted localStorage data');
+                } catch (clearError) {
+                    console.error('Error clearing localStorage:', clearError);
+                }
+            }
         }
 
         // Modal functions
