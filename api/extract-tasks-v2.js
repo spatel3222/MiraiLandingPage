@@ -52,7 +52,7 @@ module.exports = async function handler(req, res) {
     try {
       // Call Claude API
       const response = await anthropic.messages.create({
-        model: 'claude-3-sonnet-20241022',
+        model: 'claude-3-5-sonnet-20241022',
         max_tokens: 1000,
         messages: [{
           role: 'user',

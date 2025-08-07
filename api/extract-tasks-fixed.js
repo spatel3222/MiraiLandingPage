@@ -36,9 +36,9 @@ module.exports = async function handler(req, res) {
     });
 
     try {
-      // Call Claude API with vision - using Haiku for faster response
+      // Call Claude API with vision - using Sonnet 3.5
       const response = await anthropic.messages.create({
-        model: 'claude-3-haiku-20240307',
+        model: 'claude-3-5-sonnet-20241022',
         max_tokens: 1000,
         messages: [{
           role: 'user',
