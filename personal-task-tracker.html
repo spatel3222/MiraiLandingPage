@@ -376,7 +376,7 @@
                     updateProcessingStatus('Claude is analyzing handwriting and extracting tasks...');
                     
                     // Call Claude API
-                    const response = await fetch('/api/extract-tasks-v2', {
+                    const response = await fetch('/api/extract-tasks-fixed', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
