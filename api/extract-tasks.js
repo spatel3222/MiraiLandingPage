@@ -81,7 +81,7 @@ Focus on being practical and accurate rather than extracting everything possible
 
     // Call Claude API with vision
     const response = await anthropic.messages.create({
-      model: 'claude-3-sonnet-20241022',
+      model: 'claude-3-5-sonnet-20241022',
       max_tokens: 1500,
       messages: [{
         role: 'user',
