@@ -336,21 +336,21 @@
                                 <p class="text-sm">Add a note to track progress</p>
                             </div>
                         </div>
+                        
+                        <!-- Modal Footer - moved inside form -->
+                        <div class="flex justify-between items-center p-6 border-t bg-gray-50 -mx-6 -mb-6 mt-6">
+                            <button type="button" id="delete-task-btn" class="text-red-600 hover:text-red-800 transition flex items-center">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                                Delete Task
+                            </button>
+                            <div class="space-x-3">
+                                <button type="button" id="cancel-btn" class="px-4 py-2 text-gray-600 hover:text-gray-800 transition">Cancel</button>
+                                <button type="submit" id="save-task-btn" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">Save Changes</button>
+                            </div>
+                        </div>
                     </form>
-                </div>
-                
-                <!-- Modal Footer -->
-                <div class="flex justify-between items-center p-6 border-t bg-gray-50">
-                    <button type="button" id="delete-task-btn" class="text-red-600 hover:text-red-800 transition flex items-center">
-                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                        </svg>
-                        Delete Task
-                    </button>
-                    <div class="space-x-3">
-                        <button type="button" id="cancel-btn" class="px-4 py-2 text-gray-600 hover:text-gray-800 transition">Cancel</button>
-                        <button type="submit" id="save-task-btn" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">Save Changes</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -915,32 +915,43 @@
 
         taskForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            console.log('Form submitted - starting save process');
             
-            const title = document.getElementById('task-title').value;
-            const description = document.getElementById('task-description').value;
-            const category = document.getElementById('task-category').value;
-            const priority = document.getElementById('task-priority').value;
-            const status = document.getElementById('task-status').value;
-            const taskId = document.getElementById('task-id').value;
-            
-            if (taskId) {
-                // Update existing task
-                updateTask(parseInt(taskId), {
-                    title,
-                    description,
-                    category,
-                    priority,
-                    status
-                });
+            try {
+                const title = document.getElementById('task-title').value;
+                const description = document.getElementById('task-description').value;
+                const category = document.getElementById('task-category').value;
+                const priority = document.getElementById('task-priority').value;
+                const status = document.getElementById('task-status').value;
+                const taskId = document.getElementById('task-id').value;
                 
-                // Re-render all tasks to update position if status changed
-                renderAllTasks();
-            } else {
-                // Create new task
-                createTask(title, description, category, priority, status);
+                console.log('Form values:', { title, description, category, priority, status, taskId });
+                
+                if (taskId) {
+                    // Update existing task
+                    console.log('Updating existing task:', taskId);
+                    updateTask(parseInt(taskId), {
+                        title,
+                        description,
+                        category,
+                        priority,
+                        status
+                    });
+                    
+                    // Re-render all tasks to update position if status changed
+                    renderAllTasks();
+                } else {
+                    // Create new task
+                    console.log('Creating new task');
+                    createTask(title, description, category, priority, status);
+                }
+                
+                console.log('Task saved successfully, closing modal');
+                closeTaskModal();
+            } catch (error) {
+                console.error('Error saving task:', error);
+                alert('Error saving task: ' + error.message);
             }
-            
-            closeTaskModal();
         });
 
         deleteTaskBtn.addEventListener('click', () => {
