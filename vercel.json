@@ -1,7 +1,1 @@
-{
-  "functions": {
-    "api/extract-tasks.js": {
-      "maxDuration": 10
-    }
-  }
-}
+{}
