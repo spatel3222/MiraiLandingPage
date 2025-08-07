@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/extract-tasks.js": {
-      "runtime": "@vercel/node@18"
+      "maxDuration": 10
     }
   }
 }
