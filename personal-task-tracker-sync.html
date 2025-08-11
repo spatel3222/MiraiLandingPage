@@ -200,6 +200,13 @@
             transition: opacity 0.3s ease;
         }
         
+        /* Hide focus mode header when modal is open */
+        #focus-mode-view.modal-open header {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        
         .time-indicator.show {
             opacity: 1;
         }
@@ -2552,6 +2559,12 @@
             // Show modal with animation
             taskModal.classList.remove('hidden');
             
+            // Hide focus mode header if in focus mode
+            const focusView = document.getElementById('focus-mode-view');
+            if (focusView && !focusView.classList.contains('hidden')) {
+                focusView.classList.add('modal-open');
+            }
+            
             // Add body scroll lock for mobile
             document.body.style.overflow = 'hidden';
             
@@ -2572,6 +2585,12 @@
             
             // Trigger exit animation
             modalContent.classList.remove('show');
+            
+            // Show focus mode header again if in focus mode
+            const focusView = document.getElementById('focus-mode-view');
+            if (focusView) {
+                focusView.classList.remove('modal-open');
+            }
             
             // Hide modal after animation
             setTimeout(() => {
@@ -2934,7 +2953,7 @@
     <!-- Version Info -->
     <div class="fixed bottom-2 left-2 text-xs text-gray-400 font-mono opacity-60 hover:opacity-100 transition-opacity z-10" 
          title="Personal Task Tracker - Focus Edition">
-        v2024.focus.1
+        v2024.focus.2
     </div>
 </body>
 </html>
