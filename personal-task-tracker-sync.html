@@ -346,6 +346,31 @@
             display: none;
         }
         
+        /* Daily Focus exit button improvements */
+        #exit-focus-btn {
+            transition: all 0.2s ease;
+            border-radius: 0.375rem;
+            padding: 0.375rem;
+        }
+        
+        #exit-focus-btn:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+            transform: scale(1.05);
+        }
+        
+        .dark #exit-focus-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        #exit-focus-btn:active {
+            transform: scale(0.95);
+        }
+        
+        #exit-focus-btn:focus-visible {
+            outline: 2px solid #3B82F6;
+            outline-offset: 2px;
+        }
+        
         /* Transitions and animations */
         .task-card {
             transition: all 0.3s ease;
@@ -1511,7 +1536,25 @@
                     this.toggle();
                 });
                 
-                document.getElementById('exit-focus-btn').addEventListener('click', () => {
+                document.getElementById('exit-focus-btn').addEventListener('click', (e) => {
+                    // Prevent any event bubbling
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Add visual feedback
+                    const button = e.target.closest('button');
+                    if (button) {
+                        button.style.transform = 'scale(0.95)';
+                        button.style.transition = 'transform 0.1s ease';
+                        
+                        // Reset after animation
+                        setTimeout(() => {
+                            button.style.transform = '';
+                        }, 100);
+                    }
+                    
+                    // Exit focus mode with debug feedback
+                    console.log('Daily Focus: Exit button clicked');
                     this.exit();
                 });
                 
@@ -1545,12 +1588,28 @@
             }
             
             exit() {
-                this.isActive = false;
-                document.getElementById('focus-mode-view').classList.add('hidden');
-                document.body.classList.remove('focus-mode-active');
+                console.log('Daily Focus: Exiting focus mode');
                 
-                // Refresh main view in case tasks were completed
-                renderAllTasks();
+                try {
+                    this.isActive = false;
+                    
+                    const focusView = document.getElementById('focus-mode-view');
+                    if (focusView) {
+                        focusView.classList.add('hidden');
+                        console.log('Daily Focus: Focus view hidden');
+                    } else {
+                        console.warn('Daily Focus: focus-mode-view element not found');
+                    }
+                    
+                    document.body.classList.remove('focus-mode-active');
+                    
+                    // Refresh main view in case tasks were completed
+                    renderAllTasks();
+                    
+                    console.log('Daily Focus: Exit completed successfully');
+                } catch (error) {
+                    console.error('Daily Focus: Error during exit:', error);
+                }
             }
             
             updateFocusDate() {
@@ -3115,8 +3174,20 @@
 
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !taskModal.classList.contains('hidden')) {
-                closeTaskModal();
+            // Handle ESC key for various modals and modes
+            if (e.key === 'Escape') {
+                // First priority: Close task modal if open
+                if (!taskModal.classList.contains('hidden')) {
+                    closeTaskModal();
+                    return;
+                }
+                
+                // Second priority: Exit Daily Focus mode if active
+                if (dailyFocus && dailyFocus.isActive) {
+                    console.log('Daily Focus: ESC key pressed - exiting focus mode');
+                    dailyFocus.exit();
+                    return;
+                }
             }
             
             if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
@@ -3278,7 +3349,7 @@
     <!-- Version Info -->
     <div class="fixed bottom-2 left-2 text-xs text-gray-400 font-mono opacity-60 hover:opacity-100 transition-opacity z-10" 
          title="Personal Task Tracker - Focus Edition">
-        v2024.focus.3
+        v2024.focus.4
     </div>
 </body>
 </html>// test comment
