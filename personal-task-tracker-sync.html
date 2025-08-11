@@ -213,10 +213,138 @@
     </style>
     
     <style>
-        /* Category colors */
-        .category-day-job { border-left: 4px solid #3B82F6; }
-        .category-side-gig { border-left: 4px solid #8B5CF6; }
-        .category-home { border-left: 4px solid #10B981; }
+        /* Category colors - Full card backgrounds */
+        .category-day-job {
+            background: linear-gradient(135deg, #EBF8FF 0%, #DBEAFE 100%);
+            border-left: 4px solid #3B82F6;
+            box-shadow: 0 1px 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .category-side-gig {
+            background: linear-gradient(135deg, #F3E8FF 0%, #EDE9FE 100%);
+            border-left: 4px solid #8B5CF6;
+            box-shadow: 0 1px 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .category-home {
+            background: linear-gradient(135deg, #D1FAE5 0%, #ECFCCB 100%);
+            border-left: 4px solid #10B981;
+            box-shadow: 0 1px 3px rgba(16, 185, 129, 0.1);
+        }
+        
+        /* Dark mode category colors */
+        .dark .category-day-job {
+            background: linear-gradient(135deg, #1E3A5F 0%, #1E40AF 20%);
+            border-left: 4px solid #60A5FA;
+            box-shadow: 0 1px 3px rgba(96, 165, 250, 0.2);
+        }
+        
+        .dark .category-side-gig {
+            background: linear-gradient(135deg, #4C1D95 0%, #5B21B6 20%);
+            border-left: 4px solid #A78BFA;
+            box-shadow: 0 1px 3px rgba(167, 139, 250, 0.2);
+        }
+        
+        .dark .category-home {
+            background: linear-gradient(135deg, #064E3B 0%, #047857 20%);
+            border-left: 4px solid #34D399;
+            box-shadow: 0 1px 3px rgba(52, 211, 153, 0.2);
+        }
+        
+        /* Category filter styles */
+        .category-filters {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-pill {
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            background: white;
+            border: 2px solid #E5E7EB;
+            color: #6B7280;
+            cursor: pointer;
+        }
+        
+        .dark .filter-pill {
+            background: #374151;
+            border-color: #4B5563;
+            color: #D1D5DB;
+        }
+        
+        .filter-pill:hover {
+            border-color: #D1D5DB;
+            background: #F9FAFB;
+        }
+        
+        .dark .filter-pill:hover {
+            border-color: #6B7280;
+            background: #4B5563;
+        }
+        
+        .filter-pill.active {
+            background: #3B82F6;
+            border-color: #3B82F6;
+            color: white;
+        }
+        
+        .filter-pill[data-category="day-job"].active {
+            background: #3B82F6;
+            border-color: #3B82F6;
+        }
+        
+        .filter-pill[data-category="side-gig"].active {
+            background: #8B5CF6;
+            border-color: #8B5CF6;
+        }
+        
+        .filter-pill[data-category="home"].active {
+            background: #10B981;
+            border-color: #10B981;
+        }
+        
+        /* Mobile filter button */
+        .mobile-filter-btn {
+            position: fixed;
+            bottom: 5rem;
+            right: 1rem;
+            z-index: 30;
+            background: white;
+            border-radius: 9999px;
+            padding: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid #E5E7EB;
+        }
+        
+        .dark .mobile-filter-btn {
+            background: #374151;
+            border-color: #4B5563;
+        }
+        
+        .filter-badge {
+            position: absolute;
+            top: -0.25rem;
+            right: -0.25rem;
+            background: #3B82F6;
+            color: white;
+            font-size: 0.75rem;
+            border-radius: 9999px;
+            width: 1.25rem;
+            height: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Task card filtering */
+        .task-card.filtered {
+            display: none;
+        }
         
         /* Transitions and animations */
         .task-card {
@@ -890,6 +1018,31 @@
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-3 py-3 sm:px-6 lg:px-8 sm:py-6">
+        <!-- Category Filters -->
+        <div id="category-filter-container" class="category-filters mb-4">
+            <span class="text-sm font-medium text-gray-600 dark:text-gray-300 mr-2">Filter:</span>
+            <button class="filter-pill active" data-category="all" aria-pressed="true">
+                All Tasks <span id="count-all" class="ml-1"></span>
+            </button>
+            <button class="filter-pill" data-category="day-job" aria-pressed="false">
+                💼 Day Job <span id="count-day-job" class="ml-1"></span>
+            </button>
+            <button class="filter-pill" data-category="side-gig" aria-pressed="false">
+                🚀 Side Gig <span id="count-side-gig" class="ml-1"></span>
+            </button>
+            <button class="filter-pill" data-category="home" aria-pressed="false">
+                🏠 Home <span id="count-home" class="ml-1"></span>
+            </button>
+        </div>
+        
+        <!-- Mobile Filter Button (hidden on desktop) -->
+        <button class="mobile-filter-btn sm:hidden" id="mobile-filter-toggle" aria-label="Filter tasks">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+            </svg>
+            <span class="filter-badge hidden" id="mobile-filter-badge">0</span>
+        </button>
+        
         <!-- Photo Upload Section -->
         <div id="photo-upload-section" class="mb-6 bg-white rounded-lg shadow-sm p-4 sm:p-6">
             <h2 class="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center">
@@ -1464,16 +1617,36 @@
             }
             
             renderTaskSelectionList() {
-                const incompleteTasks = tasks.filter(t => t.status !== 'done').slice(0, 10);
-                return incompleteTasks.map(task => `
-                    <label class="flex items-center p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
-                        <input type="checkbox" value="${task.id}" class="mr-3">
-                        <div class="flex-1">
-                            <div class="font-medium text-gray-900 dark:text-gray-100">${task.title}</div>
-                            <div class="text-sm text-gray-500 dark:text-gray-400">${task.category.replace('-', ' ').toUpperCase()} • ${task.priority.toUpperCase()}</div>
-                        </div>
-                    </label>
-                `).join('');
+                let incompleteTasks = tasks.filter(t => t.status !== 'done');
+                
+                // Respect category filter if active
+                if (categoryFilter && categoryFilter.activeFilter !== 'all') {
+                    incompleteTasks = incompleteTasks.filter(t => t.category === categoryFilter.activeFilter);
+                }
+                
+                incompleteTasks = incompleteTasks.slice(0, 10);
+                
+                if (incompleteTasks.length === 0) {
+                    return '<div class="text-center text-gray-500 dark:text-gray-400 py-4">No tasks available for the selected category</div>';
+                }
+                
+                return incompleteTasks.map(task => {
+                    const categoryIcons = {
+                        'day-job': '💼',
+                        'side-gig': '🚀',
+                        'home': '🏠'
+                    };
+                    
+                    return `
+                        <label class="flex items-center p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer category-${task.category}">
+                            <input type="checkbox" value="${task.id}" class="mr-3">
+                            <div class="flex-1">
+                                <div class="font-medium text-gray-900 dark:text-gray-100">${task.title}</div>
+                                <div class="text-sm text-gray-500 dark:text-gray-400">${categoryIcons[task.category]} ${task.category.replace('-', ' ').toUpperCase()} • ${task.priority.toUpperCase()}</div>
+                            </div>
+                        </label>
+                    `;
+                }).join('');
             }
             
             setFocusTasks(selectedTasks) {
@@ -2264,6 +2437,12 @@
             renderTask(task);
             updateTaskCounts();
             
+            // Update category filter counts and apply current filter
+            if (categoryFilter) {
+                categoryFilter.updateFilterCounts();
+                categoryFilter.filterTasks();
+            }
+            
             return task;
         }
 
@@ -2304,6 +2483,12 @@
                 saveTasksToStorage();
                 document.querySelector(`[data-task-id="${taskId}"]`).remove();
                 updateTaskCounts();
+                
+                // Update category filter counts
+                if (categoryFilter) {
+                    categoryFilter.updateFilterCounts();
+                }
+                
                 closeTaskModal();
             }
         }
@@ -2335,8 +2520,9 @@
 
         function renderTask(task) {
             const taskCard = document.createElement('div');
-            taskCard.className = `task-card bg-white rounded-lg shadow-sm border p-4 cursor-pointer category-${task.category}`;
+            taskCard.className = `task-card rounded-lg shadow-sm border p-4 cursor-pointer category-${task.category} dark:border-gray-600`;
             taskCard.dataset.taskId = task.id;
+            taskCard.dataset.category = task.category;
             
             // Improved touch interaction to fix mobile scrolling
             let touchStartTime = 0;
@@ -2471,6 +2657,12 @@
             
             tasks.forEach(renderTask);
             updateTaskCounts();
+            
+            // Update category filter counts and apply current filter
+            if (categoryFilter) {
+                categoryFilter.updateFilterCounts();
+                categoryFilter.filterTasks();
+            }
         }
 
         function updateTaskCounts() {
@@ -2933,10 +3125,143 @@
             }
         });
 
+        // Category Filter Class
+        class CategoryFilter {
+            constructor() {
+                this.activeFilter = 'all';
+                this.init();
+            }
+            
+            init() {
+                // Desktop filter buttons
+                const filterButtons = document.querySelectorAll('.filter-pill');
+                filterButtons.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const category = e.target.dataset.category;
+                        this.setFilter(category);
+                    });
+                });
+                
+                // Mobile filter toggle (placeholder for future enhancement)
+                const mobileFilterBtn = document.getElementById('mobile-filter-toggle');
+                if (mobileFilterBtn) {
+                    mobileFilterBtn.addEventListener('click', () => {
+                        this.showMobileFilters();
+                    });
+                }
+                
+                // Initialize counts
+                this.updateFilterCounts();
+            }
+            
+            setFilter(category) {
+                this.activeFilter = category;
+                
+                // Update button states
+                document.querySelectorAll('.filter-pill').forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-pressed', 'false');
+                });
+                
+                const activeBtn = document.querySelector(`[data-category="${category}"]`);
+                if (activeBtn) {
+                    activeBtn.classList.add('active');
+                    activeBtn.setAttribute('aria-pressed', 'true');
+                }
+                
+                // Apply filter to tasks
+                this.filterTasks();
+                
+                // Save to localStorage
+                localStorage.setItem('categoryFilter', category);
+                
+                // Update mobile badge
+                this.updateMobileBadge();
+            }
+            
+            filterTasks() {
+                const taskCards = document.querySelectorAll('.task-card');
+                taskCards.forEach(card => {
+                    const taskCategory = card.dataset.category;
+                    if (this.activeFilter === 'all' || taskCategory === this.activeFilter) {
+                        card.classList.remove('filtered');
+                        card.style.display = '';
+                    } else {
+                        card.classList.add('filtered');
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Update column counts
+                updateTaskCounts();
+            }
+            
+            updateFilterCounts() {
+                const counts = {
+                    'all': 0,
+                    'day-job': 0,
+                    'side-gig': 0,
+                    'home': 0
+                };
+                
+                tasks.forEach(task => {
+                    counts.all++;
+                    counts[task.category] = (counts[task.category] || 0) + 1;
+                });
+                
+                // Update count displays
+                Object.keys(counts).forEach(category => {
+                    const countElement = document.getElementById(`count-${category}`);
+                    if (countElement && counts[category] > 0) {
+                        countElement.textContent = `(${counts[category]})`;
+                        countElement.classList.remove('hidden');
+                    } else if (countElement) {
+                        countElement.classList.add('hidden');
+                    }
+                });
+            }
+            
+            updateMobileBadge() {
+                const badge = document.getElementById('mobile-filter-badge');
+                if (badge) {
+                    if (this.activeFilter !== 'all') {
+                        badge.textContent = '1';
+                        badge.classList.remove('hidden');
+                    } else {
+                        badge.classList.add('hidden');
+                    }
+                }
+            }
+            
+            showMobileFilters() {
+                // Placeholder for mobile filter bottom sheet
+                // For now, cycle through filters on mobile
+                const filters = ['all', 'day-job', 'side-gig', 'home'];
+                const currentIndex = filters.indexOf(this.activeFilter);
+                const nextIndex = (currentIndex + 1) % filters.length;
+                this.setFilter(filters[nextIndex]);
+            }
+            
+            // Load saved filter
+            loadSavedFilter() {
+                const saved = localStorage.getItem('categoryFilter');
+                if (saved && saved !== this.activeFilter) {
+                    this.setFilter(saved);
+                }
+            }
+        }
+        
+        // Global category filter instance
+        let categoryFilter;
+        
         // Initialize app
         document.addEventListener('DOMContentLoaded', async () => {
             renderAllTasks();
             initializeDragAndDrop();
+            
+            // Initialize category filtering
+            categoryFilter = new CategoryFilter();
+            categoryFilter.loadSavedFilter();
             
             // Initialize automatic dark mode
             autoDarkMode = new AutoDarkMode();
@@ -2953,7 +3278,7 @@
     <!-- Version Info -->
     <div class="fixed bottom-2 left-2 text-xs text-gray-400 font-mono opacity-60 hover:opacity-100 transition-opacity z-10" 
          title="Personal Task Tracker - Focus Edition">
-        v2024.focus.2
+        v2024.focus.3
     </div>
 </body>
 </html>// test comment
