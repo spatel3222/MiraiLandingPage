@@ -75,6 +75,30 @@
         html {
             scroll-behavior: smooth;
         }
+        
+        /* Enhanced comparison section styling */
+        .comparison-container {
+            background: linear-gradient(135deg, rgba(5, 150, 105, 0.02) 0%, rgba(220, 38, 38, 0.02) 100%);
+        }
+        .industry-problem-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+        .industry-problem-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(220, 38, 38, 0.3);
+        }
+        .crtx-solution-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+        .crtx-solution-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.3);
+        }
+        .vs-separator-line {
+            background: linear-gradient(to bottom, transparent 0%, #10b981 20%, #10b981 80%, transparent 100%);
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -152,94 +176,172 @@
                     78% of Companies Use AI.
                     <span class="gradient-text-consulting block mt-2">Only 1% Do It Well.</span>
                 </h1>
-                <!-- Industry Crisis Dashboard - Fixed Brand Attribution -->
-                <div class="max-w-5xl mx-auto mb-12">
-                    <!-- Clear Crisis Header -->
+                <!-- Industry vs CRTX Comparison -->
+                <div class="max-w-7xl mx-auto mb-12 comparison-container rounded-3xl p-8 border border-gray-700/20">
+                    <!-- Comparison Header -->
                     <div class="mb-8 text-center">
-                        <div class="inline-flex items-center px-4 py-2 bg-red-900/20 rounded-full border border-red-500/30 mb-4">
-                            <svg class="w-4 h-4 text-red-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                            </svg>
-                            <span class="text-red-400 text-sm font-medium">Industry Crisis Dashboard</span>
-                        </div>
-                        <h2 class="text-2xl font-semibold text-white mb-2">
-                            The AI Implementation Crisis
+                        <h2 class="text-2xl font-semibold text-white mb-4">
+                            Industry Crisis vs CRTX Solutions
                         </h2>
-                        <p class="text-gray-400">Market-wide failures create massive opportunities for transformation</p>
+                        <p class="text-gray-400">See the stark contrast between market failures and our proven results</p>
                     </div>
                     
-                    <!-- Industry Problem Metrics -->
-                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                        <div class="col-span-2">
-                            <div class="bg-gradient-to-br from-red-900/20 to-gray-800 rounded-xl p-6 border border-red-500/30 h-full relative">
+                    <!-- Side-by-Side Comparison Layout -->
+                    <div class="grid lg:grid-cols-2 gap-8 items-start relative">
+                        
+                        <!-- LEFT COLUMN: Industry Problems -->
+                        <div class="space-y-6">
+                            <!-- Crisis Header -->
+                            <div class="text-center">
+                                <div class="inline-flex items-center px-4 py-2 bg-red-900/20 rounded-full border border-red-500/30 mb-4">
+                                    <svg class="w-4 h-4 text-red-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                    </svg>
+                                    <span class="text-red-400 text-sm font-medium">Industry Reality</span>
+                                </div>
+                                <h3 class="text-xl font-semibold text-red-400 mb-2">What Everyone Else Delivers</h3>
+                            </div>
+                            
+                            <!-- Industry Problem 1: POC Failure -->
+                            <div class="bg-gradient-to-br from-red-900/20 to-gray-800 rounded-xl p-6 border border-red-500/30 relative industry-problem-card">
                                 <div class="absolute top-4 right-4 px-2 py-1 bg-red-500/20 rounded-full">
-                                    <span class="text-red-400 text-xs font-medium">Industry Failure</span>
+                                    <span class="text-red-400 text-xs font-medium">Market Failure</span>
                                 </div>
                                 <div class="flex items-center mb-4">
-                                    <svg class="w-5 h-5 text-red-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-6 h-6 text-red-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path>
                                     </svg>
-                                    <h3 class="text-gray-300 font-medium">Market POC Failure Rate</h3>
+                                    <h4 class="text-gray-300 font-semibold text-lg">POC Success Rate</h4>
                                 </div>
-                                <div class="flex items-baseline space-x-2">
-                                    <span class="text-4xl font-bold text-red-400">88%</span>
-                                    <span class="text-gray-500">never reach production</span>
+                                <div class="flex items-baseline space-x-3 mb-3">
+                                    <span class="text-5xl font-bold text-red-400">88%</span>
+                                    <span class="text-gray-400 text-lg">never reach production</span>
                                 </div>
-                                <p class="text-xs text-gray-500 mt-2">Across enterprise AI initiatives<a href="#ref-1" class="citation-link">[1]</a></p>
+                                <p class="text-sm text-gray-500">Across enterprise AI initiatives<a href="#ref-1" class="citation-link">[1]</a></p>
+                                <p class="text-red-400/80 text-sm mt-2 italic">"Proof of concept hell" - endless demos, no deployment</p>
                             </div>
-                        </div>
-                        
-                        <div class="col-span-2">
-                            <div class="bg-gradient-to-br from-red-900/20 to-gray-800 rounded-xl p-6 border border-red-500/30 h-full relative">
+                            
+                            <!-- Industry Problem 2: ROI Miss -->
+                            <div class="bg-gradient-to-br from-red-900/20 to-gray-800 rounded-xl p-6 border border-red-500/30 relative industry-problem-card">
                                 <div class="absolute top-4 right-4 px-2 py-1 bg-red-500/20 rounded-full">
                                     <span class="text-red-400 text-xs font-medium">Market Reality</span>
                                 </div>
                                 <div class="flex items-center mb-4">
-                                    <svg class="w-5 h-5 text-red-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-6 h-6 text-red-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path>
                                     </svg>
-                                    <h3 class="text-gray-300 font-medium">ROI Miss Rate</h3>
+                                    <h4 class="text-gray-300 font-semibold text-lg">ROI Achievement</h4>
                                 </div>
-                                <div class="flex items-baseline space-x-2">
-                                    <span class="text-4xl font-bold text-red-400">70-85%</span>
-                                    <span class="text-gray-500">fail ROI expectations</span>
+                                <div class="flex items-baseline space-x-3 mb-3">
+                                    <span class="text-5xl font-bold text-red-400">70-85%</span>
+                                    <span class="text-gray-400 text-lg">miss ROI targets</span>
                                 </div>
-                                <p class="text-xs text-gray-500 mt-2">Typical enterprise performance<a href="#ref-2" class="citation-link">[2]</a></p>
+                                <p class="text-sm text-gray-500">Typical enterprise performance<a href="#ref-2" class="citation-link">[2]</a></p>
+                                <p class="text-red-400/80 text-sm mt-2 italic">Costly tool sprawl with diminishing returns</p>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Pattern illustration -->
-                    <div class="bg-gray-800/40 rounded-xl p-6 border border-gray-700">
-                        <h3 class="text-orange-400 font-medium mb-4 flex items-center">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                            </svg>
-                            The Redundancy Cycle
-                        </h3>
-                        <div class="grid md:grid-cols-3 gap-4">
-                            <div class="flex items-center space-x-3 p-3 bg-gray-700/30 rounded-lg">
-                                <div class="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
-                                    <span class="text-blue-400 text-xs font-bold">M</span>
-                                </div>
-                                <span class="text-gray-300 text-sm">Marketing builds a chatbot</span>
-                            </div>
-                            <div class="flex items-center space-x-3 p-3 bg-gray-700/30 rounded-lg">
-                                <div class="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center">
-                                    <span class="text-green-400 text-xs font-bold">S</span>
-                                </div>
-                                <span class="text-gray-300 text-sm">Sales creates their own</span>
-                            </div>
-                            <div class="flex items-center space-x-3 p-3 bg-gray-700/30 rounded-lg">
-                                <div class="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center">
-                                    <span class="text-purple-400 text-xs font-bold">CS</span>
-                                </div>
-                                <span class="text-gray-300 text-sm">Customer service follows</span>
+                        
+                        <!-- VISUAL SEPARATOR -->
+                        <div class="hidden lg:flex absolute left-1/2 top-0 bottom-0 items-center justify-center z-10">
+                            <div class="w-px vs-separator-line h-full"></div>
+                            <div class="absolute bg-emerald-600 text-white px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap shadow-lg">
+                                VS
                             </div>
                         </div>
-                        <p class="text-gray-400 text-center mt-4 italic">
-                            Each team reinventing the wheel while burning through budgets.
-                        </p>
+                        <!-- Mobile VS separator -->
+                        <div class="lg:hidden flex items-center justify-center py-6">
+                            <div class="flex-1 border-t border-gray-600"></div>
+                            <div class="px-4">
+                                <div class="bg-emerald-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                                    VS
+                                </div>
+                            </div>
+                            <div class="flex-1 border-t border-gray-600"></div>
+                        </div>
+                        
+                        <!-- RIGHT COLUMN: CRTX Solutions -->
+                        <div class="space-y-6">
+                            <!-- Success Header -->
+                            <div class="text-center">
+                                <div class="inline-flex items-center px-4 py-2 bg-emerald-900/20 rounded-full border border-emerald-500/30 mb-4">
+                                    <svg class="w-4 h-4 text-emerald-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span class="text-emerald-400 text-sm font-medium">CRTX Results</span>
+                                </div>
+                                <h3 class="text-xl font-semibold text-emerald-300 mb-2">What We Deliver</h3>
+                            </div>
+                            
+                            <!-- CRTX Success Grid -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <!-- Time to Production -->
+                                <div class="bg-gradient-to-br from-emerald-900/20 to-gray-800 rounded-xl p-4 border border-emerald-500/30 relative crtx-solution-card">
+                                    <div class="absolute top-2 right-2 px-2 py-1 bg-emerald-500/20 rounded-full">
+                                        <span class="text-emerald-300 text-xs font-medium">CRTX Result</span>
+                                    </div>
+                                    <div class="flex items-center mb-3">
+                                        <svg class="w-5 h-5 text-emerald-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <h4 class="text-emerald-300 font-medium text-sm">Deployment Speed</h4>
+                                    </div>
+                                    <div class="text-3xl font-bold gradient-text-consulting mb-2">6 Months</div>
+                                    <p class="text-xs text-emerald-300/80">POC to production</p>
+                                </div>
+                                
+                                <!-- Cost Reduction -->
+                                <div class="bg-gradient-to-br from-emerald-900/20 to-gray-800 rounded-xl p-4 border border-emerald-500/30 relative crtx-solution-card">
+                                    <div class="absolute top-2 right-2 px-2 py-1 bg-emerald-500/20 rounded-full">
+                                        <span class="text-emerald-300 text-xs font-medium">CRTX Result</span>
+                                    </div>
+                                    <div class="flex items-center mb-3">
+                                        <svg class="w-5 h-5 text-emerald-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <h4 class="text-emerald-300 font-medium text-sm">Cost Savings</h4>
+                                    </div>
+                                    <div class="text-3xl font-bold gradient-text-consulting mb-2">60%</div>
+                                    <p class="text-xs text-emerald-300/80">Tool sprawl reduction</p>
+                                </div>
+                                
+                                <!-- Reusability -->
+                                <div class="bg-gradient-to-br from-emerald-900/20 to-gray-800 rounded-xl p-4 border border-emerald-500/30 relative crtx-solution-card">
+                                    <div class="absolute top-2 right-2 px-2 py-1 bg-emerald-500/20 rounded-full">
+                                        <span class="text-emerald-300 text-xs font-medium">CRTX Result</span>
+                                    </div>
+                                    <div class="flex items-center mb-3">
+                                        <svg class="w-5 h-5 text-emerald-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                        </svg>
+                                        <h4 class="text-emerald-300 font-medium text-sm">Reusability</h4>
+                                    </div>
+                                    <div class="text-3xl font-bold gradient-text-consulting mb-2">85%</div>
+                                    <p class="text-xs text-emerald-300/80">Component reuse</p>
+                                </div>
+                                
+                                <!-- Unlimited Scale -->
+                                <div class="bg-gradient-to-br from-emerald-900/20 to-gray-800 rounded-xl p-4 border border-emerald-500/30 relative crtx-solution-card">
+                                    <div class="absolute top-2 right-2 px-2 py-1 bg-emerald-500/20 rounded-full">
+                                        <span class="text-emerald-300 text-xs font-medium">CRTX Result</span>
+                                    </div>
+                                    <div class="flex items-center mb-3">
+                                        <svg class="w-5 h-5 text-emerald-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                        </svg>
+                                        <h4 class="text-emerald-300 font-medium text-sm">Scalability</h4>
+                                    </div>
+                                    <div class="text-2xl font-bold gradient-text-consulting mb-2">Unlimited</div>
+                                    <p class="text-xs text-emerald-300/80">Enterprise-wide scale</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Success callout -->
+                            <div class="bg-emerald-800/30 rounded-lg p-4 border border-emerald-700/50">
+                                <p class="text-emerald-300 text-sm text-center font-medium">
+                                    "Build Once, Scale Everywhere" - Fortune 1 proven methodology
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -249,65 +351,6 @@
                     <a href="https://calendly.com/shivang-crtx/30min" target="_blank" class="inline-flex items-center justify-center px-8 py-4 border border-gray-400 text-lg font-medium rounded-lg text-gray-300 bg-transparent hover:bg-gray-800 transition">
                         Schedule Assessment
                     </a>
-                </div>
-            </div>
-            
-            <!-- Visual Separator -->
-            <div class="flex items-center my-12 max-w-5xl mx-auto">
-                <div class="flex-1 border-t border-gray-600"></div>
-                <div class="px-6">
-                    <div class="bg-emerald-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                        CRTX Solutions vs Industry Problems
-                    </div>
-                </div>
-                <div class="flex-1 border-t border-gray-600"></div>
-            </div>
-            
-            <!-- CRTX Success Metrics Grid -->
-            <div class="bg-emerald-900/20 border border-emerald-700/30 rounded-2xl p-8 max-w-5xl mx-auto">
-                <div class="text-center mb-6">
-                    <h3 class="text-xl font-semibold text-emerald-300 mb-2">
-                        Our Proven Results
-                    </h3>
-                    <p class="text-emerald-400/80 text-sm">Fortune 1-scale methodologies delivering measurable impact</p>
-                </div>
-                <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
-                    <div class="text-center bg-emerald-800/20 rounded-lg p-4 border border-emerald-700/40">
-                        <div class="text-3xl font-bold gradient-text-consulting mb-2">6 Months</div>
-                        <div class="text-sm text-emerald-300/90">From POC to production deployment</div>
-                        <div class="mt-2">
-                            <span class="bg-emerald-500/20 text-emerald-300 text-xs px-2 py-1 rounded-full">
-                                CRTX Result
-                            </span>
-                        </div>
-                    </div>
-                    <div class="text-center bg-emerald-800/20 rounded-lg p-4 border border-emerald-700/40">
-                        <div class="text-3xl font-bold gradient-text-consulting mb-2">60%</div>
-                        <div class="text-sm text-emerald-300/90">Reduction in AI tool sprawl costs</div>
-                        <div class="mt-2">
-                            <span class="bg-emerald-500/20 text-emerald-300 text-xs px-2 py-1 rounded-full">
-                                CRTX Result
-                            </span>
-                        </div>
-                    </div>
-                    <div class="text-center bg-emerald-800/20 rounded-lg p-4 border border-emerald-700/40">
-                        <div class="text-3xl font-bold gradient-text-consulting mb-2">85%</div>
-                        <div class="text-sm text-emerald-300/90">Component reusability across use cases</div>
-                        <div class="mt-2">
-                            <span class="bg-emerald-500/20 text-emerald-300 text-xs px-2 py-1 rounded-full">
-                                CRTX Result
-                            </span>
-                        </div>
-                    </div>
-                    <div class="text-center bg-emerald-800/20 rounded-lg p-4 border border-emerald-700/40">
-                        <div class="text-3xl font-bold gradient-text-consulting mb-2">Unlimited Scale</div>
-                        <div class="text-sm text-emerald-300/90">Agentic AI solutions that expand across your enterprise</div>
-                        <div class="mt-2">
-                            <span class="bg-emerald-500/20 text-emerald-300 text-xs px-2 py-1 rounded-full">
-                                CRTX Result
-                            </span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
