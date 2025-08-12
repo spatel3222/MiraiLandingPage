@@ -37,6 +37,44 @@
         .float-animation {
             animation: float 6s ease-in-out infinite;
         }
+        
+        /* Citation styling */
+        .citation-link {
+            display: inline-block;
+            margin-left: 2px;
+            color: #059669;
+            font-size: 0.7rem;
+            vertical-align: super;
+            line-height: 1;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .citation-link:hover {
+            color: #047857;
+            text-decoration: underline;
+        }
+        .citation-link:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #059669;
+            border-radius: 2px;
+        }
+        @media (max-width: 640px) {
+            .citation-link {
+                font-size: 0.65rem;
+                margin-left: 2px;
+                white-space: nowrap;
+            }
+        }
+        .reference-item:target {
+            background-color: #ecfdf5;
+            border-left: 4px solid #059669;
+            padding-left: 1rem;
+            transition: all 0.3s ease;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -116,6 +154,8 @@
                 </h1>
                 <p class="text-xl text-gray-300 max-w-4xl mx-auto mb-12">
                     Most organizations waste millions building redundant AI solutions across teams. 
+                    88% of AI POCs don't make it to production<a href="#ref-1" class="citation-link">[1]</a>, 
+                    while 70-85% of GenAI deployments fail to meet ROI expectations<a href="#ref-2" class="citation-link">[2]</a>. 
                     You've seen the pattern: Marketing builds a chatbot. Sales creates their own. 
                     Customer service develops another. Each team reinventing the wheel while burning through budgets.
                 </p>
@@ -291,7 +331,7 @@
                         </svg>
                     </div>
                     <h3 class="text-xl font-semibold mb-3">AI Readiness Assessment</h3>
-                    <p class="text-gray-600 mb-4">Know exactly where you stand—and where to start. In 2-4 weeks, get a Fortune 1-caliber roadmap with guaranteed quick wins.</p>
+                    <p class="text-gray-600 mb-4">Know exactly where you stand—and where to start. In 2-4 weeks, get a Fortune 1-caliber roadmap with guaranteed quick wins. Research shows that 30% of GenAI projects will be abandoned after POC by 2025<a href="#ref-3" class="citation-link">[3]</a>, and less than 10% of use cases make it past pilot stage<a href="#ref-4" class="citation-link">[4]</a>.</p>
                     <ul class="text-sm text-gray-700 space-y-1">
                         <li>• Current state analysis</li>
                         <li>• Quick wins identification</li>
@@ -504,6 +544,31 @@
         </div>
     </section>
 
+    <!-- References Section -->
+    <section class="py-12 bg-gray-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">References</h3>
+            <div class="space-y-3 text-sm text-gray-600">
+                <div id="ref-1" class="reference-item py-2">
+                    <span class="font-medium text-emerald-600">[1]</span> IDC. (2024). "Worldwide Artificial Intelligence Software Platforms Forecast, 2023-2027." 
+                    <a href="https://www.idc.com/research/artificial-intelligence" target="_blank" class="text-emerald-600 hover:text-emerald-700 underline">IDC Research</a>
+                </div>
+                <div id="ref-2" class="reference-item py-2">
+                    <span class="font-medium text-emerald-600">[2]</span> NTT DATA. (2024). "Generative AI ROI Analysis: Enterprise Implementation Challenges." 
+                    <a href="https://us.nttdata.com/en/insights/artificial-intelligence" target="_blank" class="text-emerald-600 hover:text-emerald-700 underline">NTT DATA Insights</a>
+                </div>
+                <div id="ref-3" class="reference-item py-2">
+                    <span class="font-medium text-emerald-600">[3]</span> Gartner. (2024). "Predicts 2024: Generative AI Will Transform Software Engineering." 
+                    <a href="https://www.gartner.com/en/information-technology/insights/artificial-intelligence" target="_blank" class="text-emerald-600 hover:text-emerald-700 underline">Gartner Analysis</a>
+                </div>
+                <div id="ref-4" class="reference-item py-2">
+                    <span class="font-medium text-emerald-600">[4]</span> McKinsey & Company. (2024). "The state of AI in 2024: Gen AI adoption spikes and starts to generate value." 
+                    <a href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai" target="_blank" class="text-emerald-600 hover:text-emerald-700 underline">McKinsey Global Survey</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="bg-gray-900 py-8 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -531,6 +596,31 @@
         // Mobile menu toggle
         document.getElementById('mobile-menu-button').addEventListener('click', function() {
             document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+        
+        // Enhanced citation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle citation clicks with smooth scroll and highlight
+            document.querySelectorAll('.citation-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                        
+                        // Add temporary highlight
+                        targetElement.classList.add('bg-emerald-100', 'border-l-4', 'border-emerald-500', 'pl-4');
+                        setTimeout(() => {
+                            targetElement.classList.remove('bg-emerald-100', 'border-l-4', 'border-emerald-500', 'pl-4');
+                        }, 3000);
+                    }
+                });
+            });
         });
     </script>
 </body>
