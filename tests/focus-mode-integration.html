@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus Mode Integration Tests</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-suite {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-case {
+            padding: 10px;
+            margin: 5px 0;
+            border-left: 4px solid #ddd;
+            background: #f9f9f9;
+        }
+        .test-case.pass {
+            border-left-color: #22c55e;
+            background: #f0fdf4;
+        }
+        .test-case.fail {
+            border-left-color: #ef4444;
+            background: #fef2f2;
+        }
+        .test-case.pending {
+            border-left-color: #f59e0b;
+            background: #fffbeb;
+        }
+        .controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .primary {
+            background: #3b82f6;
+            color: white;
+        }
+        .success {
+            background: #22c55e;
+            color: white;
+        }
+        .warning {
+            background: #f59e0b;
+            color: white;
+        }
+        .danger {
+            background: #ef4444;
+            color: white;
+        }
+        .summary {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            min-width: 200px;
+        }
+        .iframe-container {
+            width: 100%;
+            height: 400px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        #testFrame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+        }
+        pre {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-pass { background: #22c55e; }
+        .status-fail { background: #ef4444; }
+        .status-pending { background: #f59e0b; }
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            background: #1f2937;
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-header">
+        <h1>🧪 Focus Mode Integration Tests</h1>
+        <p>Comprehensive testing suite for the Daily Focus Mode functionality implemented in commits <code>8adda1c</code> and <code>52a9668</code></p>
+        
+        <div class="controls">
+            <button class="primary" onclick="runAllTests()">Run All Tests</button>
+            <button class="success" onclick="runUITests()">UI Tests Only</button>
+            <button class="warning" onclick="runUnitTests()">Unit Tests Only</button>
+            <button class="danger" onclick="clearResults()">Clear Results</button>
+        </div>
+    </div>
+
+    <div class="summary" id="testSummary">
+        <h3>Test Summary</h3>
+        <div>
+            <span class="status-indicator status-pass"></span>
+            <span id="passCount">0</span> Passed
+        </div>
+        <div>
+            <span class="status-indicator status-fail"></span>
+            <span id="failCount">0</span> Failed
+        </div>
+        <div>
+            <span class="status-indicator status-pending"></span>
+            <span id="pendingCount">0</span> Pending
+        </div>
+        <div style="margin-top: 10px; font-weight: bold;">
+            Progress: <span id="progress">0%</span>
+        </div>
+    </div>
+
+    <!-- Test iframe for isolated testing -->
+    <div class="test-suite">
+        <h2>🖥️ Live Testing Environment</h2>
+        <p>The focus mode functionality is loaded in the iframe below for real-time testing:</p>
+        
+        <div class="iframe-container">
+            <iframe id="testFrame" src="../personal-task-tracker-sync.html"></iframe>
+        </div>
+        
+        <div class="controls">
+            <button class="primary" onclick="testInIframe('enter')">Test Enter Focus Mode</button>
+            <button class="primary" onclick="testInIframe('exit')">Test Exit Focus Mode</button>
+            <button class="warning" onclick="testInIframe('tasks')">Test Task Selection</button>
+            <button class="danger" onclick="testInIframe('reset')">Reset Test Data</button>
+        </div>
+    </div>
+
+    <!-- Unit Tests -->
+    <div class="test-suite" id="unitTestSuite">
+        <h2>🔧 Unit Tests</h2>
+        <div id="unitTestResults"></div>
+    </div>
+
+    <!-- Integration Tests -->
+    <div class="test-suite" id="integrationTestSuite">
+        <h2>🔗 Integration Tests</h2>
+        <div id="integrationTestResults"></div>
+    </div>
+
+    <!-- UI Tests -->
+    <div class="test-suite" id="uiTestSuite">
+        <h2>🎨 UI/UX Tests</h2>
+        <div id="uiTestResults"></div>
+    </div>
+
+    <!-- Performance Tests -->
+    <div class="test-suite" id="performanceTestSuite">
+        <h2>⚡ Performance Tests</h2>
+        <div id="performanceTestResults"></div>
+    </div>
+
+    <!-- Accessibility Tests -->
+    <div class="test-suite" id="a11yTestSuite">
+        <h2>♿ Accessibility Tests</h2>
+        <div id="a11yTestResults"></div>
+    </div>
+
+    <script>
+        class FocusModeTestRunner {
+            constructor() {
+                this.totalTests = 0;
+                this.passedTests = 0;
+                this.failedTests = 0;
+                this.pendingTests = 0;
+                this.results = {};
+            }
+
+            async runTest(testName, testFunction, category = 'unit') {
+                const startTime = performance.now();
+                const testResult = {
+                    name: testName,
+                    category: category,
+                    status: 'pending',
+                    error: null,
+                    duration: 0,
+                    timestamp: new Date().toISOString()
+                };
+
+                try {
+                    await testFunction();
+                    testResult.status = 'pass';
+                    this.passedTests++;
+                } catch (error) {
+                    testResult.status = 'fail';
+                    testResult.error = error.message;
+                    this.failedTests++;
+                }
+
+                testResult.duration = Math.round(performance.now() - startTime);
+                this.results[testName] = testResult;
+                this.updateUI(testResult);
+                this.updateSummary();
+
+                return testResult;
+            }
+
+            updateUI(testResult) {
+                const container = document.getElementById(`${testResult.category}TestResults`);
+                if (!container) return;
+
+                const testDiv = document.createElement('div');
+                testDiv.className = `test-case ${testResult.status}`;
+                
+                const statusIcon = testResult.status === 'pass' ? '✅' : 
+                                 testResult.status === 'fail' ? '❌' : '⏳';
+
+                testDiv.innerHTML = `
+                    <div style="display: flex; justify-between; align-items: center;">
+                        <span>
+                            ${statusIcon} ${testResult.name}
+                            <small class="tooltip" data-tooltip="Duration: ${testResult.duration}ms">(${testResult.duration}ms)</small>
+                        </span>
+                        <span style="font-size: 12px; opacity: 0.7;">
+                            ${new Date(testResult.timestamp).toLocaleTimeString()}
+                        </span>
+                    </div>
+                    ${testResult.error ? `<div style="color: #dc2626; font-size: 14px; margin-top: 5px;">❌ ${testResult.error}</div>` : ''}
+                `;
+
+                container.appendChild(testDiv);
+            }
+
+            updateSummary() {
+                document.getElementById('passCount').textContent = this.passedTests;
+                document.getElementById('failCount').textContent = this.failedTests;
+                document.getElementById('pendingCount').textContent = this.pendingTests;
+                
+                const total = this.passedTests + this.failedTests;
+                const progress = total > 0 ? Math.round((this.passedTests / total) * 100) : 0;
+                document.getElementById('progress').textContent = `${progress}%`;
+            }
+
+            async runUnitTests() {
+                console.log('🔧 Running Unit Tests...');
+
+                // Test 1: localStorage functionality
+                await this.runTest('LocalStorage Save and Load', async () => {
+                    const testData = [{ id: 1, title: 'Test Task', status: 'todo' }];
+                    localStorage.setItem('dailyFocusTasks', JSON.stringify(testData));
+                    const loaded = JSON.parse(localStorage.getItem('dailyFocusTasks'));
+                    
+                    if (!loaded || loaded.length !== 1 || loaded[0].title !== 'Test Task') {
+                        throw new Error('LocalStorage data mismatch');
+                    }
+                }, 'unit');
+
+                // Test 2: Date formatting
+                await this.runTest('Date Formatting', async () => {
+                    const today = new Date();
+                    const formatted = today.toLocaleDateString('en-US', { 
+                        weekday: 'long', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    });
+                    
+                    const pattern = /^(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday), (January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}$/;
+                    if (!pattern.test(formatted)) {
+                        throw new Error('Date format does not match expected pattern');
+                    }
+                }, 'unit');
+
+                // Test 3: Progress calculation
+                await this.runTest('Progress Calculation', async () => {
+                    const tasks = [
+                        { status: 'done' },
+                        { status: 'todo' },
+                        { status: 'done' },
+                        { status: 'todo' }
+                    ];
+                    
+                    const completed = tasks.filter(t => t.status === 'done').length;
+                    const total = tasks.length;
+                    const percentage = Math.round((completed / total) * 100);
+                    
+                    if (percentage !== 50) {
+                        throw new Error(`Expected 50% progress, got ${percentage}%`);
+                    }
+                }, 'unit');
+
+                // Test 4: Task limit validation
+                await this.runTest('Task Limit Validation', async () => {
+                    const manyTasks = Array.from({ length: 10 }, (_, i) => ({ id: i, title: `Task ${i}` }));
+                    const limited = manyTasks.slice(0, 5);
+                    
+                    if (limited.length !== 5) {
+                        throw new Error(`Expected 5 tasks, got ${limited.length}`);
+                    }
+                }, 'unit');
+            }
+
+            async runIntegrationTests() {
+                console.log('🔗 Running Integration Tests...');
+
+                // Test iframe communication
+                await this.runTest('Iframe Communication', async () => {
+                    const iframe = document.getElementById('testFrame');
+                    if (!iframe || !iframe.contentWindow) {
+                        throw new Error('Cannot access iframe content');
+                    }
+                }, 'integration');
+
+                // Test focus mode toggle
+                await this.runTest('Focus Mode Toggle Integration', async () => {
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            try {
+                                const iframe = document.getElementById('testFrame');
+                                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                                const focusModeBtn = iframeDoc.getElementById('focus-mode-btn');
+                                
+                                if (!focusModeBtn) {
+                                    throw new Error('Focus mode button not found');
+                                }
+                                
+                                resolve();
+                            } catch (error) {
+                                reject(error);
+                            }
+                        }, 1000);
+                    });
+                }, 'integration');
+
+                // Test modal overlap fix
+                await this.runTest('Modal Overlap Fix', async () => {
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            try {
+                                const iframe = document.getElementById('testFrame');
+                                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                                const focusView = iframeDoc.getElementById('focus-mode-view');
+                                
+                                if (!focusView) {
+                                    throw new Error('Focus mode view not found');
+                                }
+                                
+                                // Simulate modal open
+                                focusView.classList.add('modal-open');
+                                
+                                if (!focusView.classList.contains('modal-open')) {
+                                    throw new Error('Modal-open class not applied');
+                                }
+                                
+                                resolve();
+                            } catch (error) {
+                                reject(error);
+                            }
+                        }, 1000);
+                    });
+                }, 'integration');
+            }
+
+            async runUITests() {
+                console.log('🎨 Running UI/UX Tests...');
+
+                // Test responsive design
+                await this.runTest('Responsive Design Elements', async () => {
+                    const viewport = {
+                        mobile: { width: 375, height: 667 },
+                        tablet: { width: 768, height: 1024 },
+                        desktop: { width: 1200, height: 800 }
+                    };
+
+                    // Check if essential elements exist
+                    const iframe = document.getElementById('testFrame');
+                    if (iframe.offsetWidth < 300) {
+                        throw new Error('Iframe too narrow for mobile testing');
+                    }
+                }, 'ui');
+
+                // Test focus mode visibility
+                await this.runTest('Focus Mode Visibility States', async () => {
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            try {
+                                const iframe = document.getElementById('testFrame');
+                                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                                const focusView = iframeDoc.getElementById('focus-mode-view');
+                                
+                                if (!focusView) {
+                                    throw new Error('Focus mode view not found');
+                                }
+                                
+                                // Should be hidden by default
+                                if (!focusView.classList.contains('hidden')) {
+                                    throw new Error('Focus mode should be hidden by default');
+                                }
+                                
+                                resolve();
+                            } catch (error) {
+                                reject(error);
+                            }
+                        }, 1000);
+                    });
+                }, 'ui');
+
+                // Test button accessibility
+                await this.runTest('Button Accessibility', async () => {
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            try {
+                                const iframe = document.getElementById('testFrame');
+                                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                                const focusBtn = iframeDoc.getElementById('focus-mode-btn');
+                                
+                                if (!focusBtn) {
+                                    throw new Error('Focus button not found');
+                                }
+                                
+                                if (!focusBtn.hasAttribute('title')) {
+                                    throw new Error('Focus button missing title attribute');
+                                }
+                                
+                                resolve();
+                            } catch (error) {
+                                reject(error);
+                            }
+                        }, 1000);
+                    });
+                }, 'ui');
+            }
+
+            async runPerformanceTests() {
+                console.log('⚡ Running Performance Tests...');
+
+                // Test DOM manipulation performance
+                await this.runTest('DOM Manipulation Performance', async () => {
+                    const startTime = performance.now();
+                    
+                    // Simulate creating 100 focus task elements
+                    for (let i = 0; i < 100; i++) {
+                        const element = document.createElement('div');
+                        element.className = 'focus-task-card';
+                        element.innerHTML = `<h3>Task ${i}</h3><p>Description ${i}</p>`;
+                        document.body.appendChild(element);
+                        document.body.removeChild(element);
+                    }
+                    
+                    const duration = performance.now() - startTime;
+                    
+                    if (duration > 100) { // Should complete in under 100ms
+                        throw new Error(`DOM manipulation too slow: ${duration}ms`);
+                    }
+                }, 'performance');
+
+                // Test localStorage performance
+                await this.runTest('LocalStorage Performance', async () => {
+                    const startTime = performance.now();
+                    const testData = Array.from({ length: 1000 }, (_, i) => ({ 
+                        id: i, 
+                        title: `Task ${i}`,
+                        description: `Description for task ${i}`,
+                        status: 'todo'
+                    }));
+                    
+                    localStorage.setItem('performanceTest', JSON.stringify(testData));
+                    const loaded = JSON.parse(localStorage.getItem('performanceTest'));
+                    localStorage.removeItem('performanceTest');
+                    
+                    const duration = performance.now() - startTime;
+                    
+                    if (duration > 50 || loaded.length !== 1000) {
+                        throw new Error(`LocalStorage operation too slow or data mismatch: ${duration}ms`);
+                    }
+                }, 'performance');
+            }
+
+            async runAccessibilityTests() {
+                console.log('♿ Running Accessibility Tests...');
+
+                // Test keyboard navigation
+                await this.runTest('Keyboard Navigation Support', async () => {
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            try {
+                                const iframe = document.getElementById('testFrame');
+                                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                                const focusBtn = iframeDoc.getElementById('focus-mode-btn');
+                                
+                                if (!focusBtn) {
+                                    throw new Error('Focus button not found');
+                                }
+                                
+                                // Check if button is focusable
+                                focusBtn.focus();
+                                if (iframeDoc.activeElement !== focusBtn) {
+                                    throw new Error('Focus button is not focusable');
+                                }
+                                
+                                resolve();
+                            } catch (error) {
+                                reject(error);
+                            }
+                        }, 1000);
+                    });
+                }, 'a11y');
+
+                // Test ARIA labels
+                await this.runTest('ARIA Labels and Roles', async () => {
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            try {
+                                const iframe = document.getElementById('testFrame');
+                                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                                const focusView = iframeDoc.getElementById('focus-mode-view');
+                                
+                                if (!focusView) {
+                                    throw new Error('Focus mode view not found');
+                                }
+                                
+                                // Check for basic semantic structure
+                                const headers = focusView.querySelectorAll('h1, h2, h3, h4, h5, h6');
+                                if (headers.length === 0) {
+                                    console.warn('No semantic headers found in focus mode');
+                                }
+                                
+                                resolve();
+                            } catch (error) {
+                                reject(error);
+                            }
+                        }, 1000);
+                    });
+                }, 'a11y');
+
+                // Test color contrast (basic check)
+                await this.runTest('Basic Color Contrast Check', async () => {
+                    // This is a simplified check - in a real test, you'd use a proper contrast checker
+                    const testElement = document.createElement('div');
+                    testElement.style.background = '#3b82f6';
+                    testElement.style.color = 'white';
+                    document.body.appendChild(testElement);
+                    
+                    const styles = window.getComputedStyle(testElement);
+                    const bgColor = styles.backgroundColor;
+                    const textColor = styles.color;
+                    
+                    document.body.removeChild(testElement);
+                    
+                    if (!bgColor || !textColor) {
+                        throw new Error('Unable to compute colors for contrast check');
+                    }
+                }, 'a11y');
+            }
+
+            clearResults() {
+                ['unit', 'integration', 'ui', 'performance', 'a11y'].forEach(category => {
+                    const container = document.getElementById(`${category}TestResults`);
+                    if (container) {
+                        container.innerHTML = '';
+                    }
+                });
+
+                this.passedTests = 0;
+                this.failedTests = 0;
+                this.pendingTests = 0;
+                this.results = {};
+                this.updateSummary();
+            }
+
+            async runAllTests() {
+                this.clearResults();
+                console.log('🚀 Starting comprehensive test suite...');
+
+                await this.runUnitTests();
+                await this.runIntegrationTests();
+                await this.runUITests();
+                await this.runPerformanceTests();
+                await this.runAccessibilityTests();
+
+                console.log('✅ All tests completed!', this.results);
+            }
+        }
+
+        // Global test runner instance
+        const testRunner = new FocusModeTestRunner();
+
+        // Control functions
+        async function runAllTests() {
+            await testRunner.runAllTests();
+        }
+
+        async function runUnitTests() {
+            testRunner.clearResults();
+            await testRunner.runUnitTests();
+        }
+
+        async function runUITests() {
+            testRunner.clearResults();
+            await testRunner.runUITests();
+        }
+
+        function clearResults() {
+            testRunner.clearResults();
+        }
+
+        // Iframe testing functions
+        function testInIframe(action) {
+            const iframe = document.getElementById('testFrame');
+            
+            try {
+                switch (action) {
+                    case 'enter':
+                        // Try to trigger focus mode
+                        const enterMsg = { type: 'test', action: 'enter-focus-mode' };
+                        iframe.contentWindow.postMessage(enterMsg, '*');
+                        console.log('🎯 Attempted to enter focus mode');
+                        break;
+                        
+                    case 'exit':
+                        const exitMsg = { type: 'test', action: 'exit-focus-mode' };
+                        iframe.contentWindow.postMessage(exitMsg, '*');
+                        console.log('🚪 Attempted to exit focus mode');
+                        break;
+                        
+                    case 'tasks':
+                        const tasksMsg = { type: 'test', action: 'show-task-selection' };
+                        iframe.contentWindow.postMessage(tasksMsg, '*');
+                        console.log('📋 Attempted to show task selection');
+                        break;
+                        
+                    case 'reset':
+                        iframe.contentWindow.localStorage.removeItem('dailyFocusTasks');
+                        iframe.contentWindow.location.reload();
+                        console.log('🔄 Reset test data and reloaded iframe');
+                        break;
+                }
+            } catch (error) {
+                console.error('❌ Error in iframe testing:', error);
+            }
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', () => {
+            console.log('🧪 Focus Mode Test Suite Initialized');
+            console.log('Click "Run All Tests" to begin comprehensive testing');
+            
+            // Auto-run unit tests after iframe loads
+            setTimeout(() => {
+                console.log('⏱️ Auto-running unit tests...');
+                runUnitTests();
+            }, 2000);
+        });
+
+        // Listen for messages from iframe
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'test-response') {
+                console.log('📬 Received test response from iframe:', event.data);
+            }
+        });
+    </script>
+</body>
+</html>

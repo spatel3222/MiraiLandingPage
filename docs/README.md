@@ -4,6 +4,11 @@ This directory contains internal documents, decision logs, and reviews for the C
 
 ## 📁 Directory Structure
 
+### `/BusinessPlan/`
+- **Business strategy documents**
+- **Phase planning and roadmaps**
+- **Strategic planning documents**
+
 ### `/decisions/`
 - **Architecture Decision Records (ADRs)**
 - **Product decisions**
