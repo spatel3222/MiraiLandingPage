@@ -8,6 +8,7 @@
 - [Meeting notes](internal/)
 
 ### Important Documents
+- [Business Plan Phase 1](BusinessPlan/)
 - [Architecture decisions](decisions/)
 - [Process documentation](processes/)
 - [Templates](templates/)
@@ -19,6 +20,9 @@
 
 ### Reviews
 *No reviews yet. [Create your first one](templates/review-template.md)*
+
+### Business Plans
+- [CRTX Phase 1 - Business Plan](BusinessPlan/CRTX%20Phase%201%20-%20Business%20Plan.md)
 
 ### Internal Documents
 *Move existing planning docs here for better organization*

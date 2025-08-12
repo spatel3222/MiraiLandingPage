@@ -4,9 +4,21 @@
   "description": "Personal task tracking with Claude AI integration",
   "main": "index.js",
   "scripts": {
-    "dev": "vercel dev"
+    "dev": "vercel dev",
+    "test": "node tests/focus-mode.test.js && node tests/category-filtering.test.js",
+    "test:focus": "node tests/focus-mode.test.js",
+    "test:category": "node tests/category-filtering.test.js",
+    "test:watch": "nodemon tests/focus-mode.test.js",
+    "test:watch:category": "nodemon tests/category-filtering.test.js",
+    "test:browser": "open tests/focus-mode-integration.html",
+    "test:browser:category": "open tests/category-filtering-integration.html",
+    "test:all": "npm run test && npm run test:browser && npm run test:browser:category"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.24.3"
+  },
+  "devDependencies": {
+    "jsdom": "^23.0.1",
+    "nodemon": "^3.0.2"
   }
 }
