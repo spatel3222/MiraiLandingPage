@@ -36,6 +36,8 @@ Agents are organized by department for easy discovery:
 
 ```
 contains-studio-agents/
+├── copyright/
+│   └── personal_pr_agent.md
 ├── design/
 │   ├── brand-guardian.md
 │   ├── ui-designer.md
@@ -133,6 +135,9 @@ contains-studio-agents/
 - **test-results-analyzer** - Find patterns in test failures
 - **tool-evaluator** - Choose tools that actually help
 - **workflow-optimizer** - Eliminate workflow bottlenecks
+
+### Copyright Department (`copyright/`)
+- **personal_pr_agent** - Strategic professional reputation and brand management using evidence-based PR frameworks
 
 ## 🎁 Bonus Agents
 - **studio-coach** - Rally the AI troops to excellence
