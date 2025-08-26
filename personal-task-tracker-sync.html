@@ -961,8 +961,39 @@
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-    <!-- Time-based dark mode indicator -->
-    <div id="time-indicator" class="time-indicator">
+    <!-- Password Protection Layer -->
+    <div id="auth-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-75 z-50 flex items-center justify-center">
+        <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">🔒 Authentication Required</h2>
+                <p class="text-gray-600 dark:text-gray-400">Please enter the password to access the Task Tracker</p>
+            </div>
+            <form id="auth-form" class="space-y-4">
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password</label>
+                    <input 
+                        type="password" 
+                        id="password-input" 
+                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                        placeholder="Enter password"
+                        autocomplete="current-password"
+                    >
+                </div>
+                <div id="auth-error" class="text-red-600 text-sm hidden">Incorrect password. Please try again.</div>
+                <button 
+                    type="submit" 
+                    class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 font-medium"
+                >
+                    Unlock
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main App Content (Initially Hidden) -->
+    <div id="app-content" style="display: none;">
+        <!-- Time-based dark mode indicator -->
+        <div id="time-indicator" class="time-indicator">
         <span id="time-status">🌅 Day Mode</span>
     </div>
     <!-- Header - Mobile Optimized -->
@@ -3370,6 +3401,90 @@
          title="Personal Task Tracker - Focus Edition">
         v2024.focus.5
     </div>
+    </div> <!-- End of app-content div -->
+
+    <!-- Authentication Script -->
+    <script>
+        // Password Authentication
+        const CORRECT_PASSWORD = 'Welcome@123';
+        const AUTH_STORAGE_KEY = 'taskTrackerAuth';
+        const AUTH_EXPIRY_HOURS = 24; // Session expires after 24 hours
+
+        // Check if user is already authenticated
+        function checkAuthentication() {
+            const authData = sessionStorage.getItem(AUTH_STORAGE_KEY);
+            if (authData) {
+                const { timestamp } = JSON.parse(authData);
+                const now = Date.now();
+                const hoursPassed = (now - timestamp) / (1000 * 60 * 60);
+                
+                if (hoursPassed < AUTH_EXPIRY_HOURS) {
+                    showApp();
+                    return true;
+                } else {
+                    sessionStorage.removeItem(AUTH_STORAGE_KEY);
+                }
+            }
+            return false;
+        }
+
+        // Show the main app and hide auth overlay
+        function showApp() {
+            document.getElementById('auth-overlay').style.display = 'none';
+            document.getElementById('app-content').style.display = 'block';
+        }
+
+        // Handle authentication form submission
+        document.getElementById('auth-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const passwordInput = document.getElementById('password-input');
+            const errorDiv = document.getElementById('auth-error');
+            const enteredPassword = passwordInput.value;
+            
+            if (enteredPassword === CORRECT_PASSWORD) {
+                // Save authentication to session storage
+                const authData = {
+                    authenticated: true,
+                    timestamp: Date.now()
+                };
+                sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(authData));
+                
+                // Clear the password field
+                passwordInput.value = '';
+                
+                // Hide error if it was showing
+                errorDiv.classList.add('hidden');
+                
+                // Show the app
+                showApp();
+            } else {
+                // Show error message
+                errorDiv.classList.remove('hidden');
+                
+                // Clear the password field
+                passwordInput.value = '';
+                
+                // Focus back on password input
+                passwordInput.focus();
+            }
+        });
+
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!checkAuthentication()) {
+                // Focus on password input if not authenticated
+                document.getElementById('password-input').focus();
+            }
+        });
+
+        // Allow Enter key to submit when password input is focused
+        document.getElementById('password-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('auth-form').dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
 </body>
 </html>// test comment
 // another test
