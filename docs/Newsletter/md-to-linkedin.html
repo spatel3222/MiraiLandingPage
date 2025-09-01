@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Markdown to LinkedIn Converter</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 1200px; margin: 0 auto; }
+        .container { display: flex; gap: 20px; }
+        .panel { flex: 1; }
+        textarea { width: 100%; height: 500px; padding: 10px; font-size: 14px; }
+        button { background: #0077b5; color: white; padding: 10px 20px; border: none; cursor: pointer; margin: 10px 0; }
+        button:hover { background: #005885; }
+        #output { background: #f4f4f4; padding: 10px; min-height: 500px; white-space: pre-wrap; }
+        .copied { color: green; display: none; }
+    </style>
+</head>
+<body>
+    <h1>Markdown to LinkedIn Text Converter</h1>
+    <button onclick="convertText()">Convert to LinkedIn Format</button>
+    <button onclick="copyOutput()">Copy LinkedIn Text</button>
+    <span class="copied" id="copiedMsg">✓ Copied to clipboard!</span>
+    
+    <div class="container">
+        <div class="panel">
+            <h3>Paste Markdown Here:</h3>
+            <textarea id="input" placeholder="Paste your markdown text here..."></textarea>
+        </div>
+        <div class="panel">
+            <h3>LinkedIn-Ready Text:</h3>
+            <div id="output"></div>
+        </div>
+    </div>
+
+    <script>
+        function convertText() {
+            let text = document.getElementById('input').value;
+            
+            // Convert headers
+            text = text.replace(/^### (.*?)$/gm, '— $1 —');
+            text = text.replace(/^## (.*?)$/gm, '\n$1\n');
+            text = text.replace(/^# (.*?)$/gm, '\n$1\n');
+            
+            // Convert bold and italic
+            text = text.replace(/\*\*\*(.*?)\*\*\*/g, '$1');  // Remove bold+italic
+            text = text.replace(/\*\*(.*?)\*\*/g, '$1');      // Remove bold
+            text = text.replace(/\*(.*?)\*/g, '$1');          // Remove italic
+            
+            // Convert lists
+            text = text.replace(/^- /gm, '→ ');
+            text = text.replace(/^\* /gm, '• ');
+            text = text.replace(/^✓ /gm, '→ ');
+            
+            // Convert code blocks
+            text = text.replace(/```[\s\S]*?```/g, function(match) {
+                return match.replace(/```/g, '').trim();
+            });
+            text = text.replace(/`(.*?)`/g, '$1');
+            
+            // Add spacing
+            text = text.replace(/\n{3,}/g, '\n\n');
+            
+            // Add visual separators
+            text = text.replace(/^---$/gm, '━━━━━━━━━━━━━━━━━');
+            
+            document.getElementById('output').textContent = text;
+        }
+        
+        function copyOutput() {
+            const output = document.getElementById('output').textContent;
+            navigator.clipboard.writeText(output).then(() => {
+                document.getElementById('copiedMsg').style.display = 'inline';
+                setTimeout(() => {
+                    document.getElementById('copiedMsg').style.display = 'none';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
