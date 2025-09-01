@@ -77,6 +77,7 @@ CTRX enables companies to deploy enterprise-grade agentic AI systems at scale in
 
 ### **Industry-Specific Solutions**:
 - **Legal**: Document analysis, Events and Dates creation, identify clause, assistant to find prior cases and insights
+- **Restaurnt**: performance data analysis to actionable insights, compaing manager whcih is personalized 
 - **Financial Services**: Fraud detection, risk assessment, customer service automation
 - **Healthcare**: Patient flow optimization, clinical decision support, administrative automation  
 - **Manufacturing**: Predictive maintenance, quality control, supply chain optimization
