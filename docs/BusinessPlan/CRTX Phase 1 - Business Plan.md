@@ -10,12 +10,12 @@ CRTX Launches **"Enterprise AI Built to Scale"** Platform to Transform Mid-Marke
 
 ## **CUSTOMER PROBLEM**
 
-**95% of Companies Are Buying Expensive Gym Equipment and Never Getting Fit**
+**95% of Companies failes to launch their AI implemenation**
 
 They invest millions in AI tools but fail to transform their business. MIT studied 300+ enterprise AI initiatives and found only 5% achieve real transformation. The technology works—the approach is broken.
 
 **The Evidence Is Overwhelming**:
-Think this is exaggerated? Every major study shows the same pattern:
+ Every major study shows the same pattern:
 - MIT: 95% fail to achieve meaningful ROI from AI investments
 - RAND Corporation: 80% of AI projects never deliver value
 - Capgemini: 88% of POCs die before reaching production
@@ -58,17 +58,17 @@ CTRX enables companies to deploy enterprise-grade agentic AI systems at scale in
 
 ### **Platform Architecture**
 
-**Foundation Layer (Powered by LangChain/CrewAI):**
+**1. Foundation Layer (Powered by current Agentic AIframework):**
 - Agent orchestration engine and LLM integration
 - Basic memory management and tool calling framework
 - Industry-standard agentic AI capabilities
 
-**CRTX Value-Add Layer (Our IP):**
+**2. CRTX Value-Add Layer (Our IP):**
 - **Enterprise Foundation**: Multi-tenant user management with RBAC, agent lifecycle management (dev→staging→prod), workflow versioning and rollback, A/B testing framework, audit trails and approval workflows
 - **Pre-Built Solutions**: Best-in-class RAG implementation, advanced Text-to-SQL with business logic, industry-specific agent templates, human-in-the-loop compliance checkpoints
 - **Operational Excellence**: DevOps monitoring and alerting, cost optimization and model selection, performance tuning services, continuous learning pipelines
 
-**Industry Solutions Layer:**
+**3. Industry Solutions Layer:**
 - Pre-configured workflows for legal, financial, healthcare, manufacturing
 - Compliance-ready templates with embedded guardrails
 - Domain-specific knowledge bases and validation rules
@@ -76,7 +76,7 @@ CTRX enables companies to deploy enterprise-grade agentic AI systems at scale in
 
 
 ### **Industry-Specific Solutions**:
-- **Legal**: Contract analysis, regulatory compliance, document review automation
+- **Legal**: Document analysis, Events and Dates creation, identify clause, assistant to find prior cases and insights
 - **Financial Services**: Fraud detection, risk assessment, customer service automation
 - **Healthcare**: Patient flow optimization, clinical decision support, administrative automation  
 - **Manufacturing**: Predictive maintenance, quality control, supply chain optimization
