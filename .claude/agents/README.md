@@ -37,7 +37,12 @@ Agents are organized by department for easy discovery:
 ```
 contains-studio-agents/
 ├── copyright/
-│   └── personal_pr_agent.md
+│   ├── my-twin.md                    # Super Agent - Master PR Orchestrator
+│   ├── personal_pr_agent.md          # Original comprehensive PR framework
+│   └── pr-content/                   # Content creation specialists
+│       ├── content_seo-blog-writer.md
+│       ├── content_linkedin-optimizer.md
+│       └── content_cross-platform-multiplier.md
 ├── design/
 │   ├── brand-guardian.md
 │   ├── ui-designer.md
@@ -137,7 +142,26 @@ contains-studio-agents/
 - **workflow-optimizer** - Eliminate workflow bottlenecks
 
 ### Copyright Department (`copyright/`)
-- **personal_pr_agent** - Strategic professional reputation and brand management using evidence-based PR frameworks
+
+#### 🌟 **My Twin** (`my-twin.md`) - Super Agent
+Your digital twin and master PR orchestrator that coordinates all personal branding, content creation, and reputation management activities. This super agent:
+- Orchestrates multiple specialized content agents for comprehensive PR campaigns
+- Implements strategic frameworks (PESO, RACE, Crisis Communication)
+- Coordinates content across SEO blogs, LinkedIn, and all platforms
+- Manages your complete professional digital presence
+- Makes strategic decisions about which sub-agents to deploy
+
+#### Original Agents
+- **personal_pr_agent** - Comprehensive PR framework with evidence-based strategies
+
+#### Content Creation Sub-Agents (`pr-content/`)
+- **content_seo-blog-writer** - Creates 2000-3000 word SEO-optimized blog posts for thought leadership and organic traffic
+- **content_linkedin-optimizer** - Specializes in LinkedIn algorithm optimization for B2B engagement and lead generation  
+- **content_cross-platform-multiplier** - Transforms single ideas into multi-format campaigns across all platforms
+
+#### Future Sub-Agent Categories
+- **pr-reputation/** - Crisis management, reputation monitoring, media relations (coming soon)
+- **pr-network/** - Strategic relationship building, influencer engagement, community development (coming soon)
 
 ## 🎁 Bonus Agents
 - **studio-coach** - Rally the AI troops to excellence
