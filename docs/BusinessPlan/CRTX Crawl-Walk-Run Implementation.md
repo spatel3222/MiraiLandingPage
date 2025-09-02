@@ -22,11 +22,11 @@ Our phased implementation approach ensures clients achieve quick wins while buil
 - Compliance approval workflows with human-in-the-loop
 - Out-of-box integrations with iManage, NetDocuments, Clio
 
-**Business Outcomes:**
-- 2-4 week deployment vs 6-month custom builds
-- 70% cost reduction vs building from scratch
-- 60% reduction in contract review time
-- $250K+ savings per firm annually
+**User Interface:**
+- Embeddable chatbot assistant interface for any website
+- Customizable branding and styling
+- Multi-channel support (web, mobile, API)
+- Real-time conversation handling with context retention
 
 ---
 
@@ -56,11 +56,6 @@ Our phased implementation approach ensures clients achieve quick wins while buil
 - KYC/AML compliance automation
 - Leverage proven templates from legal deployments
 
-**Business Outcomes:**
-- Deploy new clients in days using proven templates
-- Manufacturing: 35% reduction in downtime, 25% quality improvement
-- Financial Services: 50% faster fraud detection, 30% risk assessment acceleration
-- Platform supporting 100+ concurrent agents across departments
 
 ---
 
@@ -97,12 +92,7 @@ Our phased implementation approach ensures clients achieve quick wins while buil
 - Industry-specific knowledge bases with regulatory updates
 - Pre-certified workflows for FDA, SEC, state bar requirements
 - Cross-industry best practice sharing (anonymized)
-
-**Business Outcomes:**
 - Complete platform ownership option for enterprise clients
-- Network effects from shared agent marketplace
-- Healthcare: 45% administrative cost reduction
-- Platform supporting 200+ agents across 5+ industries
 - Position as the "Salesforce of AI" for regulated industries
 
 ---
