@@ -113,8 +113,8 @@ CRTX transforms ambitious companies from AI experimentation to production realit
 - Industry-standard agentic AI capabilities
 
 **2. CRTX Production Layer (Our IP - Supports Method Phases):**
-- **Phase 1 Support**: Return on Investment (ROI) calculators, stakeholder interview templates, business metric tracking
-- **Phase 2 Support**: Data quality assessment tools, automated validation pipelines, remediation tracking
+- **Phase 1 Support**: Analytics dashboard with business and performance insights, stakeholder interview templates, business metric tracking
+- **Phase 2 Support**: Analytics dashboard with data quality insights, automated validation pipelines, remediation tracking
 - **Phase 3 Support**: Workflow designers, integration connectors, failover management, human-in-loop configuration
 - **Phase 4 Support**: Team collaboration workspace, knowledge transfer modules, sprint tracking
 - **Phase 5 Support**: A/B testing framework, production deployment automation, business metric dashboards
