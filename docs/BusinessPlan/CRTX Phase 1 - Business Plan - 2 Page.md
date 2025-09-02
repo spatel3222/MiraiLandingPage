@@ -34,11 +34,11 @@ Weekly production releases, A/B testing, business metric monitoring. *Working sy
 
 ## **Our Solution: Applied Agentic AI Platform**
 Built on LangChain/CrewAI foundation with CRTX value-add layers:
-- **Enterprise Foundation**: Multi-tenant architecture, RBAC, audit trails, workflow versioning, A/B testing
+- **Enterprise Foundation**: Multi-tenant architecture, Role-Based Access Control (RBAC), audit trails, workflow versioning, A/B testing
 - **Production Tools**: ROI calculators, data quality assessments, integration connectors, deployment automation
 - **Industry Accelerators**: Pre-validated workflows for legal, financial services, healthcare, manufacturing
 
-**Key Capabilities**: Enterprise RAG, Text-to-SQL agents, human-in-the-loop compliance, automated monitoring
+**Key Capabilities**: Enterprise Retrieval-Augmented Generation (RAG), Text-to-SQL agents, human-in-the-loop compliance, automated monitoring
 
 ## **Business Model**
 **Phase 1&2 Assessment**: $25-50K (2-3 weeks) - ROI validation + data readiness
@@ -51,7 +51,7 @@ Built on LangChain/CrewAI foundation with CRTX value-add layers:
 ## **Competitive Advantages**
 • **Speed**: 2-4 week deployment vs 6-month custom builds
 • **Partners Not Competitors**: Built on LangChain/CrewAI, not competing
-• **Compliance-First**: HIPAA, SOX, GDPR built-in
+• **Compliance-First**: HIPAA, SOX, GDPR compliance built-in
 • **Proven Templates**: Refined across multiple deployments
 • **Flexible Ownership**: Complete platform transfer or managed service
 • **Fortune 1 Expertise**: 12+ years enterprise AI, accessible to mid-market
