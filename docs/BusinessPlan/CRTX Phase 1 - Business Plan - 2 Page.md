@@ -35,7 +35,7 @@ Weekly production releases, A/B testing, business metric monitoring. *Working sy
 ## **Our Solution: Applied Agentic AI Platform**
 Built on LangChain/CrewAI foundation with CRTX value-add layers:
 - **Enterprise Foundation**: Multi-tenant architecture, Role-Based Access Control (RBAC), audit trails, workflow versioning, A/B testing
-- **Production Tools**: ROI calculators, data quality assessments, integration connectors, deployment automation
+- **Production Tools**: Analytics dashboard with business and performance insights, integration connectors, deployment automation
 - **Industry Accelerators**: Pre-validated workflows for legal, financial services, healthcare, manufacturing
 
 **Key Capabilities**: Enterprise Retrieval-Augmented Generation (RAG), Text-to-SQL agents, human-in-the-loop compliance, automated monitoring
