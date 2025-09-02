@@ -42,11 +42,11 @@ They invest millions in AI tools but fail to transform their business. MIT studi
 ### **Phase 1: Business Impact Mapping (Week 1-2)**
 **What We Do:**
 - Conduct 10+ stakeholder interviews to identify top 3 revenue/cost problems
-- Calculate specific ROI targets with CFO validation
+- Calculate specific ROI targets and business impact
 - Document current process metrics (time, cost, error rates)
 - Define success as measurable business outcomes, not AI metrics
 
-**Client Deliverable:** Business case with guaranteed ROI milestones, Go/No-Go decision framework (if ROI < 3x, we recommend stopping)
+**Client Deliverable:** Business case with ROI milestones, Go/No-Go decision framework
 
 **Why Others Fail:** They start with technology demos and work backwards to find problems
 
@@ -93,7 +93,7 @@ They invest millions in AI tools but fail to transform their business. MIT studi
 ### **Built-In Success Guarantees**
 - **Week 2:** If data quality < 60%, we pause and fix foundations first
 - **Week 4:** If integration complexity exceeds projection, we adjust transparently
-- **Week 8:** If metrics aren't improving, we pivot or refund 50% of fees
+- **Week 8:** If metrics aren't improving, we pivot strategy
 - **Monthly:** Business reviews with guaranteed response to metric drops
 
 *Result: 95% of our clients achieve positive ROI within 90 days vs industry average of 5% within 12 months*
@@ -224,7 +224,7 @@ CRTX transforms ambitious companies from AI experimentation to production realit
 **Phase 1 & 2: Business Impact & Data Assessment**
 - **Price**: $25K - $50K | **Timeline**: 2-3 weeks
 - **Deliverable**: ROI-validated business case + data readiness report
-- **Guarantee**: Full refund if ROI potential < 3x investment
+- **Deliverable**: ROI-validated business case + data readiness report
 
 **Phase 3 & 4: Production Blueprint & Team Setup**
 - **Price**: $50K - $100K | **Timeline**: 2-3 weeks
