@@ -16,7 +16,7 @@ MIT studied 300+ enterprise AI initiatives—only 5% achieve real transformation
 Our operating system guarantees success through five phases:
 
 **Phase 1: Business Impact Mapping (Weeks 1-2)**
-Map top 3 revenue/cost problems, validate ROI with CFO, define measurable outcomes. *Guarantee: Full refund if ROI < 3x investment*
+Map top 3 revenue/cost problems, calculate ROI targets, define measurable outcomes.
 
 **Phase 2: Data Reality Check (Weeks 2-3)**
 Audit data quality across 7 dimensions, build remediation roadmap. *If data quality < 60%, we pause to fix foundations*
@@ -28,7 +28,7 @@ Design end-to-end workflows, failover handling, system integration architecture.
 CRTX engineers paired with client experts, weekly sprints, knowledge transfer. *No expectation that IT becomes AI experts overnight*
 
 **Phase 5: Production Deployment (Week 4+)**
-Weekly production releases, A/B testing, business metric monitoring. *Working system in 30 days, 50% fee refund if Week 8 metrics not met*
+Weekly production releases, A/B testing, business metric monitoring. *Working system in 30 days with performance tracking*
 
 **Result**: 95% of clients achieve positive ROI within 90 days vs industry average of 5% within 12 months
 
