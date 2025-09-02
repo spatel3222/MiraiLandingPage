@@ -16,17 +16,17 @@ Our phased implementation approach ensures clients achieve quick wins while buil
 - DevOps monitoring dashboard with cost tracking
 - API/SDK for integration (REST, Python, JavaScript)
 
-**Legal Industry Package:**
-- Pre-configured contract analysis workflows (2-week deployment)
-- Legal document RAG with citation tracking and precedent search
-- Compliance approval workflows with human-in-the-loop
-- Out-of-box integrations with iManage, NetDocuments, Clio
-
 **User Interface:**
 - Embeddable chatbot assistant interface for any website
 - Customizable branding and styling
 - Multi-channel support (web, mobile, API)
 - Real-time conversation handling with context retention
+
+**Legal Industry Package:**
+- Pre-configured contract analysis workflows (2-week deployment)
+- Legal document RAG with citation tracking and precedent search
+- Compliance approval workflows with human-in-the-loop
+- Out-of-box integrations with iManage, NetDocuments, Clio
 
 ---
 
