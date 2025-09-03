@@ -10,13 +10,13 @@
 - Audit logging for all user actions
 - Session management and security policies
 
-### Agent Lifecycle Management
-- Visual agent creation with drag-and-drop interface
-- Agent versioning and deployment pipeline (dev → staging → prod)
-- Agent registry with governance and access controls
-- Performance monitoring and health checks
-- Agent orchestration and scaling
-- Backup and rollback capabilities
+### Bot and Agent Lifecycle Management
+- Visual bot creation with drag-and-drop flow designer
+- Multi-agent composition within individual bots
+- Bot and agent versioning with deployment pipeline (dev → staging → prod)
+- Bot registry with governance and access controls for all components
+- Performance monitoring and health checks for bots and individual agents
+- Bot orchestration, scaling, and rollback capabilities
 
 ### Platform Security & Compliance
 - End-to-end encryption for data at rest and in transit
