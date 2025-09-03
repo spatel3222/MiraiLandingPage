@@ -63,7 +63,7 @@
 - Comprehensive help documentation and tutorials
 
 ### Nice to have
-###  Multi-Channel Experience
+####  Multi-Channel Experience
 - Omnichannel deployment (web, mobile, SMS, email)
 - Social platform integration (WhatsApp, Messenger, Slack, Teams)
 - Voice platform support with speech-to-text/text-to-speech
