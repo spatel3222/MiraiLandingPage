@@ -28,11 +28,11 @@
 
 ### Analytics & Observability
 - Real-time dashboards with business and operational metrics
--- Usage analytics and cost tracking
--- Performance monitoring with alerts
--- System health and resource utilization
--- Detailed audit trails and compliance reporting
--- Custom reporting and data export
+    - Usage analytics and cost tracking
+    - Performance monitoring with alerts
+    - System health and resource utilization
+    - Detailed audit trails and compliance reporting
+    - Custom reporting and data export
 
 ### Integration & APIs
 - RESTful APIs with comprehensive documentation
@@ -62,7 +62,8 @@
 - System configuration and settings panel
 - Comprehensive help documentation and tutorials
 
-### Multi-Channel Experience
+### Nice to have
+###  Multi-Channel Experience
 - Omnichannel deployment (web, mobile, SMS, email)
 - Social platform integration (WhatsApp, Messenger, Slack, Teams)
 - Voice platform support with speech-to-text/text-to-speech
