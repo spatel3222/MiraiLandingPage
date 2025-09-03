@@ -28,11 +28,11 @@
 
 ### Analytics & Observability
 - Real-time dashboards with business and operational metrics
-- Usage analytics and cost tracking
-- Performance monitoring with alerts
-- System health and resource utilization
-- Detailed audit trails and compliance reporting
-- Custom reporting and data export
+-- Usage analytics and cost tracking
+-- Performance monitoring with alerts
+-- System health and resource utilization
+-- Detailed audit trails and compliance reporting
+-- Custom reporting and data export
 
 ### Integration & APIs
 - RESTful APIs with comprehensive documentation
@@ -55,8 +55,8 @@
 - Voice input/output capabilities (VoiceIn/VoiceOut)
 
 ### Enterprise Web Portal
-- Unified dashboard for agent management and analytics
-- Visual agent builder with drag-and-drop workflows
+- Unified dashboard for bot and agent management and analytics
+- Visual bot builder with drag-and-drop workflows for multi-agent composition
 - User and role management interface
 - Real-time monitoring and performance dashboards
 - System configuration and settings panel
