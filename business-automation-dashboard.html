@@ -53,6 +53,72 @@
             position: relative;
             height: 300px;
         }
+        .chart-expand-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+            background: rgba(37, 99, 235, 0.9);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 8px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+            opacity: 0;
+        }
+        .chart-container:hover .chart-expand-btn {
+            opacity: 1;
+        }
+        .chart-expand-btn:hover {
+            background: rgba(37, 99, 235, 1);
+            transform: scale(1.05);
+        }
+        .expanded-chart-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+        }
+        .expanded-chart-container {
+            width: 90%;
+            height: 80%;
+            max-width: 1200px;
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+        .expanded-chart-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .expanded-chart-close:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
         .process-card {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             background: rgba(255, 255, 255, 0.9);
@@ -320,6 +386,11 @@
                                     <h3 class="text-lg font-semibold text-gray-900">Impact vs Feasibility</h3>
                                 </div>
                                 <div class="chart-container">
+                                    <button class="chart-expand-btn" onclick="expandChart('bubbleChart', 'Impact vs Feasibility Analysis')" title="Expand chart">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M9 9H4v2h5V9zm0 0V4H7v5h2zm6 0h5v2h-5V9zm0 0V4h2v5h-2zm0 6v5h2v-5h-2zm0 0h5v-2h-5v2zM9 15H4v-2h5v2zm0 0v5H7v-5h2z"/>
+                                        </svg>
+                                    </button>
                                     <canvas id="bubbleChart"></canvas>
                                 </div>
                             </div>
@@ -329,6 +400,11 @@
                                     <h3 class="text-lg font-semibold text-gray-900">Process Distribution</h3>
                                 </div>
                                 <div class="chart-container">
+                                    <button class="chart-expand-btn" onclick="expandChart('donutChart', 'Process Distribution Analysis')" title="Expand chart">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M9 9H4v2h5V9zm0 0V4H7v5h2zm6 0h5v2h-5V9zm0 0V4h2v5h-2zm0 6v5h2v-5h-2zm0 0h5v-2h-5v2zM9 15H4v-2h5v2zm0 0v5H7v-5h2z"/>
+                                        </svg>
+                                    </button>
                                     <canvas id="donutChart"></canvas>
                                 </div>
                             </div>
@@ -341,9 +417,253 @@
                                 <h3 class="text-lg font-semibold text-gray-900">AI Automation Suitability</h3>
                             </div>
                             <div class="chart-container">
+                                <button class="chart-expand-btn" onclick="expandChart('radarChart', 'AI Automation Suitability Analysis')" title="Expand chart">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M9 9H4v2h5V9zm0 0V4H7v5h2zm6 0h5v2h-5V9zm0 0V4h2v5h-2zm0 6v5h2v-5h-2zm0 0h5v-2h-5v2zM9 15H4v-2h5v2zm0 0v5H7v-5h2z"/>
+                                    </svg>
+                                </button>
                                 <canvas id="radarChart"></canvas>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+
+                <!-- 4-Phase Implementation Roadmap -->
+                <div class="mt-8">
+                    <h2 class="text-2xl font-bold text-white mb-6">🚀 4-Phase Implementation Roadmap</h2>
+                    
+                    <!-- Timeline Visual -->
+                    <div class="glass-effect rounded-xl p-6 mb-6">
+                        <div class="flex items-center justify-center mb-6">
+                            <div class="flex items-center space-x-8 overflow-x-auto">
+                                <!-- Phase 1 -->
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-success rounded-full flex items-center justify-center">
+                                        <span class="text-white font-bold text-sm">1</span>
+                                    </div>
+                                    <div class="text-center ml-2">
+                                        <div class="text-white text-xs font-semibold">Pilot</div>
+                                        <div class="text-white/60 text-xs">M1-2</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Connector -->
+                                <div class="w-8 h-0.5 bg-white/30"></div>
+                                
+                                <!-- Phase 2 -->
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                                        <span class="text-white font-bold text-sm">2</span>
+                                    </div>
+                                    <div class="text-center ml-2">
+                                        <div class="text-white text-xs font-semibold">Refine</div>
+                                        <div class="text-white/60 text-xs">M3-4</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Connector -->
+                                <div class="w-8 h-0.5 bg-white/30"></div>
+                                
+                                <!-- Phase 3 -->
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-warning rounded-full flex items-center justify-center">
+                                        <span class="text-white font-bold text-sm">3</span>
+                                    </div>
+                                    <div class="text-center ml-2">
+                                        <div class="text-white text-xs font-semibold">Deploy</div>
+                                        <div class="text-white/60 text-xs">M5-6</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Connector -->
+                                <div class="w-8 h-0.5 bg-white/30"></div>
+                                
+                                <!-- Phase 4 -->
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-secondary rounded-full flex items-center justify-center">
+                                        <span class="text-white font-bold text-sm">4</span>
+                                    </div>
+                                    <div class="text-center ml-2">
+                                        <div class="text-white text-xs font-semibold">Monitor</div>
+                                        <div class="text-white/60 text-xs">Ongoing</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Phase Cards -->
+                    <div id="roadmapContent" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                        <!-- Phase 1: Pilot Project -->
+                        <div class="glass-effect rounded-xl p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-8 h-8 bg-success rounded-full flex items-center justify-center mr-3">
+                                    <span class="text-white font-bold">1</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-white">Pilot Project</h3>
+                                    <p class="text-white/60 text-xs">Month 1-2</p>
+                                </div>
+                            </div>
+                            <p class="text-white/80 text-sm mb-4">Select & implement highest-impact processes</p>
+                            
+                            <!-- Key Activities -->
+                            <div class="mb-4">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
+                                    <span class="text-white/70 text-xs">Identify quick wins</span>
+                                </div>
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
+                                    <span class="text-white/70 text-xs">Implement pilot automation</span>
+                                </div>
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
+                                    <span class="text-white/70 text-xs">Measure initial ROI</span>
+                                </div>
+                            </div>
+                            
+                            <div id="pilotPhase" class="space-y-3">
+                                <div class="text-white/60 text-center py-4">No processes analyzed yet</div>
+                            </div>
+                        </div>
+
+                        <!-- Phase 2: Refine & Train -->
+                        <div class="glass-effect rounded-xl p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center mr-3">
+                                    <span class="text-white font-bold">2</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-white">Refine & Train</h3>
+                                    <p class="text-white/60 text-xs">Month 3-4</p>
+                                </div>
+                            </div>
+                            <p class="text-white/80 text-sm mb-4">Optimize processes & train teams</p>
+                            
+                            <!-- Key Activities -->
+                            <div class="mb-4">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
+                                    <span class="text-white/70 text-xs">Process optimization</span>
+                                </div>
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
+                                    <span class="text-white/70 text-xs">Team training & adoption</span>
+                                </div>
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
+                                    <span class="text-white/70 text-xs">Documentation & SOPs</span>
+                                </div>
+                            </div>
+                            
+                            <div id="refinePhase" class="space-y-3">
+                                <div class="text-white/60 text-center py-4">No processes analyzed yet</div>
+                            </div>
+                        </div>
+
+                        <!-- Phase 3: Deploy -->
+                        <div class="glass-effect rounded-xl p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-8 h-8 bg-warning rounded-full flex items-center justify-center mr-3">
+                                    <span class="text-white font-bold">3</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-white">Deploy</h3>
+                                    <p class="text-white/60 text-xs">Month 5-6</p>
+                                </div>
+                            </div>
+                            <p class="text-white/80 text-sm mb-4">Roll out strategic automation initiatives</p>
+                            
+                            <!-- Key Activities -->
+                            <div class="mb-4">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
+                                    <span class="text-white/70 text-xs">Full-scale implementation</span>
+                                </div>
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
+                                    <span class="text-white/70 text-xs">Cross-department rollout</span>
+                                </div>
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
+                                    <span class="text-white/70 text-xs">Integration testing</span>
+                                </div>
+                            </div>
+                            
+                            <div id="deployPhase" class="space-y-3">
+                                <div class="text-white/60 text-center py-4">No processes analyzed yet</div>
+                            </div>
+                        </div>
+
+                        <!-- Phase 4: Monitor & Scale -->
+                        <div class="glass-effect rounded-xl p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-8 h-8 bg-secondary rounded-full flex items-center justify-center mr-3">
+                                    <span class="text-white font-bold">4</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-white">Monitor & Scale</h3>
+                                    <p class="text-white/60 text-xs">Ongoing</p>
+                                </div>
+                            </div>
+                            <p class="text-white/80 text-sm mb-4">Continuous improvement & expansion</p>
+                            
+                            <!-- Key Activities -->
+                            <div class="mb-4">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
+                                    <span class="text-white/70 text-xs">Performance monitoring</span>
+                                </div>
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
+                                    <span class="text-white/70 text-xs">Continuous optimization</span>
+                                </div>
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
+                                    <span class="text-white/70 text-xs">Scale to new areas</span>
+                                </div>
+                            </div>
+                            
+                            <div id="monitorPhase" class="space-y-3">
+                                <div class="text-white/60 text-center py-4">No processes analyzed yet</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ROI Summary -->
+                    <div class="glass-effect rounded-xl p-6 mt-6">
+                        <h3 class="text-xl font-semibold text-white mb-4">📊 Expected Business Impact</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-success" id="totalROI">$0</div>
+                                <div class="text-white/80 text-sm">Annual Savings</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-warning" id="hoursRecovered">0</div>
+                                <div class="text-white/80 text-sm">Hours/Week Recovered</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-secondary" id="processesAutomated">0</div>
+                                <div class="text-white/80 text-sm">Processes Ready</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-primary" id="implementationTime">0</div>
+                                <div class="text-white/80 text-sm">Months to Implement</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agent Interaction Panel -->
+                <div id="agentInteraction" class="glass-effect rounded-xl p-6 mt-6 hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-semibold text-white" id="agentTitle">Agent Consultation</h3>
+                        <button onclick="closeAgent()" class="text-white/60 hover:text-white">✕</button>
+                    </div>
+                    <div id="agentContent" class="text-white">
+                        <!-- Agent-specific content will be loaded here -->
                     </div>
                 </div>
 
@@ -368,7 +688,6 @@
                                 Engage Agent
                             </button>
                         </div>
-
                         <!-- Design Agent -->
                         <div class="agent-panel">
                             <div class="flex items-center mb-4">
@@ -382,7 +701,6 @@
                                 Engage Agent
                             </button>
                         </div>
-
                         <!-- Content Agent -->
                         <div class="agent-panel">
                             <div class="flex items-center mb-4">
@@ -396,7 +714,6 @@
                                 Engage Agent
                             </button>
                         </div>
-
                         <!-- Brand Agent -->
                         <div class="agent-panel">
                             <div class="flex items-center mb-4">
@@ -410,7 +727,6 @@
                                 Engage Agent
                             </button>
                         </div>
-
                         <!-- Engineering Agent -->
                         <div class="agent-panel">
                             <div class="flex items-center mb-4">
@@ -427,15 +743,12 @@
                     </div>
                 </div>
 
-                <!-- Agent Interaction Panel -->
-                <div id="agentInteraction" class="glass-effect rounded-xl p-6 mt-6 hidden">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-xl font-semibold text-white" id="agentTitle">Agent Consultation</h3>
-                        <button onclick="closeAgent()" class="text-white/60 hover:text-white">✕</button>
-                    </div>
-                    <div id="agentContent" class="text-white">
-                        <!-- Agent-specific content will be loaded here -->
-                    </div>
+                <!-- Generate Report Button -->
+                <div class="mt-12 text-center">
+                    <button onclick="generateReport()" class="bg-gradient-to-r from-primary to-secondary hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-lg text-lg font-semibold shadow-lg transition-all duration-200 transform hover:scale-105">
+                        📊 Generate Complete Business Report
+                    </button>
+                    <p class="text-sm text-gray-600 mt-2">Create a comprehensive automation report for stakeholders</p>
                 </div>
             </div>
         </div>
@@ -1037,6 +1350,7 @@
         let processes = [];
         let charts = {};
         let currentStep = 1;
+        let editingProcessId = null;
 
         // Password protection
         document.getElementById('passwordForm').addEventListener('submit', function(e) {
@@ -1100,10 +1414,24 @@
         function renderProjectList() {
             const projectList = document.getElementById('projectList');
             projectList.innerHTML = projects.map(project => `
-                <button onclick="selectProject('${project.id}')" class="w-full text-left p-4 bg-white/90 hover:bg-white text-gray-900 rounded-lg transition-all duration-200 border ${currentProjectId === project.id ? 'border-primary bg-primary/5 ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary/30'}">
-                    <div class="font-semibold">${project.name}</div>
-                    <div class="text-sm text-gray-600 mt-1">${project.clientName}</div>
-                </button>
+                <div class="group relative">
+                    <button onclick="selectProject('${project.id}')" class="w-full text-left p-4 bg-white/90 hover:bg-white text-gray-900 rounded-lg transition-all duration-200 border ${currentProjectId === project.id ? 'border-primary bg-primary/5 ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary/30'}">
+                        <div class="font-semibold">${project.name}</div>
+                        <div class="text-sm text-gray-600 mt-1">${project.clientName}</div>
+                    </button>
+                    <div class="absolute top-2 right-2 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button onclick="editProject('${project.id}'); event.stopPropagation();" class="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-blue-50" title="Edit project">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                        </button>
+                        <button onclick="deleteProject('${project.id}'); event.stopPropagation();" class="text-red-600 hover:text-red-800 p-1 rounded hover:bg-red-50" title="Delete project">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
             `).join('');
         }
 
@@ -1124,25 +1452,45 @@
         function closeProjectModal() {
             document.getElementById('projectModal').classList.add('hidden');
             document.getElementById('projectForm').reset();
+            
+            // Reset edit mode
+            delete document.getElementById('projectForm').dataset.editId;
+            document.querySelector('#projectModal h2').textContent = 'Create New Project';
+            document.querySelector('#projectModal button[type="submit"]').textContent = 'Create Project →';
         }
 
         document.getElementById('projectForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            const form = e.target;
             const projectName = document.getElementById('projectName').value;
             const clientName = document.getElementById('clientName').value;
+            const editId = form.dataset.editId;
             
-            const newProject = {
-                id: Date.now().toString(),
-                name: projectName,
-                clientName: clientName,
-                createdAt: new Date().toISOString()
-            };
+            if (editId) {
+                // Update existing project
+                const projectIndex = projects.findIndex(p => p.id === editId);
+                if (projectIndex !== -1) {
+                    projects[projectIndex].name = projectName;
+                    projects[projectIndex].clientName = clientName;
+                    projects[projectIndex].updatedAt = new Date().toISOString();
+                    showNotification('Project updated successfully', 'success');
+                }
+            } else {
+                // Create new project
+                const newProject = {
+                    id: Date.now().toString(),
+                    name: projectName,
+                    clientName: clientName,
+                    createdAt: new Date().toISOString()
+                };
+                projects.push(newProject);
+                showNotification('Project created successfully', 'success');
+                selectProject(newProject.id);
+            }
 
-            projects.push(newProject);
             saveProjects();
             renderProjectList();
             closeProjectModal();
-            selectProject(newProject.id);
         });
 
         function renderProcessList() {
@@ -1157,15 +1505,28 @@
                 const scoreColor = avgScore >= 7 ? 'bg-success' : avgScore >= 5 ? 'bg-warning' : 'bg-danger';
                 
                 return `
-                    <div class="process-card rounded-lg p-4 fade-in">
+                    <div class="process-card group relative rounded-lg p-4 fade-in bg-white/95 border border-gray-200 hover:shadow-md transition-all duration-200">
                         <div class="flex justify-between items-start mb-3">
                             <div class="flex-1">
                                 <h4 class="font-semibold text-gray-900">${process.name}</h4>
                                 <p class="text-sm text-gray-600">${process.department}</p>
                             </div>
-                            <div class="text-right">
+                            <div class="flex items-center space-x-2">
                                 <div class="${scoreColor} text-white text-xs px-3 py-1 rounded-full font-semibold">${avgScore.toFixed(1)}/10</div>
                             </div>
+                        </div>
+                        <div class="absolute top-2 right-2 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button onclick="editProcess('${process.id}'); event.stopPropagation();" class="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-blue-50" title="Edit process">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                            </button>
+                            <button onclick="deleteProcess('${process.id}'); event.stopPropagation();" class="text-red-600 hover:text-red-800 p-1 rounded hover:bg-red-50" title="Delete process">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </button>
+                        </div>
                         </div>
                         <div class="text-sm text-gray-700 space-y-1">
                             <div class="flex justify-between">
@@ -1206,8 +1567,16 @@
                 input.checked = false;
             });
             
-            // Clear selected template
+            // Clear selected template and edit mode
             window.selectedTemplate = null;
+            editingProcessId = null;
+            
+            // Reset modal title and button
+            document.querySelector('#processModal h2').textContent = 'Add Business Process';
+            document.getElementById('submitBtn').innerHTML = 'Add Process ✓';
+            
+            // Hide custom department field
+            document.getElementById('customDepartment').classList.add('hidden');
         }
 
         function initializeSliders() {
@@ -1547,11 +1916,13 @@
             e.preventDefault();
             
             const scores = calculateScores();
+            const department = document.getElementById('processDepartment').value;
+            const finalDepartment = department === 'Custom' ? document.getElementById('customDepartment').value : department;
             
-            const newProcess = {
-                id: Date.now().toString(),
+            const processData = {
                 name: document.getElementById('processName').value,
-                department: document.getElementById('processDepartment').value,
+                department: finalDepartment,
+                customDepartment: department === 'Custom' ? document.getElementById('customDepartment').value : null,
                 timeSpent: parseInt(document.getElementById('timeSpent').value),
                 scores: {
                     repetitive: scores.repetitive,
@@ -1562,10 +1933,27 @@
                 impact: scores.impact,
                 feasibility: scores.feasibility,
                 notes: document.getElementById('processNotes')?.value || '',
-                createdAt: new Date().toISOString()
+                updatedAt: new Date().toISOString()
             };
 
-            processes.push(newProcess);
+            if (editingProcessId) {
+                // Update existing process
+                const processIndex = processes.findIndex(p => p.id === editingProcessId);
+                if (processIndex !== -1) {
+                    processes[processIndex] = { ...processes[processIndex], ...processData };
+                    showNotification('Process updated successfully', 'success');
+                }
+            } else {
+                // Create new process
+                const newProcess = {
+                    ...processData,
+                    id: Date.now().toString(),
+                    createdAt: new Date().toISOString()
+                };
+                processes.push(newProcess);
+                showNotification('Process added successfully', 'success');
+            }
+
             saveProcesses(currentProjectId);
             renderProcessList();
             updateCharts();
@@ -1586,6 +1974,274 @@
             document.getElementById('automationReady').textContent = automationReady;
             document.getElementById('totalHours').textContent = totalHours;
             document.getElementById('potentialSavings').textContent = `$${potentialSavings.toLocaleString()}`;
+            
+            // Update roadmap recommendations
+            updateRoadmap();
+        }
+
+        function updateRoadmap() {
+            if (processes.length === 0) {
+                document.getElementById('pilotPhase').innerHTML = '<div class="text-white/60 text-center py-4">No processes analyzed yet</div>';
+                document.getElementById('refinePhase').innerHTML = '<div class="text-white/60 text-center py-4">No processes analyzed yet</div>';
+                document.getElementById('deployPhase').innerHTML = '<div class="text-white/60 text-center py-4">No processes analyzed yet</div>';
+                document.getElementById('monitorPhase').innerHTML = '<div class="text-white/60 text-center py-4">No processes analyzed yet</div>';
+                return;
+            }
+
+            // Calculate priority scores for each process
+            const prioritizedProcesses = processes.map(process => {
+                const avgAutomationScore = (process.scores.repetitive + process.scores.dataDriven + process.scores.ruleBased + process.scores.highVolume) / 4;
+                const priorityScore = (process.impact * 0.4) + (process.feasibility * 0.3) + (avgAutomationScore * 0.3);
+                
+                return {
+                    ...process,
+                    priorityScore,
+                    avgAutomationScore,
+                    category: getProcessCategory(process.impact, process.feasibility, avgAutomationScore),
+                    estimatedROI: calculateROI(process),
+                    implementationTime: getImplementationTime(process.feasibility, avgAutomationScore)
+                };
+            }).sort((a, b) => b.priorityScore - a.priorityScore);
+
+            // Categorize processes into 4 phases
+            const pilotProcesses = prioritizedProcesses.filter(p => p.category === 'quickWin');
+            const refineProcesses = prioritizedProcesses.filter(p => p.category === 'strategic');
+            const deployProcesses = prioritizedProcesses.filter(p => p.category === 'deploy');
+            const monitorProcesses = prioritizedProcesses.filter(p => p.category === 'monitor');
+
+            // Update UI with new 4-phase structure
+            updateRoadmapSection('pilotPhase', pilotProcesses, 'success');
+            updateRoadmapSection('refinePhase', refineProcesses, 'primary');  
+            updateRoadmapSection('deployPhase', deployProcesses, 'warning');
+            updateRoadmapSection('monitorPhase', monitorProcesses, 'secondary');
+
+            // Update ROI summary
+            updateROISummary(prioritizedProcesses);
+        }
+
+        function getProcessCategory(impact, feasibility, automationScore) {
+            const priorityScore = (impact * 0.4) + (feasibility * 0.3) + (automationScore * 0.3);
+            
+            // Phase 1: Pilot Project - High impact, high feasibility (quick wins)
+            if (impact >= 7 && feasibility >= 7 && automationScore >= 6) return 'quickWin';
+            
+            // Phase 2: Refine & Train - High impact but moderate feasibility
+            if (impact >= 6 && feasibility >= 5 && automationScore >= 5) return 'strategic';
+            
+            // Phase 3: Deploy - Moderate impact and feasibility
+            if (impact >= 5 && feasibility >= 4 && automationScore >= 4) return 'deploy';
+            
+            // Phase 4: Monitor & Scale - Lower priority, long-term potential
+            return 'monitor';
+        }
+
+        function calculateROI(process) {
+            const hourlyRate = 50; // $50/hour assumption
+            const annualSavings = process.timeSpent * 52 * hourlyRate;
+            const automationMultiplier = (process.scores.repetitive + process.scores.dataDriven + process.scores.ruleBased + process.scores.highVolume) / 40; // 0-1 multiplier
+            return Math.round(annualSavings * automationMultiplier);
+        }
+
+        function getImplementationTime(feasibility, automationScore) {
+            const complexity = 10 - feasibility + (10 - automationScore);
+            if (complexity <= 6) return 1;
+            if (complexity <= 10) return 2;
+            if (complexity <= 14) return 3;
+            return 6;
+        }
+
+        function updateRoadmapSection(sectionId, processes, colorClass) {
+            const section = document.getElementById(sectionId);
+            
+            if (processes.length === 0) {
+                section.innerHTML = '<div class="text-white/60 text-center py-4">No processes in this category</div>';
+                return;
+            }
+
+            section.innerHTML = processes.slice(0, 5).map(process => `
+                <div class="bg-white/10 rounded-lg p-4 border border-white/20">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-medium text-white">${process.name}</h4>
+                        <div class="text-${colorClass} text-xs px-2 py-1 bg-white/20 rounded">${process.priorityScore.toFixed(1)}</div>
+                    </div>
+                    <div class="text-sm text-white/80 mb-2">${process.department}</div>
+                    <div class="flex justify-between text-xs text-white/70">
+                        <span>ROI: $${process.estimatedROI.toLocaleString()}/year</span>
+                        <span>Time: ${process.implementationTime}mo</span>
+                    </div>
+                    <div class="mt-2 bg-white/10 rounded-full h-1">
+                        <div class="bg-${colorClass} h-1 rounded-full" style="width: ${(process.priorityScore * 10)}%"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateROISummary(processes) {
+            const totalROI = processes.reduce((sum, p) => sum + p.estimatedROI, 0);
+            const hoursRecovered = processes.reduce((sum, p) => sum + p.timeSpent, 0);
+            const processesReady = processes.filter(p => p.category === 'quickWin' || p.category === 'strategic').length;
+            const avgImplementationTime = processes.length > 0 ? 
+                Math.round(processes.reduce((sum, p) => sum + p.implementationTime, 0) / processes.length) : 0;
+
+            document.getElementById('totalROI').textContent = `$${totalROI.toLocaleString()}`;
+            document.getElementById('hoursRecovered').textContent = hoursRecovered;
+            document.getElementById('processesAutomated').textContent = processesReady;
+            document.getElementById('implementationTime').textContent = `${avgImplementationTime}`;
+        }
+
+        function generateReport() {
+            if (processes.length === 0) {
+                alert('Please add some processes first to generate a report.');
+                return;
+            }
+            
+            const project = projects.find(p => p.id === currentProjectId);
+            if (!project) {
+                alert('Please select a project first.');
+                return;
+            }
+
+            // Create a comprehensive report
+            const prioritizedProcesses = processes.map(process => {
+                const avgAutomationScore = (process.scores.repetitive + process.scores.dataDriven + process.scores.ruleBased + process.scores.highVolume) / 4;
+                const priorityScore = (process.impact * 0.4) + (process.feasibility * 0.3) + (avgAutomationScore * 0.3);
+                
+                return {
+                    ...process,
+                    priorityScore,
+                    avgAutomationScore,
+                    category: getProcessCategory(process.impact, process.feasibility, avgAutomationScore),
+                    estimatedROI: calculateROI(process)
+                };
+            }).sort((a, b) => b.priorityScore - a.priorityScore);
+
+            const reportContent = generateReportHTML(project, prioritizedProcesses);
+            
+            // Open in new window for printing/saving
+            const reportWindow = window.open('', '_blank');
+            reportWindow.document.write(reportContent);
+            reportWindow.document.close();
+            
+            showNotification('Report generated successfully! Check the new window.', 'success');
+        }
+
+        function generateReportHTML(project, processes) {
+            const pilotProcesses = processes.filter(p => p.category === 'quickWin');
+            const refineProcesses = processes.filter(p => p.category === 'strategic');
+            const deployProcesses = processes.filter(p => p.category === 'deploy');
+            const monitorProcesses = processes.filter(p => p.category === 'monitor');
+            const totalROI = processes.reduce((sum, p) => sum + p.estimatedROI, 0);
+            
+            return `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Automation Report - ${project.name}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+                        .header { border-bottom: 2px solid #2563eb; padding-bottom: 20px; margin-bottom: 30px; }
+                        .section { margin-bottom: 30px; }
+                        .process { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+                        .quick-win { border-left: 4px solid #10B981; }
+                        .strategic { border-left: 4px solid #F59E0B; }
+                        .future { border-left: 4px solid #8B5CF6; }
+                        .metrics { display: flex; justify-content: space-around; background: #f8f9fa; padding: 20px; border-radius: 8px; }
+                        .metric { text-align: center; }
+                        .metric-value { font-size: 24px; font-weight: bold; color: #2563eb; }
+                        h1 { color: #2563eb; }
+                        h2 { color: #1f2937; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px; }
+                        @media print { body { margin: 20px; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>🚀 AI Automation Opportunity Report</h1>
+                        <h2>${project.name} - ${project.clientName}</h2>
+                        <p>Generated on ${new Date().toLocaleDateString()}</p>
+                    </div>
+                    
+                    <div class="section">
+                        <h2>📊 Executive Summary</h2>
+                        <div class="metrics">
+                            <div class="metric">
+                                <div class="metric-value">${processes.length}</div>
+                                <div>Processes Analyzed</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">$${totalROI.toLocaleString()}</div>
+                                <div>Annual ROI Potential</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">${pilotProcesses.length}</div>
+                                <div>Pilot Phase Processes</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">${refineProcesses.length}</div>
+                                <div>Refine Phase Processes</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2>🎯 Phase 1: Pilot Project (Month 1-2)</h2>
+                        ${pilotProcesses.length === 0 ? '<p>No pilot processes identified. Consider improving process feasibility or automation readiness.</p>' : 
+                            pilotProcesses.map(p => `
+                                <div class="process quick-win">
+                                    <h3>${p.name}</h3>
+                                    <p><strong>Department:</strong> ${p.department}</p>
+                                    <p><strong>Priority Score:</strong> ${p.priorityScore.toFixed(1)}/10</p>
+                                    <p><strong>Estimated ROI:</strong> $${p.estimatedROI.toLocaleString()}/year</p>
+                                    <p><strong>Time Investment:</strong> ${p.timeSpent} hours/week</p>
+                                    <p><strong>Why it's a Quick Win:</strong> High impact (${p.impact}/10), Easy to implement (${p.feasibility}/10), Strong automation potential (${p.avgAutomationScore.toFixed(1)}/10)</p>
+                                </div>
+                            `).join('')
+                        }
+                    </div>
+
+                    <div class="section">
+                        <h2>📈 Phase 2: Refine & Train (Month 3-4)</h2>
+                        ${refineProcesses.length === 0 ? '<p>No refine phase processes identified.</p>' : 
+                            refineProcesses.map(p => `
+                                <div class="process strategic">
+                                    <h3>${p.name}</h3>
+                                    <p><strong>Department:</strong> ${p.department}</p>
+                                    <p><strong>Priority Score:</strong> ${p.priorityScore.toFixed(1)}/10</p>
+                                    <p><strong>Estimated ROI:</strong> $${p.estimatedROI.toLocaleString()}/year</p>
+                                    <p><strong>Time Investment:</strong> ${p.timeSpent} hours/week</p>
+                                    <p><strong>Implementation Considerations:</strong> Requires planning and resources but offers significant long-term value.</p>
+                                </div>
+                            `).join('')
+                        }
+                    </div>
+
+                    <div class="section">
+                        <h2>🔍 Implementation Recommendations</h2>
+                        <ol>
+                            <li><strong>Phase 1 - Pilot:</strong> Start with the ${pilotProcesses.length} highest-impact processes to build momentum and demonstrate ROI.</li>
+                            <li><strong>Phase 2 - Refine:</strong> Optimize the ${refineProcesses.length} processes and train teams for broader adoption.</li>
+                            <li><strong>Phase 3 - Deploy:</strong> Roll out strategic automation initiatives across departments.</li>
+                            <li><strong>Phase 4 - Monitor:</strong> Establish continuous improvement and scale to new areas.</li>
+                            <li><strong>Measure and Iterate:</strong> Track actual vs. projected savings and refine the automation approach.</li>
+                            <li><strong>Team Training:</strong> Ensure staff are prepared for process changes and new automated workflows.</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="section">
+                        <h2>💡 Next Steps</h2>
+                        <ul>
+                            <li>Schedule stakeholder review meeting</li>
+                            <li>Prioritize automation initiatives based on business goals</li>
+                            <li>Allocate resources for implementation</li>
+                            <li>Begin with highest-scoring quick wins</li>
+                        </ul>
+                    </div>
+                    
+                    <footer style="margin-top: 50px; text-align: center; color: #6b7280; border-top: 1px solid #e5e7eb; padding-top: 20px;">
+                        <p>Report generated by AI Opportunity Navigator • ${new Date().toLocaleDateString()}</p>
+                    </footer>
+                </body>
+                </html>
+            `;
         }
 
         function updateCharts() {
@@ -1593,6 +2249,229 @@
             updateDonutChart();
             updateRadarChart();
         }
+        
+        // Chart expansion functionality
+        function expandChart(chartId, title) {
+            // Create modal backdrop
+            const modal = document.createElement('div');
+            modal.className = 'expanded-chart-modal';
+            modal.onclick = (e) => {
+                if (e.target === modal) closeExpandedChart();
+            };
+            
+            // Create modal container
+            const container = document.createElement('div');
+            container.className = 'expanded-chart-container';
+            
+            // Create close button
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'expanded-chart-close';
+            closeBtn.innerHTML = '×';
+            closeBtn.onclick = closeExpandedChart;
+            
+            // Create title
+            const titleEl = document.createElement('h2');
+            titleEl.className = 'text-2xl font-bold text-gray-900 mb-6 pr-12';
+            titleEl.textContent = title;
+            
+            // Create canvas container
+            const canvasContainer = document.createElement('div');
+            canvasContainer.style.position = 'relative';
+            canvasContainer.style.height = 'calc(100% - 80px)';
+            
+            // Create new canvas
+            const canvas = document.createElement('canvas');
+            canvas.id = chartId + '_expanded';
+            
+            // Assemble modal
+            canvasContainer.appendChild(canvas);
+            container.appendChild(closeBtn);
+            container.appendChild(titleEl);
+            container.appendChild(canvasContainer);
+            modal.appendChild(container);
+            
+            // Add to body
+            document.body.appendChild(modal);
+            
+            // Clone the chart data and recreate in expanded view
+            setTimeout(() => {
+                createExpandedChart(chartId, canvas);
+            }, 100);
+            
+            // Store modal reference for cleanup
+            window.currentExpandedModal = modal;
+        }
+        
+        function createExpandedChart(originalChartId, canvas) {
+            const ctx = canvas.getContext('2d');
+            
+            // Get original chart data
+            let chartConfig;
+            
+            switch(originalChartId) {
+                case 'bubbleChart':
+                    chartConfig = createBubbleChartConfig();
+                    break;
+                case 'donutChart':
+                    chartConfig = createDonutChartConfig();
+                    break;
+                case 'radarChart':
+                    chartConfig = createRadarChartConfig();
+                    break;
+                default:
+                    return;
+            }
+            
+            // Create the expanded chart with responsive sizing
+            chartConfig.options.responsive = true;
+            chartConfig.options.maintainAspectRatio = false;
+            
+            new Chart(ctx, chartConfig);
+        }
+        
+        function createBubbleChartConfig() {
+            const data = processes.map(process => {
+                const avgScore = (process.scores.repetitive + process.scores.dataDriven + process.scores.ruleBased + process.scores.highVolume) / 4;
+                return {
+                    x: process.scores.businessImpact || 5,
+                    y: process.scores.implementationEase || 5,
+                    r: avgScore * 2,
+                    label: process.name
+                };
+            });
+            
+            return {
+                type: 'bubble',
+                data: {
+                    datasets: [{
+                        label: 'Processes',
+                        data: data,
+                        backgroundColor: 'rgba(37, 99, 235, 0.6)',
+                        borderColor: 'rgba(37, 99, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.raw.label + ': Impact(' + context.raw.x + '), Ease(' + context.raw.y + ')';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Business Impact' } },
+                        y: { title: { display: true, text: 'Implementation Ease' } }
+                    }
+                }
+            };
+        }
+        
+        function createDonutChartConfig() {
+            // Use the same categorization logic as getProcessCategory
+            const pilotPhase = processes.filter(p => {
+                const impact = p.impact || p.scores?.businessImpact || 0;
+                const feasibility = p.feasibility || 0;
+                const avgScore = (p.scores.repetitive + p.scores.dataDriven + p.scores.ruleBased + p.scores.highVolume) / 4;
+                return impact >= 7 && feasibility >= 7 && avgScore >= 6;
+            }).length;
+            
+            const refinePhase = processes.filter(p => {
+                const impact = p.impact || p.scores?.businessImpact || 0;
+                const feasibility = p.feasibility || 0;
+                const avgScore = (p.scores.repetitive + p.scores.dataDriven + p.scores.ruleBased + p.scores.highVolume) / 4;
+                return impact >= 6 && feasibility >= 5 && avgScore >= 5 && !(impact >= 7 && feasibility >= 7 && avgScore >= 6);
+            }).length;
+            
+            const deployPhase = processes.filter(p => {
+                const impact = p.impact || p.scores?.businessImpact || 0;
+                const feasibility = p.feasibility || 0;
+                const avgScore = (p.scores.repetitive + p.scores.dataDriven + p.scores.ruleBased + p.scores.highVolume) / 4;
+                return impact >= 5 && feasibility >= 4 && avgScore >= 4 && 
+                       !(impact >= 6 && feasibility >= 5 && avgScore >= 5);
+            }).length;
+            
+            const monitorPhase = processes.length - pilotPhase - refinePhase - deployPhase;
+            
+            return {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pilot Phase', 'Refine Phase', 'Deploy Phase', 'Monitor Phase'],
+                    datasets: [{
+                        data: [pilotPhase, refinePhase, deployPhase, monitorPhase],
+                        backgroundColor: ['#059669', '#3b82f6', '#d97706', '#7c3aed'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    cutout: '60%',
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            };
+        }
+        
+        function createRadarChartConfig() {
+            const avgScores = processes.reduce((acc, p) => {
+                acc.repetitive += p.scores.repetitive;
+                acc.dataDriven += p.scores.dataDriven;
+                acc.ruleBased += p.scores.ruleBased;
+                acc.highVolume += p.scores.highVolume;
+                return acc;
+            }, { repetitive: 0, dataDriven: 0, ruleBased: 0, highVolume: 0 });
+            
+            const processCount = Math.max(processes.length, 1);
+            
+            return {
+                type: 'radar',
+                data: {
+                    labels: ['Repetitive Tasks', 'Data-Driven', 'Rule-Based', 'High Volume'],
+                    datasets: [{
+                        label: 'Average Automation Suitability',
+                        data: [
+                            avgScores.repetitive / processCount,
+                            avgScores.dataDriven / processCount,
+                            avgScores.ruleBased / processCount,
+                            avgScores.highVolume / processCount
+                        ],
+                        backgroundColor: 'rgba(124, 58, 237, 0.2)',
+                        borderColor: 'rgba(124, 58, 237, 1)',
+                        pointBackgroundColor: 'rgba(124, 58, 237, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(124, 58, 237, 1)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 10
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            };
+        }
+        
+        function closeExpandedChart() {
+            if (window.currentExpandedModal) {
+                document.body.removeChild(window.currentExpandedModal);
+                window.currentExpandedModal = null;
+            }
+        }
+        
+        // Close expanded chart with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && window.currentExpandedModal) {
+                closeExpandedChart();
+            }
+        });
 
         function updateBubbleChart() {
             const ctx = document.getElementById('bubbleChart').getContext('2d');
@@ -2008,6 +2887,110 @@
                     });
                 }, 1000);
             }
+        }
+
+        // Edit and Delete Functions
+        function editProject(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            // Fill form with existing data
+            document.getElementById('projectName').value = project.name;
+            document.getElementById('clientName').value = project.clientName;
+            
+            // Update form to edit mode
+            const form = document.getElementById('projectForm');
+            form.dataset.editId = projectId;
+            
+            // Update modal title and button
+            document.querySelector('#projectModal h2').textContent = 'Edit Project';
+            document.querySelector('#projectModal button[type="submit"]').textContent = 'Save Changes';
+            
+            // Show modal
+            document.getElementById('projectModal').classList.remove('hidden');
+        }
+
+        function editProcess(processId) {
+            const process = processes.find(p => p.id === processId);
+            if (!process) return;
+            
+            editingProcessId = processId;
+            
+            // Fill form with existing data
+            document.getElementById('processName').value = process.name;
+            document.getElementById('processDepartment').value = process.department === 'Custom' ? 'Custom' : process.department;
+            if (process.department === 'Custom') {
+                document.getElementById('customDepartment').value = process.customDepartment || '';
+                toggleCustomDepartment();
+            }
+            document.getElementById('timeSpent').value = process.timeSpent;
+            
+            // Update modal title
+            document.querySelector('#processModal h2').textContent = 'Edit Business Process';
+            document.getElementById('submitBtn').innerHTML = 'Save Changes ✓';
+            
+            // Show modal
+            document.getElementById('processModal').classList.remove('hidden');
+        }
+
+        function deleteProcess(processId) {
+            const process = processes.find(p => p.id === processId);
+            if (!process) return;
+            
+            if (confirm(`Are you sure you want to delete "${process.name}"? This action cannot be undone.`)) {
+                processes = processes.filter(p => p.id !== processId);
+                saveProcesses(currentProjectId);
+                renderProcessList();
+                updateCharts();
+                updateMetrics();
+                
+                // Show success message
+                showNotification('Process deleted successfully', 'success');
+            }
+        }
+
+        function deleteProject(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            if (confirm(`Are you sure you want to delete "${project.name}"? This will also delete all associated processes.`)) {
+                // Remove project
+                projects = projects.filter(p => p.id !== projectId);
+                saveProjects();
+                
+                // Remove associated processes
+                localStorage.removeItem(`processes_${projectId}`);
+                
+                // Clear current selection if deleted
+                if (currentProjectId === projectId) {
+                    currentProjectId = null;
+                    processes = [];
+                    document.getElementById('currentProject').textContent = 'Select Project';
+                    renderProcessList();
+                    updateCharts();
+                    updateMetrics();
+                }
+                
+                renderProjectList();
+                showNotification('Project deleted successfully', 'success');
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white z-50 transition-all duration-300 ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 
+                'bg-blue-500'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => document.body.removeChild(notification), 300);
+            }, 3000);
         }
 
         // Initialize the application
