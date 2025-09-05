@@ -11,11 +11,18 @@
             theme: {
                 extend: {
                     colors: {
-                        'energy-blue': '#3B82F6',
-                        'energy-purple': '#8B5CF6',
-                        'energy-green': '#10B981',
-                        'energy-orange': '#F59E0B',
-                        'energy-pink': '#EC4899'
+                        'primary': '#2563eb',
+                        'primary-light': '#60a5fa',
+                        'secondary': '#7c3aed',
+                        'success': '#059669',
+                        'warning': '#d97706',
+                        'danger': '#dc2626',
+                        'gray-50': '#f8fafc',
+                        'gray-100': '#f1f5f9',
+                        'gray-200': '#e2e8f0',
+                        'gray-700': '#334155',
+                        'gray-800': '#1e293b',
+                        'gray-900': '#0f172a'
                     }
                 }
             }
@@ -23,35 +30,53 @@
     </script>
     <style>
         .password-container {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
             min-height: 100vh;
         }
         .dashboard-container {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             min-height: 100vh;
         }
         .glass-effect {
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        .glass-effect-dark {
+            backdrop-filter: blur(16px);
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         }
         .chart-container {
             position: relative;
             height: 300px;
         }
         .process-card {
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            backdrop-filter: blur(8px);
         }
         .process-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #3B82F6;
         }
         .agent-panel {
-            background: linear-gradient(145deg, #1f2937 0%, #374151 100%);
-            border-radius: 15px;
-            padding: 20px;
-            margin: 10px;
-            color: white;
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 8px;
+            color: #334155;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+        }
+        .agent-panel:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1);
         }
         .agent-avatar {
             width: 50px;
@@ -64,35 +89,76 @@
             color: white;
             margin-right: 15px;
         }
+        
+        /* Custom slider styling */
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #2563eb;
+            cursor: pointer;
+            border: 3px solid #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .slider::-moz-range-thumb {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #2563eb;
+            cursor: pointer;
+            border: 3px solid #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
     <!-- Password Protection Screen -->
-    <div id="passwordScreen" class="password-container flex items-center justify-center">
-        <div class="glass-effect rounded-2xl p-8 w-full max-w-md">
-            <div class="text-center mb-6">
+    <div id="passwordScreen" class="password-container flex items-center justify-center p-4">
+        <div class="glass-effect-dark rounded-2xl p-8 w-full max-w-md shadow-2xl">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                </div>
                 <h1 class="text-3xl font-bold text-white mb-2">Business Automation Hub</h1>
-                <p class="text-white/80">Secure access required</p>
+                <p class="text-white/80">Secure access required for dashboard</p>
             </div>
-            <form id="passwordForm" class="space-y-4">
+            <form id="passwordForm" class="space-y-6">
                 <div>
                     <input 
                         type="password" 
                         id="passwordInput" 
                         placeholder="Enter access code"
-                        class="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:border-white focus:outline-none focus:ring-2 focus:ring-white/30"
+                        class="w-full px-4 py-4 rounded-lg bg-white/10 text-white placeholder-white/60 border border-white/20 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 transition-colors backdrop-blur-sm"
                         required
                     >
                 </div>
                 <button 
                     type="submit"
-                    class="w-full py-3 bg-energy-blue hover:bg-blue-600 text-white font-semibold rounded-lg transition duration-300 transform hover:scale-105"
+                    class="w-full py-4 bg-primary hover:bg-blue-700 text-white font-semibold rounded-lg transition duration-300 transform hover:scale-105 focus:ring-4 focus:ring-primary/30"
                 >
                     Access Dashboard
                 </button>
             </form>
-            <div id="errorMessage" class="text-red-200 text-sm mt-3 hidden">
-                Invalid access code. Please try again.
+            <div id="errorMessage" class="text-red-300 text-sm mt-4 p-3 bg-red-500/20 rounded-lg border border-red-400/30 hidden">
+                <div class="flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Invalid access code. Please try again.
+                </div>
             </div>
         </div>
     </div>
@@ -101,35 +167,44 @@
     <div id="dashboard" class="hidden">
         <div class="dashboard-container">
             <!-- Header -->
-            <header class="bg-white/10 backdrop-blur-md border-b border-white/20 p-4">
+            <header class="bg-white/95 backdrop-blur-xl border-b border-gray-200 p-6 shadow-sm">
                 <div class="max-w-7xl mx-auto flex justify-between items-center">
                     <div>
-                        <h1 class="text-2xl font-bold text-white">AI Opportunity Navigator</h1>
-                        <p class="text-white/80">Business Process Automation Intelligence</p>
+                        <h1 class="text-3xl font-bold text-gray-900 tracking-tight">AI Opportunity Navigator</h1>
+                        <p class="text-gray-600 mt-1">Business Process Automation Intelligence</p>
                     </div>
-                    <div class="flex items-center space-x-4">
-                        <div class="text-white/80 text-sm">
-                            Project: <span id="currentProject" class="text-white font-semibold">Select Project</span>
+                    <div class="flex items-center space-x-6">
+                        <div class="text-sm">
+                            <span class="text-gray-500">Active Project:</span>
+                            <span id="currentProject" class="text-gray-900 font-semibold ml-2">Select Project</span>
                         </div>
-                        <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">
-                            Logout
+                        <button onclick="logout()" class="bg-danger hover:bg-red-700 text-white px-4 py-2 rounded-lg transition font-medium">
+                            Sign Out
                         </button>
                     </div>
                 </div>
             </header>
 
             <!-- Main Content -->
-            <div class="max-w-7xl mx-auto p-6">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="max-w-7xl mx-auto p-8">
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     
                     <!-- Left Panel - Project Management -->
                     <div class="lg:col-span-1">
                         <!-- Project Selection -->
                         <div class="glass-effect rounded-xl p-6 mb-6">
-                            <h2 class="text-xl font-semibold text-white mb-4">Projects</h2>
+                            <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                </svg>
+                                Projects
+                            </h2>
                             <div class="space-y-3">
-                                <button onclick="createProject()" class="w-full bg-energy-green hover:bg-green-600 text-white px-4 py-3 rounded-lg transition font-medium">
-                                    + New Project
+                                <button onclick="createProject()" class="w-full bg-primary hover:bg-blue-700 text-white px-4 py-3 rounded-lg transition font-medium flex items-center justify-center">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                    </svg>
+                                    New Project
                                 </button>
                                 <div id="projectList" class="space-y-2">
                                     <!-- Projects will be loaded here -->
@@ -139,9 +214,17 @@
 
                         <!-- Process List -->
                         <div class="glass-effect rounded-xl p-6">
-                            <h2 class="text-xl font-semibold text-white mb-4">Business Processes</h2>
-                            <button onclick="addProcess()" class="w-full bg-energy-blue hover:bg-blue-600 text-white px-4 py-3 rounded-lg transition font-medium mb-4">
-                                + Add Process
+                            <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                </svg>
+                                Business Processes
+                            </h2>
+                            <button onclick="addProcess()" class="w-full bg-success hover:bg-green-700 text-white px-4 py-3 rounded-lg transition font-medium mb-4 flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                Add Process
                             </button>
                             <div id="processList" class="space-y-3 max-h-96 overflow-y-auto">
                                 <!-- Processes will be loaded here -->
@@ -150,37 +233,63 @@
                     </div>
 
                     <!-- Right Panel - Dashboard & Analytics -->
-                    <div class="lg:col-span-2">
+                    <div class="lg:col-span-3">
                         <!-- Key Metrics -->
-                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                            <div class="glass-effect rounded-xl p-4 text-center">
-                                <div class="text-2xl font-bold text-white" id="totalProcesses">0</div>
-                                <div class="text-white/80 text-sm">Total Processes</div>
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                            <div class="glass-effect rounded-xl p-6 text-center hover:scale-105 transition-transform duration-200">
+                                <div class="flex items-center justify-center w-12 h-12 bg-primary/10 rounded-lg mx-auto mb-3">
+                                    <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                    </svg>
+                                </div>
+                                <div class="text-3xl font-bold text-gray-900 mb-1" id="totalProcesses">0</div>
+                                <div class="text-gray-600 text-sm font-medium">Total Processes</div>
                             </div>
-                            <div class="glass-effect rounded-xl p-4 text-center">
-                                <div class="text-2xl font-bold text-energy-green" id="automationReady">0</div>
-                                <div class="text-white/80 text-sm">Ready for AI</div>
+                            <div class="glass-effect rounded-xl p-6 text-center hover:scale-105 transition-transform duration-200">
+                                <div class="flex items-center justify-center w-12 h-12 bg-success/10 rounded-lg mx-auto mb-3">
+                                    <svg class="w-6 h-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div class="text-3xl font-bold text-success mb-1" id="automationReady">0</div>
+                                <div class="text-gray-600 text-sm font-medium">Ready for AI</div>
                             </div>
-                            <div class="glass-effect rounded-xl p-4 text-center">
-                                <div class="text-2xl font-bold text-energy-orange" id="totalHours">0</div>
-                                <div class="text-white/80 text-sm">Hours/Week</div>
+                            <div class="glass-effect rounded-xl p-6 text-center hover:scale-105 transition-transform duration-200">
+                                <div class="flex items-center justify-center w-12 h-12 bg-warning/10 rounded-lg mx-auto mb-3">
+                                    <svg class="w-6 h-6 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div class="text-3xl font-bold text-warning mb-1" id="totalHours">0</div>
+                                <div class="text-gray-600 text-sm font-medium">Hours/Week</div>
                             </div>
-                            <div class="glass-effect rounded-xl p-4 text-center">
-                                <div class="text-2xl font-bold text-energy-pink" id="potentialSavings">$0</div>
-                                <div class="text-white/80 text-sm">Est. Savings</div>
+                            <div class="glass-effect rounded-xl p-6 text-center hover:scale-105 transition-transform duration-200">
+                                <div class="flex items-center justify-center w-12 h-12 bg-secondary/10 rounded-lg mx-auto mb-3">
+                                    <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                    </svg>
+                                </div>
+                                <div class="text-3xl font-bold text-secondary mb-1" id="potentialSavings">$0</div>
+                                <div class="text-gray-600 text-sm font-medium">Est. Savings</div>
                             </div>
                         </div>
 
                         <!-- Charts -->
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                             <div class="glass-effect rounded-xl p-6">
-                                <h3 class="text-lg font-semibold text-white mb-4">Impact vs Feasibility</h3>
+                                <div class="flex items-center mb-6">
+                                    <div class="w-2 h-2 bg-primary rounded-full mr-3"></div>
+                                    <h3 class="text-lg font-semibold text-gray-900">Impact vs Feasibility</h3>
+                                </div>
                                 <div class="chart-container">
                                     <canvas id="bubbleChart"></canvas>
                                 </div>
                             </div>
                             <div class="glass-effect rounded-xl p-6">
-                                <h3 class="text-lg font-semibold text-white mb-4">Process Distribution</h3>
+                                <div class="flex items-center mb-6">
+                                    <div class="w-2 h-2 bg-success rounded-full mr-3"></div>
+                                    <h3 class="text-lg font-semibold text-gray-900">Process Distribution</h3>
+                                </div>
                                 <div class="chart-container">
                                     <canvas id="donutChart"></canvas>
                                 </div>
@@ -189,7 +298,10 @@
 
                         <!-- AI Suitability Radar -->
                         <div class="glass-effect rounded-xl p-6">
-                            <h3 class="text-lg font-semibold text-white mb-4">AI Automation Suitability</h3>
+                            <div class="flex items-center mb-6">
+                                <div class="w-2 h-2 bg-secondary rounded-full mr-3"></div>
+                                <h3 class="text-lg font-semibold text-gray-900">AI Automation Suitability</h3>
+                            </div>
                             <div class="chart-container">
                                 <canvas id="radarChart"></canvas>
                             </div>
@@ -198,77 +310,80 @@
                 </div>
 
                 <!-- AI Business Team Collaboration Panel -->
-                <div class="mt-8">
-                    <h2 class="text-2xl font-bold text-white mb-6">AI Business Team Collaboration</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div class="mt-12">
+                    <div class="flex items-center mb-8">
+                        <div class="w-3 h-3 bg-gradient-to-r from-primary to-secondary rounded-full mr-4"></div>
+                        <h2 class="text-3xl font-bold text-gray-900">AI Business Team Collaboration</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                         
                         <!-- Product Manager Agent -->
                         <div class="agent-panel">
-                            <div class="flex items-center mb-3">
-                                <div class="agent-avatar bg-energy-blue">PM</div>
+                            <div class="flex items-center mb-4">
+                                <div class="agent-avatar bg-primary">PM</div>
                                 <div>
-                                    <h4 class="font-semibold">Product Manager</h4>
-                                    <p class="text-sm text-gray-300">Strategy & Roadmap</p>
+                                    <h4 class="font-semibold text-gray-900">Product Manager</h4>
+                                    <p class="text-sm text-gray-600">Strategy & Roadmap</p>
                                 </div>
                             </div>
-                            <button onclick="engageAgent('pm')" class="w-full bg-energy-blue hover:bg-blue-600 text-white py-2 px-4 rounded-lg text-sm transition">
-                                Engage PM Agent
+                            <button onclick="engageAgent('pm')" class="w-full bg-primary hover:bg-blue-700 text-white py-3 px-4 rounded-lg text-sm transition font-medium">
+                                Engage Agent
                             </button>
                         </div>
 
                         <!-- Design Agent -->
                         <div class="agent-panel">
-                            <div class="flex items-center mb-3">
-                                <div class="agent-avatar bg-energy-purple">UI</div>
+                            <div class="flex items-center mb-4">
+                                <div class="agent-avatar bg-secondary">UI</div>
                                 <div>
-                                    <h4 class="font-semibold">Design Team</h4>
-                                    <p class="text-sm text-gray-300">UX & Visual</p>
+                                    <h4 class="font-semibold text-gray-900">Design Team</h4>
+                                    <p class="text-sm text-gray-600">UX & Visual</p>
                                 </div>
                             </div>
-                            <button onclick="engageAgent('design')" class="w-full bg-energy-purple hover:bg-purple-600 text-white py-2 px-4 rounded-lg text-sm transition">
-                                Engage Design Agent
+                            <button onclick="engageAgent('design')" class="w-full bg-secondary hover:bg-purple-800 text-white py-3 px-4 rounded-lg text-sm transition font-medium">
+                                Engage Agent
                             </button>
                         </div>
 
                         <!-- Content Agent -->
                         <div class="agent-panel">
-                            <div class="flex items-center mb-3">
-                                <div class="agent-avatar bg-energy-green">CT</div>
+                            <div class="flex items-center mb-4">
+                                <div class="agent-avatar bg-success">CT</div>
                                 <div>
-                                    <h4 class="font-semibold">Content Team</h4>
-                                    <p class="text-sm text-gray-300">Documentation</p>
+                                    <h4 class="font-semibold text-gray-900">Content Team</h4>
+                                    <p class="text-sm text-gray-600">Documentation</p>
                                 </div>
                             </div>
-                            <button onclick="engageAgent('content')" class="w-full bg-energy-green hover:bg-green-600 text-white py-2 px-4 rounded-lg text-sm transition">
-                                Engage Content Agent
+                            <button onclick="engageAgent('content')" class="w-full bg-success hover:bg-green-700 text-white py-3 px-4 rounded-lg text-sm transition font-medium">
+                                Engage Agent
                             </button>
                         </div>
 
                         <!-- Brand Agent -->
                         <div class="agent-panel">
-                            <div class="flex items-center mb-3">
-                                <div class="agent-avatar bg-energy-orange">BR</div>
+                            <div class="flex items-center mb-4">
+                                <div class="agent-avatar bg-warning">BR</div>
                                 <div>
-                                    <h4 class="font-semibold">Brand Team</h4>
-                                    <p class="text-sm text-gray-300">Guidelines</p>
+                                    <h4 class="font-semibold text-gray-900">Brand Team</h4>
+                                    <p class="text-sm text-gray-600">Guidelines</p>
                                 </div>
                             </div>
-                            <button onclick="engageAgent('brand')" class="w-full bg-energy-orange hover:bg-orange-600 text-white py-2 px-4 rounded-lg text-sm transition">
-                                Engage Brand Agent
+                            <button onclick="engageAgent('brand')" class="w-full bg-warning hover:bg-amber-700 text-white py-3 px-4 rounded-lg text-sm transition font-medium">
+                                Engage Agent
                             </button>
                         </div>
 
                         <!-- Engineering Agent -->
                         <div class="agent-panel">
-                            <div class="flex items-center mb-3">
-                                <div class="agent-avatar bg-energy-pink">ENG</div>
+                            <div class="flex items-center mb-4">
+                                <div class="agent-avatar bg-danger">ENG</div>
                                 <div>
-                                    <h4 class="font-semibold">Engineering</h4>
-                                    <p class="text-sm text-gray-300">Technical</p>
+                                    <h4 class="font-semibold text-gray-900">Engineering</h4>
+                                    <p class="text-sm text-gray-600">Technical</p>
                                 </div>
                             </div>
-                            <button onclick="engageAgent('engineering')" class="w-full bg-energy-pink hover:bg-pink-600 text-white py-2 px-4 rounded-lg text-sm transition">
-                                Engage Engineering Agent
+                            <button onclick="engageAgent('engineering')" class="w-full bg-danger hover:bg-red-700 text-white py-3 px-4 rounded-lg text-sm transition font-medium">
+                                Engage Agent
                             </button>
                         </div>
                     </div>
@@ -289,21 +404,28 @@
     </div>
 
     <!-- Process Entry Modal -->
-    <div id="processModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-        <div class="bg-white rounded-2xl p-8 w-full max-w-2xl max-h-screen overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">Add Business Process</h2>
-                <button onclick="closeProcessModal()" class="text-gray-500 hover:text-gray-700 text-xl">✕</button>
+    <div id="processModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-2xl p-8 w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900">Add Business Process</h2>
+                    <p class="text-gray-600 mt-1">Define a new process for automation analysis</p>
+                </div>
+                <button onclick="closeProcessModal()" class="text-gray-400 hover:text-gray-600 text-2xl transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
             </div>
             <form id="processForm" class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Process Name</label>
-                        <input type="text" id="processName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-energy-blue focus:border-energy-blue" required>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">Process Name</label>
+                        <input type="text" id="processName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="e.g., Invoice Processing" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Department</label>
-                        <select id="processDepartment" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-energy-blue focus:border-energy-blue" required>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">Department</label>
+                        <select id="processDepartment" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors" required>
                             <option value="">Select Department</option>
                             <option value="Operations">Operations</option>
                             <option value="Finance">Finance</option>
@@ -317,12 +439,12 @@
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Time Spent (Hours per Week)</label>
-                    <input type="range" id="timeSpent" min="1" max="40" value="8" class="w-full">
-                    <div class="flex justify-between text-sm text-gray-500">
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <label class="block text-sm font-semibold text-gray-700 mb-4">Time Spent (Hours per Week)</label>
+                    <input type="range" id="timeSpent" min="1" max="40" value="8" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider">
+                    <div class="flex justify-between text-sm text-gray-500 mt-2">
                         <span>1 hour</span>
-                        <span id="timeSpentValue">8 hours</span>
+                        <span id="timeSpentValue" class="font-semibold text-primary">8 hours</span>
                         <span>40 hours</span>
                     </div>
                 </div>
@@ -506,9 +628,9 @@
         function renderProjectList() {
             const projectList = document.getElementById('projectList');
             projectList.innerHTML = projects.map(project => `
-                <button onclick="selectProject('${project.id}')" class="w-full text-left p-3 bg-white/20 hover:bg-white/30 text-white rounded-lg transition ${currentProjectId === project.id ? 'ring-2 ring-white' : ''}">
-                    <div class="font-medium">${project.name}</div>
-                    <div class="text-sm text-white/80">${project.clientName}</div>
+                <button onclick="selectProject('${project.id}')" class="w-full text-left p-4 bg-white/90 hover:bg-white text-gray-900 rounded-lg transition-all duration-200 border ${currentProjectId === project.id ? 'border-primary bg-primary/5 ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary/30'}">
+                    <div class="font-semibold">${project.name}</div>
+                    <div class="text-sm text-gray-600 mt-1">${project.clientName}</div>
                 </button>
             `).join('');
         }
@@ -560,22 +682,32 @@
 
             processList.innerHTML = processes.map(process => {
                 const avgScore = (process.scores.repetitive + process.scores.dataDriven + process.scores.ruleBased + process.scores.highVolume) / 4;
-                const scoreColor = avgScore >= 7 ? 'bg-energy-green' : avgScore >= 5 ? 'bg-energy-orange' : 'bg-red-500';
+                const scoreColor = avgScore >= 7 ? 'bg-success' : avgScore >= 5 ? 'bg-warning' : 'bg-danger';
                 
                 return `
-                    <div class="process-card bg-white/20 rounded-lg p-4">
-                        <div class="flex justify-between items-start mb-2">
+                    <div class="process-card rounded-lg p-4 fade-in">
+                        <div class="flex justify-between items-start mb-3">
                             <div class="flex-1">
-                                <h4 class="font-medium text-white">${process.name}</h4>
-                                <p class="text-sm text-white/70">${process.department}</p>
+                                <h4 class="font-semibold text-gray-900">${process.name}</h4>
+                                <p class="text-sm text-gray-600">${process.department}</p>
                             </div>
                             <div class="text-right">
-                                <div class="${scoreColor} text-white text-xs px-2 py-1 rounded">${avgScore.toFixed(1)}/10</div>
+                                <div class="${scoreColor} text-white text-xs px-3 py-1 rounded-full font-semibold">${avgScore.toFixed(1)}/10</div>
                             </div>
                         </div>
-                        <div class="text-sm text-white/80">
-                            <div>Impact: ${process.impact}/10 • Feasibility: ${process.feasibility}/10</div>
-                            <div>Time: ${process.timeSpent} hrs/week</div>
+                        <div class="text-sm text-gray-700 space-y-1">
+                            <div class="flex justify-between">
+                                <span>Impact:</span>
+                                <span class="font-medium">${process.impact}/10</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Feasibility:</span>
+                                <span class="font-medium">${process.feasibility}/10</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Weekly Time:</span>
+                                <span class="font-medium">${process.timeSpent} hrs</span>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -702,8 +834,8 @@
                     datasets: [{
                         label: 'Business Processes',
                         data: data,
-                        backgroundColor: 'rgba(59, 130, 246, 0.6)',
-                        borderColor: 'rgba(59, 130, 246, 1)',
+                        backgroundColor: 'rgba(37, 99, 235, 0.6)',
+                        borderColor: 'rgba(37, 99, 235, 1)',
                         borderWidth: 2
                     }]
                 },
@@ -713,7 +845,10 @@
                     plugins: {
                         legend: {
                             labels: {
-                                color: 'white'
+                                color: '#374151',
+                                font: {
+                                    size: 14
+                                }
                             }
                         },
                         tooltip: {
@@ -737,26 +872,34 @@
                             title: {
                                 display: true,
                                 text: 'Business Impact',
-                                color: 'white'
+                                color: '#374151',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
                             },
                             ticks: {
-                                color: 'white'
+                                color: '#6b7280'
                             },
                             grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
+                                color: 'rgba(156, 163, 175, 0.2)'
                             }
                         },
                         y: {
                             title: {
                                 display: true,
                                 text: 'Technical Feasibility',
-                                color: 'white'
+                                color: '#374151',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
                             },
                             ticks: {
-                                color: 'white'
+                                color: '#6b7280'
                             },
                             grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
+                                color: 'rgba(156, 163, 175, 0.2)'
                             }
                         }
                     }
@@ -790,9 +933,9 @@
                     labels: ['Routine Tasks', 'Strategic Tasks'],
                     datasets: [{
                         data: [routineHours, strategicHours],
-                        backgroundColor: ['#10B981', '#F59E0B'],
-                        borderWidth: 2,
-                        borderColor: 'white'
+                        backgroundColor: ['#059669', '#d97706'],
+                        borderWidth: 3,
+                        borderColor: '#ffffff'
                     }]
                 },
                 options: {
