@@ -89,6 +89,44 @@
             color: white;
             margin-right: 15px;
         }
+        .step-indicator.active .w-8 {
+            background-color: #2563eb !important;
+            color: white !important;
+        }
+        .step-indicator.active span {
+            color: #2563eb !important;
+            font-weight: bold !important;
+        }
+        .frequency-option input:checked + div,
+        .info-source input:checked + div,
+        .consistency-option input:checked + div,
+        .volume-option input:checked + div,
+        .impact-option input:checked + div,
+        .feasibility-option input:checked + div,
+        .cost-option input:checked + div {
+            border-color: #2563eb !important;
+            background-color: #eff6ff !important;
+        }
+        .validation-error {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .validation-error svg {
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.25rem;
+        }
+        .field-error {
+            border-color: #dc2626 !important;
+            box-shadow: 0 0 0 1px #dc2626 !important;
+        }
+        .field-required::after {
+            content: " *";
+            color: #dc2626;
+        }
         
         /* Custom slider styling */
         .slider::-webkit-slider-thumb {
@@ -417,115 +455,548 @@
                     </svg>
                 </button>
             </div>
+            <!-- Step Navigation -->
+            <div class="flex justify-center mb-8">
+                <div class="flex items-center space-x-4">
+                    <div class="step-indicator active" data-step="1">
+                        <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold">1</div>
+                        <span class="text-sm font-medium text-gray-700 mt-2">Basic Info</span>
+                    </div>
+                    <div class="w-12 h-1 bg-gray-200 rounded"></div>
+                    <div class="step-indicator" data-step="2">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-sm font-bold">2</div>
+                        <span class="text-sm font-medium text-gray-500 mt-2">How You Work</span>
+                    </div>
+                    <div class="w-12 h-1 bg-gray-200 rounded"></div>
+                    <div class="step-indicator" data-step="3">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-sm font-bold">3</div>
+                        <span class="text-sm font-medium text-gray-500 mt-2">Business Impact</span>
+                    </div>
+                </div>
+            </div>
+
             <form id="processForm" class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-3">Process Name</label>
-                        <input type="text" id="processName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="e.g., Invoice Processing" required>
+                <!-- Step 1: Basic Information -->
+                <div id="step1" class="step-content">
+                    <div class="text-center mb-6">
+                        <h3 class="text-xl font-bold text-gray-800">Let's start with the basics</h3>
+                        <p class="text-gray-600">Tell us about the process you'd like to analyze</p>
                     </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-3">Department</label>
-                        <select id="processDepartment" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors" required>
-                            <option value="">Select Department</option>
-                            <option value="Operations">Operations</option>
-                            <option value="Finance">Finance</option>
-                            <option value="HR">Human Resources</option>
-                            <option value="Sales">Sales</option>
-                            <option value="Marketing">Marketing</option>
-                            <option value="IT">Information Technology</option>
-                            <option value="Customer Service">Customer Service</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="bg-gray-50 p-6 rounded-xl">
-                    <label class="block text-sm font-semibold text-gray-700 mb-4">Time Spent (Hours per Week)</label>
-                    <input type="range" id="timeSpent" min="1" max="40" value="8" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider">
-                    <div class="flex justify-between text-sm text-gray-500 mt-2">
-                        <span>1 hour</span>
-                        <span id="timeSpentValue" class="font-semibold text-primary">8 hours</span>
-                        <span>40 hours</span>
-                    </div>
-                </div>
-
-                <div class="space-y-4">
-                    <h3 class="text-lg font-semibold text-gray-800">AI Automation Suitability Scores (1-10)</h3>
                     
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Repetitive Tasks</label>
-                        <input type="range" id="repetitive" min="1" max="10" value="5" class="w-full">
-                        <div class="flex justify-between text-sm text-gray-500">
-                            <span>Not Repetitive</span>
-                            <span id="repetitiveValue">5</span>
-                            <span>Highly Repetitive</span>
+                    <!-- Quick Templates -->
+                    <div class="bg-blue-50 p-6 rounded-xl mb-6">
+                        <h4 class="font-semibold text-gray-800 mb-4">💡 Quick Start: Choose a common process</h4>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            <button type="button" class="template-btn text-left p-3 bg-white border border-gray-200 rounded-lg hover:border-primary transition-colors" onclick="fillTemplate('invoicing')">
+                                <div class="font-medium text-sm">📧 Processing Invoices</div>
+                                <div class="text-xs text-gray-500">Finance/Accounting</div>
+                            </button>
+                            <button type="button" class="template-btn text-left p-3 bg-white border border-gray-200 rounded-lg hover:border-primary transition-colors" onclick="fillTemplate('scheduling')">
+                                <div class="font-medium text-sm">📅 Staff Scheduling</div>
+                                <div class="text-xs text-gray-500">Operations</div>
+                            </button>
+                            <button type="button" class="template-btn text-left p-3 bg-white border border-gray-200 rounded-lg hover:border-primary transition-colors" onclick="fillTemplate('orders')">
+                                <div class="font-medium text-sm">📦 Processing Orders</div>
+                                <div class="text-xs text-gray-500">Sales/Operations</div>
+                            </button>
+                            <button type="button" class="template-btn text-left p-3 bg-white border border-gray-200 rounded-lg hover:border-primary transition-colors" onclick="fillTemplate('payroll')">
+                                <div class="font-medium text-sm">💰 Payroll Processing</div>
+                                <div class="text-xs text-gray-500">HR/Finance</div>
+                            </button>
+                            <button type="button" class="template-btn text-left p-3 bg-white border border-gray-200 rounded-lg hover:border-primary transition-colors" onclick="fillTemplate('inventory')">
+                                <div class="font-medium text-sm">📋 Inventory Management</div>
+                                <div class="text-xs text-gray-500">Operations</div>
+                            </button>
+                            <button type="button" class="template-btn text-left p-3 bg-white border border-gray-200 rounded-lg hover:border-primary transition-colors" onclick="fillTemplate('customer')">
+                                <div class="font-medium text-sm">📞 Customer Support</div>
+                                <div class="text-xs text-gray-500">Service</div>
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-3">⚡ Click any template to auto-fill, then customize as needed</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 field-required">What do you call this process?</label>
+                            <input type="text" id="processName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="e.g., Paying suppliers, Scheduling staff, Processing orders" required>
+                            <div class="validation-error hidden" id="processName-error">
+                                <svg fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"/>
+                                </svg>
+                                Please enter a name for this process
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Give it a simple name that you and your team would recognize</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 field-required">Which department or team handles this?</label>
+                            <select id="processDepartment" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors" required onchange="toggleCustomDepartment()">
+                                <option value="">Choose the closest match</option>
+                                <option value="Operations">Day-to-day Operations</option>
+                                <option value="Finance">Money & Accounting</option>
+                                <option value="HR">Staff & Human Resources</option>
+                                <option value="Sales">Sales & Customer Acquisition</option>
+                                <option value="Marketing">Marketing & Promotion</option>
+                                <option value="IT">Technology & Systems</option>
+                                <option value="Customer Service">Customer Support</option>
+                                <option value="Custom">Other (specify below)</option>
+                            </select>
+                            <div class="validation-error hidden" id="processDepartment-error">
+                                <svg fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"/>
+                                </svg>
+                                Please select a department or team
+                            </div>
+                            <input type="text" id="customDepartment" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors mt-3 hidden" placeholder="Enter department/team name" maxlength="50">
                         </div>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Data-Driven</label>
-                        <input type="range" id="dataDriven" min="1" max="10" value="5" class="w-full">
-                        <div class="flex justify-between text-sm text-gray-500">
-                            <span>No Data</span>
-                            <span id="dataDrivenValue">5</span>
-                            <span>Data-Heavy</span>
+                    <div class="bg-blue-50 p-6 rounded-xl">
+                        <label class="block text-sm font-semibold text-gray-700 mb-4">How much time does this process take?</label>
+                        <div class="flex items-center space-x-4 mb-4">
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="timeUnit" value="daily" class="mr-2" onchange="updateTimeUnit()">
+                                <span class="text-sm font-medium">Per day</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="timeUnit" value="weekly" class="mr-2" checked onchange="updateTimeUnit()">
+                                <span class="text-sm font-medium">Per week</span>
+                            </label>
                         </div>
+                        <input type="range" id="timeSpent" min="1" max="40" value="8" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider">
+                        <div class="flex justify-between text-sm text-gray-500 mt-2">
+                            <span id="timeMin">1 hour</span>
+                            <span id="timeSpentValue" class="font-semibold text-primary">8 hours per week</span>
+                            <span id="timeMax">40+ hours</span>
+                        </div>
+                        <div id="timeConversion" class="text-xs text-blue-600 mt-2 hidden">
+                            ≈ <span id="convertedTime">1.6</span> hours per day
+                        </div>
+                        <p class="text-xs text-gray-600 mt-2">💡 Include time from everyone who works on this process</p>
+                    </div>
+                </div>
+
+                <!-- Step 2: How You Work -->
+                <div id="step2" class="step-content hidden">
+                    <div class="text-center mb-6">
+                        <h3 class="text-xl font-bold text-gray-800">How do you currently handle this?</h3>
+                        <p class="text-gray-600">Help us understand your current process</p>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Rule-Based</label>
-                        <input type="range" id="ruleBased" min="1" max="10" value="5" class="w-full">
-                        <div class="flex justify-between text-sm text-gray-500">
-                            <span>Creative/Flexible</span>
-                            <span id="ruleBasedValue">5</span>
-                            <span>Strict Rules</span>
+                    <div class="space-y-6">
+                        <!-- Frequency Question -->
+                        <div class="bg-green-50 p-6 rounded-xl">
+                            <h4 class="font-semibold text-gray-800 mb-4">How often do you do this process?</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <label class="frequency-option cursor-pointer">
+                                    <input type="radio" name="frequency" value="daily" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-primary transition-colors">
+                                        <div class="text-2xl mb-2">📅</div>
+                                        <div class="font-medium">Multiple times daily</div>
+                                        <div class="text-xs text-gray-500">Several times per day</div>
+                                    </div>
+                                </label>
+                                <label class="frequency-option cursor-pointer">
+                                    <input type="radio" name="frequency" value="weekly" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-primary transition-colors">
+                                        <div class="text-2xl mb-2">📋</div>
+                                        <div class="font-medium">Daily or weekly</div>
+                                        <div class="text-xs text-gray-500">Regular routine</div>
+                                    </div>
+                                </label>
+                                <label class="frequency-option cursor-pointer">
+                                    <input type="radio" name="frequency" value="monthly" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-primary transition-colors">
+                                        <div class="text-2xl mb-2">📊</div>
+                                        <div class="font-medium">Monthly</div>
+                                        <div class="text-xs text-gray-500">End of month tasks</div>
+                                    </div>
+                                </label>
+                                <label class="frequency-option cursor-pointer">
+                                    <input type="radio" name="frequency" value="rarely" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-primary transition-colors">
+                                        <div class="text-2xl mb-2">⚡</div>
+                                        <div class="font-medium">As needed</div>
+                                        <div class="text-xs text-gray-500">Irregular timing</div>
+                                    </div>
+                                </label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">High Volume</label>
-                        <input type="range" id="highVolume" min="1" max="10" value="5" class="w-full">
-                        <div class="flex justify-between text-sm text-gray-500">
-                            <span>Low Volume</span>
-                            <span id="highVolumeValue">5</span>
-                            <span>High Volume</span>
+                        <!-- Information Sources -->
+                        <div class="bg-purple-50 p-6 rounded-xl">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="font-semibold text-gray-800 field-required">What information do you need to complete this process?</h4>
+                                <span class="text-sm text-purple-600 font-medium">Select all that apply</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4">💡 You can select multiple options - choose everything you typically use</p>
+                            <div class="validation-error hidden" id="infoSource-error">
+                                <svg fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"/>
+                                </svg>
+                                Please select at least one information source
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <label class="info-source cursor-pointer">
+                                    <input type="checkbox" name="infoSource" value="spreadsheets" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="text-2xl mr-3">📊</div>
+                                            <div>
+                                                <div class="font-medium">Spreadsheets or databases</div>
+                                                <div class="text-xs text-gray-500">Excel, Google Sheets, databases</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="info-source cursor-pointer">
+                                    <input type="checkbox" name="infoSource" value="documents" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="text-2xl mr-3">📄</div>
+                                            <div>
+                                                <div class="font-medium">Documents or emails</div>
+                                                <div class="text-xs text-gray-500">PDFs, Word docs, email attachments</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="info-source cursor-pointer">
+                                    <input type="checkbox" name="infoSource" value="communication" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="text-2xl mr-3">💬</div>
+                                            <div>
+                                                <div class="font-medium">Phone calls or meetings</div>
+                                                <div class="text-xs text-gray-500">Talking with people to get info</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="info-source cursor-pointer">
+                                    <input type="checkbox" name="infoSource" value="experience" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="text-2xl mr-3">🧠</div>
+                                            <div>
+                                                <div class="font-medium">Experience and judgment</div>
+                                                <div class="text-xs text-gray-500">You just know how to do it</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="info-source cursor-pointer">
+                                    <input type="checkbox" name="infoSource" value="other" class="sr-only" onchange="toggleOtherInfo()">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="text-2xl mr-3">➕</div>
+                                            <div class="flex-1">
+                                                <div class="font-medium">Other sources</div>
+                                                <input type="text" id="otherInfoSource" class="text-xs text-gray-500 border-0 bg-transparent p-0 mt-1 w-full hidden" placeholder="Specify other information sources" maxlength="100">
+                                                <div class="text-xs text-gray-500 mt-1" id="otherInfoPlaceholder">Specify other information sources</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Process Consistency -->
+                        <div class="bg-orange-50 p-6 rounded-xl">
+                            <h4 class="font-semibold text-gray-800 mb-4 field-required">How consistent is this process?</h4>
+                            <div class="validation-error hidden" id="consistency-error">
+                                <svg fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"/>
+                                </svg>
+                                Please select how consistent this process is
+                            </div>
+                            <div class="space-y-3">
+                                <label class="consistency-option cursor-pointer">
+                                    <input type="radio" name="consistency" value="exact" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="text-2xl mr-3">🎯</div>
+                                            <div>
+                                                <div class="font-medium">I follow the exact same steps every time</div>
+                                                <div class="text-xs text-gray-500">There's a clear procedure that never changes</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="consistency-option cursor-pointer">
+                                    <input type="radio" name="consistency" value="similar" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="text-2xl mr-3">🔧</div>
+                                            <div>
+                                                <div class="font-medium">I follow steps but make small adjustments</div>
+                                                <div class="text-xs text-gray-500">Basic process is the same, but details vary</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="consistency-option cursor-pointer">
+                                    <input type="radio" name="consistency" value="different" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="text-2xl mr-3">🎨</div>
+                                            <div>
+                                                <div class="font-medium">I use different approaches each time</div>
+                                                <div class="text-xs text-gray-500">Each situation needs a custom solution</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="consistency-option cursor-pointer">
+                                    <input type="radio" name="consistency" value="creative" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="text-2xl mr-3">💡</div>
+                                            <div>
+                                                <div class="font-medium">It requires creativity and intuition</div>
+                                                <div class="text-xs text-gray-500">Success depends on experience and insight</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Volume Assessment -->
+                        <div class="bg-red-50 p-6 rounded-xl">
+                            <h4 class="font-semibold text-gray-800 mb-4">How much work does this process involve?</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <label class="volume-option cursor-pointer">
+                                    <input type="radio" name="volume" value="low" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-primary transition-colors">
+                                        <div class="text-2xl mb-2">📝</div>
+                                        <div class="font-medium">Just a few items</div>
+                                        <div class="text-xs text-gray-500">1-10 things to process</div>
+                                    </div>
+                                </label>
+                                <label class="volume-option cursor-pointer">
+                                    <input type="radio" name="volume" value="medium" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-primary transition-colors">
+                                        <div class="text-2xl mb-2">📚</div>
+                                        <div class="font-medium">Moderate amount</div>
+                                        <div class="text-xs text-gray-500">10-50 things</div>
+                                    </div>
+                                </label>
+                                <label class="volume-option cursor-pointer">
+                                    <input type="radio" name="volume" value="high" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-primary transition-colors">
+                                        <div class="text-2xl mb-2">📦</div>
+                                        <div class="font-medium">Lots of items</div>
+                                        <div class="text-xs text-gray-500">50-200 things</div>
+                                    </div>
+                                </label>
+                                <label class="volume-option cursor-pointer">
+                                    <input type="radio" name="volume" value="massive" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-primary transition-colors">
+                                        <div class="text-2xl mb-2">🏭</div>
+                                        <div class="font-medium">Huge volume</div>
+                                        <div class="text-xs text-gray-500">200+ things</div>
+                                    </div>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Business Impact (1-10)</label>
-                        <input type="range" id="impact" min="1" max="10" value="5" class="w-full">
-                        <div class="flex justify-between text-sm text-gray-500">
-                            <span>Low</span>
-                            <span id="impactValue">5</span>
-                            <span>High</span>
-                        </div>
+                <!-- Step 3: Business Impact -->
+                <div id="step3" class="step-content hidden">
+                    <div class="text-center mb-6">
+                        <h3 class="text-xl font-bold text-gray-800">What's the business impact?</h3>
+                        <p class="text-gray-600">Help us understand why this process matters</p>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Technical Feasibility (1-10)</label>
-                        <input type="range" id="feasibility" min="1" max="10" value="5" class="w-full">
-                        <div class="flex justify-between text-sm text-gray-500">
-                            <span>Difficult</span>
-                            <span id="feasibilityValue">5</span>
-                            <span>Easy</span>
+
+                    <div class="space-y-6">
+                        <!-- Pain Points -->
+                        <div class="bg-red-50 p-6 rounded-xl">
+                            <h4 class="font-semibold text-gray-800 mb-4">What happens when this process gets delayed or goes wrong?</h4>
+                            <div class="space-y-3">
+                                <label class="impact-option cursor-pointer">
+                                    <input type="radio" name="impact" value="critical" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="text-2xl mr-3">🚨</div>
+                                            <div>
+                                                <div class="font-medium">Business stops or customers get upset</div>
+                                                <div class="text-xs text-gray-500">Major disruption, lost sales, angry customers</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="impact-option cursor-pointer">
+                                    <input type="radio" name="impact" value="significant" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="text-2xl mr-3">⚠️</div>
+                                            <div>
+                                                <div class="font-medium">Creates problems but business continues</div>
+                                                <div class="text-xs text-gray-500">Delays, extra work, some customer impact</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="impact-option cursor-pointer">
+                                    <input type="radio" name="impact" value="moderate" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="text-2xl mr-3">😐</div>
+                                            <div>
+                                                <div class="font-medium">Inconvenient but manageable</div>
+                                                <div class="text-xs text-gray-500">Some delays, internal frustration</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="impact-option cursor-pointer">
+                                    <input type="radio" name="impact" value="low" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="text-2xl mr-3">😌</div>
+                                            <div>
+                                                <div class="font-medium">Not a big deal if it's delayed</div>
+                                                <div class="text-xs text-gray-500">Nice to have but not urgent</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Implementation Difficulty -->
+                        <div class="bg-green-50 p-6 rounded-xl">
+                            <h4 class="font-semibold text-gray-800 mb-4">How difficult would it be to change or improve this process?</h4>
+                            <div class="space-y-3">
+                                <label class="feasibility-option cursor-pointer">
+                                    <input type="radio" name="feasibility" value="easy" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="text-2xl mr-3">✅</div>
+                                            <div>
+                                                <div class="font-medium">Pretty straightforward</div>
+                                                <div class="text-xs text-gray-500">No special systems or approvals needed</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="feasibility-option cursor-pointer">
+                                    <input type="radio" name="feasibility" value="moderate" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="text-2xl mr-3">🔧</div>
+                                            <div>
+                                                <div class="font-medium">Would need some planning</div>
+                                                <div class="text-xs text-gray-500">Might need new tools or training</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="feasibility-option cursor-pointer">
+                                    <input type="radio" name="feasibility" value="complex" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="text-2xl mr-3">🧩</div>
+                                            <div>
+                                                <div class="font-medium">Pretty complicated</div>
+                                                <div class="text-xs text-gray-500">Involves multiple systems or people</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="feasibility-option cursor-pointer">
+                                    <input type="radio" name="feasibility" value="difficult" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg hover:border-primary transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="text-2xl mr-3">🚫</div>
+                                            <div>
+                                                <div class="font-medium">Very difficult to change</div>
+                                                <div class="text-xs text-gray-500">Regulatory, legal, or major system constraints</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Cost of Problems -->
+                        <div class="bg-yellow-50 p-6 rounded-xl">
+                            <h4 class="font-semibold text-gray-800 mb-4">What does it cost when errors happen in this process?</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <label class="cost-option cursor-pointer">
+                                    <input type="radio" name="errorCost" value="low" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-primary transition-colors">
+                                        <div class="text-2xl mb-2">💰</div>
+                                        <div class="font-medium">Under $100</div>
+                                        <div class="text-xs text-gray-500">Minor cost</div>
+                                    </div>
+                                </label>
+                                <label class="cost-option cursor-pointer">
+                                    <input type="radio" name="errorCost" value="medium" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-primary transition-colors">
+                                        <div class="text-2xl mb-2">💸</div>
+                                        <div class="font-medium">$100-$1,000</div>
+                                        <div class="text-xs text-gray-500">Noticeable impact</div>
+                                    </div>
+                                </label>
+                                <label class="cost-option cursor-pointer">
+                                    <input type="radio" name="errorCost" value="high" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-primary transition-colors">
+                                        <div class="text-2xl mb-2">💳</div>
+                                        <div class="font-medium">$1,000-$10,000</div>
+                                        <div class="text-xs text-gray-500">Significant cost</div>
+                                    </div>
+                                </label>
+                                <label class="cost-option cursor-pointer">
+                                    <input type="radio" name="errorCost" value="critical" class="sr-only">
+                                    <div class="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-primary transition-colors">
+                                        <div class="text-2xl mb-2">🏦</div>
+                                        <div class="font-medium">$10,000+</div>
+                                        <div class="text-xs text-gray-500">Major financial impact</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Additional Notes -->
+                        <div class="bg-gray-50 p-6 rounded-xl">
+                            <h4 class="font-semibold text-gray-800 mb-4">Any additional details about this process?</h4>
+                            <textarea id="processNotes" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="e.g., Involves multiple people, seasonal variations, compliance requirements..."></textarea>
+                            <p class="text-xs text-gray-500 mt-2">💡 This helps us understand any special considerations</p>
                         </div>
                     </div>
                 </div>
+
+                <!-- Hidden fields for calculated scores -->
+                <input type="hidden" id="repetitive" value="5">
+                <input type="hidden" id="dataDriven" value="5">
+                <input type="hidden" id="ruleBased" value="5">
+                <input type="hidden" id="highVolume" value="5">
+                <input type="hidden" id="impact" value="5">
+                <input type="hidden" id="feasibility" value="5">
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Notes</label>
                     <textarea id="processNotes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-energy-blue focus:border-energy-blue" placeholder="Additional details about this process..."></textarea>
                 </div>
 
-                <div class="flex justify-end space-x-4">
-                    <button type="button" onclick="closeProcessModal()" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between items-center pt-6 border-t">
+                    <button type="button" id="prevBtn" onclick="previousStep()" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors hidden">
+                        ← Previous
+                    </button>
+                    <button type="button" onclick="closeProcessModal()" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
                         Cancel
                     </button>
-                    <button type="submit" class="px-6 py-2 bg-energy-blue text-white rounded-lg hover:bg-blue-600">
-                        Add Process
-                    </button>
+                    <div class="flex space-x-3">
+                        <button type="button" id="nextBtn" onclick="nextStep()" class="px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary-light transition-colors">
+                            Continue →
+                        </button>
+                        <button type="submit" id="submitBtn" class="px-8 py-3 bg-success text-white rounded-lg hover:bg-green-600 transition-colors hidden">
+                            Add Process ✓
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -547,12 +1018,12 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Client Name</label>
                     <input type="text" id="clientName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-energy-blue focus:border-energy-blue" required>
                 </div>
-                <div class="flex justify-end space-x-4">
-                    <button type="button" onclick="closeProjectModal()" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                <div class="flex justify-between space-x-4">
+                    <button type="button" onclick="closeProjectModal()" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
                         Cancel
                     </button>
-                    <button type="submit" class="px-6 py-2 bg-energy-blue text-white rounded-lg hover:bg-blue-600">
-                        Create Project
+                    <button type="submit" class="px-8 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium">
+                        Create Project →
                     </button>
                 </div>
             </form>
@@ -565,6 +1036,7 @@
         let projects = [];
         let processes = [];
         let charts = {};
+        let currentStep = 1;
 
         // Password protection
         document.getElementById('passwordForm').addEventListener('submit', function(e) {
@@ -726,6 +1198,16 @@
             document.getElementById('processModal').classList.add('hidden');
             document.getElementById('processForm').reset();
             resetSliders();
+            currentStep = 1;
+            updateStepDisplay();
+            
+            // Clear all radio button and checkbox selections
+            document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
+                input.checked = false;
+            });
+            
+            // Clear selected template
+            window.selectedTemplate = null;
         }
 
         function initializeSliders() {
@@ -765,8 +1247,306 @@
             });
         }
 
+        // Step navigation functions
+        function nextStep() {
+            if (currentStep < 3) {
+                // Validate current step
+                if (validateCurrentStep()) {
+                    // Store current scroll position relative to modal
+                    const modal = document.getElementById('processModal');
+                    const modalContent = modal.querySelector('.bg-white');
+                    const currentScrollTop = modalContent.scrollTop;
+                    
+                    currentStep++;
+                    updateStepDisplay();
+                    
+                    // Auto-fill template selections when entering step 2
+                    if (currentStep === 2 && window.selectedTemplate) {
+                        autoFillTemplateStep2(window.selectedTemplate);
+                    }
+                    
+                    // Auto-fill template selections when entering step 3
+                    if (currentStep === 3 && window.selectedTemplate) {
+                        autoFillTemplateStep3(window.selectedTemplate);
+                    }
+                    
+                    // Scroll to step header within modal
+                    setTimeout(() => {
+                        const stepContent = document.getElementById(`step${currentStep}`);
+                        if (stepContent) {
+                            stepContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }, 100);
+                }
+            }
+        }
+
+        function autoFillTemplateStep2(template) {
+            // Select frequency
+            const frequencyInput = document.querySelector(`input[name="frequency"][value="${template.frequency}"]`);
+            if (frequencyInput) frequencyInput.checked = true;
+            
+            // Select info sources
+            template.infoSources.forEach(source => {
+                const infoInput = document.querySelector(`input[name="infoSource"][value="${source}"]`);
+                if (infoInput) infoInput.checked = true;
+            });
+            
+            // Select consistency
+            const consistencyInput = document.querySelector(`input[name="consistency"][value="${template.consistency}"]`);
+            if (consistencyInput) consistencyInput.checked = true;
+            
+            // Select volume
+            const volumeInput = document.querySelector(`input[name="volume"][value="${template.volume}"]`);
+            if (volumeInput) volumeInput.checked = true;
+        }
+
+        function autoFillTemplateStep3(template) {
+            // Select impact
+            const impactInput = document.querySelector(`input[name="impact"][value="${template.impact}"]`);
+            if (impactInput) impactInput.checked = true;
+            
+            // Select feasibility
+            const feasibilityInput = document.querySelector(`input[name="feasibility"][value="${template.feasibility}"]`);
+            if (feasibilityInput) feasibilityInput.checked = true;
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepDisplay();
+            }
+        }
+
+        function updateStepDisplay() {
+            // Hide all steps
+            document.querySelectorAll('.step-content').forEach(step => step.classList.add('hidden'));
+            
+            // Show current step
+            document.getElementById(`step${currentStep}`).classList.remove('hidden');
+            
+            // Update step indicators
+            document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+                if (index + 1 <= currentStep) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+            
+            // Update navigation buttons
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.classList.toggle('hidden', currentStep === 1);
+            nextBtn.classList.toggle('hidden', currentStep === 3);
+            submitBtn.classList.toggle('hidden', currentStep !== 3);
+        }
+
+        function validateCurrentStep() {
+            clearAllErrors();
+            let isValid = true;
+            
+            switch(currentStep) {
+                case 1:
+                    if (document.getElementById('processName').value.trim() === '') {
+                        showError('processName', 'Please enter a name for this process');
+                        isValid = false;
+                    }
+                    const dept = document.getElementById('processDepartment').value;
+                    if (dept === '') {
+                        showError('processDepartment', 'Please select a department or team');
+                        isValid = false;
+                    } else if (dept === 'Custom' && document.getElementById('customDepartment').value.trim() === '') {
+                        showError('processDepartment', 'Please specify the department name');
+                        isValid = false;
+                    }
+                    break;
+                case 2:
+                    if (!document.querySelector('input[name="frequency"]:checked')) {
+                        showError('frequency', 'Please select how often you do this process');
+                        isValid = false;
+                    }
+                    if (!document.querySelector('input[name="consistency"]:checked')) {
+                        showError('consistency', 'Please select how consistent this process is');
+                        isValid = false;
+                    }
+                    if (!document.querySelector('input[name="volume"]:checked')) {
+                        showError('volume', 'Please select the work volume');
+                        isValid = false;
+                    }
+                    if (document.querySelectorAll('input[name="infoSource"]:checked').length === 0) {
+                        showError('infoSource', 'Please select at least one information source');
+                        isValid = false;
+                    }
+                    break;
+                case 3:
+                    if (!document.querySelector('input[name="impact"]:checked')) {
+                        showError('impact', 'Please select the business impact');
+                        isValid = false;
+                    }
+                    if (!document.querySelector('input[name="feasibility"]:checked')) {
+                        showError('feasibility', 'Please select implementation difficulty');
+                        isValid = false;
+                    }
+                    break;
+                default:
+                    return true;
+            }
+            return isValid;
+        }
+
+        function showError(fieldId, message) {
+            const errorDiv = document.getElementById(fieldId + '-error');
+            if (errorDiv) {
+                errorDiv.textContent = message;
+                errorDiv.classList.remove('hidden');
+            }
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.classList.add('field-error');
+            }
+        }
+
+        function clearAllErrors() {
+            document.querySelectorAll('.validation-error').forEach(error => {
+                error.classList.add('hidden');
+            });
+            document.querySelectorAll('.field-error').forEach(field => {
+                field.classList.remove('field-error');
+            });
+        }
+
+        function toggleCustomDepartment() {
+            const select = document.getElementById('processDepartment');
+            const customInput = document.getElementById('customDepartment');
+            if (select.value === 'Custom') {
+                customInput.classList.remove('hidden');
+                customInput.focus();
+            } else {
+                customInput.classList.add('hidden');
+                customInput.value = '';
+            }
+        }
+
+        function toggleOtherInfo() {
+            const checkbox = document.querySelector('input[name="infoSource"][value="other"]');
+            const input = document.getElementById('otherInfoSource');
+            const placeholder = document.getElementById('otherInfoPlaceholder');
+            
+            if (checkbox.checked) {
+                input.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+                input.focus();
+            } else {
+                input.classList.add('hidden');
+                placeholder.classList.remove('hidden');
+                input.value = '';
+            }
+        }
+
+        function updateTimeUnit() {
+            const isDaily = document.querySelector('input[name="timeUnit"][value="daily"]').checked;
+            const timeSpent = parseInt(document.getElementById('timeSpent').value);
+            const timeValue = document.getElementById('timeSpentValue');
+            const timeMin = document.getElementById('timeMin');
+            const timeMax = document.getElementById('timeMax');
+            const conversion = document.getElementById('timeConversion');
+            const convertedTime = document.getElementById('convertedTime');
+            
+            if (isDaily) {
+                timeValue.textContent = `${timeSpent} hours per day`;
+                timeMin.textContent = '1 hour';
+                timeMax.textContent = '8+ hours';
+                document.getElementById('timeSpent').max = 8;
+                conversion.classList.remove('hidden');
+                convertedTime.textContent = (timeSpent * 5).toFixed(1);
+                conversion.innerHTML = `≈ <span id="convertedTime">${(timeSpent * 5).toFixed(1)}</span> hours per week`;
+            } else {
+                timeValue.textContent = `${timeSpent} hours per week`;
+                timeMin.textContent = '1 hour';
+                timeMax.textContent = '40+ hours';
+                document.getElementById('timeSpent').max = 40;
+                conversion.classList.remove('hidden');
+                convertedTime.textContent = (timeSpent / 5).toFixed(1);
+                conversion.innerHTML = `≈ <span id="convertedTime">${(timeSpent / 5).toFixed(1)}</span> hours per day`;
+            }
+        }
+
+        function calculateScores() {
+            // Calculate repetitive score based on frequency
+            const frequency = document.querySelector('input[name="frequency"]:checked')?.value;
+            let repetitiveScore = 5;
+            switch(frequency) {
+                case 'daily': repetitiveScore = 9; break;
+                case 'weekly': repetitiveScore = 7; break;
+                case 'monthly': repetitiveScore = 5; break;
+                case 'rarely': repetitiveScore = 2; break;
+            }
+            
+            // Calculate data-driven score based on info sources
+            const infoSources = Array.from(document.querySelectorAll('input[name="infoSource"]:checked')).map(cb => cb.value);
+            let dataDrivenScore = 1;
+            if (infoSources.includes('spreadsheets')) dataDrivenScore = 9;
+            else if (infoSources.includes('documents')) dataDrivenScore = 6;
+            else if (infoSources.includes('communication')) dataDrivenScore = 3;
+            else if (infoSources.includes('experience')) dataDrivenScore = 1;
+            
+            // Calculate rule-based score based on consistency
+            const consistency = document.querySelector('input[name="consistency"]:checked')?.value;
+            let ruleBasedScore = 5;
+            switch(consistency) {
+                case 'exact': ruleBasedScore = 10; break;
+                case 'similar': ruleBasedScore = 7; break;
+                case 'different': ruleBasedScore = 4; break;
+                case 'creative': ruleBasedScore = 1; break;
+            }
+            
+            // Calculate volume score
+            const volume = document.querySelector('input[name="volume"]:checked')?.value;
+            let volumeScore = 5;
+            switch(volume) {
+                case 'low': volumeScore = 2; break;
+                case 'medium': volumeScore = 5; break;
+                case 'high': volumeScore = 8; break;
+                case 'massive': volumeScore = 10; break;
+            }
+            
+            // Calculate impact score
+            const impact = document.querySelector('input[name="impact"]:checked')?.value;
+            let impactScore = 5;
+            switch(impact) {
+                case 'critical': impactScore = 10; break;
+                case 'significant': impactScore = 8; break;
+                case 'moderate': impactScore = 5; break;
+                case 'low': impactScore = 2; break;
+            }
+            
+            // Calculate feasibility score
+            const feasibility = document.querySelector('input[name="feasibility"]:checked')?.value;
+            let feasibilityScore = 5;
+            switch(feasibility) {
+                case 'easy': feasibilityScore = 9; break;
+                case 'moderate': feasibilityScore = 7; break;
+                case 'complex': feasibilityScore = 4; break;
+                case 'difficult': feasibilityScore = 2; break;
+            }
+            
+            return {
+                repetitive: repetitiveScore,
+                dataDriven: dataDrivenScore,
+                ruleBased: ruleBasedScore,
+                highVolume: volumeScore,
+                impact: impactScore,
+                feasibility: feasibilityScore
+            };
+        }
+
         document.getElementById('processForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            const scores = calculateScores();
             
             const newProcess = {
                 id: Date.now().toString(),
@@ -774,14 +1554,14 @@
                 department: document.getElementById('processDepartment').value,
                 timeSpent: parseInt(document.getElementById('timeSpent').value),
                 scores: {
-                    repetitive: parseInt(document.getElementById('repetitive').value),
-                    dataDriven: parseInt(document.getElementById('dataDriven').value),
-                    ruleBased: parseInt(document.getElementById('ruleBased').value),
-                    highVolume: parseInt(document.getElementById('highVolume').value)
+                    repetitive: scores.repetitive,
+                    dataDriven: scores.dataDriven,
+                    ruleBased: scores.ruleBased,
+                    highVolume: scores.highVolume
                 },
-                impact: parseInt(document.getElementById('impact').value),
-                feasibility: parseInt(document.getElementById('feasibility').value),
-                notes: document.getElementById('processNotes').value,
+                impact: scores.impact,
+                feasibility: scores.feasibility,
+                notes: document.getElementById('processNotes')?.value || '',
                 createdAt: new Date().toISOString()
             };
 
@@ -1144,6 +1924,90 @@
 
         function closeAgent() {
             document.getElementById('agentInteraction').classList.add('hidden');
+        }
+
+        // Template filling function
+        function fillTemplate(templateType) {
+            const templates = {
+                invoicing: {
+                    name: "Processing Invoices",
+                    department: "Finance",
+                    frequency: "weekly",
+                    infoSources: ["spreadsheets", "documents"],
+                    consistency: "similar",
+                    volume: "medium",
+                    impact: "significant",
+                    feasibility: "moderate"
+                },
+                scheduling: {
+                    name: "Staff Scheduling", 
+                    department: "Operations",
+                    frequency: "weekly",
+                    infoSources: ["spreadsheets"],
+                    consistency: "similar", 
+                    volume: "medium",
+                    impact: "significant",
+                    feasibility: "easy"
+                },
+                orders: {
+                    name: "Processing Customer Orders",
+                    department: "Sales",
+                    frequency: "daily",
+                    infoSources: ["spreadsheets", "documents"],
+                    consistency: "exact",
+                    volume: "high",
+                    impact: "critical",
+                    feasibility: "moderate"
+                },
+                payroll: {
+                    name: "Monthly Payroll Processing",
+                    department: "HR",
+                    frequency: "monthly",
+                    infoSources: ["spreadsheets"],
+                    consistency: "exact",
+                    volume: "medium",
+                    impact: "critical", 
+                    feasibility: "complex"
+                },
+                inventory: {
+                    name: "Inventory Management",
+                    department: "Operations", 
+                    frequency: "daily",
+                    infoSources: ["spreadsheets"],
+                    consistency: "similar",
+                    volume: "high",
+                    impact: "significant",
+                    feasibility: "moderate"
+                },
+                customer: {
+                    name: "Customer Support Tickets",
+                    department: "Customer Service",
+                    frequency: "daily", 
+                    infoSources: ["documents", "communication"],
+                    consistency: "different",
+                    volume: "high",
+                    impact: "significant",
+                    feasibility: "complex"
+                }
+            };
+
+            const template = templates[templateType];
+            if (template) {
+                // Fill basic info
+                document.getElementById('processName').value = template.name;
+                document.getElementById('processDepartment').value = template.department;
+                
+                // Pre-select options for step 2 (will be used when user reaches that step)
+                window.selectedTemplate = template;
+                
+                // Visual feedback
+                document.querySelector('.template-btn').style.backgroundColor = '#eff6ff';
+                setTimeout(() => {
+                    document.querySelectorAll('.template-btn').forEach(btn => {
+                        btn.style.backgroundColor = 'white';
+                    });
+                }, 1000);
+            }
         }
 
         // Initialize the application
