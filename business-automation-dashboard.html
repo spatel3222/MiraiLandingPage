@@ -124,11 +124,20 @@
             background: rgba(255, 255, 255, 0.9);
             border: 1px solid rgba(226, 232, 240, 0.8);
             backdrop-filter: blur(8px);
+            overflow: visible;
         }
         .process-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             border-color: #3B82F6;
+        }
+        .process-card .action-buttons {
+            border-top: 1px solid rgba(226, 232, 240, 0.6);
+            margin-top: 8px;
+            padding-top: 8px;
+        }
+        .process-card:hover .action-buttons {
+            border-color: rgba(59, 130, 246, 0.2);
         }
         .agent-panel {
             background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
@@ -224,6 +233,530 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        /* Enhanced button interactions */
+        .action-btn {
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 36px;
+            min-height: 36px;
+        }
+        .action-btn:hover {
+            transform: scale(1.05);
+        }
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+            .process-card .action-buttons {
+                opacity: 1;
+                border-top: 1px solid rgba(226, 232, 240, 0.8);
+            }
+            .action-btn {
+                min-width: 40px;
+                min-height: 40px;
+            }
+        }
+        
+        /* Brand-aligned Admin Controls */
+        .admin-control-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-contextual-controls {
+            transform: translateY(-8px);
+        }
+        
+        .admin-contextual-controls.show {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            transform: translateY(0);
+        }
+        
+        .admin-control-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+        }
+        
+        /* Primary Button - Brand gradient */
+        .btn-primary {
+            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.3);
+            background: linear-gradient(135deg, #4338CA 0%, #6D28D9 100%);
+        }
+        
+        .btn-primary:focus {
+            outline: none;
+            ring: 2px solid rgba(79, 70, 229, 0.3);
+        }
+        
+        /* Secondary Button - Glass effect */
+        .btn-secondary {
+            background: rgba(79, 70, 229, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(79, 70, 229, 0.2);
+            color: #4F46E5;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            background: rgba(79, 70, 229, 0.15);
+            border-color: rgba(79, 70, 229, 0.3);
+            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.15);
+        }
+        
+        /* Destructive Button - Subtle warning */
+        .btn-destructive {
+            background: rgba(239, 68, 68, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #DC2626;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-destructive:hover {
+            transform: translateY(-1px);
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.3);
+            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.15);
+        }
+        
+        /* System Button - Neutral glass */
+        .btn-system {
+            background: rgba(107, 114, 128, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(107, 114, 128, 0.2);
+            color: #6B7280;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-system:hover {
+            transform: translateY(-1px);
+            background: rgba(107, 114, 128, 0.15);
+            border-color: rgba(107, 114, 128, 0.3);
+            box-shadow: 0 4px 16px rgba(107, 114, 128, 0.1);
+        }
+        
+        /* Secondary Select - Glass dropdown */
+        .btn-secondary-select {
+            background: rgba(79, 70, 229, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(79, 70, 229, 0.15);
+            color: #4F46E5;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%234F46E5' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 12px center;
+            background-repeat: no-repeat;
+            background-size: 16px 12px;
+            padding-right: 40px;
+        }
+        
+        .btn-secondary-select:hover {
+            background: rgba(79, 70, 229, 0.1);
+            border-color: rgba(79, 70, 229, 0.25);
+        }
+        
+        .btn-secondary-select:focus {
+            outline: none;
+            ring: 2px solid rgba(79, 70, 229, 0.2);
+            border-color: rgba(79, 70, 229, 0.3);
+        }
+        
+        /* Enhanced toggle switch */
+        .workshop-toggle {
+            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .admin-contextual-controls .grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .admin-control-card {
+                padding: 12px;
+            }
+            
+            .btn-primary, .btn-secondary, .btn-destructive, .btn-system {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .admin-contextual-controls .flex {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .btn-primary, .btn-secondary, .btn-destructive, .btn-system {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        /* Contextual Workspace System - Brand-Aligned */
+        :root {
+            --glass-primary: rgba(255, 255, 255, 0.85);
+            --glass-secondary: rgba(255, 255, 255, 0.75);
+            --glass-overlay: rgba(255, 255, 255, 0.92);
+            --glass-dark: rgba(15, 23, 42, 0.85);
+            --blur-primary: blur(12px);
+            --blur-secondary: blur(10px);
+            --blur-overlay: blur(16px);
+            --blur-dark: blur(12px);
+            --ease-brand: cubic-bezier(0.4, 0.0, 0.2, 1);
+            --ease-workspace: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --duration-quick: 200ms;
+            --duration-standard: 300ms;
+            --duration-workspace: 400ms;
+        }
+        
+        /* Floating Action Button System */
+        .fab-cluster {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 90;
+        }
+        
+        .fab-primary {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 32px rgba(79, 70, 229, 0.3);
+            transition: all var(--duration-quick) var(--ease-brand);
+            font-size: 24px;
+        }
+        
+        .fab-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(79, 70, 229, 0.4);
+        }
+        
+        .fab-secondary-group {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all var(--duration-standard) var(--ease-brand);
+            pointer-events: none;
+        }
+        
+        .fab-cluster.expanded .fab-secondary-group {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        
+        .fab-secondary {
+            width: 48px;
+            height: 48px;
+            background: rgba(79, 70, 229, 0.1);
+            backdrop-filter: var(--blur-secondary);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4F46E5;
+            cursor: pointer;
+            transition: all var(--duration-quick) var(--ease-brand);
+            font-size: 20px;
+            position: relative;
+        }
+        
+        .fab-secondary:hover {
+            transform: scale(1.1);
+            background: rgba(79, 70, 229, 0.15);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+        
+        .fab-tooltip {
+            position: absolute;
+            right: 60px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--glass-dark);
+            backdrop-filter: var(--blur-dark);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateY(-50%) translateX(10px);
+            transition: all var(--duration-quick) var(--ease-brand);
+            pointer-events: none;
+        }
+        
+        .fab-secondary:hover .fab-tooltip {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+        }
+        
+        /* Contextual Workspace Overlay */
+        .contextual-workspace {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--duration-workspace) var(--ease-workspace);
+        }
+        
+        .contextual-workspace.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .workspace-content {
+            position: absolute;
+            inset: 24px;
+            background: var(--glass-overlay);
+            backdrop-filter: var(--blur-overlay);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: scale(0.95) translateY(40px);
+            transition: transform var(--duration-workspace) var(--ease-workspace);
+        }
+        
+        .contextual-workspace.active .workspace-content {
+            transform: scale(1) translateY(0);
+        }
+        
+        /* Workspace Header */
+        .workspace-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 32px;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.3);
+            background: rgba(248, 250, 252, 0.5);
+        }
+        
+        .workspace-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .workspace-back-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(107, 114, 128, 0.1);
+            backdrop-filter: var(--blur-secondary);
+            border: 1px solid rgba(107, 114, 128, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6B7280;
+            cursor: pointer;
+            transition: all var(--duration-quick) var(--ease-brand);
+        }
+        
+        .workspace-back-btn:hover {
+            transform: translateX(-2px);
+            background: rgba(107, 114, 128, 0.15);
+            color: #374151;
+        }
+        
+        .workspace-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0;
+        }
+        
+        .workspace-badge {
+            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .workspace-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        /* Workspace Body */
+        .workspace-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px;
+        }
+        
+        /* Mode Indicator */
+        .mode-indicator {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: var(--glass-dark);
+            backdrop-filter: var(--blur-dark);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 110;
+            opacity: 0;
+            transition: all var(--duration-standard) var(--ease-brand);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .mode-indicator.active {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        /* Dashboard Blur Effect */
+        .dashboard-blur {
+            filter: blur(4px);
+            transform: scale(0.98);
+            transition: all var(--duration-standard) ease;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .fab-cluster {
+                bottom: 24px;
+                right: 24px;
+            }
+            
+            .fab-primary {
+                width: 56px;
+                height: 56px;
+                font-size: 20px;
+            }
+            
+            .fab-secondary-group {
+                flex-direction: row;
+                bottom: 0;
+                right: 72px;
+                gap: 8px;
+            }
+            
+            .fab-secondary {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            
+            .workspace-content {
+                inset: 8px;
+                border-radius: 16px;
+            }
+            
+            .workspace-header {
+                padding: 16px 20px;
+            }
+            
+            .workspace-title {
+                font-size: 24px;
+            }
+            
+            .workspace-body {
+                padding: 20px;
+            }
+            
+            :root {
+                --blur-overlay: blur(12px);
+                --blur-secondary: blur(8px);
+            }
+        }
+        
+        /* Workspace Animations */
+        @keyframes fab-pulse {
+            0%, 100% {
+                box-shadow: 0 8px 32px rgba(79, 70, 229, 0.3);
+            }
+            50% {
+                box-shadow: 0 8px 32px rgba(79, 70, 229, 0.5), 0 0 0 8px rgba(79, 70, 229, 0.1);
+            }
+        }
+        
+        .fab-primary.pulse {
+            animation: fab-pulse 2s infinite;
+        }
     </style>
 </head>
 <body>
@@ -291,6 +824,99 @@
 
             <!-- Main Content -->
             <div class="max-w-7xl mx-auto p-8">
+                <!-- Admin Workshop Controls -->
+                <div class="mb-6" id="adminControls">
+                    <div class="glass-effect rounded-xl p-4">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center space-x-4">
+                                <h1 class="text-2xl font-bold text-gray-900 flex items-center">
+                                    🚀 Business Process Automation Hub
+                                    <span class="ml-3 text-sm font-normal text-gray-600" id="modeIndicator">Admin Mode</span>
+                                </h1>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <!-- Primary Controls - Always Visible -->
+                                <div class="admin-control-group">
+                                    <div class="flex items-center space-x-6">
+                                        <!-- Workshop Mode Toggle -->
+                                        <div class="flex items-center space-x-3">
+                                            <span class="text-sm font-medium text-gray-700">Workshop Review Mode</span>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" id="workshopToggle" class="sr-only peer" onchange="toggleWorkshopReviewMode()">
+                                                <div class="w-12 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-blue-500 peer-checked:to-purple-600"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- System Controls - Right Aligned -->
+                                <div class="admin-control-group">
+                                    <button onclick="logout()" class="btn-system">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                        </svg>
+                                        Logout
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Contextual Controls - Workshop Review Mode Only -->
+                            <div class="admin-contextual-controls opacity-0 pointer-events-none transition-all duration-300 ease-out mt-4" id="contextualControls">
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <!-- Data Filtering Group -->
+                                    <div class="admin-control-card">
+                                        <h4 class="text-sm font-medium text-gray-700 mb-3">Data Filtering</h4>
+                                        <div id="departmentFilter">
+                                            <select id="filterDepartment" class="btn-secondary-select w-full" onchange="filterByDepartment()">
+                                                <option value="">All Departments</option>
+                                                <option value="Finance">💰 Finance</option>
+                                                <option value="HR">👥 Human Resources</option>
+                                                <option value="Operations">⚙️ Operations</option>
+                                                <option value="Sales">📈 Sales</option>
+                                                <option value="Marketing">📢 Marketing</option>
+                                                <option value="IT">💻 Information Technology</option>
+                                                <option value="Customer Service">📞 Customer Service</option>
+                                                <option value="Legal">⚖️ Legal</option>
+                                                <option value="Administration">📋 Administration</option>
+                                                <option value="R&D">🔬 Research & Development</option>
+                                                <option value="Quality Assurance">✅ Quality Assurance</option>
+                                                <option value="Procurement">🛒 Procurement</option>
+                                                <option value="Facilities">🏢 Facilities</option>
+                                                <option value="Other">✨ Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Data Actions Group -->
+                                    <div class="admin-control-card">
+                                        <h4 class="text-sm font-medium text-gray-700 mb-3">Data Actions</h4>
+                                        <div class="flex flex-wrap gap-2" id="cleaningTools">
+                                            <button onclick="showDuplicateDetection()" class="btn-secondary">
+                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                                </svg>
+                                                Find Duplicates
+                                            </button>
+                                            <button onclick="showBulkActions()" class="btn-destructive">
+                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                                </svg>
+                                                Bulk Edit
+                                            </button>
+                                            <button onclick="showDepartmentLinks()" class="btn-primary">
+                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                                                </svg>
+                                                Generate Links
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     
                     <!-- Left Panel - Project Management -->
@@ -431,7 +1057,7 @@
 
                 <!-- 4-Phase Implementation Roadmap -->
                 <div class="mt-8">
-                    <h2 class="text-2xl font-bold text-white mb-6">🚀 4-Phase Implementation Roadmap</h2>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">🚀 4-Phase Implementation Roadmap</h2>
                     
                     <!-- Timeline Visual -->
                     <div class="glass-effect rounded-xl p-6 mb-6">
@@ -443,8 +1069,8 @@
                                         <span class="text-white font-bold text-sm">1</span>
                                     </div>
                                     <div class="text-center ml-2">
-                                        <div class="text-white text-xs font-semibold">Pilot</div>
-                                        <div class="text-white/60 text-xs">M1-2</div>
+                                        <div class="text-gray-900 text-xs font-semibold">Pilot</div>
+                                        <div class="text-gray-600 text-xs">M1-2</div>
                                     </div>
                                 </div>
                                 
@@ -457,8 +1083,8 @@
                                         <span class="text-white font-bold text-sm">2</span>
                                     </div>
                                     <div class="text-center ml-2">
-                                        <div class="text-white text-xs font-semibold">Refine</div>
-                                        <div class="text-white/60 text-xs">M3-4</div>
+                                        <div class="text-gray-900 text-xs font-semibold">Refine</div>
+                                        <div class="text-gray-600 text-xs">M3-4</div>
                                     </div>
                                 </div>
                                 
@@ -471,8 +1097,8 @@
                                         <span class="text-white font-bold text-sm">3</span>
                                     </div>
                                     <div class="text-center ml-2">
-                                        <div class="text-white text-xs font-semibold">Deploy</div>
-                                        <div class="text-white/60 text-xs">M5-6</div>
+                                        <div class="text-gray-900 text-xs font-semibold">Deploy</div>
+                                        <div class="text-gray-600 text-xs">M5-6</div>
                                     </div>
                                 </div>
                                 
@@ -485,8 +1111,8 @@
                                         <span class="text-white font-bold text-sm">4</span>
                                     </div>
                                     <div class="text-center ml-2">
-                                        <div class="text-white text-xs font-semibold">Monitor</div>
-                                        <div class="text-white/60 text-xs">Ongoing</div>
+                                        <div class="text-gray-900 text-xs font-semibold">Monitor</div>
+                                        <div class="text-gray-600 text-xs">Ongoing</div>
                                     </div>
                                 </div>
                             </div>
@@ -502,30 +1128,30 @@
                                     <span class="text-white font-bold">1</span>
                                 </div>
                                 <div>
-                                    <h3 class="text-lg font-semibold text-white">Pilot Project</h3>
-                                    <p class="text-white/60 text-xs">Month 1-2</p>
+                                    <h3 class="text-lg font-semibold text-gray-900">Pilot Project</h3>
+                                    <p class="text-gray-600 text-xs">Month 1-2</p>
                                 </div>
                             </div>
-                            <p class="text-white/80 text-sm mb-4">Select & implement highest-impact processes</p>
+                            <p class="text-gray-700 text-sm mb-4">Select & implement highest-impact processes</p>
                             
                             <!-- Key Activities -->
                             <div class="mb-4">
                                 <div class="flex items-center mb-2">
                                     <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
-                                    <span class="text-white/70 text-xs">Identify quick wins</span>
+                                    <span class="text-gray-600 text-xs">Identify quick wins</span>
                                 </div>
                                 <div class="flex items-center mb-2">
                                     <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
-                                    <span class="text-white/70 text-xs">Implement pilot automation</span>
+                                    <span class="text-gray-600 text-xs">Implement pilot automation</span>
                                 </div>
                                 <div class="flex items-center mb-2">
                                     <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
-                                    <span class="text-white/70 text-xs">Measure initial ROI</span>
+                                    <span class="text-gray-600 text-xs">Measure initial ROI</span>
                                 </div>
                             </div>
                             
                             <div id="pilotPhase" class="space-y-3">
-                                <div class="text-white/60 text-center py-4">No processes analyzed yet</div>
+                                <div class="text-gray-500 text-center py-4">No processes analyzed yet</div>
                             </div>
                         </div>
 
@@ -536,30 +1162,30 @@
                                     <span class="text-white font-bold">2</span>
                                 </div>
                                 <div>
-                                    <h3 class="text-lg font-semibold text-white">Refine & Train</h3>
-                                    <p class="text-white/60 text-xs">Month 3-4</p>
+                                    <h3 class="text-lg font-semibold text-gray-900">Refine & Train</h3>
+                                    <p class="text-gray-600 text-xs">Month 3-4</p>
                                 </div>
                             </div>
-                            <p class="text-white/80 text-sm mb-4">Optimize processes & train teams</p>
+                            <p class="text-gray-700 text-sm mb-4">Optimize processes & train teams</p>
                             
                             <!-- Key Activities -->
                             <div class="mb-4">
                                 <div class="flex items-center mb-2">
                                     <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
-                                    <span class="text-white/70 text-xs">Process optimization</span>
+                                    <span class="text-gray-600 text-xs">Process optimization</span>
                                 </div>
                                 <div class="flex items-center mb-2">
                                     <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
-                                    <span class="text-white/70 text-xs">Team training & adoption</span>
+                                    <span class="text-gray-600 text-xs">Team training & adoption</span>
                                 </div>
                                 <div class="flex items-center mb-2">
                                     <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
-                                    <span class="text-white/70 text-xs">Documentation & SOPs</span>
+                                    <span class="text-gray-600 text-xs">Documentation & SOPs</span>
                                 </div>
                             </div>
                             
                             <div id="refinePhase" class="space-y-3">
-                                <div class="text-white/60 text-center py-4">No processes analyzed yet</div>
+                                <div class="text-gray-500 text-center py-4">No processes analyzed yet</div>
                             </div>
                         </div>
 
@@ -570,30 +1196,30 @@
                                     <span class="text-white font-bold">3</span>
                                 </div>
                                 <div>
-                                    <h3 class="text-lg font-semibold text-white">Deploy</h3>
-                                    <p class="text-white/60 text-xs">Month 5-6</p>
+                                    <h3 class="text-lg font-semibold text-gray-900">Deploy</h3>
+                                    <p class="text-gray-600 text-xs">Month 5-6</p>
                                 </div>
                             </div>
-                            <p class="text-white/80 text-sm mb-4">Roll out strategic automation initiatives</p>
+                            <p class="text-gray-700 text-sm mb-4">Roll out strategic automation initiatives</p>
                             
                             <!-- Key Activities -->
                             <div class="mb-4">
                                 <div class="flex items-center mb-2">
                                     <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
-                                    <span class="text-white/70 text-xs">Full-scale implementation</span>
+                                    <span class="text-gray-600 text-xs">Full-scale implementation</span>
                                 </div>
                                 <div class="flex items-center mb-2">
                                     <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
-                                    <span class="text-white/70 text-xs">Cross-department rollout</span>
+                                    <span class="text-gray-600 text-xs">Cross-department rollout</span>
                                 </div>
                                 <div class="flex items-center mb-2">
                                     <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
-                                    <span class="text-white/70 text-xs">Integration testing</span>
+                                    <span class="text-gray-600 text-xs">Integration testing</span>
                                 </div>
                             </div>
                             
                             <div id="deployPhase" class="space-y-3">
-                                <div class="text-white/60 text-center py-4">No processes analyzed yet</div>
+                                <div class="text-gray-500 text-center py-4">No processes analyzed yet</div>
                             </div>
                         </div>
 
@@ -604,53 +1230,53 @@
                                     <span class="text-white font-bold">4</span>
                                 </div>
                                 <div>
-                                    <h3 class="text-lg font-semibold text-white">Monitor & Scale</h3>
-                                    <p class="text-white/60 text-xs">Ongoing</p>
+                                    <h3 class="text-lg font-semibold text-gray-900">Monitor & Scale</h3>
+                                    <p class="text-gray-600 text-xs">Ongoing</p>
                                 </div>
                             </div>
-                            <p class="text-white/80 text-sm mb-4">Continuous improvement & expansion</p>
+                            <p class="text-gray-700 text-sm mb-4">Continuous improvement & expansion</p>
                             
                             <!-- Key Activities -->
                             <div class="mb-4">
                                 <div class="flex items-center mb-2">
                                     <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
-                                    <span class="text-white/70 text-xs">Performance monitoring</span>
+                                    <span class="text-gray-600 text-xs">Performance monitoring</span>
                                 </div>
                                 <div class="flex items-center mb-2">
                                     <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
-                                    <span class="text-white/70 text-xs">Continuous optimization</span>
+                                    <span class="text-gray-600 text-xs">Continuous optimization</span>
                                 </div>
                                 <div class="flex items-center mb-2">
                                     <input type="checkbox" class="w-3 h-3 rounded border-white/30 bg-transparent mr-2">
-                                    <span class="text-white/70 text-xs">Scale to new areas</span>
+                                    <span class="text-gray-600 text-xs">Scale to new areas</span>
                                 </div>
                             </div>
                             
                             <div id="monitorPhase" class="space-y-3">
-                                <div class="text-white/60 text-center py-4">No processes analyzed yet</div>
+                                <div class="text-gray-500 text-center py-4">No processes analyzed yet</div>
                             </div>
                         </div>
                     </div>
 
                     <!-- ROI Summary -->
                     <div class="glass-effect rounded-xl p-6 mt-6">
-                        <h3 class="text-xl font-semibold text-white mb-4">📊 Expected Business Impact</h3>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">📊 Expected Business Impact</h3>
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                             <div class="text-center">
                                 <div class="text-2xl font-bold text-success" id="totalROI">$0</div>
-                                <div class="text-white/80 text-sm">Annual Savings</div>
+                                <div class="text-gray-600 text-sm">Annual Savings</div>
                             </div>
                             <div class="text-center">
                                 <div class="text-2xl font-bold text-warning" id="hoursRecovered">0</div>
-                                <div class="text-white/80 text-sm">Hours/Week Recovered</div>
+                                <div class="text-gray-600 text-sm">Hours/Week Recovered</div>
                             </div>
                             <div class="text-center">
                                 <div class="text-2xl font-bold text-secondary" id="processesAutomated">0</div>
-                                <div class="text-white/80 text-sm">Processes Ready</div>
+                                <div class="text-gray-600 text-sm">Processes Ready</div>
                             </div>
                             <div class="text-center">
                                 <div class="text-2xl font-bold text-primary" id="implementationTime">0</div>
-                                <div class="text-white/80 text-sm">Months to Implement</div>
+                                <div class="text-gray-600 text-sm">Months to Implement</div>
                             </div>
                         </div>
                     </div>
@@ -841,17 +1467,23 @@
                             <p class="text-xs text-gray-500 mt-1">Give it a simple name that you and your team would recognize</p>
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-3 field-required">Which department or team handles this?</label>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3 field-required">Which department owns this process?</label>
                             <select id="processDepartment" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors" required onchange="toggleCustomDepartment()">
-                                <option value="">Choose the closest match</option>
-                                <option value="Operations">Day-to-day Operations</option>
-                                <option value="Finance">Money & Accounting</option>
-                                <option value="HR">Staff & Human Resources</option>
-                                <option value="Sales">Sales & Customer Acquisition</option>
-                                <option value="Marketing">Marketing & Promotion</option>
-                                <option value="IT">Technology & Systems</option>
-                                <option value="Customer Service">Customer Support</option>
-                                <option value="Custom">Other (specify below)</option>
+                                <option value="">Select department...</option>
+                                <option value="Finance">💰 Finance & Accounting</option>
+                                <option value="HR">👥 Human Resources</option>
+                                <option value="Operations">⚙️ Operations</option>
+                                <option value="Sales">📈 Sales</option>
+                                <option value="Marketing">📢 Marketing</option>
+                                <option value="IT">💻 Information Technology</option>
+                                <option value="Customer Service">📞 Customer Service</option>
+                                <option value="Legal">⚖️ Legal & Compliance</option>
+                                <option value="Administration">📋 Administration</option>
+                                <option value="R&D">🔬 Research & Development</option>
+                                <option value="Quality Assurance">✅ Quality Assurance</option>
+                                <option value="Procurement">🛒 Procurement</option>
+                                <option value="Facilities">🏢 Facilities</option>
+                                <option value="Custom">✨ Other (specify below)</option>
                             </select>
                             <div class="validation-error hidden" id="processDepartment-error">
                                 <svg fill="currentColor" viewBox="0 0 20 20">
@@ -860,6 +1492,7 @@
                                 Please select a department or team
                             </div>
                             <input type="text" id="customDepartment" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors mt-3 hidden" placeholder="Enter department/team name" maxlength="50">
+                            <p class="text-xs text-gray-500 mt-1">This helps organize processes by department for workshop analysis</p>
                         </div>
                     </div>
 
@@ -1351,6 +1984,118 @@
         let charts = {};
         let currentStep = 1;
         let editingProcessId = null;
+        let workshopMode = false;
+        let currentDepartment = '';
+
+        // Department bypass functionality
+        const departmentTokens = {
+            'finance': 'fin_2024',
+            'hr': 'hr_2024',
+            'operations': 'ops_2024',
+            'sales': 'sales_2024',
+            'marketing': 'mkt_2024',
+            'it': 'it_2024',
+            'customerservice': 'cs_2024',
+            'legal': 'legal_2024',
+            'administration': 'admin_2024',
+            'r&d': 'rd_2024',
+            'qualityassurance': 'qa_2024',
+            'procurement': 'proc_2024',
+            'facilities': 'fac_2024',
+            'other': 'other_2024'
+        };
+
+        const departmentNames = {
+            'finance': 'Finance',
+            'hr': 'Human Resources',
+            'operations': 'Operations',
+            'sales': 'Sales',
+            'marketing': 'Marketing',
+            'it': 'IT',
+            'customerservice': 'Customer Service',
+            'legal': 'Legal',
+            'administration': 'Administration'
+        };
+
+        function getURLParameters() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                dept: params.get('dept'),
+                token: params.get('token')
+            };
+        }
+
+        function validateDepartmentAccess(dept, token) {
+            if (!dept || !token) return false;
+            return departmentTokens[dept.toLowerCase()] === token;
+        }
+
+        function showWorkshopBanner(department) {
+            // Remove existing banner if any
+            const existingBanner = document.getElementById('workshopBanner');
+            if (existingBanner) {
+                existingBanner.remove();
+            }
+
+            // Create and add workshop banner
+            const banner = document.createElement('div');
+            banner.id = 'workshopBanner';
+            banner.className = 'bg-blue-500 text-white px-6 py-3 text-center font-semibold';
+            banner.innerHTML = `
+                <div class="flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 9.172V5L8 4z"></path>
+                    </svg>
+                    Workshop Mode - ${department} Department
+                </div>
+            `;
+            
+            // Insert banner at the top of the dashboard
+            const dashboard = document.getElementById('dashboard');
+            const dashboardContainer = dashboard.querySelector('.dashboard-container');
+            dashboardContainer.insertBefore(banner, dashboardContainer.firstChild);
+        }
+
+        function bypassToWorkshopMode(dept) {
+            workshopMode = true;
+            currentDepartment = dept;
+            
+            // Hide password screen and show dashboard
+            document.getElementById('passwordScreen').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            
+            // Show workshop banner
+            showWorkshopBanner(departmentNames[dept.toLowerCase()]);
+            
+            // Initialize dashboard
+            initializeDashboard();
+            
+            // Pre-select department in process form
+            preselectDepartment(dept);
+        }
+
+        function preselectDepartment(dept) {
+            const deptName = departmentNames[dept.toLowerCase()];
+            const select = document.getElementById('processDepartment');
+            
+            // Find the matching option value
+            let optionValue = '';
+            for (let i = 0; i < select.options.length; i++) {
+                const option = select.options[i];
+                if (option.textContent.includes(deptName)) {
+                    optionValue = option.value;
+                    break;
+                }
+            }
+            
+            if (optionValue) {
+                select.value = optionValue;
+                // Disable the select to lock the department
+                select.disabled = true;
+                select.style.backgroundColor = '#f3f4f6';
+                select.style.cursor = 'not-allowed';
+            }
+        }
 
         // Password protection
         document.getElementById('passwordForm').addEventListener('submit', function(e) {
@@ -1368,13 +2113,523 @@
             }
         });
 
+        // Workshop Review Mode Functions
+        let workshopReviewMode = false;
+        let currentDepartmentFilter = '';
+        
+        function toggleWorkshopReviewMode() {
+            const toggle = document.getElementById('workshopToggle');
+            const modeIndicator = document.getElementById('modeIndicator');
+            const contextualControls = document.getElementById('contextualControls');
+            
+            workshopReviewMode = toggle.checked;
+            
+            if (workshopReviewMode) {
+                // Enable workshop review mode
+                modeIndicator.textContent = 'Workshop Review Mode';
+                modeIndicator.classList.remove('text-gray-600');
+                modeIndicator.classList.add('text-blue-600', 'font-medium');
+                
+                // Smooth reveal of contextual controls
+                setTimeout(() => {
+                    contextualControls.classList.add('show');
+                }, 100);
+                
+                // Update dashboard to show multi-department view
+                updateWorkshopDashboard();
+                
+                showNotification('Workshop Review Mode enabled - you can now review and clean submitted data', 'info');
+            } else {
+                // Disable workshop review mode
+                modeIndicator.textContent = 'Admin Mode';
+                modeIndicator.classList.remove('text-blue-600', 'font-medium');
+                modeIndicator.classList.add('text-gray-600');
+                
+                // Smooth hide of contextual controls
+                contextualControls.classList.remove('show');
+                
+                // Reset filters
+                document.getElementById('filterDepartment').value = '';
+                currentDepartmentFilter = '';
+                
+                // Update dashboard to normal view
+                updateNormalDashboard();
+                
+                showNotification('Returned to normal Admin Mode', 'success');
+            }
+        }
+        
+        function updateWorkshopDashboard() {
+            // Update process list to show department attribution
+            renderProcessList();
+            
+            // Update charts with department data
+            updateCharts();
+            
+            // Show data quality metrics if available
+            showDataQualityMetrics();
+        }
+        
+        function updateNormalDashboard() {
+            // Return to normal dashboard view
+            renderProcessList();
+            updateCharts();
+            hideDataQualityMetrics();
+        }
+        
+        function filterByDepartment() {
+            const filter = document.getElementById('filterDepartment').value;
+            currentDepartmentFilter = filter;
+            
+            // Update process list with filter
+            renderProcessList();
+            
+            // Update charts with filtered data
+            updateCharts();
+            
+            if (filter) {
+                showNotification(`Filtered to show ${filter} department only`, 'info');
+            } else {
+                showNotification('Showing all departments', 'info');
+            }
+        }
+        
+        function showDataQualityMetrics() {
+            // Add data quality metrics to the dashboard
+            const metricsHtml = `
+                <div class="glass-effect rounded-xl p-6 mb-6" id="dataQualityMetrics">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">📊 Data Quality Overview</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                        <div>
+                            <div class="text-2xl font-bold text-primary" id="totalSubmissions">0</div>
+                            <div class="text-xs text-gray-600">Total Submissions</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-warning" id="duplicatesFound">0</div>
+                            <div class="text-xs text-gray-600">Potential Duplicates</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-success" id="cleanProcesses">0</div>
+                            <div class="text-xs text-gray-600">Ready for Analysis</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-secondary" id="departmentCount">0</div>
+                            <div class="text-xs text-gray-600">Departments</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Insert before the main grid
+            const mainGrid = document.querySelector('.grid.grid-cols-1.lg\\:grid-cols-4');
+            mainGrid.insertAdjacentHTML('beforebegin', metricsHtml);
+            
+            updateDataQualityMetrics();
+        }
+        
+        function hideDataQualityMetrics() {
+            const metrics = document.getElementById('dataQualityMetrics');
+            if (metrics) {
+                metrics.remove();
+            }
+        }
+        
+        function updateDataQualityMetrics() {
+            if (!workshopReviewMode) return;
+            
+            const totalSubmissions = processes.length;
+            const departments = [...new Set(processes.map(p => p.department))].length;
+            const duplicates = findPotentialDuplicates().length;
+            const cleanProcesses = totalSubmissions - duplicates;
+            
+            document.getElementById('totalSubmissions').textContent = totalSubmissions;
+            document.getElementById('duplicatesFound').textContent = duplicates;
+            document.getElementById('cleanProcesses').textContent = cleanProcesses;
+            document.getElementById('departmentCount').textContent = departments;
+        }
+        
+        function findPotentialDuplicates() {
+            const duplicates = [];
+            for (let i = 0; i < processes.length; i++) {
+                for (let j = i + 1; j < processes.length; j++) {
+                    const similarity = calculateSimilarity(processes[i], processes[j]);
+                    if (similarity > 0.7) { // 70% similarity threshold
+                        duplicates.push({
+                            process1: processes[i],
+                            process2: processes[j],
+                            similarity: similarity
+                        });
+                    }
+                }
+            }
+            return duplicates;
+        }
+        
+        function calculateSimilarity(p1, p2) {
+            // Simple similarity calculation based on name and department
+            const nameSimilarity = getStringSimilarity(p1.name.toLowerCase(), p2.name.toLowerCase());
+            const deptMatch = p1.department === p2.department ? 1 : 0;
+            return (nameSimilarity * 0.7) + (deptMatch * 0.3);
+        }
+        
+        function getStringSimilarity(str1, str2) {
+            const longer = str1.length > str2.length ? str1 : str2;
+            const shorter = str1.length > str2.length ? str2 : str1;
+            if (longer.length === 0) return 1.0;
+            return (longer.length - getEditDistance(longer, shorter)) / longer.length;
+        }
+        
+        function getEditDistance(s1, s2) {
+            s1 = s1.toLowerCase();
+            s2 = s2.toLowerCase();
+            const costs = [];
+            for (let i = 0; i <= s2.length; i++) {
+                let lastValue = i;
+                for (let j = 0; j <= s1.length; j++) {
+                    if (i === 0) {
+                        costs[j] = j;
+                    } else {
+                        if (j > 0) {
+                            let newValue = costs[j - 1];
+                            if (s1.charAt(j - 1) !== s2.charAt(i - 1)) {
+                                newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+                            }
+                            costs[j - 1] = lastValue;
+                            lastValue = newValue;
+                        }
+                    }
+                }
+                if (i > 0) costs[s1.length] = lastValue;
+            }
+            return costs[s1.length];
+        }
+        
+        function showDuplicateDetection() {
+            const duplicates = findPotentialDuplicates();
+            if (duplicates.length === 0) {
+                showNotification('No potential duplicates found!', 'success');
+                return;
+            }
+            
+            // Create duplicate detection modal
+            const modalHtml = `
+                <div id="duplicateModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+                    <div class="bg-white rounded-2xl p-8 w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-gray-900">🔍 Potential Duplicates Found</h2>
+                            <button onclick="closeDuplicateModal()" class="text-gray-400 hover:text-gray-600 text-2xl">×</button>
+                        </div>
+                        <div class="space-y-4" id="duplicateList">
+                            ${duplicates.map((dup, index) => `
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <h3 class="font-semibold text-red-600">Duplicate Pair ${index + 1} (${Math.round(dup.similarity * 100)}% similar)</h3>
+                                        <div class="space-x-2">
+                                            <button onclick="mergeDuplicates('${dup.process1.id}', '${dup.process2.id}')" class="px-3 py-1 bg-blue-500 text-white rounded text-sm">Merge</button>
+                                            <button onclick="keepBoth('${dup.process1.id}', '${dup.process2.id}')" class="px-3 py-1 bg-gray-500 text-white rounded text-sm">Keep Both</button>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="border-l-4 border-blue-500 pl-3">
+                                            <h4 class="font-medium">${dup.process1.name}</h4>
+                                            <p class="text-sm text-gray-600">${dup.process1.department}</p>
+                                            <p class="text-xs text-gray-500">Time: ${dup.process1.timeSpent}h/week</p>
+                                        </div>
+                                        <div class="border-l-4 border-orange-500 pl-3">
+                                            <h4 class="font-medium">${dup.process2.name}</h4>
+                                            <p class="text-sm text-gray-600">${dup.process2.department}</p>
+                                            <p class="text-xs text-gray-500">Time: ${dup.process2.timeSpent}h/week</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+        }
+        
+        function closeDuplicateModal() {
+            const modal = document.getElementById('duplicateModal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+        
+        function mergeDuplicates(id1, id2) {
+            const process1 = processes.find(p => p.id === id1);
+            const process2 = processes.find(p => p.id === id2);
+            
+            if (!process1 || !process2) return;
+            
+            // Merge logic - combine time spent and use higher scores
+            process1.timeSpent = (process1.timeSpent + process2.timeSpent);
+            process1.scores.repetitive = Math.max(process1.scores.repetitive, process2.scores.repetitive);
+            process1.scores.dataDriven = Math.max(process1.scores.dataDriven, process2.scores.dataDriven);
+            process1.scores.ruleBased = Math.max(process1.scores.ruleBased, process2.scores.ruleBased);
+            process1.scores.highVolume = Math.max(process1.scores.highVolume, process2.scores.highVolume);
+            process1.impact = Math.max(process1.impact, process2.impact);
+            process1.feasibility = Math.max(process1.feasibility, process2.feasibility);
+            
+            // Remove the second process
+            processes = processes.filter(p => p.id !== id2);
+            
+            // Update storage and UI
+            saveProcesses(currentProjectId);
+            renderProcessList();
+            updateCharts();
+            updateDataQualityMetrics();
+            
+            showNotification('Processes merged successfully', 'success');
+            closeDuplicateModal();
+        }
+        
+        function keepBoth(id1, id2) {
+            // Just close the modal and keep both processes
+            showNotification('Both processes kept as separate entries', 'info');
+            closeDuplicateModal();
+        }
+        
+        function showBulkActions() {
+            // Create bulk actions modal
+            const modalHtml = `
+                <div id="bulkModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+                    <div class="bg-white rounded-2xl p-8 w-full max-w-2xl shadow-2xl">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-gray-900">✏️ Bulk Actions</h2>
+                            <button onclick="closeBulkModal()" class="text-gray-400 hover:text-gray-600 text-2xl">×</button>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <h3 class="font-semibold mb-2">Department Actions</h3>
+                                <div class="space-y-2">
+                                    <button onclick="bulkDeleteByDepartment()" class="w-full text-left px-4 py-3 border border-gray-200 rounded-lg hover:bg-red-50 hover:border-red-300">
+                                        🗑️ Delete all processes from a specific department
+                                    </button>
+                                    <button onclick="bulkMoveToProject()" class="w-full text-left px-4 py-3 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300">
+                                        📁 Move processes to different project
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold mb-2">Score Actions</h3>
+                                <div class="space-y-2">
+                                    <button onclick="bulkAdjustScores()" class="w-full text-left px-4 py-3 border border-gray-200 rounded-lg hover:bg-yellow-50 hover:border-yellow-300">
+                                        📊 Adjust scores for low-quality submissions
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+        }
+        
+        function closeBulkModal() {
+            const modal = document.getElementById('bulkModal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+        
+        function bulkDeleteByDepartment() {
+            const dept = prompt('Enter department name to delete all processes (this cannot be undone):');
+            if (!dept) return;
+            
+            const matchingProcesses = processes.filter(p => p.department.toLowerCase() === dept.toLowerCase());
+            if (matchingProcesses.length === 0) {
+                showNotification('No processes found for that department', 'error');
+                return;
+            }
+            
+            if (confirm(`Delete ${matchingProcesses.length} processes from ${dept}?`)) {
+                processes = processes.filter(p => p.department.toLowerCase() !== dept.toLowerCase());
+                saveProcesses(currentProjectId);
+                renderProcessList();
+                updateCharts();
+                updateDataQualityMetrics();
+                showNotification(`Deleted ${matchingProcesses.length} processes from ${dept}`, 'success');
+                closeBulkModal();
+            }
+        }
+        
+        function bulkMoveToProject() {
+            showNotification('Bulk move feature coming soon', 'info');
+            closeBulkModal();
+        }
+        
+        function bulkAdjustScores() {
+            showNotification('Bulk score adjustment feature coming soon', 'info');
+            closeBulkModal();
+        }
+        
+        function showDepartmentLinks() {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const departmentTokens = {
+                'Finance': 'fin_2024',
+                'HR': 'hr_2024', 
+                'Operations': 'ops_2024',
+                'Sales': 'sales_2024',
+                'Marketing': 'mkt_2024',
+                'IT': 'it_2024',
+                'Customer Service': 'cs_2024',
+                'Legal': 'legal_2024',
+                'Administration': 'admin_2024',
+                'R&D': 'rd_2024',
+                'Quality Assurance': 'qa_2024',
+                'Procurement': 'proc_2024',
+                'Facilities': 'fac_2024',
+                'Other': 'other_2024'
+            };
+            
+            const modalHtml = `
+                <div id="linksModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+                    <div class="bg-white rounded-2xl p-8 w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-gray-900">🔗 Department Workshop Links</h2>
+                            <button onclick="closeLinksModal()" class="text-gray-400 hover:text-gray-600 text-2xl">×</button>
+                        </div>
+                        <div class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                            <h3 class="font-semibold text-blue-800 mb-2">📋 Instructions:</h3>
+                            <ol class="text-sm text-blue-700 space-y-1">
+                                <li>1. Copy the link for each department</li>
+                                <li>2. Send to department leads via email/chat</li>
+                                <li>3. Department leads click their unique link to submit processes</li>
+                                <li>4. Return here to review all submissions in Workshop Mode</li>
+                            </ol>
+                        </div>
+                        <div class="space-y-3">
+                            ${Object.keys(departmentTokens).map(dept => {
+                                const deptKey = dept.toLowerCase().replace(/\s+/g, '');
+                                const url = `${baseUrl}?dept=${deptKey}&token=${departmentTokens[dept]}`;
+                                return `
+                                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                                        <div class="flex-1">
+                                            <div class="font-semibold text-gray-900">${dept}</div>
+                                            <div class="text-sm text-gray-500 font-mono break-all">${url}</div>
+                                        </div>
+                                        <button onclick="copyToClipboard('${url}', '${dept}')" class="ml-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-medium">
+                                            📋 Copy
+                                        </button>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                        <div class="mt-6 text-center">
+                            <button onclick="copyAllLinks()" class="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium">
+                                📋 Copy All Links
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+        }
+        
+        function copyToClipboard(text, department) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification(`${department} link copied to clipboard!`, 'success');
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification(`${department} link copied to clipboard!`, 'success');
+            });
+        }
+        
+        function copyAllLinks() {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const departmentTokens = {
+                'Finance': 'fin_2024',
+                'HR': 'hr_2024', 
+                'Operations': 'ops_2024',
+                'Sales': 'sales_2024',
+                'Marketing': 'mkt_2024',
+                'IT': 'it_2024',
+                'Customer Service': 'cs_2024',
+                'Legal': 'legal_2024',
+                'Administration': 'admin_2024',
+                'R&D': 'rd_2024',
+                'Quality Assurance': 'qa_2024',
+                'Procurement': 'proc_2024',
+                'Facilities': 'fac_2024',
+                'Other': 'other_2024'
+            };
+            
+            const allLinks = Object.keys(departmentTokens).map(dept => {
+                const deptKey = dept.toLowerCase().replace(/\s+/g, '');
+                const url = `${baseUrl}?dept=${deptKey}&token=${departmentTokens[dept]}`;
+                return `${dept}: ${url}`;
+            }).join('\n\n');
+            
+            const fullMessage = `🔗 Department Workshop Links - Business Automation Tool\n\n` +
+                `Instructions:\n` +
+                `- Click your department's link below\n` +
+                `- Fill out the business process form\n` +
+                `- Submit processes your team wants to automate\n` +
+                `- Workshop review will happen after all submissions\n\n` +
+                `${allLinks}`;
+            
+            navigator.clipboard.writeText(fullMessage).then(() => {
+                showNotification('All department links copied to clipboard!', 'success');
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = fullMessage;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification('All department links copied to clipboard!', 'success');
+            });
+        }
+        
+        function closeLinksModal() {
+            const modal = document.getElementById('linksModal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+        
         function logout() {
             document.getElementById('dashboard').classList.add('hidden');
             document.getElementById('passwordScreen').classList.remove('hidden');
             document.getElementById('passwordInput').value = '';
+            
+            // Clear workshop mode state
+            workshopMode = false;
+            currentDepartment = '';
+            
+            // Remove workshop banner if it exists
+            const existingBanner = document.getElementById('workshopBanner');
+            if (existingBanner) {
+                existingBanner.remove();
+            }
+            
+            // Re-enable department selection
+            const select = document.getElementById('processDepartment');
+            if (select) {
+                select.disabled = false;
+                select.style.backgroundColor = '';
+                select.style.cursor = '';
+            }
         }
 
         function initializeDashboard() {
+            // Hide admin controls in workshop mode for department users
+            if (workshopMode && currentDepartment) {
+                document.getElementById('adminControls').style.display = 'none';
+            }
+            
             loadProjects();
             initializeSliders();
         }
@@ -1495,40 +2750,70 @@
 
         function renderProcessList() {
             const processList = document.getElementById('processList');
-            if (processes.length === 0) {
-                processList.innerHTML = '<div class="text-white/60 text-center py-4">No processes added yet</div>';
+            
+            // Filter processes by department if in workshop mode or if filter is applied
+            let filteredProcesses = processes;
+            if (currentDepartmentFilter && currentDepartmentFilter !== 'all') {
+                filteredProcesses = processes.filter(process => 
+                    process.department === currentDepartmentFilter
+                );
+            }
+            
+            if (filteredProcesses.length === 0) {
+                const message = currentDepartmentFilter && currentDepartmentFilter !== 'all' 
+                    ? `No processes found for ${currentDepartmentFilter}` 
+                    : 'No processes added yet';
+                processList.innerHTML = `<div class="text-white/60 text-center py-4">${message}</div>`;
                 return;
             }
 
-            processList.innerHTML = processes.map(process => {
+            processList.innerHTML = filteredProcesses.map(process => {
                 const avgScore = (process.scores.repetitive + process.scores.dataDriven + process.scores.ruleBased + process.scores.highVolume) / 4;
                 const scoreColor = avgScore >= 7 ? 'bg-success' : avgScore >= 5 ? 'bg-warning' : 'bg-danger';
                 
+                // Department color coding for workshop mode
+                const departmentColors = {
+                    'Finance': 'bg-green-100 text-green-800 border-green-300',
+                    'HR': 'bg-orange-100 text-orange-800 border-orange-300',
+                    'Operations': 'bg-blue-100 text-blue-800 border-blue-300',
+                    'IT': 'bg-purple-100 text-purple-800 border-purple-300',
+                    'Marketing': 'bg-pink-100 text-pink-800 border-pink-300',
+                    'Sales': 'bg-indigo-100 text-indigo-800 border-indigo-300',
+                    'Customer Service': 'bg-teal-100 text-teal-800 border-teal-300',
+                    'Legal': 'bg-gray-100 text-gray-800 border-gray-300',
+                    'Administration': 'bg-slate-100 text-slate-800 border-slate-300',
+                    'R&D': 'bg-cyan-100 text-cyan-800 border-cyan-300',
+                    'Quality Assurance': 'bg-yellow-100 text-yellow-800 border-yellow-300',
+                    'Procurement': 'bg-emerald-100 text-emerald-800 border-emerald-300',
+                    'Facilities': 'bg-stone-100 text-stone-800 border-stone-300',
+                    'Other': 'bg-neutral-100 text-neutral-800 border-neutral-300'
+                };
+                
+                const departmentStyle = workshopReviewMode && departmentColors[process.department] 
+                    ? departmentColors[process.department] 
+                    : '';
+                
+                const borderClass = workshopReviewMode && departmentColors[process.department] 
+                    ? `border-2 ${departmentColors[process.department].split(' ')[2]}` 
+                    : 'border border-gray-200';
+                
                 return `
-                    <div class="process-card group relative rounded-lg p-4 fade-in bg-white/95 border border-gray-200 hover:shadow-md transition-all duration-200">
+                    <div class="process-card group relative rounded-lg p-4 fade-in bg-white/95 ${borderClass} hover:shadow-md transition-all duration-200">
                         <div class="flex justify-between items-start mb-3">
                             <div class="flex-1">
-                                <h4 class="font-semibold text-gray-900">${process.name}</h4>
-                                <p class="text-sm text-gray-600">${process.department}</p>
+                                <h4 class="font-semibold text-gray-900 pr-4">${process.name}</h4>
+                                <div class="flex items-center space-x-2 mt-1">
+                                    ${workshopReviewMode && departmentStyle ? 
+                                        `<span class="text-xs px-2 py-1 rounded-full ${departmentStyle}">${process.department}</span>` : 
+                                        `<p class="text-sm text-gray-600">${process.department}</p>`
+                                    }
+                                </div>
                             </div>
                             <div class="flex items-center space-x-2">
                                 <div class="${scoreColor} text-white text-xs px-3 py-1 rounded-full font-semibold">${avgScore.toFixed(1)}/10</div>
                             </div>
                         </div>
-                        <div class="absolute top-2 right-2 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button onclick="editProcess('${process.id}'); event.stopPropagation();" class="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-blue-50" title="Edit process">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                </svg>
-                            </button>
-                            <button onclick="deleteProcess('${process.id}'); event.stopPropagation();" class="text-red-600 hover:text-red-800 p-1 rounded hover:bg-red-50" title="Delete process">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                </svg>
-                            </button>
-                        </div>
-                        </div>
-                        <div class="text-sm text-gray-700 space-y-1">
+                        <div class="text-sm text-gray-700 space-y-1 mb-3">
                             <div class="flex justify-between">
                                 <span>Impact:</span>
                                 <span class="font-medium">${process.impact}/10</span>
@@ -1542,6 +2827,20 @@
                                 <span class="font-medium">${process.timeSpent} hrs</span>
                             </div>
                         </div>
+                        ${!workshopMode || isAdmin ? `
+                        <!-- Action buttons moved to bottom with better spacing -->
+                        <div class="action-buttons flex justify-end space-x-2 pt-2 border-t border-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                            <button onclick="editProcess('${process.id}'); event.stopPropagation();" class="action-btn text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50 transition-colors" title="Edit process">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                            </button>
+                            <button onclick="deleteProcess('${process.id}'); event.stopPropagation();" class="action-btn text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50 transition-colors" title="Delete process">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </button>
+                        </div>` : ''}
                     </div>
                 `;
             }).join('');
@@ -1553,6 +2852,11 @@
                 return;
             }
             document.getElementById('processModal').classList.remove('hidden');
+            
+            // Re-apply department selection if in workshop mode
+            if (workshopMode && currentDepartment) {
+                setTimeout(() => preselectDepartment(currentDepartment), 100);
+            }
         }
 
         function closeProcessModal() {
@@ -1577,6 +2881,14 @@
             
             // Hide custom department field
             document.getElementById('customDepartment').classList.add('hidden');
+            
+            // Reset department selection if not in workshop mode
+            if (!workshopMode) {
+                const select = document.getElementById('processDepartment');
+                select.disabled = false;
+                select.style.backgroundColor = '';
+                select.style.cursor = '';
+            }
         }
 
         function initializeSliders() {
@@ -1981,10 +3293,10 @@
 
         function updateRoadmap() {
             if (processes.length === 0) {
-                document.getElementById('pilotPhase').innerHTML = '<div class="text-white/60 text-center py-4">No processes analyzed yet</div>';
-                document.getElementById('refinePhase').innerHTML = '<div class="text-white/60 text-center py-4">No processes analyzed yet</div>';
-                document.getElementById('deployPhase').innerHTML = '<div class="text-white/60 text-center py-4">No processes analyzed yet</div>';
-                document.getElementById('monitorPhase').innerHTML = '<div class="text-white/60 text-center py-4">No processes analyzed yet</div>';
+                document.getElementById('pilotPhase').innerHTML = '<div class="text-gray-500 text-center py-4">No processes analyzed yet</div>';
+                document.getElementById('refinePhase').innerHTML = '<div class="text-gray-500 text-center py-4">No processes analyzed yet</div>';
+                document.getElementById('deployPhase').innerHTML = '<div class="text-gray-500 text-center py-4">No processes analyzed yet</div>';
+                document.getElementById('monitorPhase').innerHTML = '<div class="text-gray-500 text-center py-4">No processes analyzed yet</div>';
                 return;
             }
 
@@ -2004,8 +3316,8 @@
             }).sort((a, b) => b.priorityScore - a.priorityScore);
 
             // Categorize processes into 4 phases
-            const pilotProcesses = prioritizedProcesses.filter(p => p.category === 'quickWin');
-            const refineProcesses = prioritizedProcesses.filter(p => p.category === 'strategic');
+            const pilotProcesses = prioritizedProcesses.filter(p => p.category === 'pilot');
+            const refineProcesses = prioritizedProcesses.filter(p => p.category === 'refine');
             const deployProcesses = prioritizedProcesses.filter(p => p.category === 'deploy');
             const monitorProcesses = prioritizedProcesses.filter(p => p.category === 'monitor');
 
@@ -2023,10 +3335,10 @@
             const priorityScore = (impact * 0.4) + (feasibility * 0.3) + (automationScore * 0.3);
             
             // Phase 1: Pilot Project - High impact, high feasibility (quick wins)
-            if (impact >= 7 && feasibility >= 7 && automationScore >= 6) return 'quickWin';
+            if (impact >= 7 && feasibility >= 7 && automationScore >= 6) return 'pilot';
             
             // Phase 2: Refine & Train - High impact but moderate feasibility
-            if (impact >= 6 && feasibility >= 5 && automationScore >= 5) return 'strategic';
+            if (impact >= 6 && feasibility >= 5 && automationScore >= 5) return 'refine';
             
             // Phase 3: Deploy - Moderate impact and feasibility
             if (impact >= 5 && feasibility >= 4 && automationScore >= 4) return 'deploy';
@@ -2054,22 +3366,22 @@
             const section = document.getElementById(sectionId);
             
             if (processes.length === 0) {
-                section.innerHTML = '<div class="text-white/60 text-center py-4">No processes in this category</div>';
+                section.innerHTML = '<div class="text-gray-500 text-center py-4">No processes in this category</div>';
                 return;
             }
 
             section.innerHTML = processes.slice(0, 5).map(process => `
-                <div class="bg-white/10 rounded-lg p-4 border border-white/20">
+                <div class="bg-gray-50 rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow">
                     <div class="flex justify-between items-start mb-2">
-                        <h4 class="font-medium text-white">${process.name}</h4>
-                        <div class="text-${colorClass} text-xs px-2 py-1 bg-white/20 rounded">${process.priorityScore.toFixed(1)}</div>
+                        <h4 class="font-medium text-gray-900">${process.name}</h4>
+                        <div class="text-${colorClass} text-xs px-2 py-1 bg-gray-100 rounded">${process.priorityScore.toFixed(1)}</div>
                     </div>
-                    <div class="text-sm text-white/80 mb-2">${process.department}</div>
-                    <div class="flex justify-between text-xs text-white/70">
+                    <div class="text-sm text-gray-600 mb-2">${process.department}</div>
+                    <div class="flex justify-between text-xs text-gray-500">
                         <span>ROI: $${process.estimatedROI.toLocaleString()}/year</span>
                         <span>Time: ${process.implementationTime}mo</span>
                     </div>
-                    <div class="mt-2 bg-white/10 rounded-full h-1">
+                    <div class="mt-2 bg-gray-200 rounded-full h-1">
                         <div class="bg-${colorClass} h-1 rounded-full" style="width: ${(process.priorityScore * 10)}%"></div>
                     </div>
                 </div>
@@ -2079,7 +3391,7 @@
         function updateROISummary(processes) {
             const totalROI = processes.reduce((sum, p) => sum + p.estimatedROI, 0);
             const hoursRecovered = processes.reduce((sum, p) => sum + p.timeSpent, 0);
-            const processesReady = processes.filter(p => p.category === 'quickWin' || p.category === 'strategic').length;
+            const processesReady = processes.filter(p => p.category === 'pilot' || p.category === 'refine').length;
             const avgImplementationTime = processes.length > 0 ? 
                 Math.round(processes.reduce((sum, p) => sum + p.implementationTime, 0) / processes.length) : 0;
 
@@ -2126,11 +3438,33 @@
         }
 
         function generateReportHTML(project, processes) {
-            const pilotProcesses = processes.filter(p => p.category === 'quickWin');
-            const refineProcesses = processes.filter(p => p.category === 'strategic');
+            const pilotProcesses = processes.filter(p => p.category === 'pilot');
+            const refineProcesses = processes.filter(p => p.category === 'refine');
             const deployProcesses = processes.filter(p => p.category === 'deploy');
             const monitorProcesses = processes.filter(p => p.category === 'monitor');
             const totalROI = processes.reduce((sum, p) => sum + p.estimatedROI, 0);
+            
+            // Department-specific analytics for workshop mode
+            const departmentStats = {};
+            processes.forEach(p => {
+                if (!departmentStats[p.department]) {
+                    departmentStats[p.department] = {
+                        processCount: 0,
+                        totalROI: 0,
+                        totalTime: 0,
+                        avgScore: 0
+                    };
+                }
+                departmentStats[p.department].processCount++;
+                departmentStats[p.department].totalROI += p.estimatedROI;
+                departmentStats[p.department].totalTime += p.timeSpent;
+                const avgScore = (p.scores.repetitive + p.scores.dataDriven + p.scores.ruleBased + p.scores.highVolume) / 4;
+                departmentStats[p.department].avgScore += avgScore;
+            });
+            
+            Object.keys(departmentStats).forEach(dept => {
+                departmentStats[dept].avgScore /= departmentStats[dept].processCount;
+            });
             
             return `
                 <!DOCTYPE html>
@@ -2142,9 +3476,10 @@
                         .header { border-bottom: 2px solid #2563eb; padding-bottom: 20px; margin-bottom: 30px; }
                         .section { margin-bottom: 30px; }
                         .process { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
-                        .quick-win { border-left: 4px solid #10B981; }
-                        .strategic { border-left: 4px solid #F59E0B; }
-                        .future { border-left: 4px solid #8B5CF6; }
+                        .pilot { border-left: 4px solid #10B981; }
+                        .refine { border-left: 4px solid #F59E0B; }
+                        .deploy { border-left: 4px solid #3B82F6; }
+                        .monitor { border-left: 4px solid #8B5CF6; }
                         .metrics { display: flex; justify-content: space-around; background: #f8f9fa; padding: 20px; border-radius: 8px; }
                         .metric { text-align: center; }
                         .metric-value { font-size: 24px; font-weight: bold; color: #2563eb; }
@@ -2155,9 +3490,10 @@
                 </head>
                 <body>
                     <div class="header">
-                        <h1>🚀 AI Automation Opportunity Report</h1>
+                        <h1>🚀 ${workshopReviewMode ? 'Workshop Automation Report' : 'AI Automation Opportunity Report'}</h1>
                         <h2>${project.name} - ${project.clientName}</h2>
                         <p>Generated on ${new Date().toLocaleDateString()}</p>
+                        ${workshopReviewMode ? '<p><em>Based on multi-department workshop submissions</em></p>' : ''}
                     </div>
                     
                     <div class="section">
@@ -2182,11 +3518,41 @@
                         </div>
                     </div>
 
+                    ${workshopReviewMode ? `
+                    <div class="section">
+                        <h2>🏢 Department Breakdown</h2>
+                        <p>Analysis of automation opportunities by department based on workshop submissions:</p>
+                        ${Object.keys(departmentStats).map(dept => `
+                            <div class="process" style="border-left: 4px solid #6366f1; margin-bottom: 15px;">
+                                <h3>${dept}</h3>
+                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 10px;">
+                                    <div>
+                                        <strong>Processes:</strong><br>
+                                        ${departmentStats[dept].processCount}
+                                    </div>
+                                    <div>
+                                        <strong>Total ROI:</strong><br>
+                                        $${departmentStats[dept].totalROI.toLocaleString()}
+                                    </div>
+                                    <div>
+                                        <strong>Weekly Hours:</strong><br>
+                                        ${departmentStats[dept].totalTime}
+                                    </div>
+                                    <div>
+                                        <strong>Avg Automation Score:</strong><br>
+                                        ${departmentStats[dept].avgScore.toFixed(1)}/10
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    ` : ''}
+
                     <div class="section">
                         <h2>🎯 Phase 1: Pilot Project (Month 1-2)</h2>
                         ${pilotProcesses.length === 0 ? '<p>No pilot processes identified. Consider improving process feasibility or automation readiness.</p>' : 
                             pilotProcesses.map(p => `
-                                <div class="process quick-win">
+                                <div class="process pilot">
                                     <h3>${p.name}</h3>
                                     <p><strong>Department:</strong> ${p.department}</p>
                                     <p><strong>Priority Score:</strong> ${p.priorityScore.toFixed(1)}/10</p>
@@ -2202,7 +3568,7 @@
                         <h2>📈 Phase 2: Refine & Train (Month 3-4)</h2>
                         ${refineProcesses.length === 0 ? '<p>No refine phase processes identified.</p>' : 
                             refineProcesses.map(p => `
-                                <div class="process strategic">
+                                <div class="process refine">
                                     <h3>${p.name}</h3>
                                     <p><strong>Department:</strong> ${p.department}</p>
                                     <p><strong>Priority Score:</strong> ${p.priorityScore.toFixed(1)}/10</p>
@@ -2330,27 +3696,74 @@
         }
         
         function createBubbleChartConfig() {
-            const data = processes.map(process => {
-                const avgScore = (process.scores.repetitive + process.scores.dataDriven + process.scores.ruleBased + process.scores.highVolume) / 4;
-                return {
-                    x: process.scores.businessImpact || 5,
-                    y: process.scores.implementationEase || 5,
-                    r: avgScore * 2,
-                    label: process.name
-                };
-            });
+            // Department colors for workshop mode
+            const departmentColors = {
+                'Finance': { bg: 'rgba(34, 197, 94, 0.6)', border: 'rgba(34, 197, 94, 1)' },
+                'HR': { bg: 'rgba(245, 166, 35, 0.6)', border: 'rgba(245, 166, 35, 1)' },
+                'Operations': { bg: 'rgba(59, 130, 246, 0.6)', border: 'rgba(59, 130, 246, 1)' },
+                'IT': { bg: 'rgba(147, 51, 234, 0.6)', border: 'rgba(147, 51, 234, 1)' },
+                'Marketing': { bg: 'rgba(236, 72, 153, 0.6)', border: 'rgba(236, 72, 153, 1)' },
+                'Sales': { bg: 'rgba(99, 102, 241, 0.6)', border: 'rgba(99, 102, 241, 1)' },
+                'Customer Service': { bg: 'rgba(20, 184, 166, 0.6)', border: 'rgba(20, 184, 166, 1)' },
+                'Legal': { bg: 'rgba(107, 114, 128, 0.6)', border: 'rgba(107, 114, 128, 1)' },
+                'Administration': { bg: 'rgba(100, 116, 139, 0.6)', border: 'rgba(100, 116, 139, 1)' },
+                'R&D': { bg: 'rgba(6, 182, 212, 0.6)', border: 'rgba(6, 182, 212, 1)' },
+                'Quality Assurance': { bg: 'rgba(234, 179, 8, 0.6)', border: 'rgba(234, 179, 8, 1)' },
+                'Procurement': { bg: 'rgba(16, 185, 129, 0.6)', border: 'rgba(16, 185, 129, 1)' },
+                'Facilities': { bg: 'rgba(120, 113, 108, 0.6)', border: 'rgba(120, 113, 108, 1)' },
+                'Other': { bg: 'rgba(115, 115, 115, 0.6)', border: 'rgba(115, 115, 115, 1)' }
+            };
+
+            let datasets;
+            if (workshopReviewMode) {
+                // Group by departments in workshop mode
+                const departmentGroups = {};
+                processes.forEach(process => {
+                    if (!departmentGroups[process.department]) {
+                        departmentGroups[process.department] = [];
+                    }
+                    const avgScore = (process.scores.repetitive + process.scores.dataDriven + process.scores.ruleBased + process.scores.highVolume) / 4;
+                    departmentGroups[process.department].push({
+                        x: process.impact,
+                        y: process.feasibility,
+                        r: Math.max(process.timeSpent * 2, 5),
+                        label: process.name,
+                        department: process.department
+                    });
+                });
+
+                datasets = Object.keys(departmentGroups).map(dept => ({
+                    label: dept,
+                    data: departmentGroups[dept],
+                    backgroundColor: departmentColors[dept]?.bg || 'rgba(37, 99, 235, 0.6)',
+                    borderColor: departmentColors[dept]?.border || 'rgba(37, 99, 235, 1)',
+                    borderWidth: 2
+                }));
+            } else {
+                // Single dataset for normal mode
+                const data = processes.map(process => {
+                    const avgScore = (process.scores.repetitive + process.scores.dataDriven + process.scores.ruleBased + process.scores.highVolume) / 4;
+                    return {
+                        x: process.scores.businessImpact || 5,
+                        y: process.scores.implementationEase || 5,
+                        r: avgScore * 2,
+                        label: process.name,
+                        department: process.department
+                    };
+                });
+
+                datasets = [{
+                    label: 'Processes',
+                    data: data,
+                    backgroundColor: 'rgba(37, 99, 235, 0.6)',
+                    borderColor: 'rgba(37, 99, 235, 1)',
+                    borderWidth: 1
+                }];
+            }
             
             return {
                 type: 'bubble',
-                data: {
-                    datasets: [{
-                        label: 'Processes',
-                        data: data,
-                        backgroundColor: 'rgba(37, 99, 235, 0.6)',
-                        borderColor: 'rgba(37, 99, 235, 1)',
-                        borderWidth: 1
-                    }]
-                },
+                data: { datasets },
                 options: {
                     plugins: {
                         tooltip: {
@@ -2480,24 +3893,70 @@
                 charts.bubble.destroy();
             }
 
-            const data = processes.map(process => ({
-                x: process.impact,
-                y: process.feasibility,
-                r: Math.max(process.timeSpent * 2, 5),
-                label: process.name
-            }));
+            // Department colors for workshop mode
+            const departmentColors = {
+                'Finance': { bg: 'rgba(34, 197, 94, 0.6)', border: 'rgba(34, 197, 94, 1)' },
+                'HR': { bg: 'rgba(245, 166, 35, 0.6)', border: 'rgba(245, 166, 35, 1)' },
+                'Operations': { bg: 'rgba(59, 130, 246, 0.6)', border: 'rgba(59, 130, 246, 1)' },
+                'IT': { bg: 'rgba(147, 51, 234, 0.6)', border: 'rgba(147, 51, 234, 1)' },
+                'Marketing': { bg: 'rgba(236, 72, 153, 0.6)', border: 'rgba(236, 72, 153, 1)' },
+                'Sales': { bg: 'rgba(99, 102, 241, 0.6)', border: 'rgba(99, 102, 241, 1)' },
+                'Customer Service': { bg: 'rgba(20, 184, 166, 0.6)', border: 'rgba(20, 184, 166, 1)' },
+                'Legal': { bg: 'rgba(107, 114, 128, 0.6)', border: 'rgba(107, 114, 128, 1)' },
+                'Administration': { bg: 'rgba(100, 116, 139, 0.6)', border: 'rgba(100, 116, 139, 1)' },
+                'R&D': { bg: 'rgba(6, 182, 212, 0.6)', border: 'rgba(6, 182, 212, 1)' },
+                'Quality Assurance': { bg: 'rgba(234, 179, 8, 0.6)', border: 'rgba(234, 179, 8, 1)' },
+                'Procurement': { bg: 'rgba(16, 185, 129, 0.6)', border: 'rgba(16, 185, 129, 1)' },
+                'Facilities': { bg: 'rgba(120, 113, 108, 0.6)', border: 'rgba(120, 113, 108, 1)' },
+                'Other': { bg: 'rgba(115, 115, 115, 0.6)', border: 'rgba(115, 115, 115, 1)' }
+            };
+
+            let datasets;
+            if (workshopReviewMode) {
+                // Group by departments in workshop mode
+                const departmentGroups = {};
+                processes.forEach(process => {
+                    if (!departmentGroups[process.department]) {
+                        departmentGroups[process.department] = [];
+                    }
+                    departmentGroups[process.department].push({
+                        x: process.impact,
+                        y: process.feasibility,
+                        r: Math.max(process.timeSpent * 2, 5),
+                        label: process.name,
+                        department: process.department
+                    });
+                });
+
+                datasets = Object.keys(departmentGroups).map(dept => ({
+                    label: dept,
+                    data: departmentGroups[dept],
+                    backgroundColor: departmentColors[dept]?.bg || 'rgba(37, 99, 235, 0.6)',
+                    borderColor: departmentColors[dept]?.border || 'rgba(37, 99, 235, 1)',
+                    borderWidth: 2
+                }));
+            } else {
+                // Single dataset for normal mode
+                const data = processes.map(process => ({
+                    x: process.impact,
+                    y: process.feasibility,
+                    r: Math.max(process.timeSpent * 2, 5),
+                    label: process.name,
+                    department: process.department
+                }));
+
+                datasets = [{
+                    label: 'Business Processes',
+                    data: data,
+                    backgroundColor: 'rgba(37, 99, 235, 0.6)',
+                    borderColor: 'rgba(37, 99, 235, 1)',
+                    borderWidth: 2
+                }];
+            }
 
             charts.bubble = new Chart(ctx, {
                 type: 'bubble',
-                data: {
-                    datasets: [{
-                        label: 'Business Processes',
-                        data: data,
-                        backgroundColor: 'rgba(37, 99, 235, 0.6)',
-                        borderColor: 'rgba(37, 99, 235, 1)',
-                        borderWidth: 2
-                    }]
-                },
+                data: { datasets },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
@@ -2513,15 +3972,20 @@
                         tooltip: {
                             callbacks: {
                                 title: function(context) {
-                                    return context[0].raw.label;
+                                    const point = context[0].raw;
+                                    return point.label + (point.department ? ` (${point.department})` : '');
                                 },
                                 label: function(context) {
                                     const point = context.raw;
-                                    return [
+                                    const labels = [
                                         `Impact: ${point.x}/10`,
                                         `Feasibility: ${point.y}/10`,
                                         `Time: ${Math.round(point.r/2)} hrs/week`
                                     ];
+                                    if (point.department && !workshopReviewMode) {
+                                        labels.push(`Department: ${point.department}`);
+                                    }
+                                    return labels;
                                 }
                             }
                         }
@@ -2573,22 +4037,45 @@
                 charts.donut.destroy();
             }
 
-            const routineProcesses = processes.filter(p => {
-                const avgScore = (p.scores.repetitive + p.scores.dataDriven + p.scores.ruleBased + p.scores.highVolume) / 4;
-                return avgScore >= 6;
-            });
+            let chartData;
+            if (workshopReviewMode) {
+                // Show department distribution in workshop mode
+                const departmentHours = {};
+                processes.forEach(p => {
+                    departmentHours[p.department] = (departmentHours[p.department] || 0) + p.timeSpent;
+                });
 
-            const strategicProcesses = processes.filter(p => {
-                const avgScore = (p.scores.repetitive + p.scores.dataDriven + p.scores.ruleBased + p.scores.highVolume) / 4;
-                return avgScore < 6;
-            });
+                const departmentColors = [
+                    '#10b981', '#f59e0b', '#3b82f6', '#8b5cf6', '#ec4899', 
+                    '#6366f1', '#14b8a6', '#6b7280', '#64748b', '#06b6d4',
+                    '#eab308', '#10b981', '#78716c', '#737373'
+                ];
 
-            const routineHours = routineProcesses.reduce((sum, p) => sum + p.timeSpent, 0);
-            const strategicHours = strategicProcesses.reduce((sum, p) => sum + p.timeSpent, 0);
+                chartData = {
+                    labels: Object.keys(departmentHours),
+                    datasets: [{
+                        data: Object.values(departmentHours),
+                        backgroundColor: departmentColors.slice(0, Object.keys(departmentHours).length),
+                        borderWidth: 3,
+                        borderColor: '#ffffff'
+                    }]
+                };
+            } else {
+                // Show routine vs strategic in normal mode
+                const routineProcesses = processes.filter(p => {
+                    const avgScore = (p.scores.repetitive + p.scores.dataDriven + p.scores.ruleBased + p.scores.highVolume) / 4;
+                    return avgScore >= 6;
+                });
 
-            charts.donut = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
+                const strategicProcesses = processes.filter(p => {
+                    const avgScore = (p.scores.repetitive + p.scores.dataDriven + p.scores.ruleBased + p.scores.highVolume) / 4;
+                    return avgScore < 6;
+                });
+
+                const routineHours = routineProcesses.reduce((sum, p) => sum + p.timeSpent, 0);
+                const strategicHours = strategicProcesses.reduce((sum, p) => sum + p.timeSpent, 0);
+
+                chartData = {
                     labels: ['Routine Tasks', 'Strategic Tasks'],
                     datasets: [{
                         data: [routineHours, strategicHours],
@@ -2596,7 +4083,12 @@
                         borderWidth: 3,
                         borderColor: '#ffffff'
                     }]
-                },
+                };
+            }
+
+            charts.donut = new Chart(ctx, {
+                type: 'doughnut',
+                data: chartData,
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
@@ -2622,18 +4114,44 @@
                 return;
             }
 
-            const datasets = processes.slice(0, 5).map((process, index) => ({
-                label: process.name.length > 20 ? process.name.substring(0, 20) + '...' : process.name,
-                data: [
-                    process.scores.repetitive,
-                    process.scores.dataDriven,
-                    process.scores.ruleBased,
-                    process.scores.highVolume
-                ],
-                backgroundColor: `rgba(${59 + index * 40}, ${130 + index * 30}, ${246 - index * 30}, 0.2)`,
-                borderColor: `rgba(${59 + index * 40}, ${130 + index * 30}, ${246 - index * 30}, 1)`,
-                borderWidth: 2
-            }));
+            // Department colors for workshop mode
+            const departmentColors = {
+                'Finance': { bg: 'rgba(34, 197, 94, 0.2)', border: 'rgba(34, 197, 94, 1)' },
+                'HR': { bg: 'rgba(245, 166, 35, 0.2)', border: 'rgba(245, 166, 35, 1)' },
+                'Operations': { bg: 'rgba(59, 130, 246, 0.2)', border: 'rgba(59, 130, 246, 1)' },
+                'IT': { bg: 'rgba(147, 51, 234, 0.2)', border: 'rgba(147, 51, 234, 1)' },
+                'Marketing': { bg: 'rgba(236, 72, 153, 0.2)', border: 'rgba(236, 72, 153, 1)' },
+                'Sales': { bg: 'rgba(99, 102, 241, 0.2)', border: 'rgba(99, 102, 241, 1)' },
+                'Customer Service': { bg: 'rgba(20, 184, 166, 0.2)', border: 'rgba(20, 184, 166, 1)' },
+                'Legal': { bg: 'rgba(107, 114, 128, 0.2)', border: 'rgba(107, 114, 128, 1)' },
+                'Quality Assurance': { bg: 'rgba(234, 179, 8, 0.2)', border: 'rgba(234, 179, 8, 1)' }
+            };
+
+            const datasets = processes.slice(0, 5).map((process, index) => {
+                const processLabel = workshopReviewMode 
+                    ? `${process.name.length > 15 ? process.name.substring(0, 15) + '...' : process.name} (${process.department})`
+                    : (process.name.length > 20 ? process.name.substring(0, 20) + '...' : process.name);
+                
+                const colors = workshopReviewMode && departmentColors[process.department] 
+                    ? departmentColors[process.department]
+                    : { 
+                        bg: `rgba(${59 + index * 40}, ${130 + index * 30}, ${246 - index * 30}, 0.2)`, 
+                        border: `rgba(${59 + index * 40}, ${130 + index * 30}, ${246 - index * 30}, 1)` 
+                    };
+
+                return {
+                    label: processLabel,
+                    data: [
+                        process.scores.repetitive,
+                        process.scores.dataDriven,
+                        process.scores.ruleBased,
+                        process.scores.highVolume
+                    ],
+                    backgroundColor: colors.bg,
+                    borderColor: colors.border,
+                    borderWidth: 2
+                };
+            });
 
             charts.radar = new Chart(ctx, {
                 type: 'radar',
@@ -2995,8 +4513,417 @@
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
+            // Check for department bypass parameters first
+            const urlParams = getURLParameters();
+            
+            if (urlParams.dept && urlParams.token) {
+                if (validateDepartmentAccess(urlParams.dept, urlParams.token)) {
+                    // Valid department access - bypass password screen
+                    bypassToWorkshopMode(urlParams.dept);
+                    return; // Skip password screen setup
+                }
+            }
+            
+            // Default behavior - show password screen
             // Auto-focus password input
             document.getElementById('passwordInput').focus();
+        });
+        
+        // Contextual Workspace System
+        let currentWorkspace = null;
+        let fabExpanded = false;
+        
+        // Initialize contextual workspace system
+        function initContextualWorkspace() {
+            // Only show FABs in admin mode (not for department users in workshop mode)
+            if (workshopMode && currentDepartment) {
+                return; // Department users don't get FABs
+            }
+            
+            showFabCluster();
+        }
+        
+        function showFabCluster() {
+            const existingCluster = document.getElementById('fabCluster');
+            if (existingCluster) return; // Already exists
+            
+            const fabCluster = document.createElement('div');
+            fabCluster.id = 'fabCluster';
+            fabCluster.className = 'fab-cluster';
+            
+            fabCluster.innerHTML = `
+                <!-- Primary FAB -->
+                <button class="fab-primary" onclick="toggleFabMenu()" id="primaryFab">
+                    <span id="fabIcon">⚡</span>
+                </button>
+                
+                <!-- Secondary FABs -->
+                <div class="fab-secondary-group" id="secondaryFabs">
+                    <button class="fab-secondary" onclick="openProjectWorkspace()">
+                        <svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                        </svg>
+                        <div class="fab-tooltip">Manage Projects</div>
+                    </button>
+                    
+                    <button class="fab-secondary" onclick="openProcessWorkspace()">
+                        <svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                        </svg>
+                        <div class="fab-tooltip">Add Process</div>
+                    </button>
+                    
+                    <button class="fab-secondary" onclick="openPresentationMode()">
+                        <svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                            <path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5l-1 2v1h8v-1l-1-2h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 12H3V5h18v10z"/>
+                        </svg>
+                        <div class="fab-tooltip">Present Mode</div>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(fabCluster);
+        }
+        
+        function toggleFabMenu() {
+            const cluster = document.getElementById('fabCluster');
+            const icon = document.getElementById('fabIcon');
+            
+            fabExpanded = !fabExpanded;
+            
+            if (fabExpanded) {
+                cluster.classList.add('expanded');
+                icon.textContent = '✕';
+            } else {
+                cluster.classList.remove('expanded');
+                icon.textContent = '⚡';
+            }
+        }
+        
+        function closeFabMenu() {
+            const cluster = document.getElementById('fabCluster');
+            const icon = document.getElementById('fabIcon');
+            
+            if (fabExpanded) {
+                fabExpanded = false;
+                cluster.classList.remove('expanded');
+                icon.textContent = '⚡';
+            }
+        }
+        
+        // Workspace Functions
+        function openProjectWorkspace() {
+            closeFabMenu();
+            showWorkspace('project', 'Project Management', createProjectWorkspace());
+        }
+        
+        function openProcessWorkspace() {
+            closeFabMenu();
+            showWorkspace('process', 'Process Entry', createProcessWorkspace());
+        }
+        
+        function openPresentationMode() {
+            closeFabMenu();
+            showWorkspace('presentation', 'Workshop Presentation', createPresentationWorkspace());
+        }
+        
+        function showWorkspace(type, title, content) {
+            currentWorkspace = type;
+            
+            // Create workspace overlay if it doesn't exist
+            let workspace = document.getElementById('contextualWorkspace');
+            if (!workspace) {
+                workspace = document.createElement('div');
+                workspace.id = 'contextualWorkspace';
+                workspace.className = 'contextual-workspace';
+                workspace.onclick = (e) => {
+                    if (e.target === workspace) closeWorkspace();
+                };
+                document.body.appendChild(workspace);
+            }
+            
+            workspace.innerHTML = `
+                <div class="workspace-content">
+                    <header class="workspace-header">
+                        <div class="workspace-header-left">
+                            <button class="workspace-back-btn" onclick="closeWorkspace()">
+                                <svg fill="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.42-1.41L7.83 13H20v-2z"/>
+                                </svg>
+                            </button>
+                            <h1 class="workspace-title">${title}</h1>
+                            <span class="workspace-badge">Full View</span>
+                        </div>
+                        <div class="workspace-actions">
+                            <button class="btn-system" onclick="closeWorkspace()">Close</button>
+                        </div>
+                    </header>
+                    <div class="workspace-body">
+                        ${content}
+                    </div>
+                </div>
+            `;
+            
+            // Show mode indicator
+            showModeIndicator(title);
+            
+            // Blur dashboard background
+            const dashboard = document.getElementById('dashboard');
+            dashboard.classList.add('dashboard-blur');
+            
+            // Activate workspace with animation
+            setTimeout(() => {
+                workspace.classList.add('active');
+            }, 10);
+        }
+        
+        function closeWorkspace() {
+            const workspace = document.getElementById('contextualWorkspace');
+            const dashboard = document.getElementById('dashboard');
+            
+            if (workspace) {
+                workspace.classList.remove('active');
+                setTimeout(() => {
+                    workspace.remove();
+                }, 400);
+            }
+            
+            // Remove dashboard blur
+            dashboard.classList.remove('dashboard-blur');
+            
+            // Hide mode indicator
+            hideModeIndicator();
+            
+            currentWorkspace = null;
+        }
+        
+        function showModeIndicator(title) {
+            let indicator = document.getElementById('modeIndicator');
+            if (!indicator) {
+                indicator = document.createElement('div');
+                indicator.id = 'modeIndicator';
+                indicator.className = 'mode-indicator';
+                document.body.appendChild(indicator);
+            }
+            
+            indicator.textContent = title;
+            indicator.classList.add('active');
+        }
+        
+        function hideModeIndicator() {
+            const indicator = document.getElementById('modeIndicator');
+            if (indicator) {
+                indicator.classList.remove('active');
+            }
+        }
+        
+        // Workspace Content Creators
+        function createProjectWorkspace() {
+            return `
+                <div style="max-width: 1200px; margin: 0 auto;">
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Project Overview</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div class="admin-control-card">
+                                <h3 class="font-semibold text-gray-700 mb-2">Active Projects</h3>
+                                <p class="text-3xl font-bold text-blue-600">${projects.length}</p>
+                            </div>
+                            <div class="admin-control-card">
+                                <h3 class="font-semibold text-gray-700 mb-2">Total Processes</h3>
+                                <p class="text-3xl font-bold text-green-600">${processes.length}</p>
+                            </div>
+                            <div class="admin-control-card">
+                                <h3 class="font-semibold text-gray-700 mb-2">Departments</h3>
+                                <p class="text-3xl font-bold text-purple-600">${new Set(processes.map(p => p.department)).size}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-semibold text-gray-900">All Projects</h3>
+                            <button class="btn-primary" onclick="document.getElementById('projectModal').classList.remove('hidden')">
+                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                                </svg>
+                                New Project
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            ${projects.map(project => `
+                                <div class="admin-control-card hover:shadow-lg transition-all duration-200 cursor-pointer" onclick="selectProject('${project.id}')">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <h4 class="font-semibold text-gray-900">${project.name}</h4>
+                                        <span class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">Active</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3">${project.clientName}</p>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500">
+                                            ${processes.filter(p => p.projectId === project.id).length} processes
+                                        </span>
+                                        <div class="flex space-x-2">
+                                            <button onclick="editProject('${project.id}'); event.stopPropagation();" class="text-blue-600 hover:text-blue-800 text-sm">
+                                                Edit
+                                            </button>
+                                            <button onclick="deleteProject('${project.id}'); event.stopPropagation();" class="text-red-600 hover:text-red-800 text-sm">
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function createProcessWorkspace() {
+            return `
+                <div style="max-width: 1000px; margin: 0 auto;">
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Enhanced Process Entry</h2>
+                        <p class="text-gray-600 mb-6">Add new business processes with detailed automation assessment</p>
+                        
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                            <h3 class="font-semibold text-blue-800 mb-2">Quick Tips</h3>
+                            <ul class="text-sm text-blue-700 space-y-1">
+                                <li>• Be specific about process names and departments</li>
+                                <li>• Higher scores indicate better automation potential</li>
+                                <li>• Time estimates help prioritize implementation</li>
+                            </ul>
+                        </div>
+                        
+                        <button class="btn-primary mb-6" onclick="addProcess(); closeWorkspace();">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                            </svg>
+                            Add New Process
+                        </button>
+                        
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">Recent Processes</h3>
+                        <div class="space-y-4">
+                            ${processes.slice(-5).reverse().map(process => {
+                                const avgScore = (process.scores.repetitive + process.scores.dataDriven + process.scores.ruleBased + process.scores.highVolume) / 4;
+                                const scoreColor = avgScore >= 7 ? 'bg-green-100 text-green-800' : avgScore >= 5 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800';
+                                return `
+                                    <div class="admin-control-card">
+                                        <div class="flex justify-between items-start">
+                                            <div class="flex-1">
+                                                <h4 class="font-semibold text-gray-900">${process.name}</h4>
+                                                <p class="text-sm text-gray-600">${process.department}</p>
+                                                <p class="text-xs text-gray-500 mt-1">${process.timeSpent} hours/week</p>
+                                            </div>
+                                            <div class="flex items-center space-x-3">
+                                                <span class="text-xs px-2 py-1 rounded-full ${scoreColor}">${avgScore.toFixed(1)}/10</span>
+                                                <button onclick="editProcess('${process.id}')" class="text-blue-600 hover:text-blue-800 text-sm">
+                                                    Edit
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function createPresentationWorkspace() {
+            return `
+                <div style="max-width: 1400px; margin: 0 auto;">
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Workshop Presentation Mode</h2>
+                        <p class="text-gray-600 mb-6">Optimized view for workshop facilitation and group discussions</p>
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <!-- Key Metrics -->
+                            <div class="admin-control-card">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Key Workshop Metrics</h3>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="text-center">
+                                        <p class="text-3xl font-bold text-blue-600">${processes.length}</p>
+                                        <p class="text-sm text-gray-600">Total Processes</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-3xl font-bold text-green-600">${new Set(processes.map(p => p.department)).size}</p>
+                                        <p class="text-sm text-gray-600">Departments</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-3xl font-bold text-purple-600">${processes.filter(p => {
+                                            const avg = (p.scores.repetitive + p.scores.dataDriven + p.scores.ruleBased + p.scores.highVolume) / 4;
+                                            return avg >= 7;
+                                        }).length}</p>
+                                        <p class="text-sm text-gray-600">High Priority</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-3xl font-bold text-orange-600">${Math.round(processes.reduce((sum, p) => sum + p.timeSpent, 0))}</p>
+                                        <p class="text-sm text-gray-600">Total Hours/Week</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Department Breakdown -->
+                            <div class="admin-control-card">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Department Participation</h3>
+                                <div class="space-y-3">
+                                    ${Array.from(new Set(processes.map(p => p.department))).map(dept => {
+                                        const deptProcesses = processes.filter(p => p.department === dept);
+                                        const percentage = Math.round((deptProcesses.length / processes.length) * 100);
+                                        return `
+                                            <div class="flex justify-between items-center">
+                                                <span class="text-sm font-medium text-gray-700">${dept}</span>
+                                                <div class="flex items-center space-x-2">
+                                                    <div class="w-24 bg-gray-200 rounded-full h-2">
+                                                        <div class="bg-blue-500 h-2 rounded-full" style="width: ${percentage}%"></div>
+                                                    </div>
+                                                    <span class="text-sm text-gray-600">${deptProcesses.length}</span>
+                                                </div>
+                                            </div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8 flex justify-center space-x-4">
+                            <button class="btn-primary" onclick="generateReport()">
+                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 2 2h12c1.11 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/>
+                                </svg>
+                                Generate Workshop Report
+                            </button>
+                            <button class="btn-secondary" onclick="showDepartmentLinks()">
+                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+                                </svg>
+                                Share Department Links
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Initialize contextual workspace when dashboard loads
+        function initializeDashboard() {
+            // Hide admin controls in workshop mode for department users
+            if (workshopMode && currentDepartment) {
+                document.getElementById('adminControls').style.display = 'none';
+            }
+            
+            loadProjects();
+            initializeSliders();
+            
+            // Initialize contextual workspace
+            initContextualWorkspace();
+        }
+        
+        // ESC key to close workspace
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && currentWorkspace) {
+                closeWorkspace();
+            }
         });
     </script>
 </body>
