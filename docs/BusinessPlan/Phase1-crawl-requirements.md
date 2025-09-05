@@ -62,7 +62,7 @@
 - System configuration and settings panel
 - Comprehensive help documentation and tutorials
 
-### Nice to have
+### ****** Nice to have ******
 ####  Multi-Channel Experience
 - Omnichannel deployment (web, mobile, SMS, email)
 - Social platform integration (WhatsApp, Messenger, Slack, Teams)

@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Process Automation Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'energy-blue': '#3B82F6',
+                        'energy-purple': '#8B5CF6',
+                        'energy-green': '#10B981',
+                        'energy-orange': '#F59E0B',
+                        'energy-pink': '#EC4899'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .password-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .dashboard-container {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+        }
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        .process-card {
+            transition: all 0.3s ease;
+        }
+        .process-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .agent-panel {
+            background: linear-gradient(145deg, #1f2937 0%, #374151 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 10px;
+            color: white;
+        }
+        .agent-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            margin-right: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Password Protection Screen -->
+    <div id="passwordScreen" class="password-container flex items-center justify-center">
+        <div class="glass-effect rounded-2xl p-8 w-full max-w-md">
+            <div class="text-center mb-6">
+                <h1 class="text-3xl font-bold text-white mb-2">Business Automation Hub</h1>
+                <p class="text-white/80">Secure access required</p>
+            </div>
+            <form id="passwordForm" class="space-y-4">
+                <div>
+                    <input 
+                        type="password" 
+                        id="passwordInput" 
+                        placeholder="Enter access code"
+                        class="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:border-white focus:outline-none focus:ring-2 focus:ring-white/30"
+                        required
+                    >
+                </div>
+                <button 
+                    type="submit"
+                    class="w-full py-3 bg-energy-blue hover:bg-blue-600 text-white font-semibold rounded-lg transition duration-300 transform hover:scale-105"
+                >
+                    Access Dashboard
+                </button>
+            </form>
+            <div id="errorMessage" class="text-red-200 text-sm mt-3 hidden">
+                Invalid access code. Please try again.
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="hidden">
+        <div class="dashboard-container">
+            <!-- Header -->
+            <header class="bg-white/10 backdrop-blur-md border-b border-white/20 p-4">
+                <div class="max-w-7xl mx-auto flex justify-between items-center">
+                    <div>
+                        <h1 class="text-2xl font-bold text-white">AI Opportunity Navigator</h1>
+                        <p class="text-white/80">Business Process Automation Intelligence</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-white/80 text-sm">
+                            Project: <span id="currentProject" class="text-white font-semibold">Select Project</span>
+                        </div>
+                        <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <div class="max-w-7xl mx-auto p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Left Panel - Project Management -->
+                    <div class="lg:col-span-1">
+                        <!-- Project Selection -->
+                        <div class="glass-effect rounded-xl p-6 mb-6">
+                            <h2 class="text-xl font-semibold text-white mb-4">Projects</h2>
+                            <div class="space-y-3">
+                                <button onclick="createProject()" class="w-full bg-energy-green hover:bg-green-600 text-white px-4 py-3 rounded-lg transition font-medium">
+                                    + New Project
+                                </button>
+                                <div id="projectList" class="space-y-2">
+                                    <!-- Projects will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Process List -->
+                        <div class="glass-effect rounded-xl p-6">
+                            <h2 class="text-xl font-semibold text-white mb-4">Business Processes</h2>
+                            <button onclick="addProcess()" class="w-full bg-energy-blue hover:bg-blue-600 text-white px-4 py-3 rounded-lg transition font-medium mb-4">
+                                + Add Process
+                            </button>
+                            <div id="processList" class="space-y-3 max-h-96 overflow-y-auto">
+                                <!-- Processes will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Panel - Dashboard & Analytics -->
+                    <div class="lg:col-span-2">
+                        <!-- Key Metrics -->
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                            <div class="glass-effect rounded-xl p-4 text-center">
+                                <div class="text-2xl font-bold text-white" id="totalProcesses">0</div>
+                                <div class="text-white/80 text-sm">Total Processes</div>
+                            </div>
+                            <div class="glass-effect rounded-xl p-4 text-center">
+                                <div class="text-2xl font-bold text-energy-green" id="automationReady">0</div>
+                                <div class="text-white/80 text-sm">Ready for AI</div>
+                            </div>
+                            <div class="glass-effect rounded-xl p-4 text-center">
+                                <div class="text-2xl font-bold text-energy-orange" id="totalHours">0</div>
+                                <div class="text-white/80 text-sm">Hours/Week</div>
+                            </div>
+                            <div class="glass-effect rounded-xl p-4 text-center">
+                                <div class="text-2xl font-bold text-energy-pink" id="potentialSavings">$0</div>
+                                <div class="text-white/80 text-sm">Est. Savings</div>
+                            </div>
+                        </div>
+
+                        <!-- Charts -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                            <div class="glass-effect rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-white mb-4">Impact vs Feasibility</h3>
+                                <div class="chart-container">
+                                    <canvas id="bubbleChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="glass-effect rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-white mb-4">Process Distribution</h3>
+                                <div class="chart-container">
+                                    <canvas id="donutChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AI Suitability Radar -->
+                        <div class="glass-effect rounded-xl p-6">
+                            <h3 class="text-lg font-semibold text-white mb-4">AI Automation Suitability</h3>
+                            <div class="chart-container">
+                                <canvas id="radarChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Business Team Collaboration Panel -->
+                <div class="mt-8">
+                    <h2 class="text-2xl font-bold text-white mb-6">AI Business Team Collaboration</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                        
+                        <!-- Product Manager Agent -->
+                        <div class="agent-panel">
+                            <div class="flex items-center mb-3">
+                                <div class="agent-avatar bg-energy-blue">PM</div>
+                                <div>
+                                    <h4 class="font-semibold">Product Manager</h4>
+                                    <p class="text-sm text-gray-300">Strategy & Roadmap</p>
+                                </div>
+                            </div>
+                            <button onclick="engageAgent('pm')" class="w-full bg-energy-blue hover:bg-blue-600 text-white py-2 px-4 rounded-lg text-sm transition">
+                                Engage PM Agent
+                            </button>
+                        </div>
+
+                        <!-- Design Agent -->
+                        <div class="agent-panel">
+                            <div class="flex items-center mb-3">
+                                <div class="agent-avatar bg-energy-purple">UI</div>
+                                <div>
+                                    <h4 class="font-semibold">Design Team</h4>
+                                    <p class="text-sm text-gray-300">UX & Visual</p>
+                                </div>
+                            </div>
+                            <button onclick="engageAgent('design')" class="w-full bg-energy-purple hover:bg-purple-600 text-white py-2 px-4 rounded-lg text-sm transition">
+                                Engage Design Agent
+                            </button>
+                        </div>
+
+                        <!-- Content Agent -->
+                        <div class="agent-panel">
+                            <div class="flex items-center mb-3">
+                                <div class="agent-avatar bg-energy-green">CT</div>
+                                <div>
+                                    <h4 class="font-semibold">Content Team</h4>
+                                    <p class="text-sm text-gray-300">Documentation</p>
+                                </div>
+                            </div>
+                            <button onclick="engageAgent('content')" class="w-full bg-energy-green hover:bg-green-600 text-white py-2 px-4 rounded-lg text-sm transition">
+                                Engage Content Agent
+                            </button>
+                        </div>
+
+                        <!-- Brand Agent -->
+                        <div class="agent-panel">
+                            <div class="flex items-center mb-3">
+                                <div class="agent-avatar bg-energy-orange">BR</div>
+                                <div>
+                                    <h4 class="font-semibold">Brand Team</h4>
+                                    <p class="text-sm text-gray-300">Guidelines</p>
+                                </div>
+                            </div>
+                            <button onclick="engageAgent('brand')" class="w-full bg-energy-orange hover:bg-orange-600 text-white py-2 px-4 rounded-lg text-sm transition">
+                                Engage Brand Agent
+                            </button>
+                        </div>
+
+                        <!-- Engineering Agent -->
+                        <div class="agent-panel">
+                            <div class="flex items-center mb-3">
+                                <div class="agent-avatar bg-energy-pink">ENG</div>
+                                <div>
+                                    <h4 class="font-semibold">Engineering</h4>
+                                    <p class="text-sm text-gray-300">Technical</p>
+                                </div>
+                            </div>
+                            <button onclick="engageAgent('engineering')" class="w-full bg-energy-pink hover:bg-pink-600 text-white py-2 px-4 rounded-lg text-sm transition">
+                                Engage Engineering Agent
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agent Interaction Panel -->
+                <div id="agentInteraction" class="glass-effect rounded-xl p-6 mt-6 hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-semibold text-white" id="agentTitle">Agent Consultation</h3>
+                        <button onclick="closeAgent()" class="text-white/60 hover:text-white">✕</button>
+                    </div>
+                    <div id="agentContent" class="text-white">
+                        <!-- Agent-specific content will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Process Entry Modal -->
+    <div id="processModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-2xl p-8 w-full max-w-2xl max-h-screen overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Add Business Process</h2>
+                <button onclick="closeProcessModal()" class="text-gray-500 hover:text-gray-700 text-xl">✕</button>
+            </div>
+            <form id="processForm" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Process Name</label>
+                        <input type="text" id="processName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-energy-blue focus:border-energy-blue" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Department</label>
+                        <select id="processDepartment" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-energy-blue focus:border-energy-blue" required>
+                            <option value="">Select Department</option>
+                            <option value="Operations">Operations</option>
+                            <option value="Finance">Finance</option>
+                            <option value="HR">Human Resources</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="IT">Information Technology</option>
+                            <option value="Customer Service">Customer Service</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Time Spent (Hours per Week)</label>
+                    <input type="range" id="timeSpent" min="1" max="40" value="8" class="w-full">
+                    <div class="flex justify-between text-sm text-gray-500">
+                        <span>1 hour</span>
+                        <span id="timeSpentValue">8 hours</span>
+                        <span>40 hours</span>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold text-gray-800">AI Automation Suitability Scores (1-10)</h3>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Repetitive Tasks</label>
+                        <input type="range" id="repetitive" min="1" max="10" value="5" class="w-full">
+                        <div class="flex justify-between text-sm text-gray-500">
+                            <span>Not Repetitive</span>
+                            <span id="repetitiveValue">5</span>
+                            <span>Highly Repetitive</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Data-Driven</label>
+                        <input type="range" id="dataDriven" min="1" max="10" value="5" class="w-full">
+                        <div class="flex justify-between text-sm text-gray-500">
+                            <span>No Data</span>
+                            <span id="dataDrivenValue">5</span>
+                            <span>Data-Heavy</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Rule-Based</label>
+                        <input type="range" id="ruleBased" min="1" max="10" value="5" class="w-full">
+                        <div class="flex justify-between text-sm text-gray-500">
+                            <span>Creative/Flexible</span>
+                            <span id="ruleBasedValue">5</span>
+                            <span>Strict Rules</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">High Volume</label>
+                        <input type="range" id="highVolume" min="1" max="10" value="5" class="w-full">
+                        <div class="flex justify-between text-sm text-gray-500">
+                            <span>Low Volume</span>
+                            <span id="highVolumeValue">5</span>
+                            <span>High Volume</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Business Impact (1-10)</label>
+                        <input type="range" id="impact" min="1" max="10" value="5" class="w-full">
+                        <div class="flex justify-between text-sm text-gray-500">
+                            <span>Low</span>
+                            <span id="impactValue">5</span>
+                            <span>High</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Technical Feasibility (1-10)</label>
+                        <input type="range" id="feasibility" min="1" max="10" value="5" class="w-full">
+                        <div class="flex justify-between text-sm text-gray-500">
+                            <span>Difficult</span>
+                            <span id="feasibilityValue">5</span>
+                            <span>Easy</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Notes</label>
+                    <textarea id="processNotes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-energy-blue focus:border-energy-blue" placeholder="Additional details about this process..."></textarea>
+                </div>
+
+                <div class="flex justify-end space-x-4">
+                    <button type="button" onclick="closeProcessModal()" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-6 py-2 bg-energy-blue text-white rounded-lg hover:bg-blue-600">
+                        Add Process
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Project Modal -->
+    <div id="projectModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-2xl p-8 w-full max-w-md">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Create New Project</h2>
+                <button onclick="closeProjectModal()" class="text-gray-500 hover:text-gray-700 text-xl">✕</button>
+            </div>
+            <form id="projectForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Project Name</label>
+                    <input type="text" id="projectName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-energy-blue focus:border-energy-blue" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Client Name</label>
+                    <input type="text" id="clientName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-energy-blue focus:border-energy-blue" required>
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <button type="button" onclick="closeProjectModal()" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-6 py-2 bg-energy-blue text-white rounded-lg hover:bg-blue-600">
+                        Create Project
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentProjectId = null;
+        let projects = [];
+        let processes = [];
+        let charts = {};
+
+        // Password protection
+        document.getElementById('passwordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.getElementById('passwordInput').value;
+            if (password === 'Welcome@123') {
+                document.getElementById('passwordScreen').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                initializeDashboard();
+            } else {
+                document.getElementById('errorMessage').classList.remove('hidden');
+                setTimeout(() => {
+                    document.getElementById('errorMessage').classList.add('hidden');
+                }, 3000);
+            }
+        });
+
+        function logout() {
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('passwordScreen').classList.remove('hidden');
+            document.getElementById('passwordInput').value = '';
+        }
+
+        function initializeDashboard() {
+            loadProjects();
+            initializeSliders();
+        }
+
+        function loadProjects() {
+            // Load from localStorage for demo purposes
+            const savedProjects = localStorage.getItem('businessProjects');
+            if (savedProjects) {
+                projects = JSON.parse(savedProjects);
+                renderProjectList();
+            }
+        }
+
+        function saveProjects() {
+            localStorage.setItem('businessProjects', JSON.stringify(projects));
+        }
+
+        function loadProcesses(projectId) {
+            const savedProcesses = localStorage.getItem(`processes_${projectId}`);
+            if (savedProcesses) {
+                processes = JSON.parse(savedProcesses);
+                renderProcessList();
+                updateCharts();
+                updateMetrics();
+            } else {
+                processes = [];
+                renderProcessList();
+                updateCharts();
+                updateMetrics();
+            }
+        }
+
+        function saveProcesses(projectId) {
+            localStorage.setItem(`processes_${projectId}`, JSON.stringify(processes));
+        }
+
+        function renderProjectList() {
+            const projectList = document.getElementById('projectList');
+            projectList.innerHTML = projects.map(project => `
+                <button onclick="selectProject('${project.id}')" class="w-full text-left p-3 bg-white/20 hover:bg-white/30 text-white rounded-lg transition ${currentProjectId === project.id ? 'ring-2 ring-white' : ''}">
+                    <div class="font-medium">${project.name}</div>
+                    <div class="text-sm text-white/80">${project.clientName}</div>
+                </button>
+            `).join('');
+        }
+
+        function selectProject(projectId) {
+            currentProjectId = projectId;
+            const project = projects.find(p => p.id === projectId);
+            if (project) {
+                document.getElementById('currentProject').textContent = project.name;
+                loadProcesses(projectId);
+                renderProjectList(); // Re-render to show selection
+            }
+        }
+
+        function createProject() {
+            document.getElementById('projectModal').classList.remove('hidden');
+        }
+
+        function closeProjectModal() {
+            document.getElementById('projectModal').classList.add('hidden');
+            document.getElementById('projectForm').reset();
+        }
+
+        document.getElementById('projectForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const projectName = document.getElementById('projectName').value;
+            const clientName = document.getElementById('clientName').value;
+            
+            const newProject = {
+                id: Date.now().toString(),
+                name: projectName,
+                clientName: clientName,
+                createdAt: new Date().toISOString()
+            };
+
+            projects.push(newProject);
+            saveProjects();
+            renderProjectList();
+            closeProjectModal();
+            selectProject(newProject.id);
+        });
+
+        function renderProcessList() {
+            const processList = document.getElementById('processList');
+            if (processes.length === 0) {
+                processList.innerHTML = '<div class="text-white/60 text-center py-4">No processes added yet</div>';
+                return;
+            }
+
+            processList.innerHTML = processes.map(process => {
+                const avgScore = (process.scores.repetitive + process.scores.dataDriven + process.scores.ruleBased + process.scores.highVolume) / 4;
+                const scoreColor = avgScore >= 7 ? 'bg-energy-green' : avgScore >= 5 ? 'bg-energy-orange' : 'bg-red-500';
+                
+                return `
+                    <div class="process-card bg-white/20 rounded-lg p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex-1">
+                                <h4 class="font-medium text-white">${process.name}</h4>
+                                <p class="text-sm text-white/70">${process.department}</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="${scoreColor} text-white text-xs px-2 py-1 rounded">${avgScore.toFixed(1)}/10</div>
+                            </div>
+                        </div>
+                        <div class="text-sm text-white/80">
+                            <div>Impact: ${process.impact}/10 • Feasibility: ${process.feasibility}/10</div>
+                            <div>Time: ${process.timeSpent} hrs/week</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function addProcess() {
+            if (!currentProjectId) {
+                alert('Please select a project first');
+                return;
+            }
+            document.getElementById('processModal').classList.remove('hidden');
+        }
+
+        function closeProcessModal() {
+            document.getElementById('processModal').classList.add('hidden');
+            document.getElementById('processForm').reset();
+            resetSliders();
+        }
+
+        function initializeSliders() {
+            const sliders = ['timeSpent', 'repetitive', 'dataDriven', 'ruleBased', 'highVolume', 'impact', 'feasibility'];
+            
+            sliders.forEach(sliderId => {
+                const slider = document.getElementById(sliderId);
+                const valueDisplay = document.getElementById(sliderId + 'Value');
+                
+                if (slider && valueDisplay) {
+                    slider.addEventListener('input', function() {
+                        if (sliderId === 'timeSpent') {
+                            valueDisplay.textContent = `${this.value} hours`;
+                        } else {
+                            valueDisplay.textContent = this.value;
+                        }
+                    });
+                }
+            });
+        }
+
+        function resetSliders() {
+            const sliders = ['timeSpent', 'repetitive', 'dataDriven', 'ruleBased', 'highVolume', 'impact', 'feasibility'];
+            sliders.forEach(sliderId => {
+                const slider = document.getElementById(sliderId);
+                if (slider) {
+                    slider.value = sliderId === 'timeSpent' ? 8 : 5;
+                    const valueDisplay = document.getElementById(sliderId + 'Value');
+                    if (valueDisplay) {
+                        if (sliderId === 'timeSpent') {
+                            valueDisplay.textContent = '8 hours';
+                        } else {
+                            valueDisplay.textContent = '5';
+                        }
+                    }
+                }
+            });
+        }
+
+        document.getElementById('processForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newProcess = {
+                id: Date.now().toString(),
+                name: document.getElementById('processName').value,
+                department: document.getElementById('processDepartment').value,
+                timeSpent: parseInt(document.getElementById('timeSpent').value),
+                scores: {
+                    repetitive: parseInt(document.getElementById('repetitive').value),
+                    dataDriven: parseInt(document.getElementById('dataDriven').value),
+                    ruleBased: parseInt(document.getElementById('ruleBased').value),
+                    highVolume: parseInt(document.getElementById('highVolume').value)
+                },
+                impact: parseInt(document.getElementById('impact').value),
+                feasibility: parseInt(document.getElementById('feasibility').value),
+                notes: document.getElementById('processNotes').value,
+                createdAt: new Date().toISOString()
+            };
+
+            processes.push(newProcess);
+            saveProcesses(currentProjectId);
+            renderProcessList();
+            updateCharts();
+            updateMetrics();
+            closeProcessModal();
+        });
+
+        function updateMetrics() {
+            const totalProcesses = processes.length;
+            const automationReady = processes.filter(p => {
+                const avgScore = (p.scores.repetitive + p.scores.dataDriven + p.scores.ruleBased + p.scores.highVolume) / 4;
+                return avgScore >= 7;
+            }).length;
+            const totalHours = processes.reduce((sum, p) => sum + p.timeSpent, 0);
+            const potentialSavings = automationReady * 50000; // Estimate $50k per automated process
+
+            document.getElementById('totalProcesses').textContent = totalProcesses;
+            document.getElementById('automationReady').textContent = automationReady;
+            document.getElementById('totalHours').textContent = totalHours;
+            document.getElementById('potentialSavings').textContent = `$${potentialSavings.toLocaleString()}`;
+        }
+
+        function updateCharts() {
+            updateBubbleChart();
+            updateDonutChart();
+            updateRadarChart();
+        }
+
+        function updateBubbleChart() {
+            const ctx = document.getElementById('bubbleChart').getContext('2d');
+            
+            if (charts.bubble) {
+                charts.bubble.destroy();
+            }
+
+            const data = processes.map(process => ({
+                x: process.impact,
+                y: process.feasibility,
+                r: Math.max(process.timeSpent * 2, 5),
+                label: process.name
+            }));
+
+            charts.bubble = new Chart(ctx, {
+                type: 'bubble',
+                data: {
+                    datasets: [{
+                        label: 'Business Processes',
+                        data: data,
+                        backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'white'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].raw.label;
+                                },
+                                label: function(context) {
+                                    const point = context.raw;
+                                    return [
+                                        `Impact: ${point.x}/10`,
+                                        `Feasibility: ${point.y}/10`,
+                                        `Time: ${Math.round(point.r/2)} hrs/week`
+                                    ];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Business Impact',
+                                color: 'white'
+                            },
+                            ticks: {
+                                color: 'white'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Technical Feasibility',
+                                color: 'white'
+                            },
+                            ticks: {
+                                color: 'white'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateDonutChart() {
+            const ctx = document.getElementById('donutChart').getContext('2d');
+            
+            if (charts.donut) {
+                charts.donut.destroy();
+            }
+
+            const routineProcesses = processes.filter(p => {
+                const avgScore = (p.scores.repetitive + p.scores.dataDriven + p.scores.ruleBased + p.scores.highVolume) / 4;
+                return avgScore >= 6;
+            });
+
+            const strategicProcesses = processes.filter(p => {
+                const avgScore = (p.scores.repetitive + p.scores.dataDriven + p.scores.ruleBased + p.scores.highVolume) / 4;
+                return avgScore < 6;
+            });
+
+            const routineHours = routineProcesses.reduce((sum, p) => sum + p.timeSpent, 0);
+            const strategicHours = strategicProcesses.reduce((sum, p) => sum + p.timeSpent, 0);
+
+            charts.donut = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Routine Tasks', 'Strategic Tasks'],
+                    datasets: [{
+                        data: [routineHours, strategicHours],
+                        backgroundColor: ['#10B981', '#F59E0B'],
+                        borderWidth: 2,
+                        borderColor: 'white'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'white'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateRadarChart() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            
+            if (charts.radar) {
+                charts.radar.destroy();
+            }
+
+            if (processes.length === 0) {
+                return;
+            }
+
+            const datasets = processes.slice(0, 5).map((process, index) => ({
+                label: process.name.length > 20 ? process.name.substring(0, 20) + '...' : process.name,
+                data: [
+                    process.scores.repetitive,
+                    process.scores.dataDriven,
+                    process.scores.ruleBased,
+                    process.scores.highVolume
+                ],
+                backgroundColor: `rgba(${59 + index * 40}, ${130 + index * 30}, ${246 - index * 30}, 0.2)`,
+                borderColor: `rgba(${59 + index * 40}, ${130 + index * 30}, ${246 - index * 30}, 1)`,
+                borderWidth: 2
+            }));
+
+            charts.radar = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Repetitive', 'Data-Driven', 'Rule-Based', 'High Volume'],
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'white'
+                            }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 10,
+                            ticks: {
+                                color: 'white',
+                                backdropColor: 'transparent'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            angleLines: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            pointLabels: {
+                                color: 'white'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Agent interaction functions
+        function engageAgent(agentType) {
+            const agentPanel = document.getElementById('agentInteraction');
+            const agentTitle = document.getElementById('agentTitle');
+            const agentContent = document.getElementById('agentContent');
+            
+            let title = '';
+            let content = '';
+
+            switch(agentType) {
+                case 'pm':
+                    title = 'Product Manager Agent';
+                    content = `
+                        <div class="space-y-4">
+                            <h4 class="font-semibold">Strategic Analysis</h4>
+                            <p>I'm analyzing your business processes to identify strategic automation opportunities...</p>
+                            <div class="bg-white/10 p-4 rounded-lg">
+                                <h5 class="font-medium mb-2">Key Insights:</h5>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li>High-impact processes ready for immediate automation</li>
+                                    <li>ROI projections for each automation initiative</li>
+                                    <li>Implementation roadmap and timeline</li>
+                                    <li>Resource allocation recommendations</li>
+                                </ul>
+                            </div>
+                            <button class="bg-energy-blue hover:bg-blue-600 text-white px-4 py-2 rounded-lg">Generate Strategic Report</button>
+                        </div>
+                    `;
+                    break;
+                case 'design':
+                    title = 'Design Team Agent';
+                    content = `
+                        <div class="space-y-4">
+                            <h4 class="font-semibold">UX & Process Design</h4>
+                            <p>Analyzing user workflows and designing optimal automation interfaces...</p>
+                            <div class="bg-white/10 p-4 rounded-lg">
+                                <h5 class="font-medium mb-2">Design Recommendations:</h5>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li>User journey mapping for automated processes</li>
+                                    <li>Interface mockups for AI-human collaboration</li>
+                                    <li>Visual workflow diagrams</li>
+                                    <li>Accessibility and usability guidelines</li>
+                                </ul>
+                            </div>
+                            <button class="bg-energy-purple hover:bg-purple-600 text-white px-4 py-2 rounded-lg">Create Design System</button>
+                        </div>
+                    `;
+                    break;
+                case 'content':
+                    title = 'Content Team Agent';
+                    content = `
+                        <div class="space-y-4">
+                            <h4 class="font-semibold">Documentation & Communication</h4>
+                            <p>Creating comprehensive documentation for your automation initiatives...</p>
+                            <div class="bg-white/10 p-4 rounded-lg">
+                                <h5 class="font-medium mb-2">Content Deliverables:</h5>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li>Process documentation and SOPs</li>
+                                    <li>Training materials for team members</li>
+                                    <li>Change management communications</li>
+                                    <li>Success stories and case studies</li>
+                                </ul>
+                            </div>
+                            <button class="bg-energy-green hover:bg-green-600 text-white px-4 py-2 rounded-lg">Generate Documentation</button>
+                        </div>
+                    `;
+                    break;
+                case 'brand':
+                    title = 'Brand Team Agent';
+                    content = `
+                        <div class="space-y-4">
+                            <h4 class="font-semibold">Brand & Messaging Strategy</h4>
+                            <p>Ensuring automation initiatives align with your brand values and messaging...</p>
+                            <div class="bg-white/10 p-4 rounded-lg">
+                                <h5 class="font-medium mb-2">Brand Alignment:</h5>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li>Brand-consistent automation messaging</li>
+                                    <li>Internal communication guidelines</li>
+                                    <li>Customer-facing automation narratives</li>
+                                    <li>Visual identity for digital processes</li>
+                                </ul>
+                            </div>
+                            <button class="bg-energy-orange hover:bg-orange-600 text-white px-4 py-2 rounded-lg">Create Brand Guide</button>
+                        </div>
+                    `;
+                    break;
+                case 'engineering':
+                    title = 'Engineering Team Agent';
+                    content = `
+                        <div class="space-y-4">
+                            <h4 class="font-semibold">Technical Implementation</h4>
+                            <p>Analyzing technical requirements and implementation strategies...</p>
+                            <div class="bg-white/10 p-4 rounded-lg">
+                                <h5 class="font-medium mb-2">Technical Assessment:</h5>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li>API integration requirements</li>
+                                    <li>Data pipeline architecture</li>
+                                    <li>Security and compliance considerations</li>
+                                    <li>Scalability and performance optimization</li>
+                                </ul>
+                            </div>
+                            <button class="bg-energy-pink hover:bg-pink-600 text-white px-4 py-2 rounded-lg">Generate Technical Specs</button>
+                        </div>
+                    `;
+                    break;
+            }
+
+            agentTitle.textContent = title;
+            agentContent.innerHTML = content;
+            agentPanel.classList.remove('hidden');
+        }
+
+        function closeAgent() {
+            document.getElementById('agentInteraction').classList.add('hidden');
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-focus password input
+            document.getElementById('passwordInput').focus();
+        });
+    </script>
+</body>
+</html>
