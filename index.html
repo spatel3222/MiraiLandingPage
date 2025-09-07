@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRTX - Build AI Once. Scale Everywhere.</title>
+    <meta name="description" content="Enterprise-proven AI strategies from Walmart scale. Venture capital, AI mentoring, and consulting services for ambitious companies.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        /* Service-specific gradients */
+        .gradient-vc { background: linear-gradient(135deg, #667eea 0%, #3b82f6 100%); }
+        .gradient-mentoring { background: linear-gradient(135deg, #764ba2 0%, #8b5cf6 100%); }
+        .gradient-consulting { background: linear-gradient(135deg, #059669 0%, #10b981 100%); }
+        
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold gradient-text">CRTX</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <!-- Services Dropdown -->
+                    <div class="relative group">
+                        <a href="#services" class="text-gray-700 hover:text-purple-600 transition flex items-center">
+                            Services
+                            <svg class="w-4 h-4 ml-1 text-gray-400 group-hover:text-purple-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </a>
+                        <!-- Dropdown Menu -->
+                        <div class="absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <div class="py-2">
+                                <a href="/consulting.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition">
+                                    <div class="font-medium">AI Transformation Services</div>
+                                    <div class="text-xs text-gray-500">Enterprise consulting & implementation</div>
+                                </a>
+                                <a href="/investment.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition">
+                                    <div class="font-medium">VC Investment</div>
+                                    <div class="text-xs text-gray-500">Agentic AI startup funding</div>
+                                </a>
+                                <a href="/mentoring.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition">
+                                    <div class="font-medium">AI PM Mentoring</div>
+                                    <div class="text-xs text-gray-500">Career guidance & development</div>
+                                </a>
+                                <div class="border-t border-gray-100 my-1"></div>
+                                <a href="#services" class="block px-4 py-2 text-sm text-purple-600 hover:bg-purple-50 transition">
+                                    View All Services →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#insights" class="text-gray-700 hover:text-purple-600 transition">Insights</a>
+                    <a href="#approach" class="text-gray-700 hover:text-purple-600 transition">Approach</a>
+                    <a href="/about.html" class="text-gray-700 hover:text-purple-600 transition">About</a>
+                    <button id="contact-button" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">Get Started</button>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-purple-600 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#services" class="block px-3 py-2 text-gray-700 hover:text-purple-600">Services</a>
+                <a href="#insights" class="block px-3 py-2 text-gray-700 hover:text-purple-600">Insights</a>
+                <a href="#approach" class="block px-3 py-2 text-gray-700 hover:text-purple-600">Approach</a>
+                <a href="/about.html" class="block px-3 py-2 text-gray-700 hover:text-purple-600">About</a>
+                <button id="contact-button-mobile" class="block w-full text-left px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Get Started</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-8 items-center">
+                <div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+                        Build AI Once.<br>
+                        <span class="gradient-text">Scale Everywhere.</span>
+                    </h1>
+                    <p class="mt-6 text-xl text-gray-600 leading-relaxed">
+                        Enterprise-proven AI strategies from Walmart scale. 
+                        Whether you're building, investing, or transforming with AI, we provide the expertise to succeed.
+                    </p>
+                    <div class="mt-8 flex flex-col sm:flex-row gap-4">
+                        <a href="#services" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white gradient-bg hover:opacity-90 transition">
+                            Explore Services
+                        </a>
+                        <a href="/ai-pm-experiments/" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition">
+                            Take AI PM Assessment
+                        </a>
+                    </div>
+                    <div class="mt-8 grid grid-cols-3 gap-6 text-center">
+                        <div>
+                            <div class="text-2xl font-bold gradient-text">100M+</div>
+                            <div class="text-sm text-gray-600">Interactions Scaled</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold gradient-text">3x</div>
+                            <div class="text-sm text-gray-600">Faster Delivery</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold gradient-text">25+</div>
+                            <div class="text-sm text-gray-600">Enterprise Clients</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-12 lg:mt-0 relative">
+                    <div class="relative mx-auto w-full max-w-lg float-animation">
+                        <div class="relative">
+                            <div class="absolute inset-0 gradient-bg rounded-full blur-xl opacity-30"></div>
+                            <div class="relative bg-white rounded-2xl shadow-xl p-8">
+                                <div class="space-y-4">
+                                    <div class="h-4 bg-purple-100 rounded w-3/4"></div>
+                                    <div class="h-4 bg-purple-100 rounded w-full"></div>
+                                    <div class="h-4 bg-purple-100 rounded w-5/6"></div>
+                                    <div class="mt-6 grid grid-cols-2 gap-4">
+                                        <div class="bg-purple-50 rounded-lg p-4">
+                                            <div class="text-2xl font-bold gradient-text">AI</div>
+                                            <div class="text-sm text-gray-600">First</div>
+                                        </div>
+                                        <div class="bg-purple-50 rounded-lg p-4">
+                                            <div class="text-2xl font-bold gradient-text">Scale</div>
+                                            <div class="text-sm text-gray-600">Ready</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Three Services Section -->
+    <section id="services" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">
+                    Three Ways We Can Help
+                </h2>
+                <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
+                    From deep tech investments to AI transformation, we bring Fortune 1 expertise to your biggest challenges
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- AI Transformation Advisory -->
+                <div class="bg-white rounded-xl p-8 shadow-sm card-hover">
+                    <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">AI Transformation Services</h3>
+                    <p class="text-gray-600 mb-6">Transform your enterprise with battle-tested AI strategies that create reusable, scalable solutions.</p>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700">Enterprise AI transformation</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700">Reusable AI services</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700">50% faster implementation</span>
+                        </li>
+                    </ul>
+                    <a href="/consulting.html" class="inline-flex items-center text-emerald-600 font-medium hover:text-emerald-700 transition">
+                        Transform with AI
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a>
+                </div>
+                
+                <!-- VC Investment -->
+                <div class="bg-white rounded-xl p-8 shadow-sm card-hover">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Venture Capital Investment</h3>
+                    <p class="text-gray-600 mb-6">Partner with IIMA Ventures to fund and scale deep tech startups with transformative potential.</p>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700">Deep tech & AI focus</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700">Seed to Series A</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700">Strategic mentorship</span>
+                        </li>
+                    </ul>
+                    <a href="/investment.html" class="inline-flex items-center text-blue-600 font-medium hover:text-blue-700 transition">
+                        Learn about investment
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a>
+                </div>
+                
+                <!-- AI Leadership Mentoring -->
+                <div class="bg-white rounded-xl p-8 shadow-sm card-hover">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">AI Leadership Mentoring</h3>
+                    <p class="text-gray-600 mb-6">Guide PMs, startup founders, and entrepreneurs to launch their first AI product or scale existing solutions with proven frameworks.</p>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700">PMs & founders coaching</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700">Product launch & scaling</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-700">Enterprise-proven frameworks</span>
+                        </li>
+                    </ul>
+                    <a href="/mentoring.html" class="inline-flex items-center text-purple-600 font-medium hover:text-purple-700 transition">
+                        Accelerate your AI journey
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Approach Section -->
+    <section id="approach" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">
+                    The Building Blocks Approach
+                </h2>
+                <p class="mt-4 text-xl text-gray-600 max-w-3xl mx-auto">
+                    Why build the same thing twice? Our methodology creates reusable AI services 
+                    that accelerate every future implementation.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="mx-auto w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Build Once</h3>
+                    <p class="text-gray-600">Create foundational AI services and platforms designed for reusability from day one.</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="mx-auto w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Deploy Everywhere</h3>
+                    <p class="text-gray-600">Apply your AI building blocks across teams, departments, and use cases without rebuilding.</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="mx-auto w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Scale Intelligently</h3>
+                    <p class="text-gray-600">Grow your AI capabilities efficiently with 50% faster implementation times.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog/Insights Section -->
+    <section id="insights" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+                    Latest Insights
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Practical AI insights from building products at scale
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Blog Post 1 -->
+                <article class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+                    <div class="h-48 bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm text-purple-600 mb-2">AI Product Management</div>
+                        <h3 class="text-xl font-bold mb-2">
+                            <a href="https://www.linkedin.com/pulse/why-netflixs-pm-job-descriptions-look-nothing-like-yours-patel-acz7c" target="_blank" class="hover:text-purple-600 transition">
+                                Why Netflix's PM Job Descriptions Look Nothing Like Yours
+                            </a>
+                        </h3>
+                        <p class="text-gray-600 mb-4">
+                            Discover why the best PMs are T-shaped professionals and how Netflix thinks differently...
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">5 min read</span>
+                            <a href="https://www.linkedin.com/pulse/why-netflixs-pm-job-descriptions-look-nothing-like-yours-patel-acz7c" target="_blank" class="text-purple-600 text-sm font-medium hover:text-purple-700 flex items-center">
+                                Read on LinkedIn
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Blog Post 2 -->
+                <article class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+                    <div class="h-48 bg-gradient-to-br from-green-100 to-blue-100 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-emerald-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm text-emerald-600 mb-2">Enterprise AI</div>
+                        <h3 class="text-xl font-bold mb-2">
+                            <a href="https://www.linkedin.com/posts/activity-7352019328323551232-HLSL" target="_blank" class="hover:text-emerald-600 transition">
+                                The AI Product Manager's New Reality
+                            </a>
+                        </h3>
+                        <p class="text-gray-600 mb-4">
+                            Why traditional PM skills aren't enough in the AI era and what you need to succeed...
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">7 min read</span>
+                            <a href="https://www.linkedin.com/posts/activity-7352019328323551232-HLSL" target="_blank" class="text-emerald-600 text-sm font-medium hover:text-emerald-700 flex items-center">
+                                Read on LinkedIn
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Blog Post 3 -->
+                <article class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+                    <div class="h-48 bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-sm text-blue-600 mb-2">Deep Tech</div>
+                        <h3 class="text-xl font-bold mb-2">
+                            <a href="https://www.linkedin.com/posts/activity-7325195074277953536-hxbI" target="_blank" class="hover:text-blue-600 transition">
+                                Stop Building AI Like It's Software
+                            </a>
+                        </h3>
+                        <p class="text-gray-600 mb-4">
+                            The fundamental differences between AI and traditional software development...
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">10 min read</span>
+                            <a href="https://www.linkedin.com/posts/activity-7325195074277953536-hxbI" target="_blank" class="text-blue-600 text-sm font-medium hover:text-blue-700 flex items-center">
+                                Read on LinkedIn
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="https://www.linkedin.com/in/spatel3220/recent-activity/articles/" target="_blank" class="inline-flex items-center text-purple-600 font-semibold hover:text-purple-700">
+                    View all articles on LinkedIn
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gray-900 text-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4">
+                Ready to Transform with AI?
+            </h2>
+            <p class="text-xl text-gray-300 mb-8">
+                Whether you're investing, learning, or transforming, we have the expertise to help you succeed.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="https://calendly.com/shivang-crtx/30min" target="_blank" class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-lg text-gray-900 bg-white hover:bg-gray-100 transition">
+                    Schedule Consultation
+                </a>
+                <button id="contact-footer" class="inline-flex items-center justify-center px-8 py-4 border border-white text-lg font-medium rounded-lg text-white hover:bg-gray-800 transition">
+                    Contact Us
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-8 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <span class="text-2xl font-bold text-white">CRTX</span>
+                    <p class="text-gray-400 text-sm mt-1">Build AI Once. Scale Everywhere.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="https://linkedin.com/in/spatel3220" class="text-gray-400 hover:text-white transition">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400 text-sm">
+                <p>&copy; 2025 CRTX. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-start justify-center min-h-screen p-4 pt-8">
+            <div class="bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto p-8 relative">
+                <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+                <h3 class="text-2xl font-bold mb-6 text-center">Get Started with CRTX</h3>
+                <form id="contact-form" action="https://formspree.io/f/mdkdewyg" method="POST">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 text-gray-700">Name <span class="text-red-500">*</span></label>
+                        <input type="text" name="name" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 text-gray-700">Email <span class="text-red-500">*</span></label>
+                        <input type="email" name="email" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 text-gray-700">Phone</label>
+                        <input type="tel" name="phone"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 text-gray-700">I'm interested in <span class="text-red-500">*</span></label>
+                        <select name="service" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                            <option value="">Select a service</option>
+                            <option value="AI Consulting">AI Consulting for my Company</option>
+                            <option value="AI PM Mentoring">AI PM Mentoring for my Career</option>
+                            <option value="VC Investment">Investment for my Startup</option>
+                            <option value="General Inquiry">General Inquiry</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 text-gray-700">Company/Organization</label>
+                        <input type="text" name="company"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium mb-2 text-gray-700">Message <span class="text-red-500">*</span></label>
+                        <textarea name="message" rows="4" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"
+                            placeholder="Tell us about your needs..."></textarea>
+                    </div>
+                    
+                    <!-- Hidden fields for tracking -->
+                    <input type="hidden" name="_subject" value="New CRTX Inquiry">
+                    <input type="hidden" name="_next" value="https://crtx.in/thank-you-html.html">
+                    <input type="text" name="_gotcha" style="display:none">
+                    
+                    <button type="submit" id="submit-button" class="w-full gradient-bg text-white py-3 rounded-lg font-medium hover:opacity-90 transition">
+                        Send Message
+                    </button>
+                    
+                    <p class="text-xs text-gray-500 mt-4 text-center">
+                        By submitting, you agree to our privacy policy. We'll respond within 24 hours.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Contact modal functions
+        function openContactModal() {
+            document.getElementById('contact-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeContactModal() {
+            document.getElementById('contact-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Add event listeners for contact buttons
+        document.getElementById('contact-button').addEventListener('click', openContactModal);
+        document.getElementById('contact-button-mobile').addEventListener('click', openContactModal);
+        document.getElementById('contact-footer').addEventListener('click', openContactModal);
+        document.getElementById('close-modal').addEventListener('click', closeContactModal);
+        
+        // Close modal on outside click
+        document.getElementById('contact-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeContactModal();
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
