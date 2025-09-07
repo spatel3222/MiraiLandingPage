@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hover Debug Test</title>
+    <style>
+        body {
+            padding: 50px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .test-card {
+            width: 300px;
+            height: 200px;
+            background: white;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        /* Test 1: Original problematic CSS */
+        .test1 {
+            transition: all 0.2s;
+        }
+        .test1:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        /* Test 2: Fixed CSS */
+        .test2 {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            will-change: transform;
+            backface-visibility: hidden;
+        }
+        .test2:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        /* Test 3: Floating Action Button */
+        .fab-test {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #4F46E5;
+            color: white;
+            position: fixed;
+            bottom: 50px;
+            right: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 1000;
+        }
+        .fab-test:hover {
+            transform: scale(1.1);
+            background: #3730a3;
+        }
+        
+        /* Test 4: Opacity based hover */
+        .opacity-test {
+            position: relative;
+        }
+        .opacity-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: all 0.2s;
+            pointer-events: none;
+        }
+        .opacity-test:hover .opacity-btn {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hover Debug Test Cases</h1>
+    
+    <div class="test-card test1">
+        <h3>Test 1: Problematic CSS (transition: all)</h3>
+        <p>This card uses "transition: all 0.2s" which might cause disappearing</p>
+    </div>
+    
+    <div class="test-card test2">
+        <h3>Test 2: Fixed CSS (specific transitions)</h3>
+        <p>This card uses specific transition properties and GPU hints</p>
+    </div>
+    
+    <div class="test-card opacity-test">
+        <h3>Test 3: Opacity Hover Button</h3>
+        <p>This card has a button that appears on hover using opacity</p>
+        <button class="opacity-btn">Action</button>
+    </div>
+    
+    <div class="fab-test">+</div>
+    
+    <div style="margin-top: 100px;">
+        <h2>Instructions:</h2>
+        <p>1. Hover over each test card</p>
+        <p>2. Check if any components disappear</p>
+        <p>3. Try hovering over the floating action button</p>
+        <p>4. Report which elements show the disappearing behavior</p>
+    </div>
+</body>
+</html>
