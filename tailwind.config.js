@@ -2,8 +2,9 @@
 module.exports = {
   content: [
     "./business-automation-dashboard.html",
-    "./hover-debug.html",
+    "./hover-debug.html", 
     "./index.html",
+    "./workshops/**/*.html",
     "./api/**/*.js"
   ],
   theme: {
