@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business Process Automation Hub</title>
-    <link href="dist/output.css" rel="stylesheet">
+    <link href="../dist/output.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .password-container {
@@ -30,6 +30,12 @@
         .chart-container {
             position: relative;
             height: 300px;
+            width: 100%;
+        }
+        
+        .chart-container canvas {
+            max-width: 100%;
+            height: 100%;
         }
         .chart-expand-btn {
             position: absolute;
@@ -366,6 +372,8 @@
         .cost-option input:checked + div {
             border-color: #2563eb !important;
             background-color: #eff6ff !important;
+            box-shadow: inset 4px 0 0 #2563eb, 0 2px 4px rgba(37, 99, 235, 0.1);
+            transform: none !important;
         }
         .validation-error {
             color: #dc2626;
@@ -378,6 +386,27 @@
             width: 1rem;
             height: 1rem;
             margin-right: 0.25rem;
+        }
+        
+        /* Currency Toggle Styling */
+        .currency-toggle .currency-option {
+            transition: all 0.2s ease;
+        }
+        
+        .currency-toggle input:checked + .currency-option {
+            background-color: #dbeafe !important;
+            color: #1d4ed8 !important;
+            font-weight: 600;
+        }
+        
+        .currency-toggle input:not(:checked) + .currency-option {
+            background-color: transparent;
+            color: #6b7280;
+        }
+        
+        .currency-toggle input:not(:checked) + .currency-option:hover {
+            background-color: #f3f4f6;
+            color: #374151;
         }
         .field-error {
             border-color: #dc2626 !important;
@@ -408,6 +437,56 @@
             cursor: pointer;
             border: 3px solid #ffffff;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Enhanced Time Slider Styling */
+        .time-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            border-radius: 4px;
+            background: #e2e8f0;
+            outline: none;
+            position: relative;
+        }
+        
+        .time-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+            cursor: pointer;
+            border: 3px solid #ffffff;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+            transition: all 0.2s ease;
+        }
+        
+        .time-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.6);
+        }
+        
+        .time-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+            cursor: pointer;
+            border: 3px solid #ffffff;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+            transition: all 0.2s ease;
+        }
+        
+        .time-slider::-moz-range-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.6);
+        }
+        
+        /* Dynamic background color fill */
+        .time-slider {
+            background: linear-gradient(to right, #4F46E5 0%, #4F46E5 var(--slider-progress, 25%), #e2e8f0 var(--slider-progress, 25%), #e2e8f0 100%);
         }
         
         .fade-in {
@@ -514,27 +593,105 @@
             }
         }
         
-        /* Brand-aligned Admin Controls */
-        .admin-control-group {
+        /* Enterprise-Grade Admin Command Center */
+        .admin-command-center {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            backdrop-filter: blur(16px);
+        }
+        
+        .command-center-content {
+            display: grid;
+            grid-template-columns: 300px 1fr 350px;
+            align-items: center;
+            gap: 24px;
+            padding: 20px 32px;
+            min-height: 88px;
+        }
+        
+        .command-brand-zone {
+            flex: 0 0 auto;
             display: flex;
             align-items: center;
         }
         
+        .system-identity {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .enterprise-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0;
+            line-height: 1.2;
+        }
+        
+        .system-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .command-operations-zone {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 0 32px;
+        }
+        
+        .operation-controls {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 8px 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .command-management-zone {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+        }
+        
+        .management-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
         .admin-contextual-controls {
-            transform: translateY(-8px);
+            transform: none;
+            margin-top: 16px;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
         }
         
         .admin-contextual-controls.show {
             opacity: 1 !important;
             pointer-events: auto !important;
-            transform: translateY(0);
+            transform: none;
         }
         
         .admin-control-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
             padding: 16px;
             box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
         }
@@ -675,16 +832,721 @@
             background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
         }
         
-        /* Responsive adjustments */
+        /* Enterprise Admin Header Styles */
+        .enterprise-admin-header {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(20px);
+        }
+
+        .admin-header-container {
+            display: grid;
+            grid-template-columns: 300px 1fr 350px;
+            align-items: center;
+            gap: 24px;
+            padding: 20px 32px;
+            min-height: 88px;
+        }
+
+        /* Left Section - Brand & Context */
+        .admin-header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .workspace-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            border-radius: 14px;
+            font-size: 24px;
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+        }
+
+        .workspace-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        .workspace-context {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .project-label {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .project-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        /* Center Section - Control Suite */
+        .admin-header-center {
+            display: flex;
+            justify-content: center;
+        }
+
+        .control-suite {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .control-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        /* Mode Controls */
+        .mode-toggle-container {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 10px;
+            padding: 3px;
+            gap: 2px;
+        }
+
+        .mode-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mode-toggle.active {
+            background: white;
+            color: #1e293b;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .mode-toggle:hover:not(.active) {
+            color: #475569;
+        }
+
+        /* View Controls */
+        .view-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-select {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #1e293b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 110px;
+        }
+
+        .control-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Right Section - System Controls */
+        .admin-header-right {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .system-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Status Indicators */
+        .status-indicators {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-healthy {
+            background: #10b981;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+        }
+
+        .status-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .participant-counter {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #f3f4f6;
+            padding: 6px 12px;
+            border-radius: 8px;
+        }
+
+        .participant-icon {
+            font-size: 14px;
+        }
+
+        .participant-count {
+            font-size: 12px;
+            font-weight: 700;
+            color: #374151;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .quick-action-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 16px;
+        }
+
+        .quick-action-btn:hover {
+            background: #f1f5f9;
+        }
+
+        /* Consolidated Settings Panel */
+        .settings-panel {
+            position: relative;
+            display: inline-block;
+        }
+
+        .settings-trigger {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 13px;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        .settings-trigger:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            color: #334155;
+        }
+
+        .settings-trigger.active {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .settings-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+            min-width: 320px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .settings-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .settings-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f5f9;
+            background: #fafbfc;
+            border-radius: 12px 12px 0 0;
+            flex-shrink: 0;
+        }
+
+        .settings-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .settings-subtitle {
+            font-size: 12px;
+            color: #64748b;
+            margin: 2px 0 0 0;
+        }
+
+        .settings-body {
+            padding: 0;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .settings-section {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .settings-section:last-child {
+            border-bottom: none;
+        }
+
+        .settings-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0 0 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .settings-item-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-item-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-toggle {
+            position: relative;
+            display: inline-block;
+            width: 42px;
+            height: 22px;
+        }
+
+        .settings-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .settings-toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 11px;
+        }
+
+        .settings-toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .settings-toggle input:checked + .settings-toggle-slider {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+
+        .settings-toggle input:checked + .settings-toggle-slider:before {
+            transform: translateX(20px);
+        }
+
+        .settings-select {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #374151;
+            min-width: 140px;
+        }
+        
+        .settings-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .settings-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: 500;
+            border-radius: 6px;
+            border: 1px solid;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        
+        .settings-btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .settings-btn-primary:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        .settings-btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .settings-btn-danger:hover {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 80px;
+        }
+
+        .settings-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .settings-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .settings-status-online {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .settings-status-offline {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+
+        .settings-logout-btn {
+            width: 100%;
+            padding: 12px 16px;
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .settings-logout-btn:hover {
+            background: #fee2e2;
+            border-color: #fca5a5;
+        }
+
+        .settings-close-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings-close-btn:hover {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        /* Animation for settings gear icon */
+        .settings-icon {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .settings-trigger.active .settings-icon {
+            transform: rotate(120deg);
+        }
+        
+        /* Enhanced contextual controls animation */
+        .admin-contextual-controls {
+            transform: translateY(8px);
+        }
+        
+        .admin-contextual-controls.active {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            transform: translateY(0) !important;
+        }
+        
+        .admin-contextual-controls.hidden {
+            display: none !important;
+        }
+        
+        /* Settings panel backdrop */
+        .settings-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(2px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .settings-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Mobile responsive settings */
+        @media (max-width: 640px) {
+            .settings-dropdown {
+                position: fixed;
+                top: auto;
+                bottom: 80px;
+                right: 16px;
+                left: 16px;
+                transform: translateY(20px);
+                min-width: auto;
+                max-height: 70vh;
+                overflow-y: auto;
+            }
+            
+            .settings-dropdown.active {
+                transform: translateY(0);
+            }
+            
+            .settings-trigger {
+                padding: 10px 12px;
+            }
+            
+            .settings-trigger span {
+                display: none;
+            }
+        }
+
+        /* Contextual Action Bar */
+        .contextual-action-bar {
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            padding: 16px 32px;
+            border-radius: 0 0 16px 16px;
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            max-height: 0;
+        }
+
+        .contextual-action-bar.active {
+            transform: translateY(0);
+            opacity: 1;
+            max-height: 120px;
+        }
+
+        .action-bar-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .action-groups {
+            display: flex;
+            gap: 60px;
+        }
+
+        .action-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .group-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            box-shadow: 0 3px 12px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Enterprise Responsive Design */
         @media (max-width: 1024px) {
+            .command-center-content {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
+            
+            .command-operations-zone {
+                padding: 0;
+                justify-content: stretch;
+            }
+            
+            .operation-controls {
+                justify-content: center;
+            }
+            
+            .management-controls {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
             .admin-contextual-controls .grid {
                 grid-template-columns: 1fr;
                 gap: 16px;
             }
             
             .admin-control-card {
-                padding: 12px;
+                padding: 16px;
             }
+        }
             
             .btn-primary, .btn-secondary, .btn-destructive, .btn-system {
                 padding: 10px 14px;
@@ -693,8 +1555,26 @@
         }
         
         @media (max-width: 768px) {
-            .admin-contextual-controls .flex {
+            .command-center-content {
+                padding: 12px 16px;
+            }
+            
+            .system-identity {
                 flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .enterprise-title {
+                font-size: 1rem;
+            }
+            
+            .admin-contextual-controls .grid {
+                gap: 12px;
+            }
+            
+            .admin-control-card .grid {
+                grid-template-columns: 1fr;
                 gap: 8px;
             }
             
@@ -702,6 +1582,58 @@
                 width: 100%;
                 justify-content: center;
             }
+        }
+        
+        /* Sidebar Enhancement Styles */
+        .sidebar-toggle svg {
+            transition: transform 0.3s ease;
+        }
+        
+        .sidebar.expanded ~ .sidebar-toggle svg {
+            transform: rotate(90deg);
+        }
+        
+        .settings-trigger-sidebar.settings-active {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+        
+        /* Tooltips for collapsed sidebar */
+        .nav-item[data-tooltip] {
+            position: relative;
+        }
+        
+        .sidebar.collapsed .nav-item:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(15, 23, 42, 0.95);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            z-index: 1002;
+            margin-left: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            animation: fadeInTooltip 0.2s ease forwards;
+        }
+        
+        @keyframes fadeInTooltip {
+            to {
+                opacity: 1;
+            }
+        }
+        
+        /* Focus styles for accessibility */
+        .nav-item:focus,
+        .sidebar-toggle:focus,
+        .settings-trigger-sidebar:focus {
+            outline: 2px solid rgba(79, 70, 229, 0.5);
+            outline-offset: 2px;
         }
         
         /* Contextual Workspace System - Brand-Aligned */
@@ -724,8 +1656,8 @@
         /* Floating Action Button System */
         .fab-cluster {
             position: fixed;
-            bottom: 32px;
-            right: 32px;
+            bottom: 48px;
+            right: 48px;
             z-index: 90;
         }
         
@@ -954,8 +1886,8 @@
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .fab-cluster {
-                bottom: 24px;
-                right: 24px;
+                bottom: 32px;
+                right: 32px;
             }
             
             .fab-primary {
@@ -1013,6 +1945,594 @@
         .fab-primary.pulse {
             animation: fab-pulse 2s infinite;
         }
+        
+        /* Left Sidebar Navigation System */
+        .enterprise-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 60px;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(148, 163, 184, 0.1);
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            overflow: hidden;
+        }
+        
+        .enterprise-sidebar.expanded {
+            width: 280px;
+        }
+        
+        .sidebar-header {
+            padding: 16px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 70px;
+        }
+        
+        
+        .sidebar-brand {
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        
+        .enterprise-sidebar.expanded .sidebar-brand {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+        
+        .sidebar-brand-title {
+            color: #f1f5f9;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .sidebar-brand-subtitle {
+            color: #94a3b8;
+            font-size: 11px;
+            margin: 0;
+        }
+        
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 16px;
+        }
+        
+        .sidebar-section-title {
+            color: #64748b;
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            padding: 0 12px;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .enterprise-sidebar.expanded .sidebar-section-title {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .sidebar-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            color: #cbd5e1;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            position: relative;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .sidebar-nav-item:hover {
+            background: rgba(148, 163, 184, 0.1);
+            color: #f1f5f9;
+        }
+        
+        .sidebar-nav-item.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+        }
+        
+        .sidebar-nav-icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-nav-text {
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+        }
+        
+        .enterprise-sidebar.expanded .sidebar-nav-text {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        
+        .sidebar-settings-trigger {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            background: rgba(148, 163, 184, 0.05);
+            border: none;
+            border-radius: 8px;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .sidebar-settings-trigger:hover {
+            background: rgba(148, 163, 184, 0.1);
+            color: #f1f5f9;
+        }
+        
+        .sidebar-settings-trigger.active {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .sidebar-settings-panel {
+            position: absolute;
+            bottom: 70px;
+            left: 100%;
+            width: 320px;
+            max-height: calc(100vh - 140px);
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid #e2e8f0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-10px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1100;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .enterprise-sidebar.expanded .sidebar-settings-panel {
+            left: 20px;
+            bottom: 70px;
+        }
+        
+        .sidebar-settings-panel.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0) scale(1);
+        }
+        
+        /* Header Settings Styles */
+        .header-settings-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            color: #475569;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(8px);
+        }
+        
+        .header-settings-trigger:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            color: #334155;
+        }
+        
+        .header-settings-trigger.active {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+        }
+        
+        .header-settings-trigger.active .settings-icon {
+            transform: rotate(120deg);
+        }
+        
+        .header-settings-panel {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 320px;
+            max-height: 500px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px) scale(0.95);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            overflow-y: auto;
+        }
+        
+        .header-settings-panel.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+        
+        /* Database Reset Confirmation Modal Styles */
+        .reset-confirmation-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .reset-confirmation-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .reset-modal-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+        }
+        
+        .reset-modal-content {
+            position: relative;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow: hidden;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .reset-confirmation-modal.active .reset-modal-content {
+            transform: scale(1);
+        }
+        
+        .reset-modal-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 24px 24px 16px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            position: relative;
+        }
+        
+        .reset-warning-icon {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            background: #fef2f2;
+            border: 2px solid #fca5a5;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .reset-modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #111827;
+            flex: 1;
+        }
+        
+        .reset-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 32px;
+            height: 32px;
+            background: #f3f4f6;
+            border: none;
+            border-radius: 8px;
+            color: #6b7280;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .reset-modal-close:hover {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .reset-modal-body {
+            padding: 24px;
+        }
+        
+        .reset-data-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            space-y: 12px;
+        }
+        
+        .reset-data-list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 0;
+            color: #374151;
+            font-weight: 500;
+        }
+        
+        .reset-warning-box {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border: 1px solid #f59e0b;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+        
+        .reset-modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 20px 24px 24px 24px;
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .reset-cancel-btn {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            color: #374151;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .reset-cancel-btn:hover {
+            background: #e5e7eb;
+            border-color: #9ca3af;
+        }
+        
+        .reset-confirm-btn {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2);
+        }
+        
+        .reset-confirm-btn:hover {
+            background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(220, 38, 38, 0.3);
+        }
+        
+        /* Settings Button Styles */
+        .settings-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            justify-content: flex-start;
+        }
+        
+        .settings-btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+        
+        .settings-btn-primary:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
+        }
+        
+        .settings-btn-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+        
+        .settings-btn-warning:hover {
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(245, 158, 11, 0.3);
+        }
+        
+        .settings-btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+        
+        .settings-btn-success:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+        }
+        
+        /* Main Content Adjustment */
+        .main-content {
+            margin-left: 0;
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 100vh;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .enterprise-sidebar.expanded + .main-content {
+            margin-left: 280px;
+        }
+        
+        /* Content Container */
+        .main-content > div {
+            width: 100%;
+            max-width: none;
+            padding: 24px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .enterprise-sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            
+            .enterprise-sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0 !important;
+            }
+            
+            .enterprise-sidebar.expanded + .main-content {
+                margin-left: 0 !important;
+            }
+            
+            .main-content > div {
+                padding: 16px;
+            }
+            
+            .sidebar-backdrop {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(4px);
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+            
+            .sidebar-backdrop.active {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+        
+        /* Tooltip for collapsed state */
+        .sidebar-tooltip {
+            position: absolute;
+            left: calc(100% + 12px);
+            top: 50%;
+            transform: translateY(-50%);
+            background: #1e293b;
+            color: #f1f5f9;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 1200;
+        }
+        
+        .sidebar-tooltip::before {
+            content: '';
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 4px solid transparent;
+            border-right-color: #1e293b;
+        }
+        
+        .sidebar-nav-item:hover .sidebar-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .enterprise-sidebar.expanded .sidebar-tooltip {
+            display: none;
+        }
+        
+        /* Settings Logout Button */
+        .settings-logout-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .settings-logout-btn:hover {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -1067,113 +2587,190 @@
                         <p class="text-gray-600 mt-1">Business Process Automation Intelligence</p>
                     </div>
                     <div class="flex items-center space-x-6">
-                        <div class="text-sm">
-                            <span class="text-gray-500">Active Project:</span>
-                            <span id="currentProject" class="text-gray-900 font-semibold ml-2">Select Project</span>
+                        <div class="text-sm flex items-center">
+                            <span class="text-gray-500 mr-2">Active Project:</span>
+                            <select id="headerProjectSelector" onchange="switchProject(this.value)" class="bg-transparent border-none text-gray-900 font-semibold cursor-pointer hover:text-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/20 rounded">
+                                <option value="">Select Project...</option>
+                            </select>
                         </div>
-                        <button onclick="logout()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition font-medium">
-                            Sign Out
-                        </button>
+                        <div class="relative">
+                            <button class="header-settings-trigger" onclick="toggleHeaderSettings()" id="headerSettingsTrigger">
+                                <svg class="w-5 h-5 settings-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                            </button>
+                            
+                            <!-- Header Settings Panel -->
+                            <div class="header-settings-panel" id="headerSettingsPanel">
+                                <div class="settings-header">
+                                    <h3 class="settings-title">System Settings</h3>
+                                    <p class="settings-subtitle">Configure your workspace preferences</p>
+                                    <button class="settings-close-btn" onclick="closeHeaderSettings()" style="position: absolute; top: 12px; right: 12px;">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                
+                                <div class="settings-body">
+                                    <!-- System Status -->
+                                    <div class="settings-section">
+                                        <h4 class="settings-section-title">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                            System Status
+                                        </h4>
+                                        <div class="settings-item">
+                                            <span class="settings-label">Database Connection</span>
+                                            <span class="connection-status" id="connectionStatus">
+                                                <div class="status-indicator"></div>
+                                                <span class="status-text">Loading...</span>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Data Actions -->
+                                    <div class="settings-section">
+                                        <h4 class="settings-section-title">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"/>
+                                            </svg>
+                                            Data Actions
+                                        </h4>
+                                        <div class="settings-item">
+                                            <div class="grid grid-cols-1 gap-2">
+                                                <button onclick="showDuplicateDetection()" class="settings-btn settings-btn-primary">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                                    </svg>
+                                                    Find Duplicates
+                                                </button>
+                                                <button onclick="showBulkActions()" class="settings-btn settings-btn-warning">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                                    </svg>
+                                                    Bulk Actions
+                                                </button>
+                                                <button onclick="showDepartmentLinks()" class="settings-btn settings-btn-success">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                                                    </svg>
+                                                    Generate Links
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Account -->
+                                    <div class="settings-section">
+                                        <h4 class="settings-section-title">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                            </svg>
+                                            Account
+                                        </h4>
+                                        <button onclick="logout()" class="settings-logout-btn">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                            </svg>
+                                            Sign Out
+                                        </button>
+                                    </div>
+
+                                    <!-- Database Management -->
+                                    <div class="settings-section">
+                                        <h4 class="settings-section-title">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
+                                            </svg>
+                                            Database Management
+                                        </h4>
+                                        <div class="settings-item">
+                                            <button onclick="showResetConfirmation()" class="settings-reset-btn">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                </svg>
+                                                Reset Database
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
 
-            <!-- Main Content -->
-            <div class="max-w-7xl mx-auto p-8">
-                <!-- Admin Workshop Controls -->
-                <div class="mb-6" id="adminControls">
-                    <div class="glass-effect rounded-xl p-4">
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center space-x-4">
-                                <h1 class="text-2xl font-bold text-gray-900 flex items-center">
-                                    🚀 Business Process Automation Hub
-                                    <span class="ml-3 text-sm font-normal text-gray-600" id="modeIndicator">Admin Mode</span>
-                                </h1>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <!-- Primary Controls - Always Visible -->
-                                <div class="admin-control-group">
-                                    <div class="flex items-center space-x-6">
-                                        <!-- Workshop Mode Toggle -->
-                                        <div class="flex items-center space-x-3">
-                                            <span class="text-sm font-medium text-gray-700">Workshop Review Mode</span>
-                                            <label class="relative inline-flex items-center cursor-pointer">
-                                                <input type="checkbox" id="workshopToggle" class="sr-only peer" onchange="toggleWorkshopReviewMode()">
-                                                <div class="w-12 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-blue-500 peer-checked:to-purple-600"></div>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- System Controls - Right Aligned -->
-                                <div class="admin-control-group">
-                                    <button onclick="logout()" class="btn-system">
-                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                                        </svg>
-                                        Logout
-                                    </button>
+            
+            <!-- Main Content Area -->
+            <div class="main-content">
+                <div style="padding: 24px 48px; width: 100%; margin: 0 auto; max-width: 1400px;">
+                    <!-- Contextual Controls - Workshop Review Mode Only -->
+                    <div class="admin-contextual-controls opacity-0 pointer-events-none transition-all duration-300 ease-out hidden" id="contextualControls">
+                        <div class="bg-white rounded-xl border border-blue-200 p-6 shadow-sm">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-base font-semibold text-gray-900">Workshop Administration</h3>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                                    <span class="text-xs font-medium text-blue-600">Review Mode Active</span>
                                 </div>
                             </div>
                             
-                            <!-- Contextual Controls - Workshop Review Mode Only -->
-                            <div class="admin-contextual-controls opacity-0 pointer-events-none transition-all duration-300 ease-out mt-4" id="contextualControls">
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                    <!-- Data Filtering Group -->
-                                    <div class="admin-control-card">
-                                        <h4 class="text-sm font-medium text-gray-700 mb-3">Data Filtering</h4>
-                                        <div id="departmentFilter">
-                                            <select id="filterDepartment" class="btn-secondary-select w-full" onchange="filterByDepartment()">
-                                                <option value="">All Departments</option>
-                                                <option value="Finance">💰 Finance</option>
-                                                <option value="HR">👥 Human Resources</option>
-                                                <option value="Operations">⚙️ Operations</option>
-                                                <option value="Sales">📈 Sales</option>
-                                                <option value="Marketing">📢 Marketing</option>
-                                                <option value="IT">💻 Information Technology</option>
-                                                <option value="Customer Service">📞 Customer Service</option>
-                                                <option value="Legal">⚖️ Legal</option>
-                                                <option value="Administration">📋 Administration</option>
-                                                <option value="R&D">🔬 Research & Development</option>
-                                                <option value="Quality Assurance">✅ Quality Assurance</option>
-                                                <option value="Procurement">🛒 Procurement</option>
-                                                <option value="Facilities">🏢 Facilities</option>
-                                                <option value="Other">✨ Other</option>
-                                            </select>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <!-- Data Filtering Group -->
+                                <div class="space-y-3">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                                            </svg>
                                         </div>
+                                        <h4 class="text-sm font-semibold text-gray-900">Data Filtering</h4>
                                     </div>
-                                    
-                                    <!-- Data Actions Group -->
-                                    <div class="admin-control-card">
-                                        <h4 class="text-sm font-medium text-gray-700 mb-3">Data Actions</h4>
-                                        <div class="flex flex-wrap gap-2" id="cleaningTools">
-                                            <button onclick="showDuplicateDetection()" class="btn-secondary">
-                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                                                </svg>
-                                                Find Duplicates
-                                            </button>
-                                            <button onclick="showBulkActions()" class="btn-destructive">
-                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                                </svg>
-                                                Bulk Edit
-                                            </button>
-                                            <button onclick="showDepartmentLinks()" class="btn-primary">
-                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
-                                                </svg>
-                                                Generate Links
-                                            </button>
+                                    <div id="departmentFilter">
+                                        <select id="filterDepartment" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" onchange="filterByDepartment()">
+                                            <option value="">All Departments</option>
+                                            <option value="Finance">💰 Finance</option>
+                                            <option value="HR">👥 Human Resources</option>
+                                            <option value="Operations">⚙️ Operations</option>
+                                            <option value="Sales">📈 Sales</option>
+                                            <option value="Marketing">📢 Marketing</option>
+                                            <option value="IT">💻 Information Technology</option>
+                                            <option value="Customer Service">📞 Customer Service</option>
+                                            <option value="Legal">⚖️ Legal</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- Quick Actions -->
+                                <div class="space-y-3">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                            </svg>
                                         </div>
+                                        <h4 class="text-sm font-semibold text-gray-900">Quick Actions</h4>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button onclick="exportProcesses()" class="flex-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors">
+                                            Export Data
+                                        </button>
+                                        <button onclick="generateReport()" class="flex-1 px-3 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors">
+                                            Generate Report
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                
-                <!-- Business Processes Section -->
+                    
+                    <!-- Main Dashboard Content -->
+                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-6">
+                        <!-- Left Panel - Business Processes -->
+                        <div class="lg:col-span-1">
+                            <!-- Business Processes Section -->
                 <div class="glass-effect rounded-xl p-6">
                     <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                         <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1184,7 +2781,8 @@
                     <div id="processList" class="space-y-3 max-h-96 overflow-y-auto">
                         <!-- Processes will be loaded here -->
                     </div>
-                </div>
+                        </div>
+                    </div>
 
                     <!-- Right Panel - Dashboard & Analytics -->
                     <div class="lg:col-span-3">
@@ -1515,6 +3113,7 @@
                     <div id="agentContent" class="text-white">
                         <!-- Agent-specific content will be loaded here -->
                     </div>
+                    </div>
                 </div>
 
                 <!-- AI Business Team Collaboration Panel -->
@@ -1605,7 +3204,7 @@
     </div>
 
     <!-- Process Entry Modal -->
-    <div id="processModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center hidden z-50">
+    <div id="processModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center hidden" style="z-index: 150;">
         <div class="bg-white rounded-2xl p-8 w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl">
             <div class="flex justify-between items-center mb-8">
                 <div>
@@ -1724,22 +3323,25 @@
                         <label class="block text-sm font-semibold text-gray-700 mb-4">How much time does this process take?</label>
                         <div class="flex items-center space-x-4 mb-4">
                             <label class="flex items-center cursor-pointer">
-                                <input type="radio" name="timeUnit" value="daily" class="mr-2" onchange="updateTimeUnit()">
+                                <input type="radio" name="timeUnit" value="daily" class="mr-2" checked onchange="updateTimeUnit()">
                                 <span class="text-sm font-medium">Per day</span>
                             </label>
                             <label class="flex items-center cursor-pointer">
-                                <input type="radio" name="timeUnit" value="weekly" class="mr-2" checked onchange="updateTimeUnit()">
+                                <input type="radio" name="timeUnit" value="weekly" class="mr-2" onchange="updateTimeUnit()">
                                 <span class="text-sm font-medium">Per week</span>
                             </label>
                         </div>
-                        <input type="range" id="timeSpent" min="1" max="40" value="8" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider">
+                        <!-- Time display above slider -->
+                        <div class="text-center mb-3">
+                            <span id="timeSpentValue" class="text-2xl font-bold text-primary">2 hours per day</span>
+                        </div>
+                        <input type="range" id="timeSpent" min="1" max="8" value="2" class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer time-slider" oninput="updateTimeDisplay()">
                         <div class="flex justify-between text-sm text-gray-500 mt-2">
                             <span id="timeMin">1 hour</span>
-                            <span id="timeSpentValue" class="font-semibold text-primary">8 hours per week</span>
-                            <span id="timeMax">40+ hours</span>
+                            <span id="timeMax">8+ hours</span>
                         </div>
-                        <div id="timeConversion" class="text-xs text-blue-600 mt-2 hidden">
-                            ≈ <span id="convertedTime">1.6</span> hours per day
+                        <div id="timeConversion" class="text-xs text-blue-600 mt-2">
+                            ≈ <span id="convertedTime">10.0</span> hours per week
                         </div>
                         <p class="text-xs text-gray-600 mt-2">💡 Include time from everyone who works on this process</p>
                     </div>
@@ -2092,40 +3694,19 @@
 
                         <!-- Cost of Problems -->
                         <div class="bg-yellow-50 p-6 rounded-xl">
-                            <h4 class="font-semibold text-gray-800 mb-4">What does it cost when errors happen in this process?</h4>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                <label class="cost-option cursor-pointer">
-                                    <input type="radio" name="errorCost" value="low" class="sr-only">
-                                    <div class="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-primary transition-colors">
-                                        <div class="text-2xl mb-2">💰</div>
-                                        <div class="font-medium">Under $100</div>
-                                        <div class="text-xs text-gray-500">Minor cost</div>
-                                    </div>
-                                </label>
-                                <label class="cost-option cursor-pointer">
-                                    <input type="radio" name="errorCost" value="medium" class="sr-only">
-                                    <div class="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-primary transition-colors">
-                                        <div class="text-2xl mb-2">💸</div>
-                                        <div class="font-medium">$100-$1,000</div>
-                                        <div class="text-xs text-gray-500">Noticeable impact</div>
-                                    </div>
-                                </label>
-                                <label class="cost-option cursor-pointer">
-                                    <input type="radio" name="errorCost" value="high" class="sr-only">
-                                    <div class="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-primary transition-colors">
-                                        <div class="text-2xl mb-2">💳</div>
-                                        <div class="font-medium">$1,000-$10,000</div>
-                                        <div class="text-xs text-gray-500">Significant cost</div>
-                                    </div>
-                                </label>
-                                <label class="cost-option cursor-pointer">
-                                    <input type="radio" name="errorCost" value="critical" class="sr-only">
-                                    <div class="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-primary transition-colors">
-                                        <div class="text-2xl mb-2">🏦</div>
-                                        <div class="font-medium">$10,000+</div>
-                                        <div class="text-xs text-gray-500">Major financial impact</div>
-                                    </div>
-                                </label>
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="font-semibold text-gray-800">What does it cost when errors happen in this process?</h4>
+                                <div class="currency-toggle">
+                                    <label class="inline-flex items-center bg-white rounded-lg p-1 shadow-sm border border-gray-200">
+                                        <input type="radio" name="errorCostCurrency" value="USD" class="sr-only" checked onchange="updateErrorCostCurrency('USD')">
+                                        <span class="currency-option px-3 py-1 rounded text-sm font-medium cursor-pointer transition-colors bg-blue-100 text-blue-800">USD</span>
+                                        <input type="radio" name="errorCostCurrency" value="INR" class="sr-only" onchange="updateErrorCostCurrency('INR')">
+                                        <span class="currency-option px-3 py-1 rounded text-sm font-medium cursor-pointer transition-colors text-gray-600 hover:bg-gray-100">INR</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="errorCostOptions">
+                                <!-- Cost options will be populated dynamically based on currency -->
                             </div>
                         </div>
 
@@ -2168,7 +3749,7 @@
     </div>
 
     <!-- Project Modal -->
-    <div id="projectModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div id="projectModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden" style="z-index: 150;">
         <div class="bg-white rounded-2xl p-8 w-full max-w-md">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-gray-800">Create New Project</h2>
@@ -2927,15 +4508,18 @@
         function toggleWorkshopReviewMode() {
             const toggle = document.getElementById('workshopToggle');
             const modeIndicator = document.getElementById('modeIndicator');
+            const statusBadge = document.getElementById('systemStatusBadge');
             const contextualControls = document.getElementById('contextualControls');
             
             workshopReviewMode = toggle.checked;
             
             if (workshopReviewMode) {
                 // Enable workshop review mode
-                modeIndicator.textContent = 'Workshop Review Mode';
-                modeIndicator.classList.remove('text-gray-600');
-                modeIndicator.classList.add('text-blue-600', 'font-medium');
+                modeIndicator.textContent = 'Workshop Mode';
+                statusBadge.className = 'system-status-badge bg-blue-100 border-blue-200';
+                statusBadge.innerHTML = '<div class="w-2 h-2 rounded-full bg-blue-500"></div><span id="modeIndicator">Workshop Mode</span>';
+                const newModeIndicator = statusBadge.querySelector('#modeIndicator');
+                newModeIndicator.className = 'text-blue-700 font-medium';
                 
                 // Smooth reveal of contextual controls
                 setTimeout(() => {
@@ -2947,10 +4531,11 @@
                 
                 showNotification('Workshop Review Mode enabled - you can now review and clean submitted data', 'info');
             } else {
-                // Disable workshop review mode
-                modeIndicator.textContent = 'Admin Mode';
-                modeIndicator.classList.remove('text-blue-600', 'font-medium');
-                modeIndicator.classList.add('text-gray-600');
+                // Disable workshop review mode  
+                statusBadge.className = 'system-status-badge';
+                statusBadge.innerHTML = '<div class="w-2 h-2 rounded-full bg-green-500"></div><span id="modeIndicator">Admin Mode</span>';
+                const newModeIndicator = statusBadge.querySelector('#modeIndicator');
+                newModeIndicator.className = 'text-green-700';
                 
                 // Smooth hide of contextual controls
                 contextualControls.classList.remove('show');
@@ -3431,6 +5016,75 @@
             }
         }
 
+        // Database Reset Confirmation Modal Functions
+        function showResetConfirmation() {
+            const modal = document.getElementById('resetConfirmationModal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                // Close any open settings panels
+                closeHeaderSettings();
+            }
+        }
+        
+        function hideResetConfirmation() {
+            const modal = document.getElementById('resetConfirmationModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+        
+        function confirmResetDatabase() {
+            // Hide the modal first
+            hideResetConfirmation();
+            
+            // Add a small delay then proceed with reset
+            setTimeout(() => {
+                performDatabaseReset();
+            }, 300);
+        }
+        
+        async function performDatabaseReset() {
+            try {
+                showNotification('🔄 Resetting database...', 'info');
+                
+                // Call the reset function
+                const result = await window.workshopDB.resetDatabase();
+                
+                if (result.success) {
+                    showNotification(
+                        `✅ ${result.message}`, 
+                        'success'
+                    );
+                    
+                    // Clear current project state
+                    currentProjectId = null;
+                    
+                    // Close settings panel
+                    closeHeaderSettings();
+                    
+                    // Refresh project lists
+                    loadProjectsList();
+                    
+                    // Reload processes list (will be empty)
+                    renderProcessList();
+                    updateCharts();
+                    updateMetrics();
+                    
+                } else {
+                    throw new Error(result.message || 'Reset failed');
+                }
+            } catch (error) {
+                console.error('❌ Database reset failed:', error);
+                showNotification(
+                    `❌ Database reset failed: ${error.message}`, 
+                    'error'
+                );
+            }
+        }
+
         function initializeDashboard() {
             // Hide admin controls in workshop mode for department users
             if (workshopMode && currentDepartment) {
@@ -3439,6 +5093,8 @@
             
             loadProjects();
             initializeSliders();
+            updateCharts();
+            updateMetrics();
         }
 
         function loadProjects() {
@@ -3475,6 +5131,10 @@
 
         function renderProjectList() {
             const projectList = document.getElementById('projectList');
+            if (!projectList) {
+                console.log('projectList element not found, skipping render');
+                return;
+            }
             projectList.innerHTML = projects.map(project => `
                 <div class="group relative">
                     <button onclick="selectProject('${project.id}')" class="w-full text-left p-4 bg-white/90 hover:bg-white text-gray-900 rounded-lg transition-all duration-200 border ${currentProjectId === project.id ? 'border-primary bg-primary/5 ring-2 ring-primary/20' : 'border-gray-200 hover:border-primary/30'}">
@@ -3501,7 +5161,7 @@
             currentProjectId = projectId;
             const project = projects.find(p => p.id === projectId);
             if (project) {
-                document.getElementById('currentProject').textContent = project.name;
+                document.getElementById('currentProject').textContent = project.name + ' ▼';
                 loadProcesses(projectId);
                 renderProjectList(); // Re-render to show selection
             }
@@ -3563,6 +5223,14 @@
                         showNotification('Project created successfully', 'success');
                         selectProject(newProject.id);
                         renderProjectList();
+                        
+                        // Refresh the project workspace if it's currently active
+                        if (currentWorkspace === 'project') {
+                            const workspaceBody = document.querySelector('#contextualWorkspace .workspace-body');
+                            if (workspaceBody) {
+                                workspaceBody.innerHTML = createProjectWorkspace();
+                            }
+                        }
                     }
                     closeProjectModal();
                 }).catch(error => {
@@ -3678,6 +5346,12 @@
             }
             document.getElementById('processModal').classList.remove('hidden');
             
+            // Initialize error cost options with default currency
+            updateErrorCostOptions('USD');
+            
+            // Initialize sliders to ensure event listeners work
+            initializeSliders();
+            
             // Re-apply department selection if in workshop mode
             if (workshopMode && currentDepartment) {
                 setTimeout(() => preselectDepartment(currentDepartment), 100);
@@ -3716,6 +5390,57 @@
             }
         }
 
+        // Currency Toggle Functions for Error Cost
+        function updateErrorCostCurrency(currency) {
+            // Update UI to show selected currency
+            document.querySelectorAll('.currency-toggle input[name="errorCostCurrency"]').forEach(input => {
+                const span = input.nextElementSibling;
+                if (input.value === currency) {
+                    input.checked = true;
+                    span.classList.add('bg-blue-100', 'text-blue-800');
+                    span.classList.remove('text-gray-600');
+                } else {
+                    input.checked = false;
+                    span.classList.remove('bg-blue-100', 'text-blue-800');
+                    span.classList.add('text-gray-600');
+                }
+            });
+
+            // Update cost options based on currency
+            updateErrorCostOptions(currency);
+        }
+
+        function updateErrorCostOptions(currency) {
+            const costOptions = {
+                USD: [
+                    { value: 'low', emoji: '💰', amount: 'Under $100', description: 'Minor cost' },
+                    { value: 'medium', emoji: '💸', amount: '$100-$1,000', description: 'Noticeable impact' },
+                    { value: 'high', emoji: '💳', amount: '$1,000-$10,000', description: 'Significant cost' },
+                    { value: 'critical', emoji: '🏦', amount: '$10,000+', description: 'Major financial impact' }
+                ],
+                INR: [
+                    { value: 'low', emoji: '💰', amount: 'Under ₹8,000', description: 'Minor cost' },
+                    { value: 'medium', emoji: '💸', amount: '₹8,000-₹80,000', description: 'Noticeable impact' },
+                    { value: 'high', emoji: '💳', amount: '₹80,000-₹8,00,000', description: 'Significant cost' },
+                    { value: 'critical', emoji: '🏦', amount: '₹8,00,000+', description: 'Major financial impact' }
+                ]
+            };
+
+            const container = document.getElementById('errorCostOptions');
+            const options = costOptions[currency] || costOptions.USD;
+            
+            container.innerHTML = options.map(option => `
+                <label class="cost-option cursor-pointer">
+                    <input type="radio" name="errorCost" value="${option.value}" class="sr-only">
+                    <div class="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-primary transition-colors">
+                        <div class="text-2xl mb-2">${option.emoji}</div>
+                        <div class="font-medium">${option.amount}</div>
+                        <div class="text-xs text-gray-500">${option.description}</div>
+                    </div>
+                </label>
+            `).join('');
+        }
+
         function initializeSliders() {
             const sliders = ['timeSpent', 'repetitive', 'dataDriven', 'ruleBased', 'highVolume', 'impact', 'feasibility'];
             
@@ -3726,11 +5451,17 @@
                 if (slider && valueDisplay) {
                     slider.addEventListener('input', function() {
                         if (sliderId === 'timeSpent') {
-                            valueDisplay.textContent = `${this.value} hours`;
+                            updateTimeDisplay();
                         } else {
                             valueDisplay.textContent = this.value;
                         }
                     });
+                    
+                    // Initialize time slider on first load
+                    if (sliderId === 'timeSpent') {
+                        updateTimeDisplay();
+                        updateSliderFill();
+                    }
                 }
             });
         }
@@ -3740,12 +5471,25 @@
             sliders.forEach(sliderId => {
                 const slider = document.getElementById(sliderId);
                 if (slider) {
-                    slider.value = sliderId === 'timeSpent' ? 8 : 5;
-                    const valueDisplay = document.getElementById(sliderId + 'Value');
-                    if (valueDisplay) {
-                        if (sliderId === 'timeSpent') {
-                            valueDisplay.textContent = '8 hours';
-                        } else {
+                    if (sliderId === 'timeSpent') {
+                        // Reset to daily mode with 2 hours
+                        slider.value = 2;
+                        slider.min = 1;
+                        slider.max = 8;
+                        
+                        // Reset radio buttons to daily
+                        const dailyRadio = document.querySelector('input[name="timeUnit"][value="daily"]');
+                        const weeklyRadio = document.querySelector('input[name="timeUnit"][value="weekly"]');
+                        if (dailyRadio) dailyRadio.checked = true;
+                        if (weeklyRadio) weeklyRadio.checked = false;
+                        
+                        // Update display
+                        updateTimeDisplay();
+                        updateSliderFill();
+                    } else {
+                        slider.value = 5;
+                        const valueDisplay = document.getElementById(sliderId + 'Value');
+                        if (valueDisplay) {
                             valueDisplay.textContent = '5';
                         }
                     }
@@ -3954,46 +5698,68 @@
 
         function updateTimeUnit() {
             const isDaily = document.querySelector('input[name="timeUnit"][value="daily"]').checked;
-            const timeSpent = parseInt(document.getElementById('timeSpent').value);
-            const timeValue = document.getElementById('timeSpentValue');
+            const timeSlider = document.getElementById('timeSpent');
             const timeMin = document.getElementById('timeMin');
             const timeMax = document.getElementById('timeMax');
-            const conversion = document.getElementById('timeConversion');
-            const convertedTime = document.getElementById('convertedTime');
             
             if (isDaily) {
-                timeValue.textContent = `${timeSpent} hours per day`;
+                // Switch to daily mode
+                timeSlider.min = 1;
+                timeSlider.max = 8;
+                if (parseInt(timeSlider.value) > 8) {
+                    timeSlider.value = 8;
+                }
                 timeMin.textContent = '1 hour';
                 timeMax.textContent = '8+ hours';
-                document.getElementById('timeSpent').max = 8;
-                conversion.classList.remove('hidden');
-                convertedTime.textContent = (timeSpent * 5).toFixed(1) + ' hours per week';
             } else {
-                timeValue.textContent = `${timeSpent} hours per week`;
+                // Switch to weekly mode
+                timeSlider.min = 1;
+                timeSlider.max = 40;
+                if (parseInt(timeSlider.value) > 40) {
+                    timeSlider.value = 40;
+                }
                 timeMin.textContent = '1 hour';
                 timeMax.textContent = '40+ hours';
-                document.getElementById('timeSpent').max = 40;
-                conversion.classList.remove('hidden');
-                convertedTime.textContent = (timeSpent / 5).toFixed(1) + ' hours per day';
             }
+            
+            // Update display and slider fill
+            updateTimeDisplay();
+            updateSliderFill();
         }
         
         function updateTimeDisplay() {
-            const isDaily = document.querySelector('input[name="timeUnit"][value="daily"]')?.checked || false;
+            const isDaily = document.querySelector('input[name="timeUnit"][value="daily"]')?.checked ?? true;
             const timeSpent = parseInt(document.getElementById('timeSpent').value);
             const timeValue = document.getElementById('timeSpentValue');
             const conversion = document.getElementById('timeConversion');
             const convertedTime = document.getElementById('convertedTime');
             
             if (isDaily) {
-                timeValue.textContent = `${timeSpent} hours per day`;
+                timeValue.textContent = `${timeSpent} hour${timeSpent > 1 ? 's' : ''} per day`;
                 convertedTime.textContent = (timeSpent * 5).toFixed(1) + ' hours per week';
             } else {
-                timeValue.textContent = `${timeSpent} hours per week`;
+                timeValue.textContent = `${timeSpent} hour${timeSpent > 1 ? 's' : ''} per week`;
                 convertedTime.textContent = (timeSpent / 5).toFixed(1) + ' hours per day';
             }
             
+            // Always show conversion
             conversion.classList.remove('hidden');
+            
+            // Update slider fill
+            updateSliderFill();
+        }
+        
+        function updateSliderFill() {
+            const slider = document.getElementById('timeSpent');
+            const min = parseInt(slider.min);
+            const max = parseInt(slider.max);
+            const value = parseInt(slider.value);
+            
+            // Calculate percentage
+            const percentage = ((value - min) / (max - min)) * 100;
+            
+            // Update CSS custom property for gradient
+            slider.style.setProperty('--slider-progress', `${percentage}%`);
         }
         
         function updateCurrency() {
@@ -5313,7 +7079,7 @@
             
             editingProcessId = processId;
             
-            // Fill form with existing data
+            // Fill form with existing data - Step 1
             document.getElementById('processName').value = process.name;
             document.getElementById('processDepartment').value = process.department === 'Custom' ? 'Custom' : process.department;
             if (process.department === 'Custom') {
@@ -5322,12 +7088,83 @@
             }
             document.getElementById('timeSpent').value = process.timeSpent;
             
+            // Fill slider values - Step 2
+            if (process.scores) {
+                document.getElementById('repetitive').value = process.scores.repetitive || 5;
+                document.getElementById('dataDriven').value = process.scores.dataDriven || 5;
+                document.getElementById('ruleBased').value = process.scores.ruleBased || 5;
+                document.getElementById('highVolume').value = process.scores.highVolume || 5;
+            }
+            
+            // Fill impact and feasibility - Step 3
+            document.getElementById('impact').value = process.impact || 5;
+            document.getElementById('feasibility').value = process.feasibility || 5;
+            
+            // Fill process notes
+            if (document.getElementById('processNotes')) {
+                document.getElementById('processNotes').value = process.notes || '';
+            }
+            
+            // Set radio button selections for impact level
+            const impactValue = getImpactCategory(process.impact);
+            const impactRadio = document.querySelector(`input[name="impact"][value="${impactValue}"]`);
+            if (impactRadio) impactRadio.checked = true;
+            
+            // Set radio button selections for feasibility level  
+            const feasibilityValue = getFeasibilityCategory(process.feasibility);
+            const feasibilityRadio = document.querySelector(`input[name="feasibility"][value="${feasibilityValue}"]`);
+            if (feasibilityRadio) feasibilityRadio.checked = true;
+            
             // Update modal title
             document.querySelector('#processModal h2').textContent = 'Edit Business Process';
             document.getElementById('submitBtn').innerHTML = 'Save Changes ✓';
             
+            // Initialize error cost options with default currency
+            updateErrorCostOptions('USD');
+            
+            // Initialize sliders to ensure event listeners work and update displays
+            initializeSliders();
+            
+            // Update all slider displays with current values
+            updateSliderDisplays();
+            
+            // Set current step to show all fields (step 3)
+            currentStep = 3;
+            updateStepDisplay();
+            
             // Show modal
             document.getElementById('processModal').classList.remove('hidden');
+        }
+        
+        // Helper functions to convert numeric scores back to categories
+        function getImpactCategory(score) {
+            if (score >= 9) return 'critical';
+            if (score >= 7) return 'significant'; 
+            if (score >= 5) return 'moderate';
+            return 'low';
+        }
+        
+        function getFeasibilityCategory(score) {
+            if (score >= 8) return 'easy';
+            if (score >= 6) return 'moderate';
+            return 'complex';
+        }
+        
+        function updateSliderDisplays() {
+            const sliders = ['timeSpent', 'repetitive', 'dataDriven', 'ruleBased', 'highVolume', 'impact', 'feasibility'];
+            sliders.forEach(sliderId => {
+                const slider = document.getElementById(sliderId);
+                const valueDisplay = document.getElementById(sliderId + 'Value');
+                
+                if (slider && valueDisplay) {
+                    if (sliderId === 'timeSpent') {
+                        updateTimeDisplay();
+                        updateSliderFill();
+                    } else {
+                        valueDisplay.textContent = slider.value;
+                    }
+                }
+            });
         }
 
         function deleteProcess(processId) {
@@ -5362,7 +7199,7 @@
                 if (currentProjectId === projectId) {
                     currentProjectId = null;
                     processes = [];
-                    document.getElementById('currentProject').textContent = 'Select Project';
+                    document.getElementById('currentProject').textContent = 'Select Project ▼';
                     renderProcessList();
                     updateCharts();
                     updateMetrics();
@@ -5419,6 +7256,16 @@
             // Auto-focus password input
             document.getElementById('passwordInput').focus();
             
+            // DEVELOPMENT MODE: Auto-bypass for local testing
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' || window.location.href.includes('localhost')) {
+                console.log('Development mode detected - auto-bypassing password screen');
+                console.log('Current location:', window.location.href);
+                // Force bypass immediately
+                document.getElementById('passwordScreen').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                initializeDashboard();
+            }
+            
             // Initialize enhanced form controls when they become available
             initializeEnhancedControls();
         });
@@ -5474,28 +7321,18 @@
         
         // Currency functions
         function addCurrencySwitcher() {
-            // Remove existing switcher
-            const existingSwitcher = document.getElementById('currencySwitcher');
-            if (existingSwitcher) {
-                existingSwitcher.remove();
+            // Currency switcher is now integrated into the command center
+            const currencySelect = document.getElementById('currencySelect');
+            if (currencySelect) {
+                // Set current currency selection
+                const options = currencySelect.options;
+                for (let i = 0; i < options.length; i++) {
+                    if (options[i].value === currentCurrency) {
+                        options[i].selected = true;
+                        break;
+                    }
+                }
             }
-            
-            const switcher = document.createElement('div');
-            switcher.id = 'currencySwitcher';
-            switcher.className = 'fixed top-4 right-4 z-30';
-            switcher.innerHTML = `
-                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-2">
-                    <div class="flex items-center space-x-2">
-                        <span class="text-sm font-medium text-gray-700">Currency:</span>
-                        <select id="currencySelect" onchange="changeCurrency(this.value)" 
-                                class="text-sm border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
-                            <option value="USD" ${currentCurrency === 'USD' ? 'selected' : ''}>USD ($)</option>
-                            <option value="INR" ${currentCurrency === 'INR' ? 'selected' : ''}>INR (₹)</option>
-                        </select>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(switcher);
         }
         
         function changeCurrency(newCurrency) {
@@ -5590,7 +7427,7 @@
             
             // Debug: Make sure it's visible
             console.log('🔧 Creating FAB cluster element...');
-            fabCluster.style.cssText = 'position: fixed; bottom: 20px; right: 20px; z-index: 9999; pointer-events: auto;';
+            fabCluster.style.cssText = 'position: fixed; bottom: 48px; right: 48px; z-index: 9999; pointer-events: auto;';
             
             fabCluster.innerHTML = `
                 <!-- Primary FAB -->
@@ -5601,9 +7438,16 @@
                 <!-- Secondary FABs -->
                 <div class="fab-secondary-group" id="secondaryFabs">
                     
+                    <button class="fab-secondary" onclick="openProjectWorkspace()">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                        </svg>
+                        <div class="fab-tooltip">Manage Projects</div>
+                    </button>
+                    
                     <button class="fab-secondary" onclick="openProcessWorkspace()">
-                        <svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
-                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v6a2 2 0 002 2h2m5 0a2 2 0 002-2V7a2 2 0 00-2-2H9m0 0v12m0-12h6m-6 0V3"/>
                         </svg>
                         <div class="fab-tooltip">Add Process</div>
                     </button>
@@ -5660,7 +7504,7 @@
         // Workspace Functions
         function openProjectWorkspace() {
             closeFabMenu();
-            showWorkspace('project', 'Project Management', createProjectWorkspace());
+            showWorkspace('project', '', createProjectWorkspace());
         }
         
         function openProcessWorkspace() {
@@ -5768,7 +7612,15 @@
             return `
                 <div style="max-width: 1200px; margin: 0 auto;">
                     <div class="mb-8">
-                        <h2 class="text-2xl font-semibold text-gray-900 mb-4">Project Overview</h2>
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-2xl font-semibold text-gray-900">Project Overview</h2>
+                            <button class="btn-primary" onclick="document.getElementById('projectModal').classList.remove('hidden')">
+                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                                </svg>
+                                New Project
+                            </button>
+                        </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                             <div class="admin-control-card">
                                 <h3 class="font-semibold text-gray-700 mb-2">Active Projects</h3>
@@ -5786,12 +7638,6 @@
                         
                         <div class="flex justify-between items-center mb-6">
                             <h3 class="text-xl font-semibold text-gray-900">All Projects</h3>
-                            <button class="btn-primary" onclick="document.getElementById('projectModal').classList.remove('hidden')">
-                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                                </svg>
-                                New Project
-                            </button>
                         </div>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -5995,22 +7841,26 @@
             selectProject(projectId);
         }
         
-        // ESC key to close workspace
+        // ESC key to close workspace and settings
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && currentWorkspace) {
-                closeWorkspace();
+            if (e.key === 'Escape') {
+                if (settingsPanelOpen) {
+                    closeSettingsPanel();
+                } else if (currentWorkspace) {
+                    closeWorkspace();
+                }
             }
         });
 
         // Backend Integration - Add Supabase Support
-        // Add this script after the closing </script> tag but before </body>
+        // Add this script after the closing </script> tag
     </script>
     
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <!-- Workshop Database Integration -->
-    <script src="api/supabase-config.js"></script>
+    <script src="../api/supabase-config.js"></script>
     
     <!-- Backend Integration Script -->
     <script>
@@ -6262,6 +8112,506 @@
             }
         });
         
+        // Consolidated Settings Panel Functions
+        let settingsPanelOpen = false;
+        
+        function toggleSettingsPanel() {
+            const trigger = document.getElementById('settingsTrigger');
+            const dropdown = document.getElementById('settingsDropdown');
+            
+            if (settingsPanelOpen) {
+                closeSettingsPanel();
+            } else {
+                openSettingsPanel();
+            }
+        }
+        
+        function openSettingsPanel() {
+            const trigger = document.getElementById('settingsTrigger');
+            const dropdown = document.getElementById('settingsDropdown');
+            
+            trigger.classList.add('active');
+            dropdown.classList.add('active');
+            settingsPanelOpen = true;
+            
+            // Sync settings with current state
+            syncSettingsState();
+            
+            // Add click outside handler
+            setTimeout(() => {
+                document.addEventListener('click', handleSettingsClickOutside);
+            }, 100);
+        }
+        
+        function closeSettingsPanel() {
+            const trigger = document.getElementById('settingsTrigger');
+            const dropdown = document.getElementById('settingsDropdown');
+            
+            trigger.classList.remove('active');
+            dropdown.classList.remove('active');
+            settingsPanelOpen = false;
+            
+            // Remove click outside handler
+            document.removeEventListener('click', handleSettingsClickOutside);
+        }
+        
+        function handleSettingsClickOutside(event) {
+            const settingsPanel = document.querySelector('.settings-panel');
+            if (settingsPanel && !settingsPanel.contains(event.target)) {
+                closeSettingsPanel();
+            }
+        }
+        
+        function syncSettingsState() {
+            // Sync workshop toggle
+            const workshopToggle = document.getElementById('workshopToggle');
+            const settingsWorkshopToggle = document.getElementById('settingsWorkshopToggle');
+            if (workshopToggle && settingsWorkshopToggle) {
+                settingsWorkshopToggle.checked = workshopToggle.checked;
+            }
+            
+            // Sync currency selection
+            const currencySelect = document.getElementById('currencySelect');
+            const settingsCurrencySelect = document.getElementById('settingsCurrencySelect');
+            if (currencySelect && settingsCurrencySelect) {
+                settingsCurrencySelect.value = currencySelect.value || currentCurrency || 'USD';
+            }
+            
+            // Update connection status in settings
+            updateSettingsConnectionStatus();
+            
+            // Load projects list
+            loadProjectsList();
+        }
+        
+        function updateSettingsConnectionStatus() {
+            const statusBadge = document.getElementById('settingsConnectionStatus');
+            if (!statusBadge) return;
+            
+            const isOnline = window.workshopDB ? window.workshopDB.isConnected() : false;
+            
+            if (isOnline) {
+                statusBadge.className = 'settings-status-badge settings-status-online';
+                statusBadge.innerHTML = `
+                    <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                    Online
+                `;
+            } else {
+                statusBadge.className = 'settings-status-badge settings-status-offline';
+                statusBadge.innerHTML = `
+                    <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                    Offline
+                `;
+            }
+        }
+        
+        // Override the workshop toggle function to sync both toggles
+        function toggleWorkshopReviewMode() {
+            const workshopToggle = document.getElementById('workshopToggle');
+            const settingsWorkshopToggle = document.getElementById('settingsWorkshopToggle');
+            const contextualControls = document.getElementById('contextualControls');
+            
+            // Determine which toggle was clicked and sync the other
+            let isEnabled = false;
+            if (event && event.target) {
+                isEnabled = event.target.checked;
+                // Sync the other toggle
+                if (event.target.id === 'workshopToggle' && settingsWorkshopToggle) {
+                    settingsWorkshopToggle.checked = isEnabled;
+                } else if (event.target.id === 'settingsWorkshopToggle' && workshopToggle) {
+                    workshopToggle.checked = isEnabled;
+                }
+            } else {
+                // Fallback - check current state
+                isEnabled = workshopToggle ? workshopToggle.checked : false;
+            }
+            
+            // Update workshop review mode state
+            workshopReviewMode = isEnabled;
+            
+            // Show/hide contextual controls with animation
+            if (contextualControls) {
+                if (isEnabled) {
+                    contextualControls.classList.remove('hidden');
+                    contextualControls.classList.add('active');
+                } else {
+                    contextualControls.classList.remove('active');
+                    setTimeout(() => {
+                        contextualControls.classList.add('hidden');
+                    }, 300);
+                }
+            }
+            
+            // Update mode indicator
+            const modeIndicator = document.getElementById('modeIndicator');
+            if (modeIndicator) {
+                modeIndicator.textContent = isEnabled ? 'Workshop Mode' : 'Admin Mode';
+            }
+            
+            // Re-render process list with department styling if needed
+            if (typeof renderProcessList === 'function') {
+                renderProcessList();
+            }
+            
+            // Show notification
+            const message = isEnabled ? 
+                'Workshop mode enabled - Review and filter by departments' : 
+                'Admin mode enabled - Full system access';
+            showNotification(message, 'success');
+        }
+        
+        // Project Management Functions
+        async function loadProjectsList() {
+            const projectSelector = document.getElementById('projectSelector');
+            const headerProjectSelector = document.getElementById('headerProjectSelector');
+            
+            if (!projectSelector && !headerProjectSelector) return;
+            
+            try {
+                const projects = await window.workshopDB.getProjects();
+                
+                // Update settings dropdown
+                if (projectSelector) {
+                    projectSelector.innerHTML = '<option value="">Select Project...</option>';
+                    projects.forEach(project => {
+                        const option = document.createElement('option');
+                        option.value = project.id;
+                        option.textContent = `${project.name} (${new Date(project.created_at).toLocaleDateString()})`;
+                        projectSelector.appendChild(option);
+                    });
+                }
+                
+                // Update header dropdown
+                if (headerProjectSelector) {
+                    headerProjectSelector.innerHTML = '<option value="">Select Project...</option>';
+                    projects.forEach(project => {
+                        const option = document.createElement('option');
+                        option.value = project.id;
+                        option.textContent = project.name;
+                        headerProjectSelector.appendChild(option);
+                    });
+                }
+                
+                // Set current project in both dropdowns if exists
+                const savedProjectId = localStorage.getItem('currentProjectId');
+                if (savedProjectId) {
+                    // Update global variable
+                    currentProjectId = savedProjectId;
+                    if (projectSelector) projectSelector.value = savedProjectId;
+                    if (headerProjectSelector) headerProjectSelector.value = savedProjectId;
+                }
+            } catch (error) {
+                console.error('Failed to load projects:', error);
+                showNotification('Failed to load projects', 'error');
+            }
+        }
+        
+        async function switchProject(projectId) {
+            if (!projectId) {
+                localStorage.removeItem('currentProjectId');
+                localStorage.removeItem('currentProjectData');
+                currentProjectId = null;
+                location.reload();
+                return;
+            }
+            
+            try {
+                const projects = await window.workshopDB.getProjects();
+                const selectedProject = projects.find(p => p.id === projectId);
+                
+                if (selectedProject) {
+                    localStorage.setItem('currentProjectId', projectId);
+                    localStorage.setItem('currentProjectData', JSON.stringify(selectedProject));
+                    
+                    // Update global variable immediately
+                    currentProjectId = projectId;
+                    
+                    showNotification(`Switched to project: ${selectedProject.name}`, 'success');
+                    
+                    // Load processes for new project without full page reload
+                    await loadProcesses(projectId);
+                    renderProcessList();
+                    updateCharts();
+                    updateMetrics();
+                    
+                } else {
+                    showNotification('Project not found', 'error');
+                }
+            } catch (error) {
+                console.error('Failed to switch project:', error);
+                showNotification('Failed to switch project', 'error');
+            }
+        }
+        
+        function openNewProjectDialog() {
+            // Close settings panel first
+            closeSettingsPanel();
+            
+            // Create and show new project modal
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Create New Project</h3>
+                        <button onclick="closeNewProjectDialog()" class="text-gray-400 hover:text-gray-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <form id="newProjectForm" onsubmit="createNewProject(event)">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Project Name</label>
+                            <input type="text" id="projectName" required 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                   placeholder="e.g., Q1 Process Automation Workshop">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                            <textarea id="projectDescription" rows="3"
+                                      class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                      placeholder="Brief description of the workshop objectives..."></textarea>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Facilitator Email</label>
+                            <input type="email" id="facilitatorEmail" required
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                   placeholder="facilitator@company.com">
+                        </div>
+                        
+                        <div class="flex gap-3">
+                            <button type="button" onclick="closeNewProjectDialog()" 
+                                    class="flex-1 px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg font-medium transition-colors">
+                                Cancel
+                            </button>
+                            <button type="submit" 
+                                    class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
+                                Create Project
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            document.getElementById('projectName').focus();
+        }
+        
+        function closeNewProjectDialog() {
+            const modal = document.querySelector('.fixed.inset-0');
+            if (modal) modal.remove();
+        }
+        
+        async function createNewProject(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('projectName').value;
+            const description = document.getElementById('projectDescription').value;
+            const facilitatorEmail = document.getElementById('facilitatorEmail').value;
+            
+            try {
+                const projectData = {
+                    name,
+                    description,
+                    facilitatorEmail,
+                    workshopDate: new Date().toISOString()
+                };
+                
+                const newProject = await window.workshopDB.createProject(projectData);
+                
+                // Switch to the new project immediately
+                localStorage.setItem('currentProjectId', newProject.id);
+                localStorage.setItem('currentProjectData', JSON.stringify(newProject));
+                
+                showNotification(`Project "${name}" created successfully!`, 'success');
+                closeNewProjectDialog();
+                
+                // Reload to reflect new project
+                setTimeout(() => location.reload(), 1000);
+                
+            } catch (error) {
+                console.error('Failed to create project:', error);
+                showNotification('Failed to create project', 'error');
+            }
+        }
+        
+        // Sidebar Navigation Functions
+        let sidebarExpanded = false;
+        
+        function toggleSidebar() {
+            const sidebar = document.getElementById('enterpriseSidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            const mainContent = document.querySelector('.main-content');
+            
+            if (!sidebar || !mainContent) {
+                console.warn('Sidebar elements not found');
+                return;
+            }
+            
+            if (window.innerWidth <= 1024) {
+                // Mobile behavior - overlay sidebar
+                sidebar.classList.toggle('mobile-open');
+                if (backdrop) backdrop.classList.toggle('active');
+            } else {
+                // Desktop behavior - expand/collapse
+                sidebar.classList.toggle('expanded');
+                sidebarExpanded = !sidebarExpanded;
+                
+                // Explicitly adjust main content margin
+                if (sidebarExpanded) {
+                    mainContent.style.marginLeft = '280px';
+                } else {
+                    mainContent.style.marginLeft = '60px';
+                }
+                
+                // Close settings panel when collapsing
+                if (!sidebarExpanded && headerSettingsOpen) {
+                    closeHeaderSettings();
+                }
+            }
+        }
+        
+        function closeSidebar() {
+            const sidebar = document.getElementById('enterpriseSidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            
+            if (sidebar) sidebar.classList.remove('mobile-open');
+            if (backdrop) backdrop.classList.remove('active');
+        }
+        
+        // Header Settings Functions
+        let headerSettingsOpen = false;
+        
+        function toggleHeaderSettings() {
+            if (headerSettingsOpen) {
+                closeHeaderSettings();
+            } else {
+                openHeaderSettings();
+            }
+        }
+        
+        function openHeaderSettings() {
+            const trigger = document.getElementById('headerSettingsTrigger');
+            const panel = document.getElementById('headerSettingsPanel');
+            
+            if (!trigger || !panel) {
+                console.warn('Header settings elements not found');
+                return;
+            }
+            
+            trigger.classList.add('active');
+            panel.classList.add('active');
+            headerSettingsOpen = true;
+            
+            // Sync settings with current state
+            syncSettingsState();
+            
+            // Add click outside handler
+            setTimeout(() => {
+                document.addEventListener('click', handleHeaderSettingsClickOutside);
+            }, 100);
+        }
+        
+        function closeHeaderSettings() {
+            const trigger = document.getElementById('headerSettingsTrigger');
+            const panel = document.getElementById('headerSettingsPanel');
+            
+            if (trigger) trigger.classList.remove('active');
+            if (panel) panel.classList.remove('active');
+            headerSettingsOpen = false;
+            
+            // Remove click outside handler
+            document.removeEventListener('click', handleHeaderSettingsClickOutside);
+        }
+        
+        function handleHeaderSettingsClickOutside(event) {
+            const panel = document.getElementById('headerSettingsPanel');
+            const trigger = document.getElementById('headerSettingsTrigger');
+            if (panel && !panel.contains(event.target) && !trigger.contains(event.target)) {
+                closeHeaderSettings();
+            }
+        }
+        
+        function initializeSidebar() {
+            // Set initial state based on screen size
+            const sidebar = document.getElementById('enterpriseSidebar');
+            const mainContent = document.querySelector('.main-content');
+            
+            if (!sidebar || !mainContent) {
+                console.warn('Sidebar elements not found, skipping initialization');
+                return;
+            }
+            
+            if (window.innerWidth > 1024) {
+                sidebar.classList.add('expanded');
+                sidebarExpanded = true;
+                mainContent.style.marginLeft = '280px';
+            } else {
+                mainContent.style.marginLeft = '0px';
+            }
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                const sidebar = document.getElementById('enterpriseSidebar');
+                const backdrop = document.getElementById('sidebarBackdrop');
+                const mainContent = document.querySelector('.main-content');
+                
+                if (!sidebar || !mainContent) return;
+                
+                if (window.innerWidth <= 1024) {
+                    // Switch to mobile mode
+                    sidebar.classList.remove('expanded');
+                    mainContent.style.marginLeft = '0px';
+                    if (backdrop && !sidebar.classList.contains('mobile-open')) {
+                        backdrop.classList.remove('active');
+                    }
+                } else {
+                    // Switch to desktop mode
+                    sidebar.classList.remove('mobile-open');
+                    if (backdrop) backdrop.classList.remove('active');
+                    if (sidebarExpanded) {
+                        sidebar.classList.add('expanded');
+                        mainContent.style.marginLeft = '280px';
+                    } else {
+                        mainContent.style.marginLeft = '60px';
+                    }
+                }
+            });
+        }
+        
+        // Enhanced currency change function
+        function changeCurrency(newCurrency) {
+            currentCurrency = newCurrency;
+            localStorage.setItem('selectedCurrency', newCurrency);
+            
+            // Sync both currency selectors
+            const currencySelect = document.getElementById('currencySelect');
+            const settingsCurrencySelect = document.getElementById('settingsCurrencySelect');
+            
+            if (currencySelect) currencySelect.value = newCurrency;
+            if (settingsCurrencySelect) settingsCurrencySelect.value = newCurrency;
+            
+            // Update all currency displays
+            updateCurrencyDisplays();
+            
+            // Show notification
+            showNotification(`Currency changed to ${newCurrency}`, 'success');
+        }
+        
+        function updateCurrencyDisplays() {
+            // Update metrics and charts with new currency
+            if (typeof updateMetrics === 'function') {
+                updateMetrics();
+            }
+            if (typeof updateCharts === 'function') {
+                updateCharts();
+            }
+        }
+
         // Enhanced initialization with backend support
         let originalInitializeDashboard;
         async function initializeDashboard() {
@@ -6269,31 +8619,23 @@
             if (!originalInitializeDashboard && window.initializeDashboard && window.initializeDashboard !== initializeDashboard) {
                 originalInitializeDashboard = window.initializeDashboard;
             }
+            
+            // Initialize settings panel
+            initializeSettingsPanel();
+            
+            // Load current project from localStorage
+            const savedProjectId = localStorage.getItem('currentProjectId');
+            if (savedProjectId) {
+                currentProjectId = savedProjectId;
+            }
+            
+            // Load projects list for dropdowns
+            loadProjectsList();
+            
             // Show connection status
             if (window.workshopDB) {
                 const status = window.workshopDB.getConnectionStatus();
                 console.log('🔌 Database Status:', status);
-                
-                // Remove existing status indicator to prevent duplicates
-                const existingIndicator = document.getElementById('connectionStatus');
-                if (existingIndicator) {
-                    existingIndicator.remove();
-                }
-                
-                // Add connection indicator to UI (moved to avoid hover conflicts)
-                const statusIndicator = document.createElement('div');
-                statusIndicator.id = 'connectionStatus';
-                statusIndicator.className = `fixed top-4 left-4 px-3 py-1 rounded text-xs font-medium z-30 ${
-                    status.online ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                }`;
-                statusIndicator.innerHTML = `
-                    <div class="flex items-center space-x-1">
-                        <div class="w-2 h-2 rounded-full ${status.online ? 'bg-green-500' : 'bg-yellow-500'}"></div>
-                        <span>${status.database} ${status.online ? '(Online)' : '(Offline)'}</span>
-                    </div>
-                `;
-                statusIndicator.style.pointerEvents = 'none'; // Don't interfere with hover
-                document.body.appendChild(statusIndicator);
                 
                 // Load saved currency preference
                 const savedCurrency = localStorage.getItem('selectedCurrency');
@@ -6301,8 +8643,8 @@
                     currentCurrency = savedCurrency;
                 }
                 
-                // Add currency switcher
-                addCurrencySwitcher();
+                // Update connection status in settings
+                updateSettingsConnectionStatus();
             }
             
             // Call original initialization if available
@@ -6323,6 +8665,141 @@
                 updateCharts();
                 updateMetrics();
             }
+        }
+        
+        function initializeSettingsPanel() {
+            // Set initial currency selection
+            const savedCurrency = localStorage.getItem('selectedCurrency') || 'USD';
+            const settingsCurrencySelect = document.getElementById('settingsCurrencySelect');
+            if (settingsCurrencySelect) {
+                settingsCurrencySelect.value = savedCurrency;
+            }
+            currentCurrency = savedCurrency;
+            
+            // Update connection status periodically
+            setInterval(updateSettingsConnectionStatus, 30000); // Every 30 seconds
+            
+            console.log('⚙️ Settings panel initialized');
+        }
+        
+        // Enhanced notification system
+        function showNotification(message, type = 'info', duration = 3000) {
+            // Remove existing notifications
+            const existingNotifications = document.querySelectorAll('.notification-toast');
+            existingNotifications.forEach(notification => notification.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = `notification-toast notification-${type}`;
+            notification.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <div class="notification-icon">
+                        ${getNotificationIcon(type)}
+                    </div>
+                    <span class="notification-message">${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="notification-close">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            `;
+            
+            // Add styles if not already present
+            if (!document.querySelector('#notificationStyles')) {
+                const styles = document.createElement('style');
+                styles.id = 'notificationStyles';
+                styles.textContent = `
+                    .notification-toast {
+                        position: fixed;
+                        top: 24px;
+                        right: 24px;
+                        background: white;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 12px;
+                        padding: 16px 20px;
+                        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+                        z-index: 1100;
+                        min-width: 320px;
+                        max-width: 480px;
+                        animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    }
+                    .notification-success {
+                        border-left: 4px solid #10b981;
+                    }
+                    .notification-error {
+                        border-left: 4px solid #ef4444;
+                    }
+                    .notification-info {
+                        border-left: 4px solid #3b82f6;
+                    }
+                    .notification-message {
+                        font-size: 14px;
+                        font-weight: 500;
+                        color: #374151;
+                        flex: 1;
+                    }
+                    .notification-icon {
+                        flex-shrink: 0;
+                    }
+                    .notification-close {
+                        flex-shrink: 0;
+                        color: #9ca3af;
+                        background: none;
+                        border: none;
+                        cursor: pointer;
+                        padding: 2px;
+                        border-radius: 4px;
+                        transition: all 0.2s ease;
+                    }
+                    .notification-close:hover {
+                        color: #6b7280;
+                        background: #f3f4f6;
+                    }
+                    @keyframes slideInRight {
+                        from {
+                            opacity: 0;
+                            transform: translateX(100%);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateX(0);
+                        }
+                    }
+                    @media (max-width: 640px) {
+                        .notification-toast {
+                            right: 16px;
+                            left: 16px;
+                            min-width: auto;
+                        }
+                    }
+                `;
+                document.head.appendChild(styles);
+            }
+            
+            document.body.appendChild(notification);
+            
+            // Auto remove after duration
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.animation = 'slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) reverse';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, duration);
+        }
+        
+        function getNotificationIcon(type) {
+            const icons = {
+                success: `<svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>`,
+                error: `<svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                </svg>`,
+                info: `<svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                </svg>`
+            };
+            return icons[type] || icons.info;
         }
         
         // Update the project selection to load backend data
@@ -6470,6 +8947,18 @@
             }
         }
         
+        // Duplicate sidebar functions removed - using correct functions above with proper element IDs
+        
+        // Initialize sidebar state based on screen size
+        // Duplicate function removed - using the correct initializeSidebar above
+        
+        // Duplicate resize handler removed - using the correct one in initializeSidebar above
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sidebar initialization removed - no sidebar in current design
+        });
+        
         // Enhanced Impact Measurement System
         function createMonetaryImpactInput() {
             return `
@@ -6585,5 +9074,85 @@
     
     <!-- Supabase JavaScript SDK -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    
+    <!-- Database Reset Confirmation Modal -->
+    <div id="resetConfirmationModal" class="reset-confirmation-modal">
+        <div class="reset-modal-backdrop" onclick="hideResetConfirmation()"></div>
+        <div class="reset-modal-content">
+            <div class="reset-modal-header">
+                <div class="reset-warning-icon">
+                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                    </svg>
+                </div>
+                <h3 class="reset-modal-title">Confirm Database Reset</h3>
+                <button class="reset-modal-close" onclick="hideResetConfirmation()">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="reset-modal-body">
+                <div class="reset-warning-message">
+                    <p class="text-base text-gray-800 mb-4">
+                        <strong>This action will permanently delete all workshop data including:</strong>
+                    </p>
+                    <ul class="reset-data-list">
+                        <li>
+                            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7"/>
+                            </svg>
+                            All projects and project settings
+                        </li>
+                        <li>
+                            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7"/>
+                            </svg>
+                            All business processes and evaluations
+                        </li>
+                        <li>
+                            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7"/>
+                            </svg>
+                            Department access tokens and permissions
+                        </li>
+                        <li>
+                            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7"/>
+                            </svg>
+                            All analytics and reporting data
+                        </li>
+                    </ul>
+                    <div class="reset-warning-box">
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                            </svg>
+                            <span class="font-semibold text-amber-800">This action cannot be undone!</span>
+                        </div>
+                        <p class="text-sm text-amber-700 mt-2">
+                            Make sure you have backed up any important data before proceeding.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="reset-modal-footer">
+                <button onclick="hideResetConfirmation()" class="reset-cancel-btn">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                    Cancel
+                </button>
+                <button onclick="confirmResetDatabase()" class="reset-confirm-btn">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                    Yes, Delete Everything
+                </button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

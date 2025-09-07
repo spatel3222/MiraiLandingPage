@@ -397,6 +397,86 @@ class WorkshopDatabase {
             realtime: this.isOnline ? 'Active' : 'Offline'
         };
     }
+
+    // Database Reset Functions
+    async resetDatabase() {
+        console.log('🔄 Resetting database...');
+        
+        if (this.isOnline && this.supabase) {
+            return this.resetSupabaseData();
+        } else {
+            return this.resetLocalStorage();
+        }
+    }
+
+    async resetSupabaseData() {
+        try {
+            // Delete all processes
+            const { error: processError } = await this.supabase
+                .from('processes')
+                .delete()
+                .neq('id', 'dummy'); // Delete all records
+
+            if (processError) throw processError;
+
+            // Delete all department tokens
+            const { error: tokenError } = await this.supabase
+                .from('department_tokens')
+                .delete()
+                .neq('id', 'dummy'); // Delete all records
+
+            if (tokenError) throw tokenError;
+
+            // Delete all projects
+            const { error: projectError } = await this.supabase
+                .from('projects')
+                .delete()
+                .neq('id', 'dummy'); // Delete all records
+
+            if (projectError) throw projectError;
+
+            console.log('✅ Supabase database reset successfully');
+            return { success: true, message: 'Database reset successfully' };
+        } catch (error) {
+            console.error('❌ Failed to reset Supabase database:', error);
+            // Fallback to localStorage reset
+            return this.resetLocalStorage();
+        }
+    }
+
+    resetLocalStorage() {
+        try {
+            // Get all localStorage keys related to the workshop app
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && (
+                    key === 'businessProjects' ||
+                    key === 'currentProjectId' ||
+                    key === 'currentProjectData' ||
+                    key.startsWith('tokens_') ||
+                    key.startsWith('processes_')
+                )) {
+                    keysToRemove.push(key);
+                }
+            }
+
+            // Remove all workshop-related data
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+
+            console.log('✅ localStorage reset successfully');
+            console.log('🗑️ Removed keys:', keysToRemove);
+            
+            return { 
+                success: true, 
+                message: `Database reset successfully. Removed ${keysToRemove.length} items from localStorage.`,
+                removedKeys: keysToRemove
+            };
+        } catch (error) {
+            console.error('❌ Failed to reset localStorage:', error);
+            return { success: false, message: 'Failed to reset database', error };
+        }
+    }
 }
 
 // Initialize the global database instance
