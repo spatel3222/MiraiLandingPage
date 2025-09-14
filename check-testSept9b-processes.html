@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check testSept9b Processes</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>Checking testSept9b Project in Supabase</h1>
+    <div id="results"></div>
+    
+    <script>
+        async function checkTestSept9bProcesses() {
+            const resultsDiv = document.getElementById('results');
+            
+            try {
+                // Initialize Supabase client
+                const SUPABASE_URL = 'https://fvyghgvshobufpgaclbs.supabase.co';
+                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2eWdoZ3ZzaG9idWZwZ2FjbGJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxNDI1MjgsImV4cCI6MjA3MjcxODUyOH0.RR_PavED-XHko85FsuLVWfWapVIJZ3l3vRPq4lszmfM';
+                
+                const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                
+                // First, find the testSept9b project
+                const { data: projects, error: projectError } = await supabaseClient
+                    .from('projects')
+                    .select('*')
+                    .ilike('name', '%testSept9b%');
+                
+                if (projectError) {
+                    resultsDiv.innerHTML = `<p style="color: red;">Error fetching projects: ${projectError.message}</p>`;
+                    console.error('Project fetch error:', projectError);
+                    return;
+                }
+                
+                if (!projects || projects.length === 0) {
+                    resultsDiv.innerHTML = '<p style="color: orange;">No project found with name containing "testSept9b"</p>';
+                    
+                    // Let's also check all projects to see what's available
+                    const { data: allProjects, error: allError } = await supabaseClient
+                        .from('projects')
+                        .select('id, name, created_at')
+                        .order('created_at', { ascending: false });
+                    
+                    if (allProjects && allProjects.length > 0) {
+                        resultsDiv.innerHTML += '<h3>Available Projects:</h3><ul>';
+                        allProjects.forEach(p => {
+                            resultsDiv.innerHTML += `<li>${p.name} (ID: ${p.id})</li>`;
+                        });
+                        resultsDiv.innerHTML += '</ul>';
+                    }
+                    return;
+                }
+                
+                // Found the project
+                const testSept9bProject = projects[0];
+                console.log('Found project:', testSept9bProject);
+                
+                // Now get all processes for this project
+                const { data: processes, error: processError } = await supabaseClient
+                    .from('processes')
+                    .select('*')
+                    .eq('project_id', testSept9bProject.id)
+                    .order('created_at', { ascending: false });
+                
+                if (processError) {
+                    resultsDiv.innerHTML = `<p style="color: red;">Error fetching processes: ${processError.message}</p>`;
+                    console.error('Process fetch error:', processError);
+                    return;
+                }
+                
+                // Display results
+                resultsDiv.innerHTML = `
+                    <h2 style="color: green;">✅ Found testSept9b Project</h2>
+                    <p><strong>Project ID:</strong> ${testSept9bProject.id}</p>
+                    <p><strong>Project Name:</strong> ${testSept9bProject.name}</p>
+                    <p><strong>Created:</strong> ${new Date(testSept9bProject.created_at).toLocaleString()}</p>
+                    <h3 style="color: blue;">📊 Number of Processes: ${processes ? processes.length : 0}</h3>
+                `;
+                
+                if (processes && processes.length > 0) {
+                    resultsDiv.innerHTML += '<h4>Process List:</h4><ol>';
+                    processes.forEach(process => {
+                        resultsDiv.innerHTML += `
+                            <li>
+                                <strong>${process.name}</strong> 
+                                (${process.department || 'No department'})
+                                - Impact: ${process.impact_score}/10
+                                - Feasibility: ${process.feasibility_score}/10
+                            </li>
+                        `;
+                    });
+                    resultsDiv.innerHTML += '</ol>';
+                    
+                    // Calculate some statistics
+                    const totalTimeSpent = processes.reduce((sum, p) => sum + (p.time_spent || 0), 0);
+                    const avgImpact = processes.reduce((sum, p) => sum + (p.impact_score || 0), 0) / processes.length;
+                    const avgFeasibility = processes.reduce((sum, p) => sum + (p.feasibility_score || 0), 0) / processes.length;
+                    
+                    resultsDiv.innerHTML += `
+                        <h4>Statistics:</h4>
+                        <ul>
+                            <li>Total Weekly Time Spent: ${totalTimeSpent} hours</li>
+                            <li>Average Impact Score: ${avgImpact.toFixed(2)}/10</li>
+                            <li>Average Feasibility Score: ${avgFeasibility.toFixed(2)}/10</li>
+                        </ul>
+                    `;
+                }
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<p style="color: red;">Unexpected error: ${error.message}</p>`;
+                console.error('Unexpected error:', error);
+            }
+        }
+        
+        // Run the check when page loads
+        checkTestSept9bProcesses();
+    </script>
+</body>
+</html>

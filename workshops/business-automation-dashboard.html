@@ -524,6 +524,530 @@
             z-index: 100 !important;
         }
 
+        /* ===== CHAT INTERFACE STYLES ===== */
+        
+        /* Chat FAB Integration */
+        .fab-cluster {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+        }
+        
+        .fab-main {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            position: relative;
+        }
+        
+        .fab-main:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 12px 40px rgba(59, 130, 246, 0.4);
+        }
+        
+        .fab-options {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .fab-cluster.active .fab-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .fab-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .fab-option-button {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(226, 232, 240, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #374151;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            font-size: 18px;
+            position: relative;
+        }
+        
+        .fab-option-button:hover {
+            transform: scale(1.1);
+            background: white;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            color: #3b82f6;
+        }
+        
+        .fab-option-label {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            white-space: nowrap;
+            border: 1px solid rgba(226, 232, 240, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(10px);
+            transition: all 0.2s ease;
+        }
+        
+        .fab-option:hover .fab-option-label {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+        
+        /* Chat Notification Badge */
+        .chat-notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border: 2px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+        
+        /* Chat Modal */
+        .chat-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .chat-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .chat-container {
+            width: 100%;
+            max-width: 480px;
+            max-height: 700px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(226, 232, 240, 0.3);
+            border-radius: 24px;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: scale(0.9) translateY(40px);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .chat-modal.active .chat-container {
+            transform: scale(1) translateY(0);
+        }
+        
+        /* Chat Header */
+        .chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px 16px;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.3);
+            background: rgba(248, 250, 252, 0.5);
+        }
+        
+        .chat-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .chat-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .chat-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0;
+        }
+        
+        .chat-subtitle {
+            font-size: 12px;
+            color: #6b7280;
+            margin: 0;
+        }
+        
+        .chat-close-btn {
+            width: 32px;
+            height: 32px;
+            background: rgba(107, 114, 128, 0.1);
+            border: 1px solid rgba(107, 114, 128, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 16px;
+        }
+        
+        .chat-close-btn:hover {
+            background: rgba(107, 114, 128, 0.15);
+            color: #374151;
+        }
+        
+        /* Chat Body */
+        .chat-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            min-height: 300px;
+        }
+        
+        /* Message Styles */
+        .message {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            max-width: 85%;
+            animation: messageSlideIn 0.3s ease-out;
+        }
+        
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        
+        .message-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .message.assistant .message-avatar {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+        }
+        
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+        
+        .message-content {
+            background: white;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            border-radius: 16px;
+            padding: 12px 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            font-size: 14px;
+            line-height: 1.5;
+            color: #374151;
+        }
+        
+        .message.user .message-content {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .message-time {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+        
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: white;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .typing-indicator.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #9ca3af;
+            border-radius: 50%;
+            animation: typingPulse 1.4s infinite both;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typingPulse {
+            0%, 60%, 100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            30% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+        
+        /* Chat Footer */
+        .chat-footer {
+            padding: 16px 24px 20px;
+            border-top: 1px solid rgba(226, 232, 240, 0.3);
+            background: rgba(248, 250, 252, 0.5);
+        }
+        
+        .chat-input-container {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .chat-input {
+            flex: 1;
+            background: white;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            border-radius: 20px;
+            padding: 12px 16px;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #374151;
+            resize: none;
+            min-height: 20px;
+            max-height: 100px;
+            transition: all 0.2s ease;
+        }
+        
+        .chat-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .chat-send-btn {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 16px;
+        }
+        
+        .chat-send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        
+        .chat-send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Update Dashboard Button */
+        .update-dashboard-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .update-dashboard-btn.ready {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .update-dashboard-btn:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .fab-cluster {
+                bottom: 16px;
+                right: 16px;
+            }
+            
+            .chat-modal {
+                padding: 12px;
+            }
+            
+            .chat-container {
+                max-width: none;
+                width: 100%;
+                max-height: calc(100vh - 24px);
+                border-radius: 16px;
+            }
+            
+            .chat-messages {
+                padding: 16px 20px;
+            }
+            
+            .chat-footer {
+                padding: 12px 20px 16px;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+            
+            .fab-option-label {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .chat-header {
+                padding: 16px 20px 12px;
+            }
+            
+            .chat-title {
+                font-size: 16px;
+            }
+            
+            .message-content {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+        }
+
         /* ===== MISSING CSS FROM BACKUP - START ===== */
         
         /* CSS Variables */
@@ -584,6 +1108,10 @@
             padding: 24px 32px;
             border-bottom: 1px solid rgba(226, 232, 240, 0.3);
             background: rgba(248, 250, 252, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(8px);
         }
         
         .workspace-header-left {
@@ -620,21 +1148,55 @@
             margin: 0;
         }
         
-        .workspace-badge {
-            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        /* Removed unprofessional badge - using clean title approach */
+        .workspace-title-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .workspace-subtitle {
+            color: var(--gray-600);
+            font-size: 14px;
+            font-weight: 500;
         }
         
         .workspace-actions {
             display: flex;
             align-items: center;
             gap: 12px;
+        }
+        
+        /* Professional New Project Button */
+        .new-project-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+        
+        .new-project-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+            background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-800) 100%);
+        }
+        
+        .new-project-btn:active {
+            transform: translateY(0);
+        }
+        
+        .new-project-icon {
+            width: 16px;
+            height: 16px;
         }
         
         /* Workspace Body */
@@ -2214,6 +2776,273 @@
             transform: rotate(120deg);
         }
 
+        /* New Settings Modal Styles */
+        .system-health-bar {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.1);
+        }
+        
+        .health-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            background: #34d399;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-text {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .status-detail, .workspace-name, .process-count {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .workspace-info {
+            text-align: right;
+        }
+        
+        .process-tools-section {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            padding: 4px;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .tool-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            font-weight: 500;
+            width: 100%;
+            text-align: left;
+        }
+        
+        .tool-btn:hover {
+            transform: translateX(4px);
+            background: #f8fafc;
+        }
+        
+        .tool-btn-primary {
+            color: #1e40af;
+        }
+        
+        .tool-btn-primary:hover {
+            background: #eff6ff;
+            border-color: #3b82f6;
+        }
+        
+        .tool-btn-warning {
+            color: #92400e;
+        }
+        
+        .tool-btn-warning:hover {
+            background: #fef3c7;
+            border-color: #f59e0b;
+        }
+        
+        .tool-btn-success {
+            color: #14532d;
+        }
+        
+        .tool-btn-success:hover {
+            background: #ecfdf5;
+            border-color: #10b981;
+        }
+        
+        .tool-btn-secondary {
+            color: #374151;
+        }
+        
+        .tool-btn-secondary:hover {
+            background: #f3f4f6;
+            border-color: #9ca3af;
+        }
+        
+        .storage-preferences {
+            margin-top: 24px;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+        
+        .preference-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .storage-toggle {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .storage-option {
+            flex: 1;
+            position: relative;
+        }
+        
+        .storage-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .storage-option-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .storage-option input[type="radio"]:checked + .storage-option-label {
+            border-color: #3b82f6;
+            background: #eff6ff;
+            color: #1e40af;
+        }
+        
+        .storage-option-label:hover {
+            border-color: #9ca3af;
+        }
+        
+        .storage-info {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 8px;
+            line-height: 1.5;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 6px;
+        }
+        
+        .advanced-actions {
+            margin-top: 24px;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 20px;
+        }
+        
+        .advanced-summary {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            background: #fef3f2;
+            border: 1px solid #fed7d7;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            color: #7c2d12;
+            list-style: none;
+            transition: all 0.2s;
+        }
+        
+        .advanced-summary:hover {
+            background: #fee2e2;
+            border-color: #fca5a5;
+        }
+        
+        .advanced-summary::marker {
+            content: '';
+        }
+        
+        .advanced-content {
+            margin-top: 12px;
+            padding: 16px;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+        }
+        
+        .warning-notice {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #92400e;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        
+        .danger-zone {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .danger-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: white;
+            border: 1px solid #ef4444;
+            border-radius: 6px;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .danger-btn:hover {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .danger-warning {
+            font-size: 11px;
+            color: #dc2626;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
         /* Contextual Workspace System */
         :root {
             --glass-primary: rgba(255, 255, 255, 0.85);
@@ -2275,6 +3104,10 @@
             padding: 24px 32px;
             border-bottom: 1px solid rgba(226, 232, 240, 0.3);
             background: rgba(248, 250, 252, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(8px);
         }
         
         .workspace-header-left {
@@ -2311,21 +3144,116 @@
             margin: 0;
         }
         
-        .workspace-badge {
-            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        /* Removed unprofessional badge - using clean title approach */
+        .workspace-title-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .workspace-subtitle {
+            color: var(--gray-600);
+            font-size: 14px;
+            font-weight: 500;
         }
         
         .workspace-actions {
             display: flex;
             align-items: center;
             gap: 12px;
+        }
+        
+        /* Professional New Project Button */
+        .new-project-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+        
+        .new-project-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+            background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-800) 100%);
+        }
+        
+        .new-project-btn:active {
+            transform: translateY(0);
+        }
+        
+        .new-project-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Professional Header Styles */
+        .workspace-header-professional {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .workspace-title-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .workspace-description {
+            color: #6b7280;
+            font-size: 14px;
+            font-weight: 400;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .btn-system-close {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: rgba(107, 114, 128, 0.1);
+            border: none;
+            border-radius: 8px;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-system-close:hover {
+            background: rgba(107, 114, 128, 0.15);
+            color: #374151;
+            transform: scale(1.05);
+        }
+
+        .workspace-back-btn {
+            background: rgba(107, 114, 128, 0.1);
+            border: none;
+            border-radius: 8px;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .workspace-back-btn:hover {
+            background: rgba(107, 114, 128, 0.15);
+            color: #374151;
+            transform: scale(1.05);
         }
 
         /* Workspace Body */
@@ -2338,15 +3266,68 @@
         /* Admin Control Card */
         .admin-control-card {
             background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 16px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-            transition: all 0.2s ease;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
         }
 
         .admin-control-card:hover {
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+            border-color: var(--primary-200);
+        }
+        
+        /* Project Cards */
+        .project-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .project-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+            border-color: var(--primary-200);
+        }
+        
+        .project-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .project-card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .project-card-meta {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+        
+        .project-status {
+            padding: 4px 12px;
+            border-radius: var(--border-radius-md);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .project-status.active {
+            background: var(--green-100);
+            color: var(--green-700);
         }
 
         /* Primary Button - Brand gradient with WCAG AA compliance */
@@ -3027,6 +4008,259 @@
             border-radius: var(--border-radius-md);
         }
 
+        /* Inline Editing System */
+        .editable {
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        
+        .editable:hover {
+            background: rgba(59, 130, 246, 0.02);
+            cursor: pointer;
+        }
+        
+        .editable.editing {
+            background: rgba(59, 130, 246, 0.05);
+            border: 2px solid var(--primary-500);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-xs);
+        }
+        
+        .edit-controls {
+            position: absolute;
+            top: -32px;
+            right: 0;
+            display: none;
+            align-items: center;
+            gap: var(--spacing-xs);
+            z-index: 10;
+            background: white;
+            padding: var(--spacing-xs);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .editable.editing .edit-controls,
+        .editable:hover .edit-controls {
+            display: flex;
+        }
+        
+        .edit-icon {
+            width: 16px;
+            height: 16px;
+            color: var(--gray-400);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .edit-icon:hover {
+            color: var(--primary-500);
+            transform: scale(1.1);
+        }
+        
+        .save-btn, .cancel-btn {
+            width: 20px;
+            height: 20px;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .save-btn {
+            background: var(--green-500);
+            color: white;
+        }
+        
+        .save-btn:hover {
+            background: var(--green-600);
+            transform: scale(1.05);
+        }
+        
+        .cancel-btn {
+            background: var(--red-500);
+            color: white;
+        }
+        
+        .cancel-btn:hover {
+            background: var(--red-600);
+            transform: scale(1.05);
+        }
+        
+        .inline-input {
+            background: white;
+            border: 1px solid var(--primary-500);
+            border-radius: var(--border-radius-sm);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            font-family: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            color: inherit;
+            width: 100%;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .inline-textarea {
+            background: white;
+            border: 1px solid var(--primary-500);
+            border-radius: var(--border-radius-sm);
+            padding: var(--spacing-sm);
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+            width: 100%;
+            min-height: 60px;
+            resize: vertical;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .edit-feedback {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(16, 185, 129, 0.9);
+            color: white;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            font-size: 12px;
+            font-weight: 500;
+            text-align: center;
+            z-index: 20;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .edit-feedback.show {
+            opacity: 1;
+            transform: translateY(4px);
+        }
+        
+        .edit-feedback.error {
+            background: rgba(239, 68, 68, 0.9);
+        }
+        
+        /* Phase item editing */
+        .phase-items {
+            position: relative;
+        }
+        
+        .phase-item.editable {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-sm) var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            border-left: 3px solid var(--gray-300);
+            border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+        }
+        
+        .phase-item-content {
+            flex: 1;
+        }
+        
+        .phase-item-actions {
+            display: none;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+        
+        .phase-item:hover .phase-item-actions {
+            display: flex;
+        }
+        
+        .add-item-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-sm);
+            background: var(--gray-50);
+            border: 2px dashed var(--gray-300);
+            border-radius: var(--border-radius-md);
+            color: var(--gray-500);
+            font-size: var(--text-small);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: var(--spacing-sm);
+        }
+        
+        .add-item-btn:hover {
+            background: var(--primary-50);
+            border-color: var(--primary-300);
+            color: var(--primary-600);
+        }
+        
+        .loading-state {
+            opacity: 0.6;
+            pointer-events: none;
+            position: relative;
+        }
+        
+        .loading-state::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--primary-200);
+            border-top: 2px solid var(--primary-500);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            transform: translate(-50%, -50%);
+        }
+        
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        /* Undo system */
+        .undo-notification {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--gray-800);
+            color: white;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .undo-notification.show {
+            transform: translateX(0);
+        }
+        
+        .undo-btn {
+            background: var(--primary-500);
+            color: white;
+            border: none;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+        
+        .undo-btn:hover {
+            background: var(--primary-600);
+        }
+
         /* Action Center */
         .action-center {
             background: var(--gray-50);
@@ -3134,6 +4368,117 @@
             animation-delay: 0.6s;
         }
         
+        /* ===== IMPROVED PROJECT OVERVIEW STYLES ===== */
+        
+        /* Enhanced metric cards with left border accent */
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .metric-card:hover::before {
+            opacity: 1;
+        }
+        
+        /* Improved Visual Hierarchy */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 2px solid var(--gray-100);
+        }
+        
+        .section-title {
+            color: var(--gray-900);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        
+        .section-subtitle {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            margin-top: 4px;
+        }
+        
+        /* Clean Grid Layout */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+        }
+        
+        /* Professional workspace header with better spacing */
+        .workspace-header-improved {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+            padding: 20px 32px;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+        
+        .workspace-title-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .workspace-main-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin: 0;
+            line-height: 1.2;
+        }
+        
+        .workspace-description {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+        
+        .workspace-stats {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-left: auto;
+            margin-right: 24px;
+        }
+        
+        .workspace-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .workspace-stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin: 0;
+        }
+        
+        .workspace-stat-label {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+        
     </style>
 </head>
 <body>
@@ -3177,8 +4522,8 @@
                     <!-- Header Settings Panel -->
                     <div class="settings-dropdown" id="headerSettingsPanel">
                         <div class="settings-header">
-                            <h3 class="settings-title">System Settings</h3>
-                            <p class="settings-subtitle">Configure your workspace preferences</p>
+                            <h3 class="settings-title">Process Control Center</h3>
+                            <p class="settings-subtitle">Manage your automation workspace</p>
                             <button class="settings-close-btn" 
                                     onclick="closeHeaderSettings()" 
                                     aria-label="Close settings panel"
@@ -3190,126 +4535,123 @@
                         </div>
                         
                         <div class="settings-body">
-                            <!-- System Status -->
-                            <div class="settings-section">
-                                <h4 class="settings-section-title">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                    System Status
-                                </h4>
-                                <div class="settings-item">
-                                    <span class="settings-label">Database Connection</span>
-                                    <span class="connection-status" id="connectionStatus">
-                                        <div class="status-indicator"></div>
-                                        <span class="status-text">Loading...</span>
-                                    </span>
+                            <!-- System Health Bar (Always Visible) -->
+                            <div class="system-health-bar" id="systemHealthBar">
+                                <div class="health-status">
+                                    <div class="status-indicator" id="healthIndicator"></div>
+                                    <span class="status-text" id="healthStatus">Supabase Connected</span>
+                                    <span class="status-detail" id="healthDetail">Last sync: 2 mins ago</span>
+                                </div>
+                                <div class="workspace-info">
+                                    <span class="workspace-name" id="workspaceName">Current Workspace</span>
+                                    <span class="process-count" id="processCount">Active Processes: 0</span>
                                 </div>
                             </div>
 
-                            <!-- Storage Mode Control -->
-                            <div class="settings-section">
+                            <!-- Process Tools (Primary Section) -->
+                            <div class="settings-section process-tools-section">
                                 <h4 class="settings-section-title">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
                                     </svg>
-                                    Storage Mode
+                                    Process Tools
                                 </h4>
                                 <div class="settings-item">
-                                    <span class="settings-label">Default Storage Type</span>
-                                    <div class="storage-toggle">
-                                        <label class="storage-option">
-                                            <input type="radio" name="storageMode" value="supabase" id="storageSupabase" onchange="updateStorageMode('supabase')" checked>
-                                            <span class="storage-option-label">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/>
-                                                </svg>
-                                                Supabase Cloud
-                                            </span>
-                                        </label>
-                                        <label class="storage-option">
-                                            <input type="radio" name="storageMode" value="localStorage" id="storageLocal" onchange="updateStorageMode('localStorage')">
-                                            <span class="storage-option-label">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
-                                                </svg>
-                                                Local Storage
-                                            </span>
-                                        </label>
+                                    <div class="tools-grid">
+                                        <button onclick="showDuplicateDetection()" class="tool-btn tool-btn-primary" id="findDuplicatesBtn">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                            </svg>
+                                            <span>Find Duplicates</span>
+                                        </button>
+                                        <button onclick="showBulkActions()" class="tool-btn tool-btn-warning" id="bulkActionsBtn">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                            </svg>
+                                            <span>Bulk Actions</span>
+                                        </button>
+                                        <button onclick="showDepartmentLinks()" class="tool-btn tool-btn-success" id="generateLinksBtn">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                                            </svg>
+                                            <span>Generate Links</span>
+                                        </button>
+                                        <button onclick="exportWorkflows()" class="tool-btn tool-btn-secondary" id="exportBtn">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                            </svg>
+                                            <span>Export Data</span>
+                                        </button>
                                     </div>
-                                    <div class="storage-mode-info">
-                                        <p id="storageModeDescription" class="text-xs text-gray-600">
-                                            ☁️ All new projects will use Supabase cloud database. Existing projects keep their current storage type.
+                                    
+                                    <!-- Storage Preferences -->
+                                    <div class="storage-preferences">
+                                        <span class="preference-label">Storage Preference:</span>
+                                        <div class="storage-toggle">
+                                            <label class="storage-option">
+                                                <input type="radio" name="storageMode" value="supabase" id="storageSupabase" onchange="updateStorageMode('supabase')" checked>
+                                                <span class="storage-option-label">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/>
+                                                    </svg>
+                                                    Supabase Cloud
+                                                </span>
+                                            </label>
+                                            <label class="storage-option">
+                                                <input type="radio" name="storageMode" value="localStorage" id="storageLocal" onchange="updateStorageMode('localStorage')">
+                                                <span class="storage-option-label">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                                                    </svg>
+                                                    Local Storage
+                                                </span>
+                                            </label>
+                                        </div>
+                                        <p class="storage-info" id="storageModeDescription">
+                                            ☁️ All new projects use Supabase cloud database. Existing projects keep current storage.
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Data Actions -->
-                            <div class="settings-section">
-                                <h4 class="settings-section-title">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"/>
+                            <!-- Advanced Actions (Collapsible) -->
+                            <details class="advanced-actions" id="advancedActions">
+                                <summary class="advanced-summary">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
-                                    Data Actions
-                                </h4>
-                                <div class="settings-item">
-                                    <div class="grid grid-cols-1 gap-2">
-                                        <button onclick="showDuplicateDetection()" class="settings-btn settings-btn-primary">
-                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                                            </svg>
-                                            Find Duplicates
-                                        </button>
-                                        <button onclick="showBulkActions()" class="settings-btn settings-btn-warning">
-                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                            </svg>
-                                            Bulk Actions
-                                        </button>
-                                        <button onclick="showDepartmentLinks()" class="settings-btn settings-btn-success">
-                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
-                                            </svg>
-                                            Generate Links
-                                        </button>
+                                    Advanced Actions
+                                </summary>
+                                <div class="advanced-content">
+                                    <div class="warning-notice">
+                                        <svg class="w-4 h-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.08 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                                        </svg>
+                                        These actions affect your business data
+                                    </div>
+                                    
+                                    <div class="danger-zone">
+                                        <div class="account-actions">
+                                            <button onclick="logout()" class="danger-btn logout-btn" id="logoutBtn">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                                </svg>
+                                                Sign Out
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="destructive-actions">
+                                            <button onclick="showResetConfirmation()" class="danger-btn reset-btn" id="resetBtn">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                </svg>
+                                                Reset Database
+                                            </button>
+                                            <p class="danger-warning">This will delete ALL processes and cannot be undone</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <!-- Account -->
-                            <div class="settings-section">
-                                <h4 class="settings-section-title">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                                    </svg>
-                                    Account
-                                </h4>
-                                <button onclick="logout()" class="settings-logout-btn">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                                    </svg>
-                                    Sign Out
-                                </button>
-                            </div>
-
-                            <!-- Database Management -->
-                            <div class="settings-section">
-                                <h4 class="settings-section-title">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
-                                    </svg>
-                                    Database Management
-                                </h4>
-                                <div class="settings-item">
-                                    <button onclick="showResetConfirmation()" class="settings-reset-btn">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                        </svg>
-                                        Reset Database
-                                    </button>
-                                </div>
-                            </div>
+                            </details>
                         </div>
                     </div>
                 </div>
@@ -3584,15 +4926,72 @@
                             <div class="phase-marker phase-1"></div>
                             <div class="phase-content">
                                 <div class="phase-header">
-                                    <h3 class="phase-title text-h3">Phase 1: Quick Wins</h3>
-                                    <span class="phase-duration text-small">Months 1-3</span>
+                                    <h3 class="phase-title text-h3 editable" data-field="title" data-phase="1" onclick="editPhaseField(this)">
+                                        Phase 1: Quick Wins
+                                        <div class="edit-controls">
+                                            <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </div>
+                                    </h3>
+                                    <span class="phase-duration text-small editable" data-field="duration" data-phase="1" onclick="editPhaseField(this)">
+                                        Months 1-3
+                                        <div class="edit-controls">
+                                            <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </div>
+                                    </span>
                                 </div>
-                                <div class="phase-items">
-                                    <div class="phase-item text-small">Invoice Processing Automation</div>
-                                    <div class="phase-item text-small">HR Resume Screening</div>
-                                    <div class="phase-item text-small">Email Response Automation</div>
+                                <div class="phase-items" data-phase="1">
+                                    <div class="phase-item text-small editable" onclick="editPhaseItem(this)">
+                                        <span class="phase-item-content">Invoice Processing Automation</span>
+                                        <div class="phase-item-actions">
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" onclick="removePhaseItem(this, event)">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="phase-item text-small editable" onclick="editPhaseItem(this)">
+                                        <span class="phase-item-content">HR Resume Screening</span>
+                                        <div class="phase-item-actions">
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" onclick="removePhaseItem(this, event)">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="phase-item text-small editable" onclick="editPhaseItem(this)">
+                                        <span class="phase-item-content">Email Response Automation</span>
+                                        <div class="phase-item-actions">
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" onclick="removePhaseItem(this, event)">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="add-item-btn" onclick="addPhaseItem(1)">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                        </svg>
+                                        Add Process
+                                    </div>
                                 </div>
-                                <div class="phase-impact text-small">Expected Savings: $180k annually</div>
+                                <div class="phase-impact text-small editable" data-field="savings" data-phase="1" onclick="editPhaseField(this)">
+                                    Expected Savings: $180k annually
+                                    <div class="edit-controls">
+                                        <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
@@ -3600,15 +4999,72 @@
                             <div class="phase-marker phase-2"></div>
                             <div class="phase-content">
                                 <div class="phase-header">
-                                    <h3 class="phase-title text-h3">Phase 2: Mid-tier Automation</h3>
-                                    <span class="phase-duration text-small">Months 4-8</span>
+                                    <h3 class="phase-title text-h3 editable" data-field="title" data-phase="2" onclick="editPhaseField(this)">
+                                        Phase 2: Mid-tier Automation
+                                        <div class="edit-controls">
+                                            <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </div>
+                                    </h3>
+                                    <span class="phase-duration text-small editable" data-field="duration" data-phase="2" onclick="editPhaseField(this)">
+                                        Months 4-8
+                                        <div class="edit-controls">
+                                            <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </div>
+                                    </span>
                                 </div>
-                                <div class="phase-items">
-                                    <div class="phase-item text-small">Customer Onboarding Workflow</div>
-                                    <div class="phase-item text-small">Inventory Management</div>
-                                    <div class="phase-item text-small">Report Generation</div>
+                                <div class="phase-items" data-phase="2">
+                                    <div class="phase-item text-small editable" onclick="editPhaseItem(this)">
+                                        <span class="phase-item-content">Customer Onboarding Workflow</span>
+                                        <div class="phase-item-actions">
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" onclick="removePhaseItem(this, event)">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="phase-item text-small editable" onclick="editPhaseItem(this)">
+                                        <span class="phase-item-content">Inventory Management</span>
+                                        <div class="phase-item-actions">
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" onclick="removePhaseItem(this, event)">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="phase-item text-small editable" onclick="editPhaseItem(this)">
+                                        <span class="phase-item-content">Report Generation</span>
+                                        <div class="phase-item-actions">
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" onclick="removePhaseItem(this, event)">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="add-item-btn" onclick="addPhaseItem(2)">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                        </svg>
+                                        Add Process
+                                    </div>
                                 </div>
-                                <div class="phase-impact text-small">Expected Savings: $320k annually</div>
+                                <div class="phase-impact text-small editable" data-field="savings" data-phase="2" onclick="editPhaseField(this)">
+                                    Expected Savings: $320k annually
+                                    <div class="edit-controls">
+                                        <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
@@ -3616,15 +5072,72 @@
                             <div class="phase-marker phase-3"></div>
                             <div class="phase-content">
                                 <div class="phase-header">
-                                    <h3 class="phase-title text-h3">Phase 3: Major Projects</h3>
-                                    <span class="phase-duration text-small">Months 9-18</span>
+                                    <h3 class="phase-title text-h3 editable" data-field="title" data-phase="3" onclick="editPhaseField(this)">
+                                        Phase 3: Major Projects
+                                        <div class="edit-controls">
+                                            <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </div>
+                                    </h3>
+                                    <span class="phase-duration text-small editable" data-field="duration" data-phase="3" onclick="editPhaseField(this)">
+                                        Months 9-18
+                                        <div class="edit-controls">
+                                            <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </div>
+                                    </span>
                                 </div>
-                                <div class="phase-items">
-                                    <div class="phase-item text-small">ERP Integration</div>
-                                    <div class="phase-item text-small">Supply Chain Automation</div>
-                                    <div class="phase-item text-small">Advanced Analytics</div>
+                                <div class="phase-items" data-phase="3">
+                                    <div class="phase-item text-small editable" onclick="editPhaseItem(this)">
+                                        <span class="phase-item-content">ERP Integration</span>
+                                        <div class="phase-item-actions">
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" onclick="removePhaseItem(this, event)">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="phase-item text-small editable" onclick="editPhaseItem(this)">
+                                        <span class="phase-item-content">Supply Chain Automation</span>
+                                        <div class="phase-item-actions">
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" onclick="removePhaseItem(this, event)">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="phase-item text-small editable" onclick="editPhaseItem(this)">
+                                        <span class="phase-item-content">Advanced Analytics</span>
+                                        <div class="phase-item-actions">
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" onclick="removePhaseItem(this, event)">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="add-item-btn" onclick="addPhaseItem(3)">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                        </svg>
+                                        Add Process
+                                    </div>
                                 </div>
-                                <div class="phase-impact text-small">Expected Savings: $1.2M annually</div>
+                                <div class="phase-impact text-small editable" data-field="savings" data-phase="3" onclick="editPhaseField(this)">
+                                    Expected Savings: $1.2M annually
+                                    <div class="edit-controls">
+                                        <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
@@ -3632,15 +5145,72 @@
                             <div class="phase-marker phase-4"></div>
                             <div class="phase-content">
                                 <div class="phase-header">
-                                    <h3 class="phase-title text-h3">Phase 4: Optimization</h3>
-                                    <span class="phase-duration text-small">Months 19-24</span>
+                                    <h3 class="phase-title text-h3 editable" data-field="title" data-phase="4" onclick="editPhaseField(this)">
+                                        Phase 4: Optimization
+                                        <div class="edit-controls">
+                                            <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </div>
+                                    </h3>
+                                    <span class="phase-duration text-small editable" data-field="duration" data-phase="4" onclick="editPhaseField(this)">
+                                        Months 19-24
+                                        <div class="edit-controls">
+                                            <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </div>
+                                    </span>
                                 </div>
-                                <div class="phase-items">
-                                    <div class="phase-item text-small">AI-Driven Insights</div>
-                                    <div class="phase-item text-small">Process Optimization</div>
-                                    <div class="phase-item text-small">Scale & Expand</div>
+                                <div class="phase-items" data-phase="4">
+                                    <div class="phase-item text-small editable" onclick="editPhaseItem(this)">
+                                        <span class="phase-item-content">AI-Driven Insights</span>
+                                        <div class="phase-item-actions">
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" onclick="removePhaseItem(this, event)">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="phase-item text-small editable" onclick="editPhaseItem(this)">
+                                        <span class="phase-item-content">Process Optimization</span>
+                                        <div class="phase-item-actions">
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" onclick="removePhaseItem(this, event)">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="phase-item text-small editable" onclick="editPhaseItem(this)">
+                                        <span class="phase-item-content">Scale & Expand</span>
+                                        <div class="phase-item-actions">
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                            <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" onclick="removePhaseItem(this, event)">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="add-item-btn" onclick="addPhaseItem(4)">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                        </svg>
+                                        Add Process
+                                    </div>
                                 </div>
-                                <div class="phase-impact text-small">Expected Savings: $700k annually</div>
+                                <div class="phase-impact text-small editable" data-field="savings" data-phase="4" onclick="editPhaseField(this)">
+                                    Expected Savings: $700k annually
+                                    <div class="edit-controls">
+                                        <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -3656,20 +5226,41 @@
                     </div>
                     
                     <div class="action-grid">
-                        <div class="action-card priority-high">
+                        <div class="action-card priority-high" data-action="1">
                             <div class="action-icon">
                                 <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path>
                                 </svg>
                             </div>
                             <div class="action-content">
-                                <h3 class="action-item-title text-h3">Start with Invoice Processing</h3>
-                                <p class="action-description text-body">Begin implementation with highest ROI quick win. Expected 340% ROI within 8 weeks.</p>
-                                <div class="action-meta text-small">Priority: High • Timeline: 6-8 weeks • Investment: $25k</div>
+                                <h3 class="action-item-title text-h3 editable" data-field="title" data-action="1" onclick="editActionField(this)">
+                                    Start with Invoice Processing
+                                    <div class="edit-controls">
+                                        <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </div>
+                                </h3>
+                                <p class="action-description text-body editable" data-field="description" data-action="1" onclick="editActionField(this)">
+                                    Begin implementation with highest ROI quick win. Expected 340% ROI within 8 weeks.
+                                    <div class="edit-controls">
+                                        <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </div>
+                                </p>
+                                <div class="action-meta text-small editable" data-field="meta" data-action="1" onclick="editActionField(this)">
+                                    Priority: High • Timeline: 6-8 weeks • Investment: $25k
+                                    <div class="edit-controls">
+                                        <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
-                        <div class="action-card priority-high">
+                        <div class="action-card priority-high" data-action="2">
                             <div class="action-icon">
                                 <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
                                     <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
@@ -3677,35 +5268,98 @@
                                 </svg>
                             </div>
                             <div class="action-content">
-                                <h3 class="action-item-title text-h3">Establish Automation Team</h3>
-                                <p class="action-description text-body">Form cross-functional team with Finance, IT, and Operations representatives.</p>
-                                <div class="action-meta text-small">Priority: High • Timeline: 2 weeks • Investment: Internal</div>
+                                <h3 class="action-item-title text-h3 editable" data-field="title" data-action="2" onclick="editActionField(this)">
+                                    Establish Automation Team
+                                    <div class="edit-controls">
+                                        <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </div>
+                                </h3>
+                                <p class="action-description text-body editable" data-field="description" data-action="2" onclick="editActionField(this)">
+                                    Form cross-functional team with Finance, IT, and Operations representatives.
+                                    <div class="edit-controls">
+                                        <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </div>
+                                </p>
+                                <div class="action-meta text-small editable" data-field="meta" data-action="2" onclick="editActionField(this)">
+                                    Priority: High • Timeline: 2 weeks • Investment: Internal
+                                    <div class="edit-controls">
+                                        <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
-                        <div class="action-card priority-medium">
+                        <div class="action-card priority-medium" data-action="3">
                             <div class="action-icon">
                                 <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
                                 </svg>
                             </div>
                             <div class="action-content">
-                                <h3 class="action-item-title text-h3">Vendor Evaluation</h3>
-                                <p class="action-description text-body">Evaluate RPA platforms and AI automation tools for enterprise deployment.</p>
-                                <div class="action-meta text-small">Priority: Medium • Timeline: 4 weeks • Investment: $15k</div>
+                                <h3 class="action-item-title text-h3 editable" data-field="title" data-action="3" onclick="editActionField(this)">
+                                    Vendor Evaluation
+                                    <div class="edit-controls">
+                                        <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </div>
+                                </h3>
+                                <p class="action-description text-body editable" data-field="description" data-action="3" onclick="editActionField(this)">
+                                    Evaluate RPA platforms and AI automation tools for enterprise deployment.
+                                    <div class="edit-controls">
+                                        <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </div>
+                                </p>
+                                <div class="action-meta text-small editable" data-field="meta" data-action="3" onclick="editActionField(this)">
+                                    Priority: Medium • Timeline: 4 weeks • Investment: $15k
+                                    <div class="edit-controls">
+                                        <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
-                        <div class="action-card priority-medium">
+                        <div class="action-card priority-medium" data-action="4">
                             <div class="action-icon">
                                 <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                                 </svg>
                             </div>
                             <div class="action-content">
-                                <h3 class="action-item-title text-h3">Process Documentation</h3>
-                                <p class="action-description text-body">Document current state processes in detail to enable accurate automation design.</p>
-                                <div class="action-meta text-small">Priority: Medium • Timeline: 3 weeks • Investment: Internal</div>
+                                <h3 class="action-item-title text-h3 editable" data-field="title" data-action="4" onclick="editActionField(this)">
+                                    Process Documentation
+                                    <div class="edit-controls">
+                                        <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </div>
+                                </h3>
+                                <p class="action-description text-body editable" data-field="description" data-action="4" onclick="editActionField(this)">
+                                    Document current state processes in detail to enable accurate automation design.
+                                    <div class="edit-controls">
+                                        <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </div>
+                                </p>
+                                <div class="action-meta text-small editable" data-field="meta" data-action="4" onclick="editActionField(this)">
+                                    Priority: Medium • Timeline: 3 weeks • Investment: Internal
+                                    <div class="edit-controls">
+                                        <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -4912,12 +6566,12 @@
         function calculateROIMetrics() {
             if (!processes || processes.length === 0) {
                 return {
-                    projectedSavings: 2400000,
-                    remainingPotential: 1300000,
-                    investmentRequired: 800000,
-                    averageROI: 370,
-                    paybackPeriod: 6.2,
-                    timeReduction: 45
+                    projectedSavings: 0,
+                    remainingPotential: 0,
+                    investmentRequired: 0,
+                    averageROI: 0,
+                    paybackPeriod: 0,
+                    timeReduction: 0
                 };
             }
             
@@ -4969,7 +6623,8 @@
                 const departments = [...new Set(processes.map(p => p.department).filter(Boolean))];
                 const departmentsElement = document.getElementById('activeDepartments');
                 if (departmentsElement) {
-                    departmentsElement.textContent = departments.length || 3;
+                    // Show actual department count, not hardcoded fallback
+                    departmentsElement.textContent = departments.length;
                 }
                 
                 // Update last updated
@@ -5005,14 +6660,17 @@
                 }
                 
                 // Update quick wins count  
-                const quickWinsElement = document.getElementById('quickWinOpportunities');
+                const quickWinsElement = document.getElementById('quickWins');
                 if (quickWinsElement) {
                     const quickWins = processes.filter(p => (p.impact >= 7) && (p.feasibility >= 7)).length;
-                    quickWinsElement.textContent = quickWins || 6;
+                    quickWinsElement.textContent = quickWins;
                 }
                 
                 // Update matrix counts
                 updateMatrixCounts();
+                
+                // Hide/show sections based on whether project has processes
+                toggleEmptyProjectSections(processes.length === 0);
                 
                 debugLog('✅ Dashboard metrics updated successfully');
             } catch (error) {
@@ -5029,20 +6687,47 @@
                 const avoid = processes.filter(p => (p.impact <= 5) && (p.feasibility <= 5)).length;
                 
                 const majorElement = document.getElementById('majorProjectsCount');
-                if (majorElement) majorElement.textContent = majorProjects || 2;
+                if (majorElement) majorElement.textContent = majorProjects;
                 
                 const quickElement = document.getElementById('quickWinsCount');
-                if (quickElement) quickElement.textContent = quickWins || 3;
+                if (quickElement) quickElement.textContent = quickWins;
                 
                 const fillElement = document.getElementById('fillInsCount');
-                if (fillElement) fillElement.textContent = fillIns || 2;
+                if (fillElement) fillElement.textContent = fillIns;
                 
                 const avoidElement = document.getElementById('avoidCount');
-                if (avoidElement) avoidElement.textContent = avoid || 0;
+                if (avoidElement) avoidElement.textContent = avoid;
                 
                 debugLog('✅ Matrix counts updated successfully');
             } catch (error) {
                 debugLog('❌ Error updating matrix counts: ' + error.message);
+            }
+        }
+
+        // Toggle visibility of sections that shouldn't show for empty projects
+        function toggleEmptyProjectSections(isEmpty) {
+            try {
+                // ROI Breakdown section
+                const roiSection = document.querySelector('.roi-section, .roi-breakdown, #roiSection');
+                if (roiSection) {
+                    roiSection.style.display = isEmpty ? 'none' : '';
+                }
+                
+                // Implementation Roadmap section
+                const roadmapSection = document.querySelector('#implementationRoadmap, .roadmap-section');
+                if (roadmapSection) {
+                    roadmapSection.style.display = isEmpty ? 'none' : '';
+                }
+                
+                // Recommended Actions section
+                const actionsSection = document.querySelector('.action-center, .recommended-actions, .actions-section');
+                if (actionsSection) {
+                    actionsSection.style.display = isEmpty ? 'none' : '';
+                }
+                
+                debugLog(`${isEmpty ? '👁️‍🗨️ Hidden' : '👁️ Shown'} content sections for ${isEmpty ? 'empty' : 'populated'} project`);
+            } catch (error) {
+                debugLog('❌ Error toggling sections: ' + error.message);
             }
         }
 
@@ -5091,6 +6776,16 @@
             setTimeout(() => {
                 recreateCharts();
                 updateDashboardMetrics(); // Ensure project name and metrics update
+                
+                // Always update settings panel data (even if closed) for next time it opens
+                updateSystemHealthBar();
+                
+                // Store current project info for settings panel
+                if (typeof updateSystemHealthBar === 'function') {
+                    // Force update even if panel is closed
+                    console.log('📊 Forcing settings health bar update after project switch');
+                }
+                
                 debugLog(`📊 Charts recreated with ${processes.length} processes`);
             }, 100);
         }
@@ -5521,6 +7216,32 @@
             // Re-apply department selection if in workshop mode
             if (workshopMode && currentDepartment) {
                 setTimeout(() => preselectDepartment(currentDepartment), 100);
+            }
+        }
+
+        function openAddProcessModal() {
+            console.log('🔧 Opening Add Process Modal');
+            try {
+                // Ensure we have the correct modal setup
+                document.querySelector('#processModal h2').textContent = 'Add Business Process';
+                document.getElementById('submitBtn').innerHTML = 'Add Process ✓';
+                
+                // Update project indicator
+                updateProcessModalProjectIndicator();
+                
+                // Show the modal
+                document.getElementById('processModal').classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                
+                // Focus on first input
+                const firstInput = document.querySelector('#processModal input');
+                if (firstInput) {
+                    setTimeout(() => firstInput.focus(), 100);
+                }
+                
+                console.log('✅ Add Process Modal opened successfully');
+            } catch (error) {
+                console.error('❌ Error opening Add Process Modal:', error);
             }
         }
 
@@ -6144,6 +7865,9 @@
                                     processes.push(supabaseProcess);
                                     console.log('✅ Process added to Supabase:', supabaseProcess.id);
                                     showNotification('✅ Process added and saved to cloud database!', 'success');
+                                    
+                                    // Trigger auto-refresh callback for Supabase process
+                                    await onProcessCreated(supabaseProcess);
                                 } catch (error) {
                                     console.error('❌ Failed to save process to Supabase:', error);
                                     showNotification('Failed to save process to Supabase', 'error');
@@ -6160,16 +7884,13 @@
                             await saveProcesses();
                             showNotification('💾 Process added and saved locally!', 'success');
                         }
+                        
+                        // Trigger auto-refresh callback for new process
+                        await onProcessCreated(newProcess);
                     }
                     
-                    // Close modal and refresh
+                    // Close modal (charts and workspace refresh handled by callback)
                     closeProcessModal();
-                    recreateCharts();
-                    
-                    // Update workspace if open
-                    if (currentWorkspace === 'process') {
-                        refreshProcessWorkspaceList();
-                    }
                 });
             }
             
@@ -6511,6 +8232,64 @@
                 console.error('❌ Error in project creation callback:', error);
                 showNotification('Project created but refresh failed', 'warning');
             }
+        }
+
+        // Process Auto-Refresh Functions
+        async function onProcessCreated(newProcess) {
+            console.log('🎉 Process created callback triggered:', newProcess);
+            
+            try {
+                // 1. Update dashboard metrics immediately
+                updateDashboardMetrics();
+                
+                // 2. Refresh process workspace list if open
+                if (currentWorkspace === 'process') {
+                    refreshProcessWorkspaceList();
+                }
+                
+                // 3. Recreate all charts with new data
+                recreateCharts();
+                
+                // 4. Show success notification
+                showNotification(`✅ Process "${newProcess.name}" created successfully`, 'success');
+                
+                console.log('✅ Process creation workflow completed');
+            } catch (error) {
+                console.error('❌ Error in process creation callback:', error);
+                showNotification('Process created but refresh failed', 'warning');
+            }
+        }
+
+        async function refreshProcessList() {
+            console.log('🔄 Refreshing process list...');
+            
+            try {
+                // Reload processes for current project
+                if (currentProjectId) {
+                    await loadProcesses(currentProjectId);
+                    
+                    // Update all process-related UI
+                    refreshProcessWorkspaceList();
+                    updateDashboardMetrics();
+                    recreateCharts();
+                    
+                    console.log(`✅ Process list refreshed: ${processes.length} processes loaded`);
+                }
+            } catch (error) {
+                console.error('❌ Error refreshing process list:', error);
+                showNotification('Failed to refresh process list', 'error');
+            }
+        }
+
+        async function refreshDashboardMetrics() {
+            console.log('🔄 Refreshing dashboard metrics...');
+            updateDashboardMetrics();
+        }
+
+        async function updateProcessMetrics() {
+            console.log('🔄 Updating process metrics...');
+            updateDashboardMetrics();
+            recreateCharts();
         }
         
         async function selectProject(projectId) {
@@ -7594,18 +9373,25 @@
             
             workspace.innerHTML = `
                 <div class="workspace-content">
-                    <header class="workspace-header">
+                    <header class="workspace-header workspace-header-professional">
                         <div class="workspace-header-left">
                             <button class="workspace-back-btn" onclick="closeWorkspace()">
-                                <svg fill="currentColor" viewBox="0 0 24 24" width="16" height="16">
-                                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.42-1.41L7.83 13H20v-2z"/>
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                                 </svg>
                             </button>
-                            <h1 class="workspace-title">${title}</h1>
-                            <span class="workspace-badge">Full View</span>
+                            <div class="workspace-title-group">
+                                <h1 class="workspace-title">${title}</h1>
+                                ${title === 'Project Overview' ? '<p class="workspace-description">Manage and organize your automation projects</p>' : ''}
+                            </div>
                         </div>
                         <div class="workspace-actions">
-                            <button class="btn-system" onclick="closeWorkspace()">Close</button>
+                            ${title === 'Project Overview' ? '<button class="new-project-btn" onclick="openProjectModal(); event.stopPropagation();"><svg class="new-project-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>New Project</button>' : ''}
+                            <button class="btn-system-close" onclick="closeWorkspace()">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
                         </div>
                     </header>
                     <div class="workspace-body">
@@ -7661,14 +9447,8 @@
             return `
                 <div style="max-width: 1200px; margin: 0 auto;">
                     <div class="mb-8">
-                        <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-2xl font-semibold text-gray-900">Project Overview</h2>
-                            <button class="btn-primary flex items-center whitespace-nowrap" onclick="openProjectModal()">
-                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                                </svg>
-                                New Project
-                            </button>
+                        <div class="mb-6">
+                            <!-- Title removed since it's now in header -->
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                             <div class="admin-control-card">
@@ -8253,6 +10033,156 @@
         }
         
         // ===== HEADER SETTINGS PANEL FUNCTIONS - END =====
+        
+        // ===== NEW SETTINGS FUNCTIONS - START =====
+        
+        // Export workflows function
+        function exportWorkflows() {
+            try {
+                console.log('🔄 Exporting workflows...');
+                
+                const exportData = {
+                    exportDate: new Date().toISOString(),
+                    currentProject: currentProject,
+                    processes: processes,
+                    projects: projects,
+                    metadata: {
+                        version: '1.0',
+                        format: 'business-automation-dashboard'
+                    }
+                };
+                
+                const dataStr = JSON.stringify(exportData, null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                
+                const exportFileDefaultName = `processes-export-${new Date().toISOString().split('T')[0]}.json`;
+                
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+                
+                showNotification('✅ Workflows exported successfully!', 'success', 3000);
+                console.log('✅ Workflows exported successfully');
+                
+            } catch (error) {
+                console.error('❌ Export failed:', error);
+                showNotification('❌ Export failed. Please try again.', 'error', 5000);
+            }
+        }
+        
+        // Update system health bar
+        function updateSystemHealthBar() {
+            try {
+                const healthIndicator = document.getElementById('healthIndicator');
+                const healthStatus = document.getElementById('healthStatus');
+                const healthDetail = document.getElementById('healthDetail');
+                const workspaceName = document.getElementById('workspaceName');
+                const processCount = document.getElementById('processCount');
+                
+                if (healthIndicator && healthStatus && healthDetail && workspaceName && processCount) {
+                    // Update connection status
+                    let isConnected = false;
+                    let statusText = 'Local Storage';
+                    
+                    try {
+                        if (window.workshopDB && typeof window.workshopDB.isConnected === 'function') {
+                            isConnected = window.workshopDB.isConnected();
+                            statusText = isConnected ? 'Supabase Connected' : 'Local Storage';
+                        }
+                    } catch (error) {
+                        console.log('Database check failed, using local storage');
+                    }
+                    
+                    // Update health indicator
+                    healthIndicator.style.background = isConnected ? '#34d399' : '#fbbf24';
+                    healthStatus.textContent = statusText;
+                    
+                    // Update sync time
+                    const now = new Date();
+                    const timeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    healthDetail.textContent = `Last sync: ${timeStr}`;
+                    
+                    // Update workspace info with ACTUAL current project data
+                    let projectName = 'No Project Selected';
+                    let processCountNum = 0;
+                    
+                    // Get project name from dropdown - this is the source of truth
+                    const projectDropdown = document.getElementById('headerProjectSelector');
+                    if (projectDropdown && projectDropdown.value) {
+                        const selectedOption = projectDropdown.options[projectDropdown.selectedIndex];
+                        if (selectedOption && selectedOption.text) {
+                            projectName = selectedOption.text;
+                        }
+                    }
+                    
+                    // Get actual process count from global processes array
+                    if (typeof processes !== 'undefined' && Array.isArray(processes)) {
+                        processCountNum = processes.length;
+                    }
+                    
+                    // Update the display
+                    workspaceName.textContent = projectName;
+                    processCount.textContent = `Active Processes: ${processCountNum}`;
+                    
+                    console.log('📊 Health bar updated - Project:', projectName, 'Processes:', processCountNum);
+                }
+            } catch (error) {
+                console.error('Error updating system health bar:', error);
+            }
+        }
+        
+        // Enhanced storage mode update with health bar refresh
+        function updateStorageModeEnhanced(mode) {
+            updateStorageMode(mode); // Call existing function
+            setTimeout(() => {
+                updateSystemHealthBar(); // Refresh health bar
+            }, 100);
+        }
+        
+        // Initialize health bar when settings panel opens
+        function initializeSettingsPanel() {
+            // Force refresh of all data
+            updateSystemHealthBar();
+            
+            // Update storage mode based on current preference
+            const currentMode = localStorage.getItem('preferredStorageMode') || 'supabase';
+            const supabaseRadio = document.getElementById('storageSupabase');
+            const localRadio = document.getElementById('storageLocal');
+            
+            if (currentMode === 'supabase' && supabaseRadio) {
+                supabaseRadio.checked = true;
+            } else if (currentMode === 'localStorage' && localRadio) {
+                localRadio.checked = true;
+            }
+            
+            // Update storage mode change handlers
+            if (supabaseRadio) {
+                supabaseRadio.onchange = () => updateStorageModeEnhanced('supabase');
+            }
+            
+            if (localRadio) {
+                localRadio.onchange = () => updateStorageModeEnhanced('localStorage');
+            }
+            
+            console.log('📊 Settings panel initialized with current project data');
+        }
+        
+        // Override the existing header settings function to include initialization
+        const originalToggleHeaderSettings = toggleHeaderSettings;
+        toggleHeaderSettings = function() {
+            originalToggleHeaderSettings();
+            
+            // If panel is now active, initialize it
+            const panel = document.getElementById('headerSettingsPanel');
+            if (panel && panel.classList.contains('active')) {
+                setTimeout(() => {
+                    initializeSettingsPanel();
+                }, 100);
+            }
+        };
+        
+        // ===== NEW SETTINGS FUNCTIONS - END =====
         
     </script>
 
@@ -8868,5 +10798,886 @@
             </form>
         </div>
     </div>
+
+    <!-- FAB Cluster with Chat Integration -->
+    <div id="fabCluster" class="fab-cluster">
+        <!-- FAB Options -->
+        <div class="fab-options">
+            <div class="fab-option" onclick="openChatModal()">
+                <div class="fab-option-label">AI Assistant</div>
+                <div class="fab-option-button">
+                    💬
+                    <div id="chatNotificationBadge" class="chat-notification-badge" style="display: none;">!</div>
+                </div>
+            </div>
+            <div class="fab-option" onclick="openAddProcessModal()">
+                <div class="fab-option-label">Add Process</div>
+                <div class="fab-option-button">➕</div>
+            </div>
+            <div class="fab-option" onclick="openProcessWorkspace()">
+                <div class="fab-option-label">Manage Processes</div>
+                <div class="fab-option-button">⚙️</div>
+            </div>
+            <div class="fab-option" onclick="openProjectWorkspace()">
+                <div class="fab-option-label">Manage Projects</div>
+                <div class="fab-option-button">📁</div>
+            </div>
+        </div>
+        
+        <!-- Main FAB Button -->
+        <button class="fab-main" onclick="toggleFabCluster()" id="fabMainBtn">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="chat-modal">
+        <div class="chat-container">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <div class="chat-header-left">
+                    <div class="chat-avatar">🤖</div>
+                    <div>
+                        <h3 class="chat-title">AI Process Assistant</h3>
+                        <p class="chat-subtitle">Helping optimize your business processes</p>
+                    </div>
+                </div>
+                <button class="chat-close-btn" onclick="closeChatModal()">
+                    ✕
+                </button>
+            </div>
+            
+            <!-- Chat Body -->
+            <div class="chat-body">
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Welcome message -->
+                    <div class="message assistant">
+                        <div class="message-avatar">🤖</div>
+                        <div class="message-content">
+                            <div>Hi! I'm here to help you analyze your business processes. I can ask you specific questions about your operations to better understand automation opportunities.</div>
+                            <div class="message-time">Just now</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Typing Indicator -->
+                <div class="message assistant" style="margin: 0 24px 16px;">
+                    <div class="message-avatar">🤖</div>
+                    <div class="typing-indicator" id="typingIndicator">
+                        <div class="typing-dots">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                        <span style="font-size: 12px; color: #6b7280; margin-left: 8px;">AI is thinking...</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chat Footer -->
+            <div class="chat-footer">
+                <div class="chat-input-container">
+                    <textarea 
+                        id="chatInput" 
+                        class="chat-input" 
+                        placeholder="Share details about your business processes..." 
+                        rows="1"
+                        onkeydown="handleChatKeyDown(event)"
+                        oninput="autoResizeTextarea(this)"
+                    ></textarea>
+                    <button class="chat-send-btn" onclick="sendChatMessage()" id="chatSendBtn">
+                        ➤
+                    </button>
+                </div>
+                
+                <!-- Update Dashboard Button -->
+                <button class="update-dashboard-btn" id="updateDashboardBtn" onclick="updateDashboardFromChat()">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                    </svg>
+                    Update Dashboard with New Insights
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== CHAT SYSTEM JAVASCRIPT =====
+        
+        let isChatOpen = false;
+        let isFabOpen = false;
+        let chatMessages = [];
+        let hasUnreadChatNotification = true; // Start with notification to encourage usage
+        let dashboardUpdateReady = false;
+        let currentConversationContext = {};
+        
+        // Chat conversation templates
+        const businessQuestions = [
+            "What's the average hourly cost for processes in your Finance department?",
+            "How many hours per week does your team spend on manual data entry?",
+            "Which department has the most repetitive tasks that could be automated?",
+            "What's your biggest process bottleneck during month-end operations?",
+            "How much time is lost waiting for approvals in your current workflows?",
+            "Which processes cause the most customer complaints or delays?",
+            "What manual tasks do your employees find most frustrating?",
+            "How often do errors occur in your current manual processes?"
+        ];
+        
+        // Initialize chat system
+        function initializeChatSystem() {
+            updateChatNotificationBadge();
+            
+            // Auto-show notification after 10 seconds if not interacted with
+            setTimeout(() => {
+                if (!isChatOpen && hasUnreadChatNotification) {
+                    showChatNotificationPulse();
+                }
+            }, 10000);
+            
+            // Initialize with a proactive question after 30 seconds
+            setTimeout(() => {
+                if (!isChatOpen) {
+                    addProactiveQuestion();
+                }
+            }, 30000);
+        }
+        
+        function toggleFabCluster() {
+            isFabOpen = !isFabOpen;
+            const fabCluster = document.getElementById('fabCluster');
+            const fabMainBtn = document.getElementById('fabMainBtn');
+            
+            if (isFabOpen) {
+                fabCluster.classList.add('active');
+                fabMainBtn.style.transform = 'rotate(45deg)';
+            } else {
+                fabCluster.classList.remove('active');
+                fabMainBtn.style.transform = 'rotate(0deg)';
+            }
+        }
+        
+        function showFabCluster() {
+            const fabCluster = document.getElementById('fabCluster');
+            if (fabCluster) {
+                fabCluster.style.opacity = '1';
+                fabCluster.style.visibility = 'visible';
+            }
+        }
+        
+        function openChatModal() {
+            isChatOpen = true;
+            hasUnreadChatNotification = false;
+            updateChatNotificationBadge();
+            
+            const modal = document.getElementById('chatModal');
+            modal.classList.add('active');
+            
+            // Focus on input
+            setTimeout(() => {
+                const input = document.getElementById('chatInput');
+                input.focus();
+            }, 300);
+            
+            // Close FAB if open
+            if (isFabOpen) {
+                toggleFabCluster();
+            }
+            
+            // Ask a contextual question based on current dashboard data
+            setTimeout(() => {
+                askContextualQuestion();
+            }, 1000);
+        }
+        
+        function closeChatModal() {
+            isChatOpen = false;
+            const modal = document.getElementById('chatModal');
+            modal.classList.remove('active');
+        }
+        
+        function updateChatNotificationBadge() {
+            const badge = document.getElementById('chatNotificationBadge');
+            if (badge) {
+                badge.style.display = hasUnreadChatNotification ? 'flex' : 'none';
+            }
+        }
+        
+        function showChatNotificationPulse() {
+            const badge = document.getElementById('chatNotificationBadge');
+            if (badge && hasUnreadChatNotification) {
+                badge.style.animation = 'pulse 2s infinite';
+                setTimeout(() => {
+                    badge.style.animation = 'pulse 2s infinite';
+                }, 100);
+            }
+        }
+        
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message
+            addChatMessage('user', message);
+            input.value = '';
+            autoResizeTextarea(input);
+            
+            // Show typing indicator and respond
+            showTypingIndicator();
+            setTimeout(() => {
+                hideTypingIndicator();
+                processUserMessage(message);
+            }, 1500 + Math.random() * 1000); // Simulate processing time
+        }
+        
+        function addChatMessage(sender, content, timestamp = null) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const time = timestamp || new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${sender}`;
+            messageElement.innerHTML = `
+                <div class="message-avatar">${sender === 'user' ? '👤' : '🤖'}</div>
+                <div class="message-content">
+                    <div>${content}</div>
+                    <div class="message-time">${time}</div>
+                </div>
+            `;
+            
+            messagesContainer.appendChild(messageElement);
+            scrollChatToBottom();
+            
+            // Store message
+            chatMessages.push({ sender, content, timestamp: time });
+        }
+        
+        function processUserMessage(message) {
+            // Simulate AI processing and provide contextual response
+            const responses = [
+                "That's very insightful! Based on what you've shared, I can see automation opportunities. Can you tell me more about how long these processes typically take?",
+                "Excellent information! This helps me understand your workflow better. What would you estimate is the cost impact when these processes are delayed?",
+                "Thanks for sharing that detail. I'm building a picture of your operations. Which of these processes would your team be most excited to see automated?",
+                "This is exactly the kind of insight I need! Based on your processes, I can see potential for significant time savings. What's your current biggest pain point?"
+            ];
+            
+            const response = responses[Math.floor(Math.random() * responses.length)];
+            addChatMessage('assistant', response);
+            
+            // Maybe show update button after a few exchanges
+            if (chatMessages.length >= 6 && !dashboardUpdateReady) {
+                setTimeout(() => {
+                    showUpdateDashboardButton();
+                }, 2000);
+            }
+        }
+        
+        function askContextualQuestion() {
+            if (processes && processes.length > 0) {
+                // Ask about existing processes
+                const deptCounts = {};
+                processes.forEach(p => {
+                    deptCounts[p.department] = (deptCounts[p.department] || 0) + 1;
+                });
+                
+                const topDept = Object.keys(deptCounts).reduce((a, b) => 
+                    deptCounts[a] > deptCounts[b] ? a : b
+                );
+                
+                const question = `I notice you have ${processes.length} processes, with ${deptCounts[topDept]} in ${topDept}. What's the biggest challenge your ${topDept} team faces with their current processes?`;
+                
+                setTimeout(() => {
+                    addChatMessage('assistant', question);
+                }, 500);
+            } else {
+                // Ask general business question
+                const randomQuestion = businessQuestions[Math.floor(Math.random() * businessQuestions.length)];
+                setTimeout(() => {
+                    addChatMessage('assistant', randomQuestion);
+                }, 500);
+            }
+        }
+        
+        function addProactiveQuestion() {
+            if (!isChatOpen) {
+                hasUnreadChatNotification = true;
+                updateChatNotificationBadge();
+                showChatNotificationPulse();
+            }
+        }
+        
+        function showTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            indicator.classList.add('active');
+            scrollChatToBottom();
+        }
+        
+        function hideTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            indicator.classList.remove('active');
+        }
+        
+        function scrollChatToBottom() {
+            const messagesContainer = document.getElementById('chatMessages');
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function showUpdateDashboardButton() {
+            dashboardUpdateReady = true;
+            const button = document.getElementById('updateDashboardBtn');
+            button.classList.add('ready');
+            
+            addChatMessage('assistant', '🎉 Great conversation! I now have enough insights to provide recommendations for your dashboard. Click the button below to update your analysis with these new insights.');
+        }
+        
+        function updateDashboardFromChat() {
+            // Simulate dashboard update with new insights
+            const button = document.getElementById('updateDashboardBtn');
+            const originalText = button.innerHTML;
+            
+            button.innerHTML = `
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" style="animation: spin 1s linear infinite;">
+                    <path d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                </svg>
+                Updating Dashboard...
+            `;
+            
+            button.disabled = true;
+            
+            setTimeout(() => {
+                // Keep chat open for continued conversation
+                // closeChatModal(); // Removed to maintain chat context
+                
+                // Show success notification
+                showNotification('✅ Dashboard updated with AI insights! Chat remains open for further refinements.', 'success', 6000);
+                
+                // Refresh dashboard sections to show "new" data
+                updateDashboardSections();
+                recreateCharts();
+                
+                // Reset button
+                button.innerHTML = originalText;
+                button.disabled = false;
+                button.classList.remove('ready');
+                dashboardUpdateReady = false;
+                
+                // Clear chat for next session
+                setTimeout(() => {
+                    const messagesContainer = document.getElementById('chatMessages');
+                    messagesContainer.innerHTML = `
+                        <div class="message assistant">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                <div>Hi! I'm here to help you analyze your business processes. I can ask you specific questions about your operations to better understand automation opportunities.</div>
+                                <div class="message-time">Just now</div>
+                            </div>
+                        </div>
+                    `;
+                    chatMessages = [];
+                }, 3000);
+            }, 2000);
+        }
+        
+        function handleChatKeyDown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendChatMessage();
+            }
+        }
+        
+        function autoResizeTextarea(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 100) + 'px';
+        }
+        
+        // Close chat when clicking outside
+        document.addEventListener('click', (e) => {
+            const chatModal = document.getElementById('chatModal');
+            const fabCluster = document.getElementById('fabCluster');
+            
+            if (isChatOpen && !chatModal.querySelector('.chat-container').contains(e.target)) {
+                // Don't close if clicking on FAB
+                if (!fabCluster.contains(e.target)) {
+                    closeChatModal();
+                }
+            }
+            
+            if (isFabOpen && !fabCluster.contains(e.target)) {
+                toggleFabCluster();
+            }
+        });
+        
+        // Add spin animation for loading states
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Inline Editing System for Roadmap and Actions
+        let undoStack = [];
+        let currentEditElement = null;
+        
+        // Edit phase field (title, duration, savings)
+        function editPhaseField(element) {
+            if (currentEditElement) cancelEdit(currentEditElement);
+            
+            const field = element.dataset.field;
+            const phase = element.dataset.phase;
+            const currentText = element.textContent.trim();
+            
+            // Store undo data
+            undoStack.push({
+                type: 'phase-field',
+                element: element,
+                field: field,
+                phase: phase,
+                oldValue: currentText,
+                timestamp: Date.now()
+            });
+            
+            // Create input
+            const input = document.createElement('input');
+            input.className = 'inline-input';
+            input.value = currentText;
+            input.dataset.field = field;
+            input.dataset.phase = phase;
+            
+            // Replace content
+            element.innerHTML = '';
+            element.appendChild(input);
+            element.classList.add('editing');
+            currentEditElement = element;
+            
+            // Focus and select
+            input.focus();
+            input.select();
+            
+            // Add controls
+            addEditControls(element, input);
+            
+            // Handle keyboard shortcuts
+            input.addEventListener('keydown', handleEditKeydown);
+            input.addEventListener('blur', () => handleEditBlur(element, input));
+        }
+        
+        // Edit phase item
+        function editPhaseItem(phaseItemElement) {
+            if (currentEditElement) cancelEdit(currentEditElement);
+            
+            const contentSpan = phaseItemElement.querySelector('.phase-item-content');
+            const currentText = contentSpan.textContent.trim();
+            const phaseContainer = phaseItemElement.closest('[data-phase]');
+            const phase = phaseContainer.dataset.phase;
+            
+            // Store undo data
+            undoStack.push({
+                type: 'phase-item',
+                element: phaseItemElement,
+                contentElement: contentSpan,
+                phase: phase,
+                oldValue: currentText,
+                timestamp: Date.now()
+            });
+            
+            // Create input
+            const input = document.createElement('input');
+            input.className = 'inline-input';
+            input.value = currentText;
+            
+            // Replace content
+            contentSpan.innerHTML = '';
+            contentSpan.appendChild(input);
+            phaseItemElement.classList.add('editing');
+            currentEditElement = phaseItemElement;
+            
+            // Focus and select
+            input.focus();
+            input.select();
+            
+            // Add controls
+            addEditControls(phaseItemElement, input);
+            
+            // Handle keyboard shortcuts
+            input.addEventListener('keydown', handleEditKeydown);
+            input.addEventListener('blur', () => handleEditBlur(phaseItemElement, input));
+        }
+        
+        // Edit action field (title, description, meta)
+        function editActionField(element) {
+            if (currentEditElement) cancelEdit(currentEditElement);
+            
+            const field = element.dataset.field;
+            const action = element.dataset.action;
+            const currentText = element.textContent.trim();
+            
+            // Store undo data
+            undoStack.push({
+                type: 'action-field',
+                element: element,
+                field: field,
+                action: action,
+                oldValue: currentText,
+                timestamp: Date.now()
+            });
+            
+            // Create appropriate input
+            const isDescription = field === 'description';
+            const input = document.createElement(isDescription ? 'textarea' : 'input');
+            input.className = isDescription ? 'inline-textarea' : 'inline-input';
+            input.value = currentText;
+            input.dataset.field = field;
+            input.dataset.action = action;
+            
+            if (isDescription) {
+                input.rows = 3;
+            }
+            
+            // Replace content
+            element.innerHTML = '';
+            element.appendChild(input);
+            element.classList.add('editing');
+            currentEditElement = element;
+            
+            // Focus and select
+            input.focus();
+            input.select();
+            
+            // Add controls
+            addEditControls(element, input);
+            
+            // Handle keyboard shortcuts
+            input.addEventListener('keydown', handleEditKeydown);
+            input.addEventListener('blur', () => handleEditBlur(element, input));
+        }
+        
+        // Add phase item
+        function addPhaseItem(phaseNumber) {
+            const phaseContainer = document.querySelector(`[data-phase="${phaseNumber}"]`);
+            const addButton = phaseContainer.querySelector('.add-item-btn');
+            
+            // Create new phase item
+            const newItem = document.createElement('div');
+            newItem.className = 'phase-item text-small editable';
+            newItem.onclick = () => editPhaseItem(newItem);
+            newItem.innerHTML = `
+                <span class="phase-item-content">New Process</span>
+                <div class="phase-item-actions">
+                    <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                    </svg>
+                    <svg class="edit-icon" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" onclick="removePhaseItem(this, event)">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                </div>
+            `;
+            
+            // Insert before add button
+            phaseContainer.insertBefore(newItem, addButton);
+            
+            // Automatically start editing
+            setTimeout(() => editPhaseItem(newItem), 100);
+            
+            // Store undo data
+            undoStack.push({
+                type: 'add-phase-item',
+                element: newItem,
+                phase: phaseNumber,
+                timestamp: Date.now()
+            });
+        }
+        
+        // Remove phase item
+        function removePhaseItem(deleteIcon, event) {
+            event.stopPropagation();
+            
+            const phaseItem = deleteIcon.closest('.phase-item');
+            const contentSpan = phaseItem.querySelector('.phase-item-content');
+            const phaseContainer = phaseItem.closest('[data-phase]');
+            const phase = phaseContainer.dataset.phase;
+            
+            // Store undo data
+            undoStack.push({
+                type: 'remove-phase-item',
+                element: phaseItem,
+                parent: phaseContainer,
+                nextSibling: phaseItem.nextElementSibling,
+                phase: phase,
+                content: contentSpan.textContent,
+                timestamp: Date.now()
+            });
+            
+            // Remove with animation
+            phaseItem.style.transition = 'all 0.3s ease';
+            phaseItem.style.opacity = '0';
+            phaseItem.style.transform = 'translateX(-100%)';
+            
+            setTimeout(() => {
+                if (phaseItem.parentNode) {
+                    phaseItem.parentNode.removeChild(phaseItem);
+                }
+            }, 300);
+            
+            showUndoNotification('Process removed');
+        }
+        
+        // Add edit controls (save/cancel buttons)
+        function addEditControls(element, input) {
+            const controls = element.querySelector('.edit-controls');
+            if (controls) {
+                controls.innerHTML = `
+                    <button class="save-btn" onclick="saveEdit(this)">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </button>
+                    <button class="cancel-btn" onclick="cancelEdit(this.closest('.editable'))">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                `;
+            }
+        }
+        
+        // Handle keyboard shortcuts
+        function handleEditKeydown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                saveEdit(event.target);
+            } else if (event.key === 'Escape') {
+                event.preventDefault();
+                cancelEdit(currentEditElement);
+            } else if (event.key === 'Tab') {
+                event.preventDefault();
+                saveEdit(event.target);
+            }
+        }
+        
+        // Handle blur (click outside)
+        function handleEditBlur(element, input) {
+            // Small delay to allow save button clicks
+            setTimeout(() => {
+                if (element.classList.contains('editing')) {
+                    saveEdit(input);
+                }
+            }, 150);
+        }
+        
+        // Save edit
+        function saveEdit(inputOrButton) {
+            let element, input;
+            
+            if (inputOrButton.closest && inputOrButton.closest('.editable')) {
+                element = inputOrButton.closest('.editable');
+                input = element.querySelector('.inline-input, .inline-textarea');
+            } else {
+                input = inputOrButton;
+                element = input.closest('.editable');
+            }
+            
+            if (!element || !input) return;
+            
+            const newValue = input.value.trim();
+            if (!newValue) {
+                showEditFeedback(element, 'Value cannot be empty', 'error');
+                return;
+            }
+            
+            // Show loading state
+            element.classList.add('loading-state');
+            
+            setTimeout(() => {
+                // Restore content based on type
+                if (element.classList.contains('phase-item')) {
+                    const contentSpan = element.querySelector('.phase-item-content');
+                    contentSpan.textContent = newValue;
+                } else {
+                    element.textContent = newValue;
+                }
+                
+                // Restore edit controls
+                if (!element.classList.contains('phase-item')) {
+                    const controls = document.createElement('div');
+                    controls.className = 'edit-controls';
+                    controls.innerHTML = `
+                        <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                    `;
+                    element.appendChild(controls);
+                }
+                
+                // Clean up
+                element.classList.remove('editing', 'loading-state');
+                currentEditElement = null;
+                
+                showEditFeedback(element, 'Saved!', 'success');
+                showUndoNotification('Changes saved');
+            }, 500);
+        }
+        
+        // Cancel edit
+        function cancelEdit(element) {
+            if (!element) return;
+            
+            // Get original value from undo stack
+            const lastUndo = undoStack[undoStack.length - 1];
+            let originalValue = '';
+            
+            if (lastUndo && lastUndo.element === element) {
+                originalValue = lastUndo.oldValue;
+                undoStack.pop(); // Remove cancelled edit from undo stack
+            }
+            
+            // Restore content based on type
+            if (element.classList.contains('phase-item')) {
+                const contentSpan = element.querySelector('.phase-item-content');
+                contentSpan.textContent = originalValue;
+            } else {
+                element.textContent = originalValue;
+                
+                // Restore edit controls
+                const controls = document.createElement('div');
+                controls.className = 'edit-controls';
+                controls.innerHTML = `
+                    <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                    </svg>
+                `;
+                element.appendChild(controls);
+            }
+            
+            // Clean up
+            element.classList.remove('editing');
+            currentEditElement = null;
+        }
+        
+        // Show edit feedback
+        function showEditFeedback(element, message, type = 'success') {
+            const feedback = document.createElement('div');
+            feedback.className = `edit-feedback ${type}`;
+            feedback.textContent = message;
+            
+            element.appendChild(feedback);
+            
+            setTimeout(() => feedback.classList.add('show'), 10);
+            
+            setTimeout(() => {
+                feedback.classList.remove('show');
+                setTimeout(() => {
+                    if (feedback.parentNode) {
+                        feedback.parentNode.removeChild(feedback);
+                    }
+                }, 300);
+            }, 2000);
+        }
+        
+        // Undo system
+        function showUndoNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'undo-notification';
+            notification.innerHTML = `
+                <span>${message}</span>
+                <button class="undo-btn" onclick="performUndo()">Undo</button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.classList.add('show'), 10);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 5000);
+        }
+        
+        function performUndo() {
+            if (undoStack.length === 0) return;
+            
+            const action = undoStack.pop();
+            
+            switch (action.type) {
+                case 'phase-field':
+                case 'action-field':
+                    action.element.textContent = action.oldValue;
+                    // Restore edit controls
+                    const controls = document.createElement('div');
+                    controls.className = 'edit-controls';
+                    controls.innerHTML = `
+                        <svg class="edit-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                    `;
+                    action.element.appendChild(controls);
+                    break;
+                    
+                case 'phase-item':
+                    action.contentElement.textContent = action.oldValue;
+                    break;
+                    
+                case 'add-phase-item':
+                    if (action.element.parentNode) {
+                        action.element.parentNode.removeChild(action.element);
+                    }
+                    break;
+                    
+                case 'remove-phase-item':
+                    if (action.nextSibling) {
+                        action.parent.insertBefore(action.element, action.nextSibling);
+                    } else {
+                        action.parent.appendChild(action.element);
+                    }
+                    action.element.style.opacity = '';
+                    action.element.style.transform = '';
+                    break;
+            }
+            
+            // Hide undo notification
+            const notification = document.querySelector('.undo-notification');
+            if (notification) {
+                notification.classList.remove('show');
+            }
+        }
+        
+        // Click outside handler
+        document.addEventListener('click', (event) => {
+            if (currentEditElement && !currentEditElement.contains(event.target)) {
+                // Don't cancel if clicking on undo notification
+                if (!event.target.closest('.undo-notification')) {
+                    const input = currentEditElement.querySelector('.inline-input, .inline-textarea');
+                    if (input) {
+                        saveEdit(input);
+                    }
+                }
+            }
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (event) => {
+            // Ctrl/Cmd + Z for undo
+            if ((event.ctrlKey || event.metaKey) && event.key === 'z' && !event.shiftKey) {
+                event.preventDefault();
+                performUndo();
+            }
+        });
+        
+        // Initialize chat system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Delay initialization to ensure all other systems are ready
+            setTimeout(() => {
+                initializeChatSystem();
+            }, 1000);
+        });
+    </script>
 </body>
 </html>

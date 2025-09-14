@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Dashboard Loading</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="api/supabase-config.js"></script>
+</head>
+<body>
+    <h1>Testing Dashboard Loading for testSept9b</h1>
+    <button onclick="testLoading()">Test Loading Process</button>
+    <button onclick="showChartData()">Show Chart Data</button>
+    
+    <div id="status"></div>
+    <canvas id="testChart" width="400" height="200"></canvas>
+    
+    <script>
+        let processes = [];
+        let testChart = null;
+        
+        async function testLoading() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = '<h3>Starting test...</h3>';
+            
+            try {
+                // Step 1: Load projects
+                statusDiv.innerHTML += '<p>1. Loading projects from Supabase...</p>';
+                const projects = await window.workshopDB.getProjects();
+                console.log('Projects:', projects);
+                
+                // Find testSept9b
+                const testProject = projects.find(p => p.name.includes('testSept9b'));
+                if (!testProject) {
+                    statusDiv.innerHTML += '<p style="color: red;">❌ testSept9b not found in projects</p>';
+                    return;
+                }
+                
+                statusDiv.innerHTML += `<p style="color: green;">✅ Found testSept9b (ID: ${testProject.id})</p>`;
+                
+                // Step 2: Load processes
+                statusDiv.innerHTML += '<p>2. Loading processes for testSept9b...</p>';
+                processes = await window.workshopDB.getProcesses(testProject.id);
+                console.log('Processes loaded:', processes);
+                
+                statusDiv.innerHTML += `<p style="color: green;">✅ Loaded ${processes.length} processes</p>`;
+                
+                // Step 3: Check the data
+                statusDiv.innerHTML += '<h3>Process Data:</h3>';
+                statusDiv.innerHTML += '<table border="1" cellpadding="5"><tr><th>Name</th><th>Impact</th><th>Feasibility</th><th>Time</th></tr>';
+                
+                processes.forEach(p => {
+                    const hasIssue = !p.impact || !p.feasibility || p.impact === 0 || p.feasibility === 0;
+                    statusDiv.innerHTML += `
+                        <tr ${hasIssue ? 'style="background-color: #ffcccc;"' : ''}>
+                            <td>${p.name}</td>
+                            <td>${p.impact || 0}</td>
+                            <td>${p.feasibility || 0}</td>
+                            <td>${p.timeSpent || 0}</td>
+                        </tr>
+                    `;
+                });
+                
+                statusDiv.innerHTML += '</table>';
+                
+                // Step 4: Create a test chart
+                createTestChart();
+                
+            } catch (error) {
+                statusDiv.innerHTML += `<p style="color: red;">❌ Error: ${error.message}</p>`;
+                console.error('Error:', error);
+            }
+        }
+        
+        function createTestChart() {
+            const ctx = document.getElementById('testChart').getContext('2d');
+            
+            if (testChart) {
+                testChart.destroy();
+            }
+            
+            // Prepare data exactly like the dashboard does
+            const chartData = processes.map(process => ({
+                x: process.impact || 0,
+                y: process.feasibility || 0,
+                r: Math.max(process.timeSpent || 0, 5)
+            }));
+            
+            console.log('Chart data:', chartData);
+            
+            testChart = new Chart(ctx, {
+                type: 'bubble',
+                data: {
+                    datasets: [{
+                        label: 'Processes',
+                        data: chartData,
+                        backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            min: 0,
+                            max: 10,
+                            title: {
+                                display: true,
+                                text: 'Impact'
+                            }
+                        },
+                        y: {
+                            min: 0,
+                            max: 10,
+                            title: {
+                                display: true,
+                                text: 'Feasibility'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const index = context.dataIndex;
+                                    const process = processes[index];
+                                    return process ? process.name : 'Unknown';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            document.getElementById('status').innerHTML += '<p style="color: green;">✅ Chart created with ' + chartData.length + ' data points</p>';
+        }
+        
+        function showChartData() {
+            const statusDiv = document.getElementById('status');
+            if (processes.length === 0) {
+                statusDiv.innerHTML = '<p>No processes loaded. Click "Test Loading Process" first.</p>';
+                return;
+            }
+            
+            statusDiv.innerHTML = '<h3>Current Chart Data:</h3>';
+            statusDiv.innerHTML += '<pre>' + JSON.stringify(processes.map(p => ({
+                name: p.name,
+                impact: p.impact,
+                feasibility: p.feasibility,
+                timeSpent: p.timeSpent
+            })), null, 2) + '</pre>';
+        }
+    </script>
+</body>
+</html>

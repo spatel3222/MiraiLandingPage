@@ -256,16 +256,89 @@ class WorkshopDatabase {
     async getProcesses(projectId) {
         if (this.isOnline && this.supabase) {
             try {
+                console.log('🔍 Fetching processes for project:', projectId);
+                
+                // Try to query processes table - handle potential schema issues
+                let query = this.supabase.from('processes');
+                
+                // First check if table exists with a simple select
+                const testQuery = await this.supabase
+                    .from('processes')
+                    .select('id')
+                    .limit(1);
+                    
+                if (testQuery.error) {
+                    console.warn('⚠️ Processes table might not exist:', testQuery.error.message);
+                    throw new Error('Processes table not accessible');
+                }
+                
+                // Now try the full query
                 const { data, error } = await this.supabase
                     .from('processes')
                     .select('*')
                     .eq('project_id', projectId)
                     .order('created_at', { ascending: false });
 
-                if (error) throw error;
-                return data || [];
+                if (error) {
+                    console.error('❌ Supabase error details:', error);
+                    console.error('❌ Error message:', error.message);
+                    console.error('❌ Error details:', error.details);
+                    throw error;
+                }
+                
+                console.log('✅ Processes fetched successfully:', data?.length || 0);
+                
+                // Map Supabase field names to dashboard field names
+                const mappedData = (data || []).map(process => ({
+                    id: process.id,
+                    name: process.name,
+                    department: process.department,
+                    custom_department: process.custom_department,
+                    
+                    // Map score fields - Supabase uses underscore format
+                    impact: process.impact_score || 0,
+                    feasibility: process.feasibility_score || 0,
+                    timeSpent: process.time_spent || 0,
+                    
+                    // Map automation scores
+                    scores: {
+                        repetitive: process.repetitive_score || 0,
+                        dataDriven: process.data_driven_score || 0,
+                        ruleBased: process.rule_based_score || 0,
+                        highVolume: process.high_volume_score || 0
+                    },
+                    
+                    // Additional fields
+                    notes: process.notes || '',
+                    created_at: process.created_at,
+                    project_id: process.project_id,
+                    
+                    // Calculate derived fields
+                    automation_avg: ((process.repetitive_score || 0) + 
+                                    (process.data_driven_score || 0) + 
+                                    (process.rule_based_score || 0) + 
+                                    (process.high_volume_score || 0)) / 4,
+                    priority_score: ((process.impact_score || 0) * 0.4 + 
+                                    (process.feasibility_score || 0) * 0.3 + 
+                                    (((process.repetitive_score || 0) + 
+                                      (process.data_driven_score || 0) + 
+                                      (process.rule_based_score || 0) + 
+                                      (process.high_volume_score || 0)) / 4) * 0.3)
+                }));
+                
+                console.log('📊 Mapped process data:', mappedData.length, 'processes');
+                if (mappedData.length > 0) {
+                    console.log('📊 Sample mapped process:', {
+                        name: mappedData[0].name,
+                        impact: mappedData[0].impact,
+                        feasibility: mappedData[0].feasibility
+                    });
+                }
+                
+                return mappedData;
             } catch (error) {
                 console.error('❌ Process fetch failed:', error);
+                console.warn('⚠️ Falling back to local storage for project:', projectId);
                 return this.getProcessesLocal(projectId);
             }
         } else {
@@ -396,6 +469,154 @@ class WorkshopDatabase {
             database: this.isOnline ? 'Supabase' : 'localStorage',
             realtime: this.isOnline ? 'Active' : 'Offline'
         };
+    }
+
+    // Delete Operations
+    async deleteProject(projectId) {
+        if (this.isOnline && this.supabase) {
+            try {
+                const { error } = await this.supabase
+                    .from('projects')
+                    .delete()
+                    .eq('id', projectId);
+
+                if (error) throw error;
+                
+                console.log('✅ Project deleted from Supabase:', projectId);
+                return { success: true };
+            } catch (error) {
+                console.error('❌ Failed to delete project from Supabase:', error);
+                throw error;
+            }
+        } else {
+            // Remove from localStorage
+            const projects = JSON.parse(localStorage.getItem('businessProjects') || '[]');
+            const updatedProjects = projects.filter(p => p.id !== projectId);
+            localStorage.setItem('businessProjects', JSON.stringify(updatedProjects));
+            console.log('💾 Project deleted from localStorage:', projectId);
+            return { success: true };
+        }
+    }
+
+    async deleteProcess(processId) {
+        if (this.isOnline && this.supabase) {
+            try {
+                const { error } = await this.supabase
+                    .from('processes')
+                    .delete()
+                    .eq('id', processId);
+
+                if (error) throw error;
+                
+                console.log('✅ Process deleted from Supabase:', processId);
+                return { success: true };
+            } catch (error) {
+                console.error('❌ Failed to delete process from Supabase:', error);
+                throw error;
+            }
+        } else {
+            console.log('📱 Process delete operation not needed for localStorage mode');
+            return { success: true };
+        }
+    }
+
+    async deleteDepartmentTokens(projectId) {
+        if (this.isOnline && this.supabase) {
+            try {
+                const { error } = await this.supabase
+                    .from('department_tokens')
+                    .delete()
+                    .eq('project_id', projectId);
+
+                if (error) throw error;
+                
+                console.log('✅ Department tokens deleted from Supabase for project:', projectId);
+                return { success: true };
+            } catch (error) {
+                console.error('❌ Failed to delete department tokens from Supabase:', error);
+                throw error;
+            }
+        } else {
+            // Remove from localStorage
+            localStorage.removeItem(`tokens_${projectId}`);
+            console.log('💾 Department tokens deleted from localStorage for project:', projectId);
+            return { success: true };
+        }
+    }
+
+    // Bulk Operations
+    async saveProcesses(projectId, processesArray) {
+        if (this.isOnline && this.supabase) {
+            try {
+                // For Supabase, we don't need bulk save since processes are submitted individually
+                // This method exists for compatibility with the dashboard's saveProcesses() calls
+                console.log('📝 Supabase processes managed individually, no bulk save needed');
+                return { success: true };
+            } catch (error) {
+                console.error('❌ Supabase saveProcesses error:', error);
+                throw error;
+            }
+        } else {
+            // Save to localStorage
+            try {
+                localStorage.setItem(`processes_${projectId}`, JSON.stringify(processesArray));
+                console.log('💾 Processes saved to localStorage:', processesArray.length);
+                return { success: true };
+            } catch (error) {
+                console.error('❌ Failed to save processes to localStorage:', error);
+                throw error;
+            }
+        }
+    }
+
+    // Update Operations
+    async updateProject(projectId, updates) {
+        if (this.isOnline && this.supabase) {
+            try {
+                const updateData = {
+                    name: updates.name,
+                    description: updates.description || updates.clientName,
+                    metadata: { 
+                        ...updates.metadata,
+                        clientName: updates.clientName 
+                    }
+                };
+                
+                console.log('🔄 Supabase updateProject - projectId:', projectId);
+                console.log('🔄 Supabase updateProject - updateData:', updateData);
+                
+                const { data, error } = await this.supabase
+                    .from('projects')
+                    .update(updateData)
+                    .eq('id', projectId)
+                    .select()
+                    .single();
+
+                if (error) {
+                    console.error('❌ Supabase update error:', error);
+                    throw error;
+                }
+                
+                console.log('✅ Project updated in Supabase:', projectId);
+                console.log('✅ Updated project data returned:', data);
+                return data;
+            } catch (error) {
+                console.error('❌ Failed to update project in Supabase:', error);
+                throw error;
+            }
+        } else {
+            // Update in localStorage
+            const projects = JSON.parse(localStorage.getItem('businessProjects') || '[]');
+            const projectIndex = projects.findIndex(p => p.id === projectId);
+            if (projectIndex !== -1) {
+                projects[projectIndex] = { ...projects[projectIndex], ...updates };
+                projects[projectIndex].updatedAt = new Date().toISOString();
+                localStorage.setItem('businessProjects', JSON.stringify(projects));
+                console.log('💾 Project updated in localStorage:', projectId);
+                return projects[projectIndex];
+            }
+            throw new Error('Project not found');
+        }
     }
 
     // Database Reset Functions

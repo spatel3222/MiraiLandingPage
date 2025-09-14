@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Chart Data</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../api/supabase-config.js"></script>
+</head>
+<body>
+    <h1>Debug Chart Data for testSept9b</h1>
+    <div id="results"></div>
+    
+    <script>
+        async function debugChartData() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p>Loading...</p>';
+            
+            try {
+                // Initialize Supabase
+                const SUPABASE_URL = 'https://fvyghgvshobufpgaclbs.supabase.co';
+                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2eWdoZ3ZzaG9idWZwZ2FjbGJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxNDI1MjgsImV4cCI6MjA3MjcxODUyOH0.RR_PavED-XHko85FsuLVWfWapVIJZ3l3vRPq4lszmfM';
+                
+                const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                
+                // Get testSept9b project
+                const { data: projects, error: projectError } = await supabaseClient
+                    .from('projects')
+                    .select('*')
+                    .ilike('name', '%testSept9b%');
+                
+                if (!projects || projects.length === 0) {
+                    resultsDiv.innerHTML = '<p style="color: red;">testSept9b project not found</p>';
+                    return;
+                }
+                
+                const project = projects[0];
+                console.log('Project:', project);
+                
+                // Get all processes for testSept9b
+                const { data: rawProcesses, error: processError } = await supabaseClient
+                    .from('processes')
+                    .select('*')
+                    .eq('project_id', project.id)
+                    .order('created_at', { ascending: false });
+                
+                console.log('Raw processes from Supabase:', rawProcesses);
+                
+                // Apply the same mapping that supabase-config.js does
+                const mappedProcesses = (rawProcesses || []).map(process => ({
+                    id: process.id,
+                    name: process.name,
+                    department: process.department,
+                    impact: process.impact_score || 0,
+                    feasibility: process.feasibility_score || 0,
+                    timeSpent: process.time_spent || 0,
+                    scores: {
+                        repetitive: process.repetitive_score || 0,
+                        dataDriven: process.data_driven_score || 0,
+                        ruleBased: process.rule_based_score || 0,
+                        highVolume: process.high_volume_score || 0
+                    },
+                    notes: process.notes || '',
+                    created_at: process.created_at,
+                    automation_avg: ((process.repetitive_score || 0) + 
+                                    (process.data_driven_score || 0) + 
+                                    (process.rule_based_score || 0) + 
+                                    (process.high_volume_score || 0)) / 4
+                }));
+                
+                console.log('Mapped processes:', mappedProcesses);
+                
+                // Prepare chart data (same as bubble chart)
+                const chartData = mappedProcesses.map(process => ({
+                    x: process.impact,
+                    y: process.feasibility,
+                    r: Math.max(process.timeSpent, 5),
+                    label: process.name,
+                    department: process.department
+                }));
+                
+                console.log('Chart data points:', chartData);
+                
+                // Display results
+                let html = `
+                    <h2 style="color: green;">✅ Found ${rawProcesses.length} processes in Supabase</h2>
+                    <h3>Raw Process Data:</h3>
+                    <table border="1" cellpadding="5" style="border-collapse: collapse;">
+                        <tr>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Impact Score</th>
+                            <th>Feasibility Score</th>
+                            <th>Time Spent</th>
+                            <th>ID</th>
+                        </tr>
+                `;
+                
+                rawProcesses.forEach(p => {
+                    html += `
+                        <tr>
+                            <td>${p.name}</td>
+                            <td>${p.department || 'N/A'}</td>
+                            <td>${p.impact_score || 0}</td>
+                            <td>${p.feasibility_score || 0}</td>
+                            <td>${p.time_spent || 0}</td>
+                            <td style="font-size: 10px;">${p.id}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                    </table>
+                    
+                    <h3>Chart Data Points (after mapping):</h3>
+                    <table border="1" cellpadding="5" style="border-collapse: collapse;">
+                        <tr>
+                            <th>Label</th>
+                            <th>X (Impact)</th>
+                            <th>Y (Feasibility)</th>
+                            <th>R (Size/Time)</th>
+                            <th>Department</th>
+                        </tr>
+                `;
+                
+                chartData.forEach(point => {
+                    const hasZero = point.x === 0 || point.y === 0;
+                    html += `
+                        <tr ${hasZero ? 'style="background-color: #ffcccc;"' : ''}>
+                            <td>${point.label}</td>
+                            <td>${point.x}</td>
+                            <td>${point.y}</td>
+                            <td>${point.r}</td>
+                            <td>${point.department}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</table>';
+                
+                // Check for issues
+                const zeroScoreProcesses = chartData.filter(p => p.x === 0 || p.y === 0);
+                if (zeroScoreProcesses.length > 0) {
+                    html += `
+                        <div style="background-color: #ffeeee; border: 1px solid red; padding: 10px; margin-top: 20px;">
+                            <h3 style="color: red;">⚠️ Warning: ${zeroScoreProcesses.length} processes have zero scores!</h3>
+                            <p>These processes will appear at the origin (0,0) on the chart:</p>
+                            <ul>
+                    `;
+                    zeroScoreProcesses.forEach(p => {
+                        html += `<li>${p.label} (Impact: ${p.x}, Feasibility: ${p.y})</li>`;
+                    });
+                    html += '</ul></div>';
+                }
+                
+                // Check for processes that might be overlapping
+                const processGroups = {};
+                chartData.forEach(p => {
+                    const key = `${p.x},${p.y}`;
+                    if (!processGroups[key]) {
+                        processGroups[key] = [];
+                    }
+                    processGroups[key].push(p.label);
+                });
+                
+                const overlapping = Object.entries(processGroups).filter(([key, names]) => names.length > 1);
+                if (overlapping.length > 0) {
+                    html += `
+                        <div style="background-color: #fff3cd; border: 1px solid #ffc107; padding: 10px; margin-top: 20px;">
+                            <h3 style="color: #856404;">⚠️ Overlapping Processes on Chart</h3>
+                            <p>These processes have identical scores and will overlap on the chart:</p>
+                            <ul>
+                    `;
+                    overlapping.forEach(([coords, names]) => {
+                        html += `<li>At position (${coords}): ${names.join(', ')}</li>`;
+                    });
+                    html += '</ul></div>';
+                }
+                
+                resultsDiv.innerHTML = html;
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+                console.error('Error:', error);
+            }
+        }
+        
+        debugChartData();
+    </script>
+</body>
+</html>
