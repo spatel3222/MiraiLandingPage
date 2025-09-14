@@ -1,0 +1,2485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Automation Dashboard - Executive Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <style>
+        :root {
+            --primary-600: #2563eb;
+            --primary-700: #1d4ed8;
+            --primary-50: #eff6ff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --green-500: #10b981;
+            --green-600: #059669;
+            --amber-500: #f59e0b;
+            --amber-600: #d97706;
+            --red-500: #ef4444;
+            --red-600: #dc2626;
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            --border-radius-sm: 0.375rem;
+            --border-radius-md: 0.5rem;
+            --border-radius-lg: 0.75rem;
+            --border-radius-xl: 1rem;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+            color: var(--gray-800);
+            line-height: 1.6;
+            font-weight: 400;
+            overflow-x: hidden;
+        }
+
+        .dashboard-container {
+            min-height: 100vh;
+            background: white;
+            max-width: 1920px;
+            margin: 0 auto;
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* Typography System */
+        .text-display {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        .text-h1 {
+            font-size: 1.875rem;
+            line-height: 2.25rem;
+            font-weight: 700;
+        }
+
+        .text-h2 {
+            font-size: 1.5rem;
+            line-height: 2rem;
+            font-weight: 600;
+        }
+
+        .text-h3 {
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+            font-weight: 600;
+        }
+
+        .text-body {
+            font-size: 1rem;
+            line-height: 1.5rem;
+            font-weight: 400;
+        }
+
+        .text-small {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            font-weight: 400;
+        }
+
+        .text-tiny {
+            font-size: 0.75rem;
+            line-height: 1rem;
+            font-weight: 500;
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+            color: white;
+            padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.05"><circle cx="30" cy="30" r="1.5"/></g></g></svg>');
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: var(--spacing-xl);
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .header-title {
+            flex: 1;
+        }
+
+        .header-title h1 {
+            background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .header-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 400;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            align-items: center;
+        }
+
+        .last-updated {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-sm) var(--spacing-md);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .refresh-btn {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-sm) var(--spacing-md);
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+        }
+
+        /* Settings Button */
+        .settings-btn {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-sm) var(--spacing-md);
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .settings-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px) scale(1.05);
+        }
+
+        .settings-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+
+        .settings-icon {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.2s ease;
+        }
+
+        .settings-btn:hover .settings-icon {
+            transform: rotate(90deg);
+        }
+
+        .settings-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Row 1: Key Metrics */
+        .key-metrics-row {
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            padding: var(--spacing-lg) var(--spacing-xl);
+        }
+
+        .metrics-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+            align-items: center;
+        }
+
+        .metric-card {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: var(--gray-50);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--gray-200);
+            transition: all 0.2s ease;
+        }
+
+        .metric-card:hover {
+            background: white;
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .metric-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--border-radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .metric-icon.project {
+            background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+        }
+
+        .metric-icon.processes {
+            background: linear-gradient(135deg, var(--green-500) 0%, var(--green-600) 100%);
+        }
+
+        .metric-icon.departments {
+            background: linear-gradient(135deg, var(--amber-500) 0%, var(--amber-600) 100%);
+        }
+
+        .metric-icon.updated {
+            background: linear-gradient(135deg, var(--gray-500) 0%, var(--gray-600) 100%);
+        }
+
+        .metric-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .metric-label {
+            color: var(--gray-500);
+            margin-bottom: var(--spacing-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .metric-value {
+            color: var(--gray-800);
+            font-weight: 700;
+        }
+
+        /* Department text overflow fix */
+        .metric-value span {
+            display: inline-block;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            cursor: help;
+            position: relative;
+        }
+
+        .metric-value span:hover {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+            padding: 0 4px;
+        }
+
+        /* Tooltip for full text */
+        .metric-value span[title]:hover::after {
+            content: attr(title);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gray-900);
+            color: white;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-md);
+            font-size: 0.75rem;
+            font-weight: 400;
+            white-space: nowrap;
+            z-index: 1000;
+            box-shadow: var(--shadow-lg);
+            pointer-events: none;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .metric-value span[title]:hover::before {
+            content: '';
+            position: absolute;
+            bottom: calc(100% - 6px);
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--gray-900);
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        /* Row 2: Business KPIs */
+        .business-kpis-row {
+            background: linear-gradient(135deg, var(--gray-50) 0%, white 100%);
+            border-bottom: 1px solid var(--gray-200);
+            padding: var(--spacing-xl);
+        }
+
+        .kpis-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-xl);
+        }
+
+        .kpi-card {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-500), var(--green-500), var(--amber-500));
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .kpi-title {
+            color: var(--gray-600);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .kpi-value {
+            font-size: 3rem;
+            line-height: 1;
+            font-weight: 800;
+            color: var(--gray-900);
+        }
+
+        .kpi-trend {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--green-600);
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+        }
+
+        .kpi-description {
+            color: var(--gray-500);
+            margin-top: var(--spacing-md);
+        }
+
+        .progress-ring {
+            width: 80px;
+            height: 80px;
+        }
+
+        .progress-ring circle {
+            fill: none;
+            stroke-width: 8;
+        }
+
+        .progress-ring .bg {
+            stroke: var(--gray-200);
+        }
+
+        .progress-ring .progress {
+            stroke: var(--primary-500);
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            stroke-dasharray: 251.2;
+            stroke-dashoffset: 62.8;
+            transition: stroke-dashoffset 1s ease;
+        }
+
+        /* Row 3: Priority Matrix */
+        .priority-matrix-row {
+            background: white;
+            padding: var(--spacing-2xl) var(--spacing-xl);
+        }
+
+        .matrix-container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .matrix-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .matrix-title {
+            color: var(--gray-900);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .matrix-subtitle {
+            color: var(--gray-500);
+        }
+
+        .matrix-wrapper {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl);
+        }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            background: var(--gray-200);
+            border-radius: var(--border-radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .matrix-quadrant {
+            background: white;
+            padding: var(--spacing-xl);
+            min-height: 280px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .matrix-quadrant:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+            z-index: 10;
+        }
+
+        .quadrant-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .quadrant-info h3 {
+            color: var(--gray-900);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .quadrant-subtitle {
+            color: var(--gray-500);
+            font-weight: 500;
+        }
+
+        .quadrant-badge {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-md);
+            font-weight: 600;
+            color: white;
+        }
+
+        .major-projects {
+            border-top: 6px solid var(--amber-500);
+        }
+
+        .major-projects .quadrant-badge {
+            background: var(--amber-500);
+        }
+
+        .quick-wins {
+            border-top: 6px solid var(--green-500);
+        }
+
+        .quick-wins .quadrant-badge {
+            background: var(--green-500);
+        }
+
+        .fill-ins {
+            border-top: 6px solid var(--primary-500);
+        }
+
+        .fill-ins .quadrant-badge {
+            background: var(--primary-500);
+        }
+
+        .avoid {
+            border-top: 6px solid var(--red-500);
+        }
+
+        .avoid .quadrant-badge {
+            background: var(--red-500);
+        }
+
+        .quadrant-items {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .matrix-item {
+            background: var(--gray-50);
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius-md);
+            border-left: 4px solid var(--gray-300);
+            transition: all 0.2s ease;
+        }
+
+        .matrix-item:hover {
+            background: var(--primary-50);
+            transform: translateX(4px);
+        }
+
+        .quick-wins .matrix-item {
+            border-left-color: var(--green-500);
+        }
+
+        .major-projects .matrix-item {
+            border-left-color: var(--amber-500);
+        }
+
+        .fill-ins .matrix-item {
+            border-left-color: var(--primary-500);
+        }
+
+        .avoid .matrix-item {
+            border-left-color: var(--red-500);
+        }
+
+        .matrix-axes {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .axis-label {
+            position: absolute;
+            color: var(--gray-400);
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .y-axis-top {
+            top: var(--spacing-md);
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .y-axis-bottom {
+            bottom: var(--spacing-md);
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .x-axis-left {
+            left: var(--spacing-md);
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+        }
+
+        .x-axis-right {
+            right: var(--spacing-md);
+            top: 50%;
+            transform: translateY(-50%) rotate(90deg);
+        }
+
+        /* Supporting Analysis Section */
+        .supporting-analysis {
+            background: var(--gray-50);
+            padding: var(--spacing-2xl) var(--spacing-xl);
+            min-height: 600px;
+        }
+
+        .analysis-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: var(--spacing-xl);
+        }
+
+        .analysis-card {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .analysis-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .analysis-card.departments::before {
+            background: var(--primary-500);
+        }
+
+        .analysis-card.use-cases::before {
+            background: var(--green-500);
+        }
+
+        .analysis-card.roi::before {
+            background: var(--amber-500);
+        }
+
+        .analysis-card.roadmap::before {
+            background: var(--red-500);
+        }
+
+        .analysis-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .analysis-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .analysis-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--border-radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .analysis-icon.departments {
+            background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+        }
+
+        .analysis-icon.use-cases {
+            background: linear-gradient(135deg, var(--green-500) 0%, var(--green-600) 100%);
+        }
+
+        .analysis-icon.roi {
+            background: linear-gradient(135deg, var(--amber-500) 0%, var(--amber-600) 100%);
+        }
+
+        .analysis-icon.roadmap {
+            background: linear-gradient(135deg, var(--red-500) 0%, var(--red-600) 100%);
+        }
+
+        .analysis-title-group h3 {
+            color: var(--gray-900);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .analysis-subtitle {
+            color: var(--gray-500);
+        }
+
+        /* Department Rankings */
+        .dept-list {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .dept-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: var(--gray-50);
+            border-radius: var(--border-radius-md);
+            margin-bottom: var(--spacing-md);
+            border-left: 4px solid var(--primary-500);
+            transition: all 0.2s ease;
+        }
+
+        .dept-item:hover {
+            background: white;
+            box-shadow: var(--shadow-sm);
+            transform: translateX(4px);
+        }
+
+        .dept-info {
+            flex: 1;
+        }
+
+        .dept-name {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .dept-metric {
+            color: var(--gray-500);
+        }
+
+        .dept-score {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .score-badge {
+            background: var(--primary-500);
+            color: white;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-md);
+            font-weight: 600;
+        }
+
+        .score-bar {
+            width: 60px;
+            height: 8px;
+            background: var(--gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: var(--primary-500);
+            transition: width 1s ease;
+        }
+
+        /* Use Case Priority List */
+        .usecase-list {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .usecase-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: var(--gray-50);
+            border-radius: var(--border-radius-md);
+            margin-bottom: var(--spacing-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .usecase-item:hover {
+            background: white;
+            box-shadow: var(--shadow-sm);
+            transform: translateX(4px);
+            border-left-color: var(--green-500);
+        }
+
+        .usecase-info {
+            flex: 1;
+        }
+
+        .usecase-name {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .usecase-details {
+            display: flex;
+            gap: var(--spacing-md);
+            color: var(--gray-500);
+        }
+
+        .usecase-score {
+            background: var(--green-500);
+            color: white;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-md);
+            font-weight: 600;
+        }
+
+        /* ROI Breakdown */
+        .roi-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .roi-metric {
+            text-align: center;
+            padding: var(--spacing-lg);
+            background: var(--gray-50);
+            border-radius: var(--border-radius-md);
+            transition: all 0.2s ease;
+        }
+
+        .roi-metric:hover {
+            background: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .roi-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--green-600);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .roi-label {
+            color: var(--gray-500);
+            font-weight: 500;
+        }
+
+        .chart-container {
+            height: 240px;
+            margin-bottom: var(--spacing-lg);
+            background: var(--gray-50);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-md);
+        }
+
+        .chart-container canvas {
+            max-height: 200px !important;
+        }
+
+        /* Implementation Roadmap */
+        .roadmap-timeline {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: var(--spacing-lg) 0;
+            border-left: 2px solid var(--gray-200);
+            margin-left: var(--spacing-lg);
+            padding-left: var(--spacing-xl);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -9px;
+            top: var(--spacing-lg);
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary-500);
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary-500);
+        }
+
+        .timeline-item:last-child {
+            border-left-color: transparent;
+        }
+
+        .timeline-phase {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .timeline-duration {
+            color: var(--gray-500);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .timeline-description {
+            color: var(--gray-600);
+        }
+
+        /* Analysis Footer */
+        .analysis-footer {
+            background: var(--gray-100);
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius-md);
+            margin-top: auto;
+        }
+
+        .confidence-indicator {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .confidence-label {
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .confidence-score {
+            color: var(--green-600);
+            font-weight: 700;
+        }
+
+        /* Action Center */
+        .action-center {
+            background: white;
+            padding: var(--spacing-2xl) var(--spacing-xl);
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .action-container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .action-header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .action-title {
+            color: var(--gray-900);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .action-subtitle {
+            color: var(--gray-500);
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .action-card {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            padding: var(--spacing-xl);
+            background: var(--gray-50);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--border-radius-xl);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover {
+            background: white;
+            border-color: var(--primary-500);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .action-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--border-radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+        }
+
+        .action-card-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .action-card-title {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .action-card-description {
+            color: var(--gray-500);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .metrics-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .kpis-container {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+            
+            .analysis-container {
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: var(--spacing-lg);
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: var(--spacing-lg);
+            }
+            
+            .header-actions {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+                width: 100%;
+            }
+            
+            .metrics-container {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
+            }
+            
+            .kpis-container {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-lg);
+            }
+            
+            .matrix-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .matrix-quadrant {
+                min-height: 200px;
+            }
+            
+            .analysis-container {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-lg);
+            }
+            
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .roi-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .text-display {
+                font-size: 1.875rem;
+                line-height: 2.25rem;
+            }
+            
+            .text-h1 {
+                font-size: 1.5rem;
+                line-height: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: var(--spacing-md);
+            }
+            
+            .key-metrics-row,
+            .business-kpis-row,
+            .priority-matrix-row,
+            .supporting-analysis,
+            .action-center {
+                padding-left: var(--spacing-md);
+                padding-right: var(--spacing-md);
+            }
+            
+            .matrix-wrapper {
+                padding: var(--spacing-lg);
+            }
+        }
+
+        /* Animation Classes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .animate-slide-in-left {
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        .animate-slide-in-right {
+            animation: slideInRight 0.6s ease-out;
+        }
+
+        .animate-scale-in {
+            animation: scaleIn 0.6s ease-out;
+        }
+
+        .animate-delay-100 {
+            animation-delay: 0.1s;
+            animation-fill-mode: both;
+        }
+
+        .animate-delay-200 {
+            animation-delay: 0.2s;
+            animation-fill-mode: both;
+        }
+
+        .animate-delay-300 {
+            animation-delay: 0.3s;
+            animation-fill-mode: both;
+        }
+
+        .animate-delay-400 {
+            animation-delay: 0.4s;
+            animation-fill-mode: both;
+        }
+
+        /* Loading State */
+        .loading-skeleton {
+            background: linear-gradient(90deg, var(--gray-200) 25%, var(--gray-100) 50%, var(--gray-200) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        /* FAB Button (Floating Action Button) */
+        .fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            overflow: visible;
+        }
+
+        .fab:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .fab:focus {
+            outline: none;
+            box-shadow: var(--shadow-xl), 0 0 0 3px rgba(37, 99, 235, 0.3);
+        }
+
+        .fab:active {
+            transform: scale(0.95);
+        }
+
+        .fab-icon {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            transition: transform 0.3s ease;
+        }
+
+        .fab:hover .fab-icon {
+            transform: rotate(45deg);
+        }
+
+        /* FAB Menu */
+        .fab-menu {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-xl);
+            padding: var(--spacing-sm);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px) scale(0.9);
+            transition: all 0.3s ease;
+            min-width: 200px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .fab.active .fab-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .fab-menu-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-family: inherit;
+        }
+
+        .fab-menu-item:hover {
+            background: var(--gray-50);
+        }
+
+        .fab-menu-item-icon {
+            width: 20px;
+            height: 20px;
+            fill: var(--gray-600);
+            flex-shrink: 0;
+        }
+
+        .fab-menu-item-text {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        /* Mobile FAB adjustments */
+        @media (max-width: 768px) {
+            .fab {
+                width: 48px;
+                height: 48px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .fab-icon {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .fab-menu {
+                bottom: 60px;
+                right: 0;
+                min-width: 180px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .header {
+                background: var(--primary-600) !important;
+            }
+            
+            .action-center,
+            .fab,
+            .settings-btn {
+                display: none !important;
+            }
+            
+            .matrix-quadrant:hover,
+            .analysis-card:hover,
+            .action-card:hover {
+                transform: none;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-title">
+                    <h1 class="text-display">Business Automation Intelligence</h1>
+                    <p class="header-subtitle text-body">Executive Dashboard - AI-Driven Process Optimization</p>
+                </div>
+                <div class="header-actions">
+                    <div class="last-updated text-small">
+                        <span>Last Updated: Today, 2:34 PM</span>
+                    </div>
+                    <button class="refresh-btn text-small" onclick="refreshDashboard()">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path>
+                        </svg>
+                        Refresh
+                    </button>
+                    <button class="settings-btn text-small" id="settingsBtn" onclick="openSettings()" aria-label="Open Settings">
+                        <svg class="settings-icon" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="settings-label">Settings</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Row 1: Key Metrics -->
+        <section class="key-metrics-row animate-fade-in">
+            <div class="metrics-container">
+                <div class="metric-card">
+                    <div class="metric-icon project">
+                        <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
+                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
+                            <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm2.5 7a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm2.45 4a2.5 2.5 0 10-4.9 0h4.9zM12 9a1 1 0 100 2h3a1 1 0 100-2h-3zm-1 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-label text-small">Project Name</div>
+                        <div class="metric-value text-h2">testSept9b</div>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon processes">
+                        <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-label text-small">Total Processes</div>
+                        <div class="metric-value text-h2">5 <span class="text-small" style="color: var(--green-600); font-weight: 600;">↗ +2</span></div>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon departments">
+                        <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+                            <path d="M6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+                        </svg>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-label text-small">Departments Involved</div>
+                        <div class="metric-value text-h2">3 <span class="text-small" style="color: var(--amber-600); font-weight: 600;" title="Customer Service, Finance, Operations">Customer Service, Finance, Operations</span></div>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-icon updated">
+                        <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-label text-small">Last Updated</div>
+                        <div class="metric-value text-h2">Today <span class="text-small" style="color: var(--green-600); font-weight: 600;">Live</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Row 2: Business KPIs -->
+        <section class="business-kpis-row animate-fade-in animate-delay-200">
+            <div class="kpis-container">
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <div>
+                            <div class="kpi-title text-small">Automation Readiness Score</div>
+                            <div class="kpi-value">87<span style="font-size: 1.5rem; color: var(--gray-500);">/100</span></div>
+                            <div class="kpi-description text-small">Excellent readiness across all processes</div>
+                        </div>
+                        <div>
+                            <svg class="progress-ring" width="80" height="80">
+                                <circle class="bg" cx="40" cy="40" r="30"></circle>
+                                <circle class="progress" cx="40" cy="40" r="30"></circle>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="kpi-trend text-small">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        +12% from last quarter
+                    </div>
+                </div>
+                
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <div>
+                            <div class="kpi-title text-small">Projected Annual Savings</div>
+                            <div class="kpi-value">$2.4M</div>
+                            <div class="kpi-description text-small">Based on current automation portfolio</div>
+                        </div>
+                        <div class="kpi-trend text-small">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            85% confidence level
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <div>
+                            <div class="kpi-title text-small">Quick Win Opportunities</div>
+                            <div class="kpi-value">6</div>
+                            <div class="kpi-description text-small">High-impact, low-effort implementations</div>
+                        </div>
+                        <div class="kpi-trend text-small">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                            Start within 30 days
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Row 3: Priority Matrix -->
+        <section class="priority-matrix-row animate-fade-in animate-delay-300">
+            <div class="matrix-container">
+                <div class="matrix-header">
+                    <h2 class="matrix-title text-h1">Automation Priority Matrix</h2>
+                    <p class="matrix-subtitle text-body">Strategic Decision Framework: Business Impact vs Implementation Effort</p>
+                </div>
+                
+                <div class="matrix-wrapper">
+                    <div class="matrix-grid">
+                        <div class="matrix-quadrant major-projects" onclick="showQuadrantDetails('major')">
+                            <div class="quadrant-header">
+                                <div class="quadrant-info">
+                                    <h3 class="text-h3">Major Projects</h3>
+                                    <span class="quadrant-subtitle text-small">High Impact • High Effort</span>
+                                </div>
+                                <span class="quadrant-badge text-tiny">2</span>
+                            </div>
+                            <div class="quadrant-items">
+                                <div class="matrix-item text-small">
+                                    <strong>ERP Integration</strong><br>
+                                    ROI: 450% | Timeline: 12-18 months
+                                </div>
+                                <div class="matrix-item text-small">
+                                    <strong>Supply Chain Automation</strong><br>
+                                    ROI: 280% | Timeline: 9-12 months
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="matrix-quadrant quick-wins" onclick="showQuadrantDetails('quick')">
+                            <div class="quadrant-header">
+                                <div class="quadrant-info">
+                                    <h3 class="text-h3">Quick Wins</h3>
+                                    <span class="quadrant-subtitle text-small">High Impact • Low Effort</span>
+                                </div>
+                                <span class="quadrant-badge text-tiny">2</span>
+                            </div>
+                            <div class="quadrant-items">
+                                <div class="matrix-item text-small">
+                                    <strong>Invoice Processing</strong><br>
+                                    ROI: 340% | Timeline: 6-8 weeks
+                                </div>
+                                <div class="matrix-item text-small">
+                                    <strong>HR Resume Screening</strong><br>
+                                    ROI: 220% | Timeline: 4-6 weeks
+                                </div>
+                                <div class="matrix-item text-small">
+                                    <strong>Email Response Automation</strong><br>
+                                    ROI: 185% | Timeline: 3-4 weeks
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="matrix-quadrant fill-ins" onclick="showQuadrantDetails('fillins')">
+                            <div class="quadrant-header">
+                                <div class="quadrant-info">
+                                    <h3 class="text-h3">Fill-ins</h3>
+                                    <span class="quadrant-subtitle text-small">Low Impact • Low Effort</span>
+                                </div>
+                                <span class="quadrant-badge text-tiny">1</span>
+                            </div>
+                            <div class="quadrant-items">
+                                <div class="matrix-item text-small">
+                                    <strong>Basic Report Generation</strong><br>
+                                    ROI: 120% | Timeline: 2-3 weeks
+                                </div>
+                                <div class="matrix-item text-small">
+                                    <strong>Calendar Scheduling</strong><br>
+                                    ROI: 95% | Timeline: 1-2 weeks
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="matrix-quadrant avoid" onclick="showQuadrantDetails('avoid')">
+                            <div class="quadrant-header">
+                                <div class="quadrant-info">
+                                    <h3 class="text-h3">Avoid</h3>
+                                    <span class="quadrant-subtitle text-small">Low Impact • High Effort</span>
+                                </div>
+                                <span class="quadrant-badge text-tiny">0</span>
+                            </div>
+                            <div class="quadrant-items">
+                                <div class="matrix-item text-small">
+                                    <strong>Legacy System Replacement</strong><br>
+                                    ROI: 45% | Timeline: 18-24 months
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="matrix-axes">
+                        <div class="axis-label y-axis-top text-tiny">High Impact</div>
+                        <div class="axis-label y-axis-bottom text-tiny">Low Impact</div>
+                        <div class="axis-label x-axis-left text-tiny">Low Effort</div>
+                        <div class="axis-label x-axis-right text-tiny">High Effort</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Supporting Analysis Section -->
+        <section class="supporting-analysis animate-fade-in animate-delay-400">
+            <div class="analysis-container">
+                <!-- Department Rankings -->
+                <div class="analysis-card departments">
+                    <div class="analysis-header">
+                        <div class="analysis-icon departments">
+                            <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="analysis-title-group">
+                            <h3 class="text-h3">Department Rankings</h3>
+                            <p class="analysis-subtitle text-small">Priority scoring by automation potential</p>
+                        </div>
+                    </div>
+                    
+                    <div class="dept-list">
+                        <div class="dept-item">
+                            <div class="dept-info">
+                                <div class="dept-name text-body">Finance & Accounting</div>
+                                <div class="dept-metric text-small">2 processes • $450K potential</div>
+                            </div>
+                            <div class="dept-score">
+                                <span class="score-badge text-small">94</span>
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: 94%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dept-item">
+                            <div class="dept-info">
+                                <div class="dept-name text-body">Customer Service</div>
+                                <div class="dept-metric text-small">1 process • $280K potential</div>
+                            </div>
+                            <div class="dept-score">
+                                <span class="score-badge text-small">76</span>
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: 76%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dept-item">
+                            <div class="dept-info">
+                                <div class="dept-name text-body">Operations</div>
+                                <div class="dept-metric text-small">1 process • $320K potential</div>
+                            </div>
+                            <div class="dept-score">
+                                <span class="score-badge text-small">82</span>
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: 82%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dept-item">
+                            <div class="dept-info">
+                                <div class="dept-name text-body">Operations</div>
+                                <div class="dept-metric text-small">1 process • $320K potential</div>
+                            </div>
+                            <div class="dept-score">
+                                <span class="score-badge text-small">82</span>
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: 82%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-footer">
+                        <div class="confidence-indicator">
+                            <span class="confidence-label text-small">Scoring Logic: ROI (40%) + Readiness (30%) + Volume (20%) + Feasibility (10%)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Use Case Priorities -->
+                <div class="analysis-card use-cases">
+                    <div class="analysis-header">
+                        <div class="analysis-icon use-cases">
+                            <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="analysis-title-group">
+                            <h3 class="text-h3">Use Case Priorities</h3>
+                            <p class="analysis-subtitle text-small">Ranked by implementation priority</p>
+                        </div>
+                    </div>
+                    
+                    <div class="usecase-list">
+                        <div class="usecase-item" onclick="showUseCaseDetails('invoice')">
+                            <div class="usecase-info">
+                                <div class="usecase-name text-body">Invoice Processing</div>
+                                <div class="usecase-details text-small">
+                                    <span>Finance</span> • <span>340% ROI</span> • <span>6-8 weeks</span>
+                                </div>
+                            </div>
+                            <div class="usecase-score text-small">96</div>
+                        </div>
+                        
+                        <div class="usecase-item" onclick="showUseCaseDetails('hr-screening')">
+                            <div class="usecase-info">
+                                <div class="usecase-name text-body">Resume Screening</div>
+                                <div class="usecase-details text-small">
+                                    <span>HR</span> • <span>220% ROI</span> • <span>4-6 weeks</span>
+                                </div>
+                            </div>
+                            <div class="usecase-score text-small">91</div>
+                        </div>
+                        
+                        <div class="usecase-item" onclick="showUseCaseDetails('email-auto')">
+                            <div class="usecase-info">
+                                <div class="usecase-name text-body">Email Automation</div>
+                                <div class="usecase-details text-small">
+                                    <span>Customer Service</span> • <span>185% ROI</span> • <span>3-4 weeks</span>
+                                </div>
+                            </div>
+                            <div class="usecase-score text-small">85</div>
+                        </div>
+                        
+                        <div class="usecase-item" onclick="showUseCaseDetails('onboarding')">
+                            <div class="usecase-info">
+                                <div class="usecase-name text-body">Customer Onboarding</div>
+                                <div class="usecase-details text-small">
+                                    <span>Sales</span> • <span>280% ROI</span> • <span>8-10 weeks</span>
+                                </div>
+                            </div>
+                            <div class="usecase-score text-small">83</div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-footer">
+                        <div class="confidence-indicator">
+                            <span class="confidence-label text-small">Algorithm: Impact × Feasibility ÷ Complexity</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROI Breakdown -->
+                <div class="analysis-card roi">
+                    <div class="analysis-header">
+                        <div class="analysis-icon roi">
+                            <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
+                                <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
+                            </svg>
+                        </div>
+                        <div class="analysis-title-group">
+                            <h3 class="text-h3">ROI Breakdown</h3>
+                            <p class="analysis-subtitle text-small">Financial impact analysis</p>
+                        </div>
+                    </div>
+                    
+                    <div class="roi-grid">
+                        <div class="roi-metric">
+                            <div class="roi-value">$2.4M</div>
+                            <div class="roi-label text-small">Annual Savings</div>
+                        </div>
+                        <div class="roi-metric">
+                            <div class="roi-value">370%</div>
+                            <div class="roi-label text-small">Average ROI</div>
+                        </div>
+                        <div class="roi-metric">
+                            <div class="roi-value">6.2mo</div>
+                            <div class="roi-label text-small">Payback Period</div>
+                        </div>
+                        <div class="roi-metric">
+                            <div class="roi-value">45%</div>
+                            <div class="roi-label text-small">Time Reduction</div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="roiChart"></canvas>
+                    </div>
+                    
+                    <div class="analysis-footer">
+                        <div class="confidence-indicator">
+                            <span class="confidence-label text-small">Confidence Level:</span>
+                            <span class="confidence-score text-small">85%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Implementation Roadmap -->
+                <div class="analysis-card roadmap">
+                    <div class="analysis-header">
+                        <div class="analysis-icon roadmap">
+                            <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="analysis-title-group">
+                            <h3 class="text-h3">Implementation Roadmap</h3>
+                            <p class="analysis-subtitle text-small">24-month strategic timeline</p>
+                        </div>
+                    </div>
+                    
+                    <div class="roadmap-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-phase text-body">Phase 1: Quick Wins</div>
+                            <div class="timeline-duration text-small">Months 1-3</div>
+                            <div class="timeline-description text-small">Invoice Processing, HR Screening, Email Automation</div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-phase text-body">Phase 2: Mid-tier Automation</div>
+                            <div class="timeline-duration text-small">Months 4-8</div>
+                            <div class="timeline-description text-small">Customer Onboarding, Report Generation</div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-phase text-body">Phase 3: Major Projects</div>
+                            <div class="timeline-duration text-small">Months 9-18</div>
+                            <div class="timeline-description text-small">ERP Integration, Supply Chain Automation</div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-phase text-body">Phase 4: Optimization</div>
+                            <div class="timeline-duration text-small">Months 19-24</div>
+                            <div class="timeline-description text-small">AI Enhancement, Advanced Analytics, Scale</div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-footer">
+                        <div class="confidence-indicator">
+                            <span class="confidence-label text-small">Dependencies mapped • Resources optimized • Risks mitigated</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Action Center -->
+        <section class="action-center animate-fade-in animate-delay-400">
+            <div class="action-container">
+                <div class="action-header">
+                    <h2 class="action-title text-h1">Recommended Actions</h2>
+                    <p class="action-subtitle text-body">Strategic next steps to maximize automation ROI</p>
+                </div>
+                
+                <div class="action-grid">
+                    <div class="action-card" onclick="startQuickWin()">
+                        <div class="action-card-icon">
+                            <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="action-card-content">
+                            <h3 class="action-card-title text-h3">Start Invoice Processing</h3>
+                            <p class="action-card-description text-small">Begin highest-ROI quick win project with 340% return</p>
+                        </div>
+                    </div>
+                    
+                    <div class="action-card" onclick="scheduleAssessment()">
+                        <div class="action-card-icon">
+                            <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="action-card-content">
+                            <h3 class="action-card-title text-h3">Schedule Deep Dive</h3>
+                            <p class="action-card-description text-small">2-week detailed process analysis and feasibility study</p>
+                        </div>
+                    </div>
+                    
+                    <div class="action-card" onclick="viewDetailedAnalysis()">
+                        <div class="action-card-icon">
+                            <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
+                                <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
+                            </svg>
+                        </div>
+                        <div class="action-card-content">
+                            <h3 class="action-card-title text-h3">Executive Summary</h3>
+                            <p class="action-card-description text-small">Generate board-ready presentation with projections</p>
+                        </div>
+                    </div>
+                    
+                    <div class="action-card" onclick="calculateCustomROI()">
+                        <div class="action-card-icon">
+                            <svg width="24" height="24" fill="white" viewBox="0 0 20 20">
+                                <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"></path>
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="action-card-content">
+                            <h3 class="action-card-title text-h3">ROI Calculator</h3>
+                            <p class="action-card-description text-small">Custom scenario modeling and financial projections</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- FAB Button -->
+    <button class="fab" id="primaryFab" onclick="toggleFabMenu()" aria-label="Quick Actions Menu">
+        <svg class="fab-icon" viewBox="0 0 24 24">
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+        <div class="fab-menu" id="fabMenu">
+            <button class="fab-menu-item" onclick="startNewProcess()">
+                <svg class="fab-menu-item-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                </svg>
+                <span class="fab-menu-item-text">Add Process</span>
+            </button>
+            <button class="fab-menu-item" onclick="quickAnalysis()">
+                <svg class="fab-menu-item-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+                </svg>
+                <span class="fab-menu-item-text">Quick Analysis</span>
+            </button>
+            <button class="fab-menu-item" onclick="exportData()">
+                <svg class="fab-menu-item-icon" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+                <span class="fab-menu-item-text">Export Report</span>
+            </button>
+        </div>
+    </button>
+
+    <script>
+        // Modern Chart Configuration
+        function initROIChart() {
+            const ctx = document.getElementById('roiChart').getContext('2d');
+            
+            const chartData = {
+                labels: ['Invoice\nProcessing', 'HR\nScreening', 'Email\nAutomation', 'Customer\nOnboarding'],
+                datasets: [{
+                    label: 'Annual Savings',
+                    data: [340, 220, 185, 280],
+                    backgroundColor: 'rgba(16, 185, 129, 0.8)',
+                    borderColor: 'rgba(16, 185, 129, 1)',
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    borderSkipped: false,
+                }, {
+                    label: 'Implementation Cost',
+                    data: [45, 25, 35, 52],
+                    backgroundColor: 'rgba(37, 99, 235, 0.8)',
+                    borderColor: 'rgba(37, 99, 235, 1)',
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    borderSkipped: false,
+                }]
+            };
+            
+            const chartConfig = {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                font: {
+                                    family: 'Inter',
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: 'white',
+                            bodyColor: 'white',
+                            titleFont: {
+                                family: 'Inter',
+                                size: 14,
+                                weight: '600'
+                            },
+                            bodyFont: {
+                                family: 'Inter',
+                                size: 13
+                            },
+                            cornerRadius: 8,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.dataset.label || '';
+                                    const value = context.parsed.y;
+                                    return `${label}: $${value}K`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    family: 'Inter',
+                                    size: 11,
+                                    weight: '500'
+                                },
+                                color: '#64748b'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(226, 232, 240, 0.8)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                font: {
+                                    family: 'Inter',
+                                    size: 11
+                                },
+                                color: '#64748b',
+                                callback: function(value) {
+                                    return '$' + value + 'K';
+                                }
+                            }
+                        }
+                    },
+                    elements: {
+                        bar: {
+                            borderRadius: 6
+                        }
+                    },
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeInOutCubic'
+                    }
+                }
+            };
+            
+            new Chart(ctx, chartConfig);
+        }
+        
+        // Refresh Dashboard Function
+        function refreshDashboard() {
+            const btn = event.target;
+            btn.style.transform = 'rotate(180deg)';
+            btn.disabled = true;
+            
+            // Simulate data refresh
+            setTimeout(() => {
+                btn.style.transform = 'rotate(0deg)';
+                btn.disabled = false;
+                showNotification('Dashboard data refreshed successfully', 'success');
+            }, 1500);
+        }
+        
+        // Show notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg text-white ${
+                type === 'success' ? 'bg-green-600' : 
+                type === 'error' ? 'bg-red-600' : 'bg-blue-600'
+            }`;
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 1rem;
+                right: 1rem;
+                z-index: 9999;
+                padding: 1rem 1.5rem;
+                border-radius: 0.5rem;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                color: white;
+                background-color: ${type === 'success' ? '#059669' : type === 'error' ? '#dc2626' : '#2563eb'};
+                font-family: Inter, sans-serif;
+                font-weight: 500;
+                animation: slideInRight 0.3s ease;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Enhanced Interactive Functions
+        function showQuadrantDetails(quadrant) {
+            const details = {
+                'major': {
+                    title: 'Major Projects Quadrant',
+                    description: 'High-impact initiatives requiring significant investment but delivering transformational business outcomes.',
+                    details: [
+                        '• ERP Integration: $1.2M annual savings potential',
+                        '• Supply Chain Automation: End-to-end visibility',
+                        '• Timeline: 9-18 months implementation',
+                        '• Resource Requirements: Cross-functional teams',
+                        '• Risk Level: Medium-High (mitigated with phased approach)'
+                    ]
+                },
+                'quick': {
+                    title: 'Quick Wins Quadrant',
+                    description: 'High-impact, low-effort opportunities perfect for building automation momentum.',
+                    details: [
+                        '• Invoice Processing: 340% ROI in 6-8 weeks',
+                        '• HR Resume Screening: 220% ROI in 4-6 weeks', 
+                        '• Email Automation: 185% ROI in 3-4 weeks',
+                        '• Low Risk: Proven technology solutions',
+                        '• Quick Validation: Immediate business value'
+                    ]
+                },
+                'fillins': {
+                    title: 'Fill-ins Quadrant',
+                    description: 'Low-priority initiatives suitable for resource availability periods or training.',
+                    details: [
+                        '• Basic Report Generation: Limited complexity',
+                        '• Calendar Scheduling: Minor efficiency gains',
+                        '• Timeline: 1-3 weeks implementation',
+                        '• Perfect for: Junior team training',
+                        '• Resource Requirements: Minimal'
+                    ]
+                },
+                'avoid': {
+                    title: 'Avoid Quadrant',
+                    description: 'High-effort, low-impact initiatives that should be deprioritized or reconsidered.',
+                    details: [
+                        '• Legacy System Replacement: Poor ROI (45%)',
+                        '• High Complexity: 18-24 month timeline',
+                        '• Recommendation: Defer until future phases',
+                        '• Alternative: Focus on integration layers',
+                        '• Business Case: Requires reassessment'
+                    ]
+                }
+            };
+            
+            const info = details[quadrant];
+            const message = `${info.title}\n\n${info.description}\n\n${info.details.join('\n')}\n\nWould you like to explore implementation details?`;
+            
+            if (confirm(message)) {
+                showNotification(`${info.title} analysis loaded`, 'success');
+            }
+        }
+
+        function showUseCaseDetails(usecase) {
+            const details = {
+                'invoice': {
+                    name: 'Invoice Processing Automation',
+                    current: 'Manual process: 4 hours per invoice review',
+                    automated: 'AI-powered: 5 minutes with 95% accuracy',
+                    volume: 'Annual Volume: 12,000 invoices',
+                    savings: 'Time Savings: 47,000 hours annually',
+                    roi: 'ROI: 340% with 6.2 month payback',
+                    timeline: 'Implementation: 6-8 weeks'
+                },
+                'hr-screening': {
+                    name: 'HR Resume Screening Automation',
+                    current: 'Manual process: 2 hours per candidate',
+                    automated: 'AI screening: 10 minutes + ranking',
+                    volume: 'Annual Volume: 2,400 applications',
+                    savings: 'Time Savings: 4,760 hours annually',
+                    roi: 'ROI: 220% with 8.1 month payback',
+                    timeline: 'Implementation: 4-6 weeks'
+                },
+                'email-auto': {
+                    name: 'Email Response Automation',
+                    current: 'Manual process: 30 minutes per inquiry',
+                    automated: 'Instant response + intelligent routing',
+                    volume: 'Annual Volume: 8,500 inquiries',
+                    savings: 'Time Savings: 4,250 hours annually',
+                    roi: 'ROI: 185% with 9.3 month payback',
+                    timeline: 'Implementation: 3-4 weeks'
+                },
+                'onboarding': {
+                    name: 'Customer Onboarding Automation',
+                    current: 'Manual process: 3 days setup time',
+                    automated: 'Guided workflow: 2 hours completion',
+                    volume: 'Annual Volume: 480 new customers',
+                    savings: 'Time Savings: 2,880 hours annually',
+                    roi: 'ROI: 280% with 7.5 month payback',
+                    timeline: 'Implementation: 8-10 weeks'
+                }
+            };
+            
+            const info = details[usecase];
+            const message = `${info.name}\n\nCurrent State:\n${info.current}\n\nAutomated State:\n${info.automated}\n\nBusiness Impact:\n• ${info.volume}\n• ${info.savings}\n• ${info.roi}\n• ${info.timeline}`;
+            
+            alert(message);
+            showNotification('Use case details loaded', 'info');
+        }
+
+        function startQuickWin() {
+            const message = `🚀 Invoice Processing Quick Win Initiative\n\nImplementation Plan:\n\nWeek 1-2: Technical Assessment\n• Process mapping and documentation\n• Technical architecture review\n• Vendor selection and contracts\n\nWeek 3-4: Pilot Development\n• Configure automation platform\n• Test with 100 sample invoices\n• User acceptance testing\n\nWeek 5-6: Full Deployment\n• Production rollout\n• User training and onboarding\n• Performance monitoring setup\n\nWeek 7-8: ROI Validation\n• Measure time savings\n• Calculate actual ROI\n• Document lessons learned\n\nExpected Outcomes:\n• 340% ROI within 90 days\n• 95% accuracy rate\n• 47,000 hours saved annually\n\nReady to proceed?`;
+            
+            if (confirm(message)) {
+                showNotification('Invoice Processing project initiated successfully!', 'success');
+            }
+        }
+
+        function scheduleAssessment() {
+            const message = `📅 Deep Dive Assessment Program\n\n2-Week Comprehensive Analysis:\n\nWeek 1: Discovery Phase\n• Stakeholder interviews (8-10 sessions)\n• Current state process mapping\n• Pain point identification\n• Volume and complexity analysis\n\nWeek 2: Analysis & Recommendations\n• Technical feasibility assessment\n• ROI calculations and modeling\n• Risk assessment and mitigation\n• Implementation roadmap creation\n\nDeliverables:\n• Executive summary presentation\n• Detailed technical specifications\n• Business case documentation\n• Implementation timeline\n• Vendor recommendations\n\nInvestment: $25,000\nTimeline: 2 weeks\nROI: 15x average return\n\nSchedule kickoff meeting?`;
+            
+            if (confirm(message)) {
+                showNotification('Deep dive assessment scheduled successfully!', 'success');
+            }
+        }
+
+        function viewDetailedAnalysis() {
+            const message = `📊 Executive Summary Report\n\nBoard-Ready Presentation Includes:\n\nStrategic Overview:\n• Current automation maturity\n• Market opportunity analysis\n• Competitive positioning\n\nFinancial Projections:\n• 3-year ROI breakdown\n• Cost-benefit analysis\n• Payback period calculations\n• Risk-adjusted returns\n\nImplementation Strategy:\n• Phased rollout timeline\n• Resource requirements\n• Change management plan\n• Success metrics and KPIs\n\nRisk Assessment:\n• Technical implementation risks\n• Business continuity planning\n• Mitigation strategies\n\nDelivery Format:\n• PowerPoint presentation (45 slides)\n• Executive summary (2 pages)\n• Financial model (Excel)\n• Implementation checklist\n\nDelivery: 48 hours\nCost: Included\n\nGenerate report now?`;
+            
+            if (confirm(message)) {
+                showNotification('Executive summary report generation started!', 'success');
+            }
+        }
+
+        function calculateCustomROI() {
+            const message = `🧮 Advanced ROI Calculator\n\nCustomizable Scenario Modeling:\n\nProcess Variables:\n• Adjust current process times\n• Modify labor costs and benefits\n• Set process volumes and frequency\n• Account for error rates and rework\n\nImplementation Parameters:\n• Compare multiple vendor solutions\n• Model different rollout phases\n• Include training and change costs\n• Factor in ongoing maintenance\n\nBusiness Scenarios:\n• Conservative vs optimistic projections\n• Sensitivity analysis on key variables\n• Monte Carlo risk simulations\n• Break-even analysis\n\nOutput Reports:\n• Detailed financial models\n• ROI comparison matrices\n• Implementation timeline impacts\n• Risk-adjusted business cases\n\nAccess Level: Executive Dashboard\nComplexity: Advanced\n\nLaunch ROI calculator?`;
+            
+            if (confirm(message)) {
+                showNotification('Advanced ROI calculator launching...', 'info');
+                // Simulate calculator launch
+                setTimeout(() => {
+                    showNotification('ROI calculator loaded successfully!', 'success');
+                }, 1500);
+            }
+        }
+
+        // Settings Button Function
+        function openSettings() {
+            const message = `⚙️ Dashboard Settings\n\nConfiguration Options:\n\n🎨 Display Settings:\n• Toggle dark/light mode\n• Adjust chart colors\n• Customize metric cards\n• Set update frequency\n\n📊 Data Settings:\n• Filter departments\n• Adjust ROI thresholds\n• Set confidence levels\n• Configure alerts\n\n🔐 Access Settings:\n• User permissions\n• Export permissions\n• Sharing settings\n• Audit logging\n\n📱 Notification Settings:\n• Email alerts\n• Dashboard notifications\n• Report scheduling\n• Threshold warnings\n\n🔄 Integration Settings:\n• API connections\n• Data sources\n• Sync intervals\n• Backup settings\n\nOpen settings panel?`;
+            
+            if (confirm(message)) {
+                showNotification('Settings panel opened successfully!', 'success');
+            }
+        }
+
+        // FAB Menu Functions
+        function toggleFabMenu() {
+            const fab = document.getElementById('primaryFab');
+            const fabMenu = document.getElementById('fabMenu');
+            
+            fab.classList.toggle('active');
+            
+            // Close menu when clicking outside
+            if (fab.classList.contains('active')) {
+                document.addEventListener('click', closeFabMenuOnOutsideClick);
+            } else {
+                document.removeEventListener('click', closeFabMenuOnOutsideClick);
+            }
+        }
+
+        function closeFabMenuOnOutsideClick(event) {
+            const fab = document.getElementById('primaryFab');
+            const fabMenu = document.getElementById('fabMenu');
+            
+            if (!fab.contains(event.target)) {
+                fab.classList.remove('active');
+                document.removeEventListener('click', closeFabMenuOnOutsideClick);
+            }
+        }
+
+        function startNewProcess() {
+            toggleFabMenu(); // Close menu
+            const message = `🚀 Add New Process\n\nProcess Information:\n\n📝 Basic Details:\n• Process name and description\n• Department assignment\n• Current owner/stakeholder\n• Process frequency\n\n⏱️ Time Analysis:\n• Current process duration\n• Manual steps involved\n• Bottlenecks and pain points\n• Volume metrics\n\n💰 Financial Impact:\n• Current process costs\n• Labor hours involved\n• Error rates and rework\n• Opportunity costs\n\n🎯 Automation Potential:\n• Automation readiness score\n• Technical complexity\n• Required integrations\n• Expected ROI\n\nThis will launch the Process Builder wizard to capture all necessary details for analysis.\n\nStart new process analysis?`;
+            
+            if (confirm(message)) {
+                showNotification('Process Builder wizard launching...', 'success');
+            }
+        }
+
+        function quickAnalysis() {
+            toggleFabMenu(); // Close menu
+            const message = `⚡ Quick Analysis\n\nRapid Process Assessment:\n\n🔍 Express Evaluation:\n• 5-minute process survey\n• Automated scoring algorithm\n• Instant ROI estimation\n• Priority ranking\n\n📋 Assessment Areas:\n• Process complexity\n• Automation readiness\n• Business impact\n• Implementation effort\n\n📊 Immediate Results:\n• Process score (0-100)\n• ROI projection\n• Implementation timeline\n• Priority recommendation\n\n💡 Next Steps:\n• Add to project backlog\n• Schedule detailed analysis\n• Generate business case\n• Assign to implementation team\n\nPerfect for quickly evaluating new automation opportunities.\n\nStart quick analysis?`;
+            
+            if (confirm(message)) {
+                showNotification('Quick analysis tool launched!', 'info');
+            }
+        }
+
+        function exportData() {
+            toggleFabMenu(); // Close menu
+            const message = `📤 Export Dashboard Data\n\nExport Options:\n\n📊 Report Formats:\n• Executive PDF Summary\n• Detailed Excel Workbook\n• PowerPoint Presentation\n• CSV Data Files\n\n🎯 Content Selection:\n• Complete dashboard data\n• Specific metrics only\n• Priority matrix data\n• ROI analysis details\n\n📅 Time Range:\n• Current snapshot\n• Historical trends (3/6/12 months)\n• Custom date range\n• Comparative analysis\n\n🔒 Security Options:\n• Password protection\n• Watermarking\n• Access restrictions\n• Audit trail logging\n\n📧 Delivery:\n• Download immediately\n• Email to stakeholders\n• Schedule recurring exports\n• Cloud storage sync\n\nGenerate export package?`;
+            
+            if (confirm(message)) {
+                showNotification('Export package generation started!', 'success');
+                // Simulate export process
+                setTimeout(() => {
+                    showNotification('Dashboard export completed successfully!', 'success');
+                }, 2000);
+            }
+        }
+
+        // Advanced Initialization and Interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize components
+            initROIChart();
+            initProgressRings();
+            initAnimations();
+            initInteractivity();
+            
+            // Console logging for debugging
+            console.log('🎯 Business Automation Intelligence Dashboard Loaded');
+            console.log('📊 Modern UI: 3-row layout with proper hierarchy');
+            console.log('🔧 Fixed: Text overlapping and positioning issues');
+            console.log('💎 Enhanced: Professional design with micro-interactions');
+            console.log('📱 Responsive: Mobile-first with adaptive layouts');
+            console.log('⚡ Performance: Optimized animations and interactions');
+            
+            // Show loading complete notification
+            setTimeout(() => {
+                showNotification('Dashboard loaded successfully', 'success');
+            }, 1000);
+        });
+        
+        // Initialize progress rings animation
+        function initProgressRings() {
+            const progressRings = document.querySelectorAll('.progress-ring .progress');
+            progressRings.forEach(ring => {
+                const circumference = 2 * Math.PI * 30; // radius = 30
+                const progress = 87; // 87% score
+                const offset = circumference - (progress / 100) * circumference;
+                ring.style.strokeDashoffset = offset;
+            });
+        }
+        
+        // Initialize scroll animations
+        function initAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe animated elements
+            document.querySelectorAll('.animate-fade-in, .animate-slide-in-left, .animate-slide-in-right').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                observer.observe(el);
+            });
+        }
+        
+        // Initialize advanced interactivity
+        function initInteractivity() {
+            // Enhanced click feedback for all interactive elements
+            document.addEventListener('click', function(e) {
+                const interactiveElements = [
+                    '.matrix-quadrant',
+                    '.usecase-item', 
+                    '.action-card',
+                    '.dept-item',
+                    '.metric-card',
+                    '.kpi-card',
+                    '.analysis-card'
+                ];
+                
+                const isInteractive = interactiveElements.some(selector => 
+                    e.target.closest(selector)
+                );
+                
+                if (isInteractive) {
+                    const element = e.target.closest(interactiveElements.join(','));
+                    element.style.transform = 'scale(0.97)';
+                    element.style.transition = 'transform 0.1s ease';
+                    
+                    setTimeout(() => {
+                        element.style.transform = '';
+                        element.style.transition = '';
+                    }, 150);
+                }
+            });
+            
+            // Keyboard navigation support
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const focusedElement = document.activeElement;
+                    if (focusedElement.classList.contains('matrix-quadrant')) {
+                        e.preventDefault();
+                        focusedElement.click();
+                    }
+                }
+            });
+            
+            // Add focus indicators for accessibility
+            const focusableElements = document.querySelectorAll(
+                '.matrix-quadrant, .usecase-item, .action-card, .dept-item'
+            );
+            
+            focusableElements.forEach(element => {
+                element.setAttribute('tabindex', '0');
+                element.style.outline = 'none';
+                
+                element.addEventListener('focus', function() {
+                    this.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.3)';
+                });
+                
+                element.addEventListener('blur', function() {
+                    this.style.boxShadow = '';
+                });
+            });
+        }
+        
+        // Performance monitoring
+        function logPerformanceMetrics() {
+            if (window.performance) {
+                const loadTime = window.performance.timing.loadEventEnd - 
+                                window.performance.timing.navigationStart;
+                console.log(`⚡ Dashboard Load Time: ${loadTime}ms`);
+            }
+        }
+        
+        // Call performance logging after load
+        window.addEventListener('load', logPerformanceMetrics);
+        
+        // Add dynamic styles for animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(100px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+            
+            @keyframes slideOutRight {
+                from {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateX(100px);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+    </script>
+</body>
+</html>

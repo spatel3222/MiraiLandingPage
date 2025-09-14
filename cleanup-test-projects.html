@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clean Up Test Projects</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        button {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #c82333;
+        }
+        .safe-button {
+            background: #28a745;
+        }
+        .safe-button:hover {
+            background: #218838;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background: #f4f4f4;
+        }
+        .test-project {
+            background: #fff3cd;
+        }
+        .keep-project {
+            background: #d4edda;
+        }
+    </style>
+</head>
+<body>
+    <h1>Clean Up Test Projects from Supabase</h1>
+    
+    <div>
+        <button onclick="loadProjects()">Load All Projects</button>
+        <button onclick="deleteTestProjects()" style="display:none;" id="deleteBtn">Delete Test Projects</button>
+        <button onclick="deleteAllExceptTestSept9b()" style="display:none;" id="deleteAllBtn">Delete All Except testSept9b</button>
+    </div>
+    
+    <div id="status"></div>
+    <div id="results"></div>
+    
+    <script>
+        const SUPABASE_URL = 'https://fvyghgvshobufpgaclbs.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2eWdoZ3ZzaG9idWZwZ2FjbGJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxNDI1MjgsImV4cCI6MjA3MjcxODUyOH0.RR_PavED-XHko85FsuLVWfWapVIJZ3l3vRPq4lszmfM';
+        
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let allProjects = [];
+        
+        async function loadProjects() {
+            const statusDiv = document.getElementById('status');
+            const resultsDiv = document.getElementById('results');
+            
+            statusDiv.innerHTML = '<p>Loading projects...</p>';
+            
+            try {
+                const { data: projects, error } = await supabaseClient
+                    .from('projects')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) {
+                    statusDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+                    return;
+                }
+                
+                allProjects = projects || [];
+                statusDiv.innerHTML = `<p style="color: green;">Found ${allProjects.length} projects</p>`;
+                
+                // Identify test projects (likely created for testing)
+                const testProjects = allProjects.filter(p => 
+                    p.name.toLowerCase().includes('test') ||
+                    p.name.includes('Project Alpha') ||
+                    p.name.includes('Project Beta') ||
+                    p.name.includes('SunSep7') ||
+                    p.name.includes('Sample Project') ||
+                    p.name.match(/Project \d+/) || // Project 1, Project 2, etc.
+                    p.name.match(/Test\d+/) // Test1, Test2, etc.
+                );
+                
+                const keepProjects = allProjects.filter(p => 
+                    p.name.includes('testSept9b') // Keep this one
+                );
+                
+                // Display projects in a table
+                let html = '<h2>Projects Overview</h2>';
+                html += `<p>Total: ${allProjects.length} | Test Projects: ${testProjects.length} | Keep: ${keepProjects.length}</p>`;
+                html += '<table>';
+                html += '<tr><th>Name</th><th>Created</th><th>ID</th><th>Status</th><th>Action</th></tr>';
+                
+                allProjects.forEach(project => {
+                    const isTest = testProjects.some(t => t.id === project.id);
+                    const isKeep = keepProjects.some(k => k.id === project.id);
+                    const rowClass = isKeep ? 'keep-project' : (isTest ? 'test-project' : '');
+                    const status = isKeep ? 'KEEP' : (isTest ? 'TO DELETE' : 'REVIEW');
+                    
+                    html += `<tr class="${rowClass}">
+                        <td>${project.name}</td>
+                        <td>${new Date(project.created_at).toLocaleDateString()}</td>
+                        <td style="font-size: 10px;">${project.id}</td>
+                        <td><strong>${status}</strong></td>
+                        <td>
+                            ${!isKeep ? `<button onclick="deleteProject('${project.id}', '${project.name.replace(/'/g, "\\'")}')">Delete</button>` : ''}
+                        </td>
+                    </tr>`;
+                });
+                
+                html += '</table>';
+                resultsDiv.innerHTML = html;
+                
+                // Show bulk delete buttons
+                if (testProjects.length > 0) {
+                    document.getElementById('deleteBtn').style.display = 'inline-block';
+                    document.getElementById('deleteBtn').textContent = `Delete ${testProjects.length} Test Projects`;
+                }
+                document.getElementById('deleteAllBtn').style.display = 'inline-block';
+                
+            } catch (error) {
+                statusDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+                console.error('Error:', error);
+            }
+        }
+        
+        async function deleteProject(projectId, projectName) {
+            if (!confirm(`Delete project "${projectName}"?`)) return;
+            
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<p>Deleting ${projectName}...</p>`;
+            
+            try {
+                // First delete all processes for this project
+                const { error: processError } = await supabaseClient
+                    .from('processes')
+                    .delete()
+                    .eq('project_id', projectId);
+                
+                if (processError) {
+                    console.warn('Process deletion error:', processError);
+                }
+                
+                // Delete department tokens
+                const { error: tokenError } = await supabaseClient
+                    .from('department_tokens')
+                    .delete()
+                    .eq('project_id', projectId);
+                
+                if (tokenError) {
+                    console.warn('Token deletion error:', tokenError);
+                }
+                
+                // Delete the project
+                const { error: projectError } = await supabaseClient
+                    .from('projects')
+                    .delete()
+                    .eq('id', projectId);
+                
+                if (projectError) {
+                    statusDiv.innerHTML = `<p style="color: red;">Error deleting project: ${projectError.message}</p>`;
+                    return;
+                }
+                
+                statusDiv.innerHTML = `<p style="color: green;">✅ Deleted project: ${projectName}</p>`;
+                
+                // Reload the list
+                setTimeout(loadProjects, 1000);
+                
+            } catch (error) {
+                statusDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+        
+        async function deleteTestProjects() {
+            const testProjects = allProjects.filter(p => 
+                (p.name.toLowerCase().includes('test') ||
+                p.name.includes('Project Alpha') ||
+                p.name.includes('Project Beta') ||
+                p.name.includes('SunSep7') ||
+                p.name.includes('Sample Project') ||
+                p.name.match(/Project \d+/) ||
+                p.name.match(/Test\d+/)) &&
+                !p.name.includes('testSept9b') // Don't delete testSept9b
+            );
+            
+            if (!confirm(`Delete ${testProjects.length} test projects?`)) return;
+            
+            const statusDiv = document.getElementById('status');
+            let deleted = 0;
+            
+            for (const project of testProjects) {
+                statusDiv.innerHTML = `<p>Deleting ${deleted + 1}/${testProjects.length}: ${project.name}...</p>`;
+                
+                try {
+                    // Delete processes
+                    await supabaseClient.from('processes').delete().eq('project_id', project.id);
+                    // Delete tokens
+                    await supabaseClient.from('department_tokens').delete().eq('project_id', project.id);
+                    // Delete project
+                    await supabaseClient.from('projects').delete().eq('id', project.id);
+                    
+                    deleted++;
+                } catch (error) {
+                    console.error(`Failed to delete ${project.name}:`, error);
+                }
+            }
+            
+            statusDiv.innerHTML = `<p style="color: green;">✅ Deleted ${deleted} test projects</p>`;
+            setTimeout(loadProjects, 1000);
+        }
+        
+        async function deleteAllExceptTestSept9b() {
+            const projectsToDelete = allProjects.filter(p => !p.name.includes('testSept9b'));
+            
+            if (!confirm(`Delete ALL ${projectsToDelete.length} projects except testSept9b? This cannot be undone!`)) return;
+            if (!confirm(`Are you REALLY sure? This will delete ${projectsToDelete.length} projects permanently!`)) return;
+            
+            const statusDiv = document.getElementById('status');
+            let deleted = 0;
+            
+            for (const project of projectsToDelete) {
+                statusDiv.innerHTML = `<p>Deleting ${deleted + 1}/${projectsToDelete.length}: ${project.name}...</p>`;
+                
+                try {
+                    // Delete processes
+                    await supabaseClient.from('processes').delete().eq('project_id', project.id);
+                    // Delete tokens
+                    await supabaseClient.from('department_tokens').delete().eq('project_id', project.id);
+                    // Delete project
+                    await supabaseClient.from('projects').delete().eq('id', project.id);
+                    
+                    deleted++;
+                } catch (error) {
+                    console.error(`Failed to delete ${project.name}:`, error);
+                }
+            }
+            
+            statusDiv.innerHTML = `<p style="color: green;">✅ Deleted ${deleted} projects. Only testSept9b remains.</p>`;
+            setTimeout(loadProjects, 1000);
+        }
+    </script>
+</body>
+</html>
