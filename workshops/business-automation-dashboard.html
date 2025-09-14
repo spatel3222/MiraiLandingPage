@@ -3416,22 +3416,6 @@
                     
                     <div class="kpi-card">
                         <div class="kpi-header">
-                            <div>
-                                <div class="kpi-title text-small">Quick Win Opportunities</div>
-                                <div class="kpi-value" id="quickWinOpportunities">6</div>
-                                <div class="kpi-description text-small">High-impact, low-effort implementations</div>
-                            </div>
-                            <div class="kpi-trend text-small" style="color: var(--amber-600); display: flex; align-items: center; gap: 4px;">
-                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd"></path>
-                                </svg>
-                                Start within 30 days
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="kpi-card">
-                        <div class="kpi-header">
                             <h3 class="kpi-title">Quick Wins</h3>
                             <div class="kpi-icon quick-wins">
                                 <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
@@ -3449,99 +3433,6 @@
                 </div>
             </section>
 
-            <!-- Row 3: Priority Matrix -->
-            <section class="priority-matrix-row animate-fade-in animate-delay-300">
-                <div class="matrix-container">
-                    <div class="matrix-header">
-                        <h2 class="matrix-title text-h1">Automation Priority Matrix</h2>
-                        <p class="matrix-subtitle text-body">Strategic Decision Framework: Business Impact vs Implementation Effort</p>
-                    </div>
-                    
-                    <div class="matrix-wrapper">
-                        <div class="matrix-grid">
-                            <div class="matrix-quadrant major-projects" onclick="showQuadrantDetails('major')">
-                                <div class="quadrant-header">
-                                    <div class="quadrant-info">
-                                        <h3 class="text-h3">Major Projects</h3>
-                                        <span class="quadrant-subtitle text-small">High Impact • High Effort</span>
-                                    </div>
-                                    <span class="quadrant-badge text-tiny" id="majorProjectsCount">2</span>
-                                </div>
-                                <div class="quadrant-items" id="majorProjectsList">
-                                    <div class="matrix-item text-small">
-                                        <strong>ERP Integration</strong><br>
-                                        ROI: 450% | Timeline: 12-18 months
-                                    </div>
-                                    <div class="matrix-item text-small">
-                                        <strong>Supply Chain Automation</strong><br>
-                                        ROI: 280% | Timeline: 9-12 months
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="matrix-quadrant quick-wins" onclick="showQuadrantDetails('quick')">
-                                <div class="quadrant-header">
-                                    <div class="quadrant-info">
-                                        <h3 class="text-h3">Quick Wins</h3>
-                                        <span class="quadrant-subtitle text-small">High Impact • Low Effort</span>
-                                    </div>
-                                    <span class="quadrant-badge text-tiny" id="quickWinsCount">3</span>
-                                </div>
-                                <div class="quadrant-items" id="quickWinsList">
-                                    <div class="matrix-item text-small">
-                                        <strong>Invoice Processing</strong><br>
-                                        ROI: 340% | Timeline: 6-8 weeks
-                                    </div>
-                                    <div class="matrix-item text-small">
-                                        <strong>HR Resume Screening</strong><br>
-                                        ROI: 220% | Timeline: 4-6 weeks
-                                    </div>
-                                    <div class="matrix-item text-small">
-                                        <strong>Email Response Automation</strong><br>
-                                        ROI: 185% | Timeline: 3-4 weeks
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="matrix-quadrant fill-ins" onclick="showQuadrantDetails('fillins')">
-                                <div class="quadrant-header">
-                                    <div class="quadrant-info">
-                                        <h3 class="text-h3">Fill-ins</h3>
-                                        <span class="quadrant-subtitle text-small">Low Impact • Low Effort</span>
-                                    </div>
-                                    <span class="quadrant-badge text-tiny" id="fillInsCount">2</span>
-                                </div>
-                                <div class="quadrant-items" id="fillInsList">
-                                    <div class="matrix-item text-small">
-                                        <strong>Basic Report Generation</strong><br>
-                                        ROI: 120% | Timeline: 2-3 weeks
-                                    </div>
-                                    <div class="matrix-item text-small">
-                                        <strong>Calendar Scheduling</strong><br>
-                                        ROI: 95% | Timeline: 1-2 weeks
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="matrix-quadrant avoid" onclick="showQuadrantDetails('avoid')">
-                                <div class="quadrant-header">
-                                    <div class="quadrant-info">
-                                        <h3 class="text-h3">Avoid</h3>
-                                        <span class="quadrant-subtitle text-small">Low Impact • High Effort</span>
-                                    </div>
-                                    <span class="quadrant-badge text-tiny" id="avoidCount">0</span>
-                                </div>
-                                <div class="quadrant-items" id="avoidList">
-                                    <div class="matrix-item text-small">
-                                        <strong>Legacy System Replacement</strong><br>
-                                        ROI: 45% | Timeline: 18-24 months
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             <!-- Supporting Analysis Section -->
             <section class="supporting-analysis animate-fade-in animate-delay-400">
@@ -5055,10 +4946,17 @@
         // Update dashboard metrics with real data
         function updateDashboardMetrics() {
             try {
-                // Update project name
+                // Update project name - use project name from projects array, not ID
                 const projectNameElement = document.getElementById('currentProjectName');
-                if (projectNameElement) {
-                    projectNameElement.textContent = currentProject || 'testSept9b';
+                if (projectNameElement && currentProjectId) {
+                    const currentProjectObj = projects.find(p => p.id === currentProjectId);
+                    if (currentProjectObj) {
+                        projectNameElement.textContent = currentProjectObj.name;
+                    } else {
+                        projectNameElement.textContent = 'Unknown Project';
+                    }
+                } else if (projectNameElement) {
+                    projectNameElement.textContent = 'No Project Selected';
                 }
                 
                 // Update total processes
@@ -5192,6 +5090,7 @@
             // Ensure charts are recreated with the new data
             setTimeout(() => {
                 recreateCharts();
+                updateDashboardMetrics(); // Ensure project name and metrics update
                 debugLog(`📊 Charts recreated with ${processes.length} processes`);
             }, 100);
         }
@@ -6357,12 +6256,18 @@
                                     id: newProject.id,
                                     name: newProject.name,
                                     clientName: clientName,
-                                    createdAt: newProject.created_at || new Date().toISOString()
+                                    createdAt: newProject.created_at || new Date().toISOString(),
+                                    storageType: newProject.storageType || 'localStorage'
                                 };
                                 projects.push(localProject);
                                 saveProjects();
                                 renderProjectList();
-                                showNotification('Project created successfully', 'success');
+                                
+                                // Trigger auto-refresh callback
+                                onProjectCreated({
+                                    ...newProject,
+                                    clientName: clientName
+                                });
                             }
                             closeProjectModal();
                         }).catch(error => {
@@ -6428,13 +6333,183 @@
         
         function updateProjectWorkspaceIfVisible() {
             // Check if project workspace is currently visible
-            const workspaceContainer = document.getElementById('workspace-container');
-            if (workspaceContainer && !workspaceContainer.classList.contains('hidden')) {
-                // Re-render the workspace with updated project data
-                const content = workspaceContainer.querySelector('.workspace-content');
-                if (content && content.innerHTML.includes('New Project')) {
-                    openProjectWorkspace(); // Refresh the workspace
+            const workspaceContainer = document.getElementById('contextualWorkspace');
+            if (workspaceContainer && workspaceContainer.classList.contains('active')) {
+                // Check if it's the project workspace by looking for project overview content
+                const content = workspaceContainer.querySelector('.workspace-body');
+                if (content && content.innerHTML.includes('Project Overview')) {
+                    refreshProjectOverviewModal();
                 }
+            }
+        }
+
+        // Auto-refresh functionality for Project Overview modal
+        async function refreshProjectOverviewModal() {
+            console.log('🔄 Refreshing Project Overview modal...');
+            
+            // Reload projects from storage to ensure we have the latest data
+            await loadAllProjects();
+            
+            // Re-render modal content
+            renderProjectOverviewContent();
+            
+            // Highlight newly added project if we have a reference
+            if (window.latestProjectId) {
+                setTimeout(() => {
+                    highlightProject(window.latestProjectId);
+                    window.latestProjectId = null; // Clear after highlighting
+                }, 300);
+            }
+        }
+
+        function renderProjectOverviewContent() {
+            const workspaceContainer = document.getElementById('contextualWorkspace');
+            if (!workspaceContainer || !workspaceContainer.classList.contains('active')) {
+                return; // Modal not open
+            }
+            
+            const workspaceBody = workspaceContainer.querySelector('.workspace-body');
+            if (workspaceBody) {
+                // Re-render the entire project workspace content
+                workspaceBody.innerHTML = createProjectWorkspace();
+                console.log('✅ Project Overview modal content refreshed');
+            }
+        }
+
+        function isProjectOverviewModalOpen() {
+            const workspaceContainer = document.getElementById('contextualWorkspace');
+            if (!workspaceContainer || !workspaceContainer.classList.contains('active')) {
+                return false;
+            }
+            
+            const content = workspaceContainer.querySelector('.workspace-body');
+            return content && content.innerHTML.includes('Project Overview');
+        }
+
+        function highlightProject(projectId) {
+            if (!projectId) return;
+            
+            // Find the project card and highlight it
+            const projectCards = document.querySelectorAll('#workspaceProjectList .admin-control-card');
+            projectCards.forEach(card => {
+                const cardOnClick = card.getAttribute('onclick');
+                if (cardOnClick && cardOnClick.includes(projectId)) {
+                    // Add highlight animation
+                    card.style.transition = 'all 0.3s ease';
+                    card.style.transform = 'scale(1.02)';
+                    card.style.boxShadow = '0 8px 25px rgba(59, 130, 246, 0.3)';
+                    card.style.borderColor = '#3B82F6';
+                    
+                    // Remove highlight after animation
+                    setTimeout(() => {
+                        card.style.transform = '';
+                        card.style.boxShadow = '';
+                        card.style.borderColor = '';
+                    }, 2000);
+                }
+            });
+        }
+
+        async function refreshProjectDropdown() {
+            console.log('🔄 Refreshing project dropdown...');
+            updateProjectDropdowns();
+        }
+
+        async function loadAllProjects() {
+            const preferredStorageMode = getPreferredStorageMode();
+            
+            if (preferredStorageMode === 'supabase') {
+                // For Supabase mode, load projects from the backend
+                if (window.workshopDB && window.workshopDB.isConnected()) {
+                    try {
+                        const supabaseProjects = await window.workshopDB.getAllProjects();
+                        if (supabaseProjects && supabaseProjects.length > 0) {
+                            projects = supabaseProjects.map(project => ({
+                                id: project.id,
+                                name: project.name,
+                                clientName: project.description || project.metadata?.clientName || '',
+                                createdAt: project.created_at,
+                                storageType: 'supabase'
+                            }));
+                            console.log('☁️ Projects loaded from Supabase:', projects.length);
+                        }
+                    } catch (error) {
+                        console.error('❌ Failed to load projects from Supabase:', error);
+                        // Fallback to localStorage
+                        const savedProjects = localStorage.getItem('businessProjects');
+                        if (savedProjects) {
+                            projects = JSON.parse(savedProjects);
+                        }
+                    }
+                } else {
+                    console.warn('⚠️ Supabase requested but not connected, using localStorage');
+                    const savedProjects = localStorage.getItem('businessProjects');
+                    if (savedProjects) {
+                        projects = JSON.parse(savedProjects);
+                    }
+                }
+                
+                // Always sync to localStorage for UI consistency
+                localStorage.setItem('businessProjects', JSON.stringify(projects));
+                console.log('📱 Projects synced to localStorage for UI consistency');
+            } else {
+                // Load from localStorage
+                const savedProjects = localStorage.getItem('businessProjects');
+                if (savedProjects) {
+                    try {
+                        projects = JSON.parse(savedProjects);
+                        console.log('📱 Projects loaded from localStorage:', projects.length);
+                    } catch (error) {
+                        console.error('❌ Failed to parse saved projects:', error);
+                        projects = [];
+                    }
+                } else {
+                    projects = [];
+                }
+            }
+            
+            return projects;
+        }
+
+        async function onProjectCreated(newProject) {
+            console.log('🎉 Project created callback triggered:', newProject);
+            
+            try {
+                // 1. Store reference to latest project for highlighting
+                window.latestProjectId = newProject.id;
+                
+                // 2. Update local projects array (if not already done)
+                const existingProject = projects.find(p => p.id === newProject.id);
+                if (!existingProject) {
+                    const localProject = {
+                        id: newProject.id,
+                        name: newProject.name,
+                        clientName: newProject.clientName || newProject.description || '',
+                        createdAt: newProject.created_at || newProject.createdAt || new Date().toISOString(),
+                        storageType: newProject.storageType || 'localStorage'
+                    };
+                    projects.push(localProject);
+                    saveProjects();
+                }
+                
+                // 3. Refresh Project Overview modal (if open)
+                if (isProjectOverviewModalOpen()) {
+                    await refreshProjectOverviewModal();
+                }
+                
+                // 4. Refresh main dashboard dropdown
+                await refreshProjectDropdown();
+                
+                // 5. Show enhanced success notification
+                showNotification(`✅ Project "${newProject.name}" created successfully`, 'success');
+                
+                // 6. Optionally auto-select the new project
+                await switchProject(newProject.id);
+                
+                console.log('✅ Project creation workflow completed');
+            } catch (error) {
+                console.error('❌ Error in project creation callback:', error);
+                showNotification('Project created but refresh failed', 'warning');
             }
         }
         
