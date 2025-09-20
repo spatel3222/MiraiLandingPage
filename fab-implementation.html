@@ -1,0 +1,445 @@
+<!-- FAB Implementation for Personal Task Tracker -->
+<!-- Add this CSS to your existing <style> section -->
+<style>
+/* FAB Styles - Add to existing CSS */
+.fab-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 50;
+}
+
+.fab-main {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  z-index: 60;
+}
+
+.fab-main:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.fab-main:active {
+  transform: scale(0.95);
+}
+
+.fab-main.expanded {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+}
+
+.fab-main.expanded .fab-icon {
+  transform: rotate(45deg);
+}
+
+.fab-icon {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.fab-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 40;
+}
+
+.fab-backdrop.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.fab-sub-actions {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.fab-container.expanded .fab-sub-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.fab-sub {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  transform: scale(0);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+}
+
+.fab-sub:hover {
+  transform: scale(1.1);
+}
+
+.fab-sub svg {
+  width: 20px;
+  height: 20px;
+}
+
+.fab-add-task {
+  background: linear-gradient(135deg, var(--accent-green), #047857);
+  transform: translateY(0) scale(0);
+}
+
+.fab-upload {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  transform: translateY(0) scale(0);
+}
+
+.fab-container.expanded .fab-add-task {
+  transform: translateY(-80px) scale(1);
+  transition-delay: 0.1s;
+}
+
+.fab-container.expanded .fab-upload {
+  transform: translateY(-140px) scale(1);
+  transition-delay: 0.2s;
+}
+
+/* Tooltip */
+.fab-tooltip {
+  position: absolute;
+  right: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.fab-sub:hover .fab-tooltip {
+  opacity: 1;
+  transition-delay: 0.5s;
+}
+
+/* Dark mode support */
+.dark-mode .fab-main {
+  background: linear-gradient(135deg, var(--accent-blue), #2563eb);
+  box-shadow: 0 4px 14px 0 rgba(96, 165, 250, 0.3);
+}
+
+.dark-mode .fab-main:hover {
+  box-shadow: 0 6px 20px rgba(96, 165, 250, 0.4);
+}
+
+.dark-mode .fab-backdrop {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .fab-container {
+    bottom: 1rem;
+    right: 1rem;
+  }
+  
+  .fab-tooltip {
+    right: 56px;
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+}
+
+/* Accessibility */
+.fab-main:focus-visible,
+.fab-sub:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .fab-main,
+  .fab-sub,
+  .fab-icon,
+  .fab-backdrop {
+    transition-duration: 0.1s;
+  }
+  
+  .fab-container.expanded .fab-sub {
+    transition-delay: 0s;
+  }
+}
+</style>
+
+<!-- Add this HTML before the closing </body> tag -->
+<div id="fab-container" class="fab-container">
+  <!-- Backdrop -->
+  <div id="fab-backdrop" class="fab-backdrop"></div>
+  
+  <!-- Sub Actions -->
+  <div class="fab-sub-actions">
+    <!-- Upload Notes -->
+    <button id="fab-upload" class="fab-sub fab-upload" aria-label="Upload handwritten notes">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+      </svg>
+      <div class="fab-tooltip">Upload Notes</div>
+    </button>
+    
+    <!-- Add Task -->
+    <button id="fab-add-task" class="fab-sub fab-add-task" aria-label="Add new task">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+      </svg>
+      <div class="fab-tooltip">Add Task</div>
+    </button>
+  </div>
+  
+  <!-- Main FAB -->
+  <button id="fab-main" class="fab-main" aria-expanded="false" aria-label="Open actions menu">
+    <svg class="fab-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+    </svg>
+  </button>
+</div>
+
+<!-- Add this JavaScript to your existing script section -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  class FABController {
+    constructor() {
+      this.isExpanded = false;
+      this.init();
+    }
+    
+    init() {
+      this.fabContainer = document.getElementById('fab-container');
+      this.fabMain = document.getElementById('fab-main');
+      this.fabBackdrop = document.getElementById('fab-backdrop');
+      this.fabAddTask = document.getElementById('fab-add-task');
+      this.fabUpload = document.getElementById('fab-upload');
+      
+      if (!this.fabContainer) return;
+      
+      this.bindEvents();
+    }
+    
+    bindEvents() {
+      // Main FAB toggle
+      this.fabMain.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.toggle();
+      });
+      
+      // Backdrop close
+      this.fabBackdrop.addEventListener('click', () => {
+        this.close();
+      });
+      
+      // Add task action
+      this.fabAddTask.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.handleAddTask();
+      });
+      
+      // Upload notes action
+      this.fabUpload.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.handleUploadNotes();
+      });
+      
+      // Keyboard support
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.isExpanded) {
+          this.close();
+        }
+      });
+      
+      // Click outside to close
+      document.addEventListener('click', (e) => {
+        if (this.isExpanded && !this.fabContainer.contains(e.target)) {
+          this.close();
+        }
+      });
+    }
+    
+    toggle() {
+      if (this.isExpanded) {
+        this.close();
+      } else {
+        this.open();
+      }
+    }
+    
+    open() {
+      this.isExpanded = true;
+      this.fabContainer.classList.add('expanded');
+      this.fabBackdrop.classList.add('show');
+      this.fabMain.setAttribute('aria-expanded', 'true');
+      this.fabMain.setAttribute('aria-label', 'Close actions menu');
+      
+      // Add haptic feedback if available
+      if (navigator.vibrate) {
+        navigator.vibrate(50);
+      }
+    }
+    
+    close() {
+      this.isExpanded = false;
+      this.fabContainer.classList.remove('expanded');
+      this.fabBackdrop.classList.remove('show');
+      this.fabMain.setAttribute('aria-expanded', 'false');
+      this.fabMain.setAttribute('aria-label', 'Open actions menu');
+    }
+    
+    handleAddTask() {
+      this.close();
+      
+      // Trigger existing add task functionality
+      const addTaskBtn = document.getElementById('add-task-btn');
+      if (addTaskBtn) {
+        addTaskBtn.click();
+      } else {
+        console.log('Add task triggered from FAB');
+        // If no existing button, you can call your add task function directly
+        // Example: openTaskModal();
+      }
+    }
+    
+    handleUploadNotes() {
+      this.close();
+      
+      // Find and trigger upload functionality
+      // Option 1: Scroll to upload section
+      const uploadSection = document.querySelector('.upload-area') || 
+                           document.querySelector('[data-upload]') ||
+                           document.querySelector('#upload-section');
+      
+      if (uploadSection) {
+        uploadSection.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center' 
+        });
+        
+        // Optional: Highlight the section briefly
+        uploadSection.style.outline = '2px solid var(--accent-blue)';
+        uploadSection.style.outlineOffset = '4px';
+        setTimeout(() => {
+          uploadSection.style.outline = '';
+          uploadSection.style.outlineOffset = '';
+        }, 2000);
+      } else {
+        // Option 2: Create upload modal or trigger upload input
+        this.triggerFileUpload();
+      }
+    }
+    
+    triggerFileUpload() {
+      // Create or trigger file input for immediate upload
+      let fileInput = document.getElementById('fab-file-input');
+      
+      if (!fileInput) {
+        fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.id = 'fab-file-input';
+        fileInput.accept = 'image/*';
+        fileInput.multiple = true;
+        fileInput.style.display = 'none';
+        document.body.appendChild(fileInput);
+        
+        fileInput.addEventListener('change', (e) => {
+          if (e.target.files.length > 0) {
+            console.log('Files selected:', e.target.files);
+            // Process the files here
+            // You can integrate with your existing upload functionality
+            this.processUploadedFiles(e.target.files);
+          }
+        });
+      }
+      
+      fileInput.click();
+    }
+    
+    processUploadedFiles(files) {
+      // Integrate with your existing file processing logic
+      console.log('Processing uploaded files:', files);
+      
+      // Example: Show a toast notification
+      this.showToast(`${files.length} file(s) selected for processing`);
+      
+      // Call your existing upload/processing function here
+      // Example: processHandwrittenNotes(files);
+    }
+    
+    showToast(message) {
+      // Simple toast notification
+      const toast = document.createElement('div');
+      toast.className = 'fixed bottom-24 right-6 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg z-50 transition-all duration-300 transform translate-y-2 opacity-0';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      
+      // Animate in
+      setTimeout(() => {
+        toast.style.transform = 'translateY(0)';
+        toast.style.opacity = '1';
+      }, 100);
+      
+      // Remove after 3 seconds
+      setTimeout(() => {
+        toast.style.transform = 'translateY(2rem)';
+        toast.style.opacity = '0';
+        setTimeout(() => document.body.removeChild(toast), 300);
+      }, 3000);
+    }
+  }
+  
+  // Initialize FAB
+  window.fabController = new FABController();
+});
+</script>
+
+<!-- INTEGRATION INSTRUCTIONS -->
+<!-- 
+1. Copy the CSS into your existing <style> section
+2. Add the HTML before your closing </body> tag
+3. Copy the JavaScript into your existing <script> section
+4. Remove or hide the existing "Add Task" button from header to avoid duplication:
+   
+   #add-task-btn {
+     display: none;
+   }
+   
+5. The FAB will automatically integrate with your existing task modal
+6. Customize the upload functionality in handleUploadNotes() method
+7. Test on mobile devices for proper positioning and touch targets
+-->
