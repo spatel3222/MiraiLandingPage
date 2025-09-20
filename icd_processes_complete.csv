@@ -1,0 +1,49 @@
+Process Name,Department,Custom Department,Time Spent,Repetitive Score,Data-Driven Score,Rule-Based Score,High Volume Score,Impact Score,Feasibility Score,Process Notes
+Lead Generation and Customer Identification,Sales,,20,8,9,7,8,9,8,"Identifying new customers (importers/exporters, freight forwarders, customs brokers) in Gujarat and nearby states"
+Customer Data Analysis for Revenue Insights,Sales,,15,7,10,8,6,8,9,Analyzing past customer data to identify sectors/industries giving maximum revenue
+Cargo Demand Prediction,Sales,,12,6,10,7,7,9,7,"Predicting import/export trends, seasonal variations, trade policies impact"
+Lead Follow-up Automation,Sales,,25,10,7,9,9,8,9,"Email, WhatsApp, LinkedIn campaigns to increase conversion rate"
+Competitor Analysis and Monitoring,Sales,,10,8,8,6,5,7,7,"Monitoring competitor rates, customers, marketing strategy"
+Dynamic Pricing for Services,Finance,,8,7,9,8,7,9,7,"Dynamic pricing for trailers, rakes, and warehouse storage based on demand/supply"
+Warehouse Layout Optimization,Operations,,15,5,8,7,6,8,6,"Optimizing warehouse layout for faster picking, storage, and retrieval"
+Inventory Management and Stock Tracking,Operations,,30,10,9,9,10,10,8,"Real-time stock visibility using IoT, RFID, barcode scanners"
+Cargo Flow Prediction,Operations,,12,7,10,8,8,8,7,"Predicting cargo inflow/outflow trends, seasonal exports/imports, port congestion impact"
+Safety and Compliance Monitoring,Operations,,20,9,7,10,8,9,8,"CCTV monitoring, DG cargo handling, customs clearance records"
+Fleet Utilization and Route Optimization,Operations,,25,9,10,8,9,10,8,"Maximize trailer utilization, reduce empty runs, optimal route selection"
+Real-Time Fleet Tracking,Operations,,15,10,9,7,10,8,9,GPS/IoT integration for real-time dashboard and ETA predictions
+Fuel Monitoring and Efficiency,Operations,,10,9,10,8,8,9,8,"Monitor fuel consumption, detect theft or pilferage patterns"
+Predictive Maintenance for Fleet,Operations,,18,7,9,8,8,9,7,"Predict breakdowns, optimize spare parts inventory, schedule preventive maintenance"
+Rake Demand Forecasting,Operations,Rail Operations,12,7,10,8,7,9,7,Forecast import/export rake demand based on shipping schedules and customs data
+Rake Turnaround Optimization,Operations,Rail Operations,20,9,8,8,8,9,7,"Optimize unloading, reloading, departure to reduce detention charges"
+Real-time Yard Management,Operations,Rail Operations,25,10,9,8,9,8,7,"Real-time placement and tracking of containers, rakes, and cranes in yard"
+Customer Container Visibility,Customer Service,,15,10,8,7,9,8,8,Real-time visibility of containers from yard to rake to road for customers
+Customs Clearance Document Processing,Operations,,30,9,7,10,9,9,7,Automating customs clearance document checking to reduce clearance delays
+Attendance Tracking Automation,HR,,20,10,8,9,9,7,9,"Automate attendance for drivers, conductors, warehouse staff using biometric, GPS, RFID, mobile app"
+Attendance Anomaly Detection,HR,,10,9,9,8,7,6,8,"Detect proxy punching, missed logins, duplicate entries"
+Staff Shortage Prediction,HR,,8,7,9,7,6,8,7,Predict staff shortages in advance and suggest replacements
+Optimal Shift Scheduling,HR,,15,9,8,9,8,8,8,Optimize scheduling for drivers/warehouse staff to reduce overtime and fatigue
+Labour Law Compliance Monitoring,HR,,12,8,7,10,7,9,8,"Ensure compliance with labour laws, working hours, rest requirements for drivers"
+Dynamic Shift Roster Adjustment,HR,,10,8,9,8,7,7,7,Dynamically adjust shift rosters based on cargo arrival/departure forecast
+Candidate Screening and Shortlisting,HR,,10,7,8,8,6,6,8,Shortlist candidates for driver/technical/admin roles based on performance data
+Attrition Risk Analysis,HR,,8,6,9,7,5,8,7,Identify high attrition risk employees with early warning system
+Employee Feedback Analysis,HR,,12,7,8,6,6,7,8,Analyze employee feedback to improve engagement and retention
+Skill Gap Analysis,HR,,10,6,8,7,5,7,7,Identify skill gaps in workforce and suggest personalized training
+Driver Training Tracking,HR,,12,8,8,9,7,8,8,"Track driver training needs for safety, compliance, fuel-efficient driving"
+E-Learning Module Delivery,HR,,8,7,6,8,7,6,9,Provide e-learning modules in regional languages for warehouse and transport staff
+Driver Performance Evaluation,HR,,15,8,9,8,7,8,8,"Evaluate driver performance on fuel efficiency, on-time deliveries, safety records"
+Performance Scorecard Generation,HR,,10,9,9,8,8,7,9,Auto-generate performance scorecards for each employee from operational data
+Leadership Potential Identification,HR,,8,5,8,6,4,7,6,Use predictive analytics to identify future leaders in the organization
+Payroll Automation,HR,,25,10,9,10,9,9,9,"Automate salary, overtime, and incentive calculations from attendance & performance"
+Payroll Error Prevention,HR,,10,8,8,9,7,8,8,Avoid disputes and errors in payroll processing
+Statutory Compliance Management,HR,,15,9,7,10,8,9,8,"Ensure compliance with PF, ESIC, gratuity, bonus rules, and tax laws"
+Driver Fatigue Monitoring,HR,,12,9,9,8,8,9,7,"Monitor driver fatigue through telematics, GPS data, rest times"
+Accident Risk Prediction,HR,,10,7,9,7,6,9,7,Predict accident-prone employees and trigger safety training
+Health Monitoring Support,HR,,8,7,8,7,6,7,7,"Support health monitoring through wearables, predictive absenteeism"
+Employee Query Automation,HR,,15,10,7,9,9,7,9,"AI chatbots for employee queries on salary slips, leaves, shift info, HR policies"
+Employee Sentiment Analysis,HR,,10,7,9,6,7,7,8,"Sentiment analysis from employee feedback, WhatsApp/CRM chats"
+Employee Satisfaction Improvement,HR,,12,6,8,6,6,8,7,Systematic approach to improve overall employee satisfaction
+HR-Operations Data Integration,HR,,10,8,9,8,8,8,7,"Integrate HR data with Transport Management, Warehouse, and Workshop systems"
+Management Dashboard Creation,HR,,8,9,9,7,7,8,8,Single dashboard with HR + Operations data for top management
+Predictive Manpower Planning,HR,,12,7,9,8,6,8,7,Predictive manpower planning for peak import/export seasons
+HR Cost-Benefit Analysis,HR,,8,6,9,7,5,7,8,Identify which HR areas give maximum cost savings with AI
+Manual Work Reduction Analysis,HR,,10,7,8,7,6,7,8,Analyze and reduce dependency on manual HR work and human errors

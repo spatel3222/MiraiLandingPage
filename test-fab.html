@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAB Test Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* FAB Test Styles */
+        .fab-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 40;
+        }
+
+        .fab-main {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 3;
+        }
+
+        .fab-main:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .fab-main.active {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+        
+        .fab-main.active .fab-icon {
+            transform: rotate(45deg);
+        }
+
+        .fab-icon {
+            width: 24px;
+            height: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .fab-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .fab-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .fab-actions {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 16px;
+            pointer-events: none;
+        }
+
+        .fab-action {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            transform: translateY(20px) scale(0.8);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .fab-action.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .fab-action:nth-child(1) {
+            transition-delay: 0.1s;
+        }
+
+        .fab-action:nth-child(2) {
+            transition-delay: 0.05s;
+        }
+
+        .fab-action-label {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            white-space: nowrap;
+            backdrop-filter: blur(8px);
+        }
+
+        .fab-action-button {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .fab-action-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .fab-action-button svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Status display */
+        .status {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="status">
+        <h1 class="text-xl font-bold mb-4">FAB Test Status</h1>
+        <div id="status-text">
+            <p>FAB State: <span id="fab-state" class="font-mono">closed</span></p>
+            <p>Action 1 Visibility: <span id="action1-state" class="font-mono">hidden</span></p>
+            <p>Action 2 Visibility: <span id="action2-state" class="font-mono">hidden</span></p>
+        </div>
+    </div>
+
+    <!-- FAB Container -->
+    <div class="fab-container">
+        <div class="fab-backdrop" id="fab-backdrop"></div>
+        <div class="fab-actions">
+            <!-- Upload Notes Action -->
+            <div class="fab-action" id="fab-upload-action">
+                <span class="fab-action-label">Upload Notes</span>
+                <button class="fab-action-button" id="fab-upload-btn" aria-label="Upload handwritten notes">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: #3b82f6;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                    </svg>
+                </button>
+            </div>
+            <!-- Add Task Action -->
+            <div class="fab-action" id="fab-add-action">
+                <span class="fab-action-label">Add Task</span>
+                <button class="fab-action-button" id="fab-add-btn" aria-label="Add new task">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: #10b981;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <button class="fab-main" id="fab-main" aria-label="Open action menu">
+            <svg class="fab-icon" fill="white" viewBox="0 0 24 24">
+                <path d="M12 4v16m8-8H4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        // FAB functionality
+        const fabMain = document.getElementById('fab-main');
+        const fabBackdrop = document.getElementById('fab-backdrop');
+        const fabActions = document.querySelectorAll('.fab-action');
+        const fabAddBtn = document.getElementById('fab-add-btn');
+        const fabUploadBtn = document.getElementById('fab-upload-btn');
+        
+        let fabOpen = false;
+
+        // Update status display
+        function updateStatus() {
+            document.getElementById('fab-state').textContent = fabOpen ? 'open' : 'closed';
+            document.getElementById('action1-state').textContent = 
+                fabActions[0].classList.contains('active') ? 'visible' : 'hidden';
+            document.getElementById('action2-state').textContent = 
+                fabActions[1].classList.contains('active') ? 'visible' : 'hidden';
+        }
+
+        // Toggle FAB menu
+        function toggleFab() {
+            fabOpen = !fabOpen;
+            
+            if (fabOpen) {
+                fabMain.classList.add('active');
+                fabBackdrop.classList.add('active');
+                fabActions.forEach(action => action.classList.add('active'));
+            } else {
+                fabMain.classList.remove('active');
+                fabBackdrop.classList.remove('active');
+                fabActions.forEach(action => action.classList.remove('active'));
+            }
+            
+            updateStatus();
+        }
+
+        // FAB main button click
+        fabMain.addEventListener('click', toggleFab);
+        
+        // FAB backdrop click to close
+        fabBackdrop.addEventListener('click', () => {
+            if (fabOpen) toggleFab();
+        });
+
+        // Action button clicks
+        fabAddBtn.addEventListener('click', () => {
+            alert('Add Task clicked!');
+            toggleFab();
+        });
+
+        fabUploadBtn.addEventListener('click', () => {
+            alert('Upload Notes clicked!');
+            toggleFab();
+        });
+
+        // Initial status update
+        updateStatus();
+    </script>
+</body>
+</html>
