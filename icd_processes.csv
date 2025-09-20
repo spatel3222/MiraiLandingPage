@@ -1,0 +1,25 @@
+Process Name,Department,Custom Department,Time Spent,Repetitive Score,Data-Driven Score,Rule-Based Score,High Volume Score,Impact Score,Feasibility Score,Process Notes
+Lead Generation and Customer Identification,Sales,,20,8,9,7,8,9,8,"Identifying new customers (importers/exporters, freight forwarders, customs brokers) in Gujarat and nearby states"
+Customer Data Analysis for Revenue Insights,Sales,,15,7,10,8,6,8,9,Analyzing past customer data to identify sectors/industries giving maximum revenue
+Cargo Demand Prediction,Sales,,12,6,10,7,7,9,7,"Predicting import/export trends, seasonal variations, trade policies impact"
+Lead Follow-up Automation,Sales,,25,10,7,9,9,8,9,"Email, WhatsApp, LinkedIn campaigns to increase conversion rate"
+Competitor Analysis and Monitoring,Sales,,10,8,8,6,5,7,7,"Monitoring competitor rates, customers, marketing strategy"
+Dynamic Pricing for Services,Finance,,8,7,9,8,7,9,7,"Dynamic pricing for trailers, rakes, and warehouse storage based on demand/supply"
+Warehouse Layout Optimization,Operations,,15,5,8,7,6,8,6,"Optimizing warehouse layout for faster picking, storage, and retrieval"
+Inventory Management and Stock Tracking,Operations,,30,10,9,9,10,10,8,"Real-time stock visibility using IoT, RFID, barcode scanners"
+Cargo Flow Prediction,Operations,,12,7,10,8,8,8,7,"Predicting cargo inflow/outflow trends, seasonal exports/imports, port congestion impact"
+Safety and Compliance Monitoring,Operations,,20,9,7,10,8,9,8,"CCTV monitoring, DG cargo handling, customs clearance records"
+Fleet Utilization and Route Optimization,Operations,,25,9,10,8,9,10,8,"Maximize trailer utilization, reduce empty runs, optimal route selection"
+Real-Time Fleet Tracking,Operations,,15,10,9,7,10,8,9,GPS/IoT integration for real-time dashboard and ETA predictions
+Fuel Monitoring and Efficiency,Operations,,10,9,10,8,8,9,8,"Monitor fuel consumption, detect theft or pilferage patterns"
+Driver Performance Management,HR,,12,8,9,8,7,7,8,"Analyze driver behavior (speeding, harsh braking, idling) and assign trips fairly"
+Predictive Maintenance for Fleet,Operations,,18,7,9,8,8,9,7,"Predict breakdowns, optimize spare parts inventory, schedule preventive maintenance"
+Attendance and Workforce Tracking,HR,,20,10,8,9,9,7,9,"Automate attendance for drivers, conductors, warehouse staff using biometric, GPS, RFID"
+Shift and Duty Scheduling,HR,,15,9,8,9,8,8,8,Optimal shift scheduling to reduce overtime and ensure compliance with labour laws
+Recruitment and Candidate Screening,HR,,10,7,8,8,6,6,8,Shortlisting candidates for driver/technical/admin roles based on performance data
+Payroll and Compliance Automation,HR,,25,10,9,10,9,8,9,"Automate salary, overtime, incentive calculations with PF, ESIC, tax compliance"
+Rake Demand Forecasting,Operations,Rail Operations,12,7,10,8,7,9,7,Forecast import/export rake demand based on shipping schedules and customs data
+Rake Turnaround Optimization,Operations,Rail Operations,20,9,8,8,8,9,7,"Optimize unloading, reloading, departure to reduce detention charges"
+Real-time Yard Management,Operations,Rail Operations,25,10,9,8,9,8,7,"Real-time placement and tracking of containers, rakes, and cranes in yard"
+Customer Container Visibility,Customer Service,,15,10,8,7,9,8,8,Real-time visibility of containers from yard to rake to road for customers
+Customs Clearance Document Processing,Operations,,30,9,7,10,9,9,7,Automating customs clearance document checking to reduce clearance delays

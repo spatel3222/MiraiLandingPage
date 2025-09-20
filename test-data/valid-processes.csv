@@ -1,0 +1,6 @@
+Process Name,Department,Custom Department,Time Spent,Repetitive Score,Data-Driven Score,Rule-Based Score,High Volume Score,Impact Score,Feasibility Score,Process Notes
+"Invoice Processing","Finance","","15","9","8","9","8","8","7","Manual invoice processing with error checking"
+"Customer Onboarding","Sales","","12","7","6","8","7","9","6","New customer setup process"
+"Report Generation","Operations","","8","10","9","7","6","6","9","Weekly reports from multiple systems"
+"Inventory Management","Operations","","20","8","7","8","9","7","8","Stock level monitoring and reordering"
+"Expense Approval","Finance","","5","6","5","7","5","6","8","Employee expense review workflow"

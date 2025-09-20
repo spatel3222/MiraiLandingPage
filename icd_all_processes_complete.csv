@@ -1,0 +1,90 @@
+Process Name,Department,Custom Department,Time Spent,Repetitive Score,Data-Driven Score,Rule-Based Score,High Volume Score,Impact Score,Feasibility Score,Process Notes
+New Customer Identification,Sales,,20,8,9,7,8,9,8,"Identify new customers (importers/exporters, freight forwarders, customs brokers) in Gujarat and nearby states"
+Revenue Analysis by Sector,Sales,,15,7,10,8,6,8,9,Analyze past customer data to suggest which sectors/industries give maximum revenue
+Cargo Demand Prediction,Sales,,12,6,10,7,7,9,7,"Predict cargo demand (import/export trends, seasonal variations, trade policies impact)"
+Lead Follow-up Automation,Sales,,25,10,7,9,9,8,9,"Automate lead follow-up (email, WhatsApp, LinkedIn campaigns) to increase conversion rate"
+Competitor Analysis,Sales,,10,8,8,6,5,7,7,"Monitor competitor rates, customers, marketing strategy"
+Dynamic Pricing Strategy,Sales,,8,7,9,8,7,9,7,"Dynamic pricing for trailers, rakes, and warehouse storage based on demand/supply"
+Customer Retention Management,Sales,,15,8,9,7,7,8,8,"Alerts if a client reduces cargo with us, suggest re-engagement strategies"
+Warehouse Layout Optimization,Operations,Warehouse,15,5,8,7,6,8,6,"Optimize warehouse layout for faster picking, storage, and retrieval"
+Dynamic Slotting Management,Operations,Warehouse,12,8,9,8,7,7,7,Re-arrange goods automatically based on demand and seasonality
+Space Utilization Forecasting,Operations,Warehouse,10,7,9,7,6,7,8,Forecast space utilization and reduce congestion or underutilized areas
+Inventory Accuracy Management,Operations,Warehouse,30,10,9,9,10,10,8,Improve inventory accuracy and reduce manual errors
+Real-time Stock Visibility,Operations,Warehouse,20,10,9,8,9,9,8,"Integrate with IoT (sensors, RFID, barcode scanners, drones) for real-time stock visibility"
+Stock Shortage/Excess Prediction,Operations,Warehouse,12,7,10,8,7,8,7,Predict shortage/excess stock in advance using demand forecasting
+Automated Loading/Unloading,Operations,Warehouse,25,10,7,8,9,9,6,"AI-driven robotics (AGVs, drones, robotic arms) for loading/unloading, palletizing, stock counts"
+Optimal Picking Route Planning,Operations,Warehouse,15,9,9,8,8,7,8,AI decides optimal picking routes for workers or machines
+Goods Inward/Outward Data Entry,Operations,Warehouse,20,10,8,9,9,7,9,Reduce dependency on manual data entry for goods inward/outward
+Cargo Flow Trend Analysis,Operations,Warehouse,12,7,10,7,8,8,7,"Predict cargo inflow/outflow trends (seasonal exports/imports, port congestion, festival demand)"
+Warehouse Capacity Matching,Operations,Warehouse,10,8,9,8,7,8,7,Match warehouse storage capacity with customer demand in advance
+Safety Monitoring System,Operations,Warehouse,20,10,8,9,8,10,8,"CCTV, sensors for fire/smoke/leak detection, worker movement tracking"
+Compliance Check Automation,Operations,Warehouse,15,9,7,10,8,9,8,"Automate DG cargo handling, customs clearance records compliance checks"
+Warehouse Operational Cost Reduction,Operations,Warehouse,12,8,9,7,7,8,8,"Reduce warehouse operational cost (electricity, manpower, idle machinery)"
+Manpower Scheduling Optimization,Operations,Warehouse,15,9,8,8,8,7,8,Optimize manpower scheduling based on cargo arrival forecast
+Demurrage/Detention Reduction,Operations,Warehouse,18,8,8,8,8,9,7,Reduce demurrage or detention charges by faster cargo turnaround
+WMS Integration with Transport/Customs,Operations,Warehouse,10,8,9,8,8,8,7,"Link WMS with Transport Management, Customs clearance, ERP/MSD 365"
+Unified Dashboard Creation,Operations,Warehouse,8,9,9,7,7,8,8,Single dashboard view of warehouse + transport + rakes for management
+Equipment Preventive Maintenance,Operations,Warehouse,12,8,9,8,7,8,8,"Track warehouse equipment (forklifts, cranes, pallet trucks) and predict preventive maintenance"
+Equipment Downtime Reduction,Operations,Warehouse,10,7,8,7,6,8,7,Reduce downtime in material handling equipment
+Real-time Cargo Status Updates,Customer Service,,15,10,8,7,9,8,9,Provide real-time cargo status visibility to customers
+Automated Customer Billing,Finance,,20,10,9,9,9,8,9,Automate customer billing based on warehouse storage duration and handling
+Customer Query Chatbot,Customer Service,,12,10,7,8,9,7,9,"AI chatbots for customer queries (cargo status, billing, document status)"
+Warehouse Scalability Planning,Operations,Warehouse,8,5,8,6,5,8,6,Prepare warehouse for scalability when cargo volume increases
+Trailer Utilization Maximization,Operations,Transport,25,9,10,8,9,10,8,"Maximize trailer utilization, reduce empty runs & idle time"
+Route Optimization,Operations,Transport,20,9,10,8,9,9,8,"Optimal routes considering distance, tolls, fuel price, traffic, delivery timelines"
+Multi-Delivery Consolidation,Operations,Transport,15,8,9,8,8,8,7,Balance multiple deliveries per trip (consolidation & load optimization)
+Fleet GPS Tracking Dashboard,Operations,Transport,15,10,9,7,10,8,9,GPS/IoT integration for real-time dashboard for all trailers
+Delay Detection & Correction,Operations,Transport,12,9,9,8,8,8,8,Detect delays or diversions and automatically suggest corrective actions
+ETA Prediction System,Operations,Transport,10,9,9,7,9,7,8,Provide ETA (Estimated Time of Arrival) predictions for customers
+Fuel Consumption Monitoring,Operations,Transport,10,9,10,8,8,9,8,Monitor fuel consumption per trailer and identify abnormal usage
+Fuel Theft Detection,Operations,Transport,8,8,9,8,7,8,7,Predict fuel theft or pilferage using patterns in data
+Driver Behavior Analysis,Operations,Transport,12,8,9,8,7,8,8,"Analyze driver behavior (speeding, harsh braking, long idling, over-speed)"
+Trip Assignment Optimization,Operations,Transport,15,9,8,8,8,7,8,Assign trips fairly and reduce driver fatigue
+Driver Training Recommendation,Operations,Transport,8,6,8,7,5,7,8,Recommend driver training needs based on performance data
+Predictive Breakdown Prevention,Operations,Transport,18,7,9,8,8,9,7,Predict breakdowns before they happen (predictive maintenance)
+Spare Parts Inventory Optimization,Operations,Transport,12,8,9,8,7,7,8,Optimize spare parts inventory in in-house workshop
+Preventive Maintenance Scheduling,Operations,Transport,10,9,8,9,8,8,9,Schedule preventive maintenance automatically to reduce downtime
+Permit & Fitness Tracking,Operations,Transport,15,9,7,10,8,9,9,"Ensure trailers run with valid permits, fitness, insurance, compliance documents"
+Document Expiry Alerts,Operations,Transport,8,10,7,9,8,8,9,Alert automatically if a document is about to expire
+Trailer Demand Forecasting,Operations,Transport,12,7,10,7,7,8,7,"Forecast trailer demand based on season, customer booking patterns, past data"
+Fleet Allocation Planning,Operations,Transport,15,8,9,8,8,8,7,"Allocate trailers between ICD, warehouses, customer deliveries efficiently"
+What-If Scenario Analysis,Operations,Transport,8,5,9,6,4,7,7,"Simulate scenarios (fuel price hike, trailer downtime, new customer demand)"
+Import/Export Rake Demand Forecasting,Operations,Rail Operations,12,7,10,8,7,9,7,"Forecast rake demand based on shipping line schedules, customs data, historical patterns"
+Rake Turnaround Time Optimization,Operations,Rail Operations,20,9,8,8,8,9,7,"Optimize rake turnaround time (unloading, reloading, departure) to reduce detention charges"
+Real-time Yard Management,Operations,Rail Operations,25,10,9,8,9,8,7,"Real-time yard management (placement of containers, rakes, and cranes)"
+Rake & Wagon Predictive Maintenance,Operations,Rail Operations,15,7,9,8,7,8,7,"Predict rake and wagon maintenance needs before failures, analyze sensor/IoT data"
+Rail vs Road Cost Balancing,Finance,,10,7,9,8,6,8,8,Balance rail vs road movement costs and recommend most profitable mix
+Dynamic Rail Pricing Models,Finance,,8,7,9,8,6,8,7,Dynamic pricing models for customers depending on demand/supply of rakes
+Container Visibility Tracking,Customer Service,,15,10,8,7,9,8,8,Real-time visibility of containers (yard → rake → road) for customers
+Customs Clearance Automation,Operations,Rail Operations,30,9,7,10,9,9,7,Automate customs clearance document checking to reduce clearance delays
+Safety Monitoring with CCTV Analytics,Operations,Rail Operations,12,10,8,9,8,9,7,"Analyze CCTV footage to detect unsafe practices (overloading, improper handling, trespassing)"
+Regulatory Compliance Reporting,Operations,Rail Operations,10,9,7,10,7,8,8,Monitor regulatory compliance and generate automated reports
+Attendance Tracking Automation,HR,,20,10,8,9,9,7,9,"Automate attendance for drivers, conductors, warehouse staff using biometric, GPS, RFID, mobile app"
+Attendance Anomaly Detection,HR,,10,9,9,8,7,6,8,"Detect proxy punching, missed logins, duplicate entries"
+Staff Shortage Prediction,HR,,8,7,9,7,6,8,7,Predict staff shortages in advance and suggest replacements
+Optimal Shift Scheduling,HR,,15,9,8,9,8,8,8,Optimize scheduling for drivers/warehouse staff to reduce overtime and fatigue
+Labour Law Compliance Monitoring,HR,,12,8,7,10,7,9,8,"Ensure compliance with labour laws, working hours, rest requirements for drivers"
+Dynamic Shift Roster Adjustment,HR,,10,8,9,8,7,7,7,Dynamically adjust shift rosters based on cargo arrival/departure forecast
+Candidate Screening and Shortlisting,HR,,10,7,8,8,6,6,8,Shortlist candidates for driver/technical/admin roles based on performance data
+Attrition Risk Analysis,HR,,8,6,9,7,5,8,7,Identify high attrition risk employees with early warning system
+Employee Feedback Analysis,HR,,12,7,8,6,6,7,8,Analyze employee feedback to improve engagement and retention
+Skill Gap Analysis,HR,,10,6,8,7,5,7,7,Identify skill gaps in workforce and suggest personalized training
+Driver Training Tracking,HR,,12,8,8,9,7,8,8,"Track driver training needs for safety, compliance, fuel-efficient driving"
+E-Learning Module Delivery,HR,,8,7,6,8,7,6,9,Provide e-learning modules in regional languages for warehouse and transport staff
+Driver Performance Evaluation,HR,,15,8,9,8,7,8,8,"Evaluate driver performance on fuel efficiency, on-time deliveries, safety records"
+Performance Scorecard Generation,HR,,10,9,9,8,8,7,9,Auto-generate performance scorecards for each employee from operational data
+Leadership Potential Identification,HR,,8,5,8,6,4,7,6,Use predictive analytics to identify future leaders in the organization
+Payroll Automation,HR,,25,10,9,10,9,9,9,"Automate salary, overtime, and incentive calculations from attendance & performance"
+Payroll Error Prevention,HR,,10,8,8,9,7,8,8,Avoid disputes and errors in payroll processing
+Statutory Compliance Management,HR,,15,9,7,10,8,9,8,"Ensure compliance with PF, ESIC, gratuity, bonus rules, and tax laws"
+Driver Fatigue Monitoring,HR,,12,9,9,8,8,9,7,"Monitor driver fatigue through telematics, GPS data, rest times"
+Accident Risk Prediction,HR,,10,7,9,7,6,9,7,Predict accident-prone employees and trigger safety training
+Health Monitoring Support,HR,,8,7,8,7,6,7,7,"Support health monitoring through wearables, predictive absenteeism"
+Employee Query Automation,HR,,15,10,7,9,9,7,9,"AI chatbots for employee queries on salary slips, leaves, shift info, HR policies"
+Employee Sentiment Analysis,HR,,10,7,9,6,7,7,8,"Sentiment analysis from employee feedback, WhatsApp/CRM chats"
+Employee Satisfaction Improvement,HR,,12,6,8,6,6,8,7,Systematic approach to improve overall employee satisfaction
+HR-Operations Data Integration,HR,,10,8,9,8,8,8,7,"Integrate HR data with Transport Management, Warehouse, and Workshop systems"
+Management Dashboard Creation,HR,,8,9,9,7,7,8,8,Single dashboard with HR + Operations data for top management
+Predictive Manpower Planning,HR,,12,7,9,8,6,8,7,Predictive manpower planning for peak import/export seasons
+HR Cost-Benefit Analysis,HR,,8,6,9,7,5,7,8,Identify which HR areas give maximum cost savings with AI
+Manual Work Reduction Analysis,HR,,10,7,8,7,6,7,8,Analyze and reduce dependency on manual HR work and human errors

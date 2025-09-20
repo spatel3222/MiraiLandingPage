@@ -1,0 +1,360 @@
+#!/usr/bin/env python3
+
+import csv
+import json
+
+# Based on the ICD The thar Dry Port document, here are the key business processes identified:
+
+processes = [
+    # Sales & Marketing Department
+    {
+        "Process Name": "Lead Generation and Customer Identification",
+        "Department": "Sales",
+        "Custom Department": "",
+        "Time Spent": "20",
+        "Repetitive Score": "8",
+        "Data-Driven Score": "9",
+        "Rule-Based Score": "7",
+        "High Volume Score": "8",
+        "Impact Score": "9",
+        "Feasibility Score": "8",
+        "Process Notes": "Identifying new customers (importers/exporters, freight forwarders, customs brokers) in Gujarat and nearby states"
+    },
+    {
+        "Process Name": "Customer Data Analysis for Revenue Insights",
+        "Department": "Sales",
+        "Custom Department": "",
+        "Time Spent": "15",
+        "Repetitive Score": "7",
+        "Data-Driven Score": "10",
+        "Rule-Based Score": "8",
+        "High Volume Score": "6",
+        "Impact Score": "8",
+        "Feasibility Score": "9",
+        "Process Notes": "Analyzing past customer data to identify sectors/industries giving maximum revenue"
+    },
+    {
+        "Process Name": "Cargo Demand Prediction",
+        "Department": "Sales",
+        "Custom Department": "",
+        "Time Spent": "12",
+        "Repetitive Score": "6",
+        "Data-Driven Score": "10",
+        "Rule-Based Score": "7",
+        "High Volume Score": "7",
+        "Impact Score": "9",
+        "Feasibility Score": "7",
+        "Process Notes": "Predicting import/export trends, seasonal variations, trade policies impact"
+    },
+    {
+        "Process Name": "Lead Follow-up Automation",
+        "Department": "Sales",
+        "Custom Department": "",
+        "Time Spent": "25",
+        "Repetitive Score": "10",
+        "Data-Driven Score": "7",
+        "Rule-Based Score": "9",
+        "High Volume Score": "9",
+        "Impact Score": "8",
+        "Feasibility Score": "9",
+        "Process Notes": "Email, WhatsApp, LinkedIn campaigns to increase conversion rate"
+    },
+    {
+        "Process Name": "Competitor Analysis and Monitoring",
+        "Department": "Sales",
+        "Custom Department": "",
+        "Time Spent": "10",
+        "Repetitive Score": "8",
+        "Data-Driven Score": "8",
+        "Rule-Based Score": "6",
+        "High Volume Score": "5",
+        "Impact Score": "7",
+        "Feasibility Score": "7",
+        "Process Notes": "Monitoring competitor rates, customers, marketing strategy"
+    },
+    {
+        "Process Name": "Dynamic Pricing for Services",
+        "Department": "Finance",
+        "Custom Department": "",
+        "Time Spent": "8",
+        "Repetitive Score": "7",
+        "Data-Driven Score": "9",
+        "Rule-Based Score": "8",
+        "High Volume Score": "7",
+        "Impact Score": "9",
+        "Feasibility Score": "7",
+        "Process Notes": "Dynamic pricing for trailers, rakes, and warehouse storage based on demand/supply"
+    },
+    
+    # Warehouse Management
+    {
+        "Process Name": "Warehouse Layout Optimization",
+        "Department": "Operations",
+        "Custom Department": "",
+        "Time Spent": "15",
+        "Repetitive Score": "5",
+        "Data-Driven Score": "8",
+        "Rule-Based Score": "7",
+        "High Volume Score": "6",
+        "Impact Score": "8",
+        "Feasibility Score": "6",
+        "Process Notes": "Optimizing warehouse layout for faster picking, storage, and retrieval"
+    },
+    {
+        "Process Name": "Inventory Management and Stock Tracking",
+        "Department": "Operations",
+        "Custom Department": "",
+        "Time Spent": "30",
+        "Repetitive Score": "10",
+        "Data-Driven Score": "9",
+        "Rule-Based Score": "9",
+        "High Volume Score": "10",
+        "Impact Score": "10",
+        "Feasibility Score": "8",
+        "Process Notes": "Real-time stock visibility using IoT, RFID, barcode scanners"
+    },
+    {
+        "Process Name": "Cargo Flow Prediction",
+        "Department": "Operations",
+        "Custom Department": "",
+        "Time Spent": "12",
+        "Repetitive Score": "7",
+        "Data-Driven Score": "10",
+        "Rule-Based Score": "8",
+        "High Volume Score": "8",
+        "Impact Score": "8",
+        "Feasibility Score": "7",
+        "Process Notes": "Predicting cargo inflow/outflow trends, seasonal exports/imports, port congestion impact"
+    },
+    {
+        "Process Name": "Safety and Compliance Monitoring",
+        "Department": "Operations",
+        "Custom Department": "",
+        "Time Spent": "20",
+        "Repetitive Score": "9",
+        "Data-Driven Score": "7",
+        "Rule-Based Score": "10",
+        "High Volume Score": "8",
+        "Impact Score": "9",
+        "Feasibility Score": "8",
+        "Process Notes": "CCTV monitoring, DG cargo handling, customs clearance records"
+    },
+    
+    # Road Transportation
+    {
+        "Process Name": "Fleet Utilization and Route Optimization",
+        "Department": "Operations",
+        "Custom Department": "",
+        "Time Spent": "25",
+        "Repetitive Score": "9",
+        "Data-Driven Score": "10",
+        "Rule-Based Score": "8",
+        "High Volume Score": "9",
+        "Impact Score": "10",
+        "Feasibility Score": "8",
+        "Process Notes": "Maximize trailer utilization, reduce empty runs, optimal route selection"
+    },
+    {
+        "Process Name": "Real-Time Fleet Tracking",
+        "Department": "Operations",
+        "Custom Department": "",
+        "Time Spent": "15",
+        "Repetitive Score": "10",
+        "Data-Driven Score": "9",
+        "Rule-Based Score": "7",
+        "High Volume Score": "10",
+        "Impact Score": "8",
+        "Feasibility Score": "9",
+        "Process Notes": "GPS/IoT integration for real-time dashboard and ETA predictions"
+    },
+    {
+        "Process Name": "Fuel Monitoring and Efficiency",
+        "Department": "Operations",
+        "Custom Department": "",
+        "Time Spent": "10",
+        "Repetitive Score": "9",
+        "Data-Driven Score": "10",
+        "Rule-Based Score": "8",
+        "High Volume Score": "8",
+        "Impact Score": "9",
+        "Feasibility Score": "8",
+        "Process Notes": "Monitor fuel consumption, detect theft or pilferage patterns"
+    },
+    {
+        "Process Name": "Driver Performance Management",
+        "Department": "HR",
+        "Custom Department": "",
+        "Time Spent": "12",
+        "Repetitive Score": "8",
+        "Data-Driven Score": "9",
+        "Rule-Based Score": "8",
+        "High Volume Score": "7",
+        "Impact Score": "7",
+        "Feasibility Score": "8",
+        "Process Notes": "Analyze driver behavior (speeding, harsh braking, idling) and assign trips fairly"
+    },
+    {
+        "Process Name": "Predictive Maintenance for Fleet",
+        "Department": "Operations",
+        "Custom Department": "",
+        "Time Spent": "18",
+        "Repetitive Score": "7",
+        "Data-Driven Score": "9",
+        "Rule-Based Score": "8",
+        "High Volume Score": "8",
+        "Impact Score": "9",
+        "Feasibility Score": "7",
+        "Process Notes": "Predict breakdowns, optimize spare parts inventory, schedule preventive maintenance"
+    },
+    
+    # HR Department
+    {
+        "Process Name": "Attendance and Workforce Tracking",
+        "Department": "HR",
+        "Custom Department": "",
+        "Time Spent": "20",
+        "Repetitive Score": "10",
+        "Data-Driven Score": "8",
+        "Rule-Based Score": "9",
+        "High Volume Score": "9",
+        "Impact Score": "7",
+        "Feasibility Score": "9",
+        "Process Notes": "Automate attendance for drivers, conductors, warehouse staff using biometric, GPS, RFID"
+    },
+    {
+        "Process Name": "Shift and Duty Scheduling",
+        "Department": "HR",
+        "Custom Department": "",
+        "Time Spent": "15",
+        "Repetitive Score": "9",
+        "Data-Driven Score": "8",
+        "Rule-Based Score": "9",
+        "High Volume Score": "8",
+        "Impact Score": "8",
+        "Feasibility Score": "8",
+        "Process Notes": "Optimal shift scheduling to reduce overtime and ensure compliance with labour laws"
+    },
+    {
+        "Process Name": "Recruitment and Candidate Screening",
+        "Department": "HR",
+        "Custom Department": "",
+        "Time Spent": "10",
+        "Repetitive Score": "7",
+        "Data-Driven Score": "8",
+        "Rule-Based Score": "8",
+        "High Volume Score": "6",
+        "Impact Score": "6",
+        "Feasibility Score": "8",
+        "Process Notes": "Shortlisting candidates for driver/technical/admin roles based on performance data"
+    },
+    {
+        "Process Name": "Payroll and Compliance Automation",
+        "Department": "HR",
+        "Custom Department": "",
+        "Time Spent": "25",
+        "Repetitive Score": "10",
+        "Data-Driven Score": "9",
+        "Rule-Based Score": "10",
+        "High Volume Score": "9",
+        "Impact Score": "8",
+        "Feasibility Score": "9",
+        "Process Notes": "Automate salary, overtime, incentive calculations with PF, ESIC, tax compliance"
+    },
+    
+    # Rail Operations
+    {
+        "Process Name": "Rake Demand Forecasting",
+        "Department": "Operations",
+        "Custom Department": "Rail Operations",
+        "Time Spent": "12",
+        "Repetitive Score": "7",
+        "Data-Driven Score": "10",
+        "Rule-Based Score": "8",
+        "High Volume Score": "7",
+        "Impact Score": "9",
+        "Feasibility Score": "7",
+        "Process Notes": "Forecast import/export rake demand based on shipping schedules and customs data"
+    },
+    {
+        "Process Name": "Rake Turnaround Optimization",
+        "Department": "Operations",
+        "Custom Department": "Rail Operations",
+        "Time Spent": "20",
+        "Repetitive Score": "9",
+        "Data-Driven Score": "8",
+        "Rule-Based Score": "8",
+        "High Volume Score": "8",
+        "Impact Score": "9",
+        "Feasibility Score": "7",
+        "Process Notes": "Optimize unloading, reloading, departure to reduce detention charges"
+    },
+    {
+        "Process Name": "Real-time Yard Management",
+        "Department": "Operations",
+        "Custom Department": "Rail Operations",
+        "Time Spent": "25",
+        "Repetitive Score": "10",
+        "Data-Driven Score": "9",
+        "Rule-Based Score": "8",
+        "High Volume Score": "9",
+        "Impact Score": "8",
+        "Feasibility Score": "7",
+        "Process Notes": "Real-time placement and tracking of containers, rakes, and cranes in yard"
+    },
+    {
+        "Process Name": "Customer Container Visibility",
+        "Department": "Customer Service",
+        "Custom Department": "",
+        "Time Spent": "15",
+        "Repetitive Score": "10",
+        "Data-Driven Score": "8",
+        "Rule-Based Score": "7",
+        "High Volume Score": "9",
+        "Impact Score": "8",
+        "Feasibility Score": "8",
+        "Process Notes": "Real-time visibility of containers from yard to rake to road for customers"
+    },
+    {
+        "Process Name": "Customs Clearance Document Processing",
+        "Department": "Operations",
+        "Custom Department": "",
+        "Time Spent": "30",
+        "Repetitive Score": "9",
+        "Data-Driven Score": "7",
+        "Rule-Based Score": "10",
+        "High Volume Score": "9",
+        "Impact Score": "9",
+        "Feasibility Score": "7",
+        "Process Notes": "Automating customs clearance document checking to reduce clearance delays"
+    }
+]
+
+# Write to CSV file
+csv_filename = '/Users/shivangpatel/Documents/GitHub/crtx.in/icd_processes.csv'
+fieldnames = [
+    "Process Name", "Department", "Custom Department", "Time Spent", 
+    "Repetitive Score", "Data-Driven Score", "Rule-Based Score", 
+    "High Volume Score", "Impact Score", "Feasibility Score", "Process Notes"
+]
+
+with open(csv_filename, 'w', newline='') as csvfile:
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(processes)
+
+print(f"✅ CSV file created successfully: {csv_filename}")
+print(f"📊 Total processes extracted: {len(processes)}")
+print("\n📋 Department breakdown:")
+dept_counts = {}
+for p in processes:
+    dept = p["Department"]
+    dept_counts[dept] = dept_counts.get(dept, 0) + 1
+
+for dept, count in sorted(dept_counts.items()):
+    print(f"   - {dept}: {count} processes")
+
+# Also save as JSON for easier import
+json_filename = '/Users/shivangpatel/Documents/GitHub/crtx.in/icd_processes.json'
+with open(json_filename, 'w') as jsonfile:
+    json.dump(processes, jsonfile, indent=2)
+print(f"\n✅ JSON file also created: {json_filename}")
