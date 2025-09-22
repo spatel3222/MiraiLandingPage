@@ -1,43 +1,33 @@
-# Jekyll Configuration for GitHub Pages
+# Minimal Jekyll Configuration for GitHub Pages
+# Focus: Only process essential files, exclude everything else
 
-# Exclude problematic files and directories from Jekyll processing
+# Only include what we need
+include:
+  - personal-task-tracker-sync.html
+  - index.html
+  - README.md
+
+# Exclude everything else
 exclude:
-  - node_modules/
-  - tests/
-  - test-results/
-  - playwright-report/
-  - .github/
+  - node_modules
+  - tests
+  - test-results
+  - playwright-report
+  - .github
   - .DS_Store
   - "*.spec.js"
   - "*.test.js"
+  - "*.config.js"
   - package.json
   - package-lock.json
-  - playwright.config.js
-  - COMPREHENSIVE_CONSOLE_MONITORING_TEST_REPORT.md
-  - DASHBOARD_DATA_VERIFICATION_REPORT.md
-  - DASHBOARD_PROTOTYPE_TEST_REPORT.md
-  - DEPLOYMENT-SUMMARY.md
-  - PERSONAL_TASK_TRACKER_TEST_REPORT.md
-  - TEST_SUMMARY.md
-  - CELEBRATION_ARCHIVE_DESIGN.md
-  - ai-pm-experiments/qa-assessment-report.md
-
-# Plugins (GitHub Pages safe)
-plugins:
-  - jekyll-github-metadata
-  - jekyll-seo-tag
+  - "**/*.md"
+  - "!README.md"
+  - ai-pm-experiments
+  - docs
+  - workshops
+  - api
 
 # Basic settings
 theme: jekyll-theme-primer
-title: CRTX.in
-description: Development workspace and tools
-
-# Markdown processor
-markdown: kramdown
-kramdown:
-  input: GFM
-  syntax_highlighter: rouge
-
-# Collections and processing
 safe: true
 incremental: false
