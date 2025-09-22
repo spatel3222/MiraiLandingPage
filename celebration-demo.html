@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tracker Celebration Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Confetti Animation Styles */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            animation: confetti-fall 3s linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Celebration Checkmark Animation */
+        .celebration-checkmark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: 10000;
+            pointer-events: none;
+            animation: celebration-pop 2s ease-out forwards;
+        }
+
+        @keyframes celebration-pop {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            20% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+            40% {
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            60% {
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+            80% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Color Burst Effect */
+        .color-burst {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            transform: translate(-50%, -50%);
+            z-index: 9998;
+            pointer-events: none;
+            border-radius: 50%;
+            animation: color-burst 1.5s ease-out forwards;
+        }
+
+        @keyframes color-burst {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 0.8;
+            }
+            50% {
+                width: 200px;
+                height: 200px;
+                opacity: 0.4;
+            }
+            100% {
+                width: 400px;
+                height: 400px;
+                opacity: 0;
+            }
+        }
+
+        /* Daily Metrics Dashboard */
+        .metrics-dashboard {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metrics-dashboard::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            pointer-events: none;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (min-width: 640px) {
+            .metrics-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .metric-card {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-circle {
+            transition: stroke-dashoffset 0.5s ease-in-out;
+        }
+
+        /* Sample task card styling */
+        .task-demo {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .task-demo:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .task-demo.completed {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5, #f0fdf4);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto p-6 max-w-4xl">
+        <h1 class="text-3xl font-bold text-center mb-8">🎉 Task Tracker Celebration Features Demo</h1>
+        
+        <!-- Daily Metrics Dashboard -->
+        <div class="metrics-dashboard">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <h2 class="text-lg font-bold mb-1">📊 Today's Progress</h2>
+                    <p class="text-sm opacity-90" id="current-date">Monday, September 21, 2025</p>
+                </div>
+                <div class="relative">
+                    <svg class="progress-ring" width="60" height="60">
+                        <circle class="text-white/20" stroke="currentColor" stroke-width="4" fill="transparent" r="26" cx="30" cy="30"/>
+                        <circle id="progress-circle" class="progress-circle text-white" stroke="currentColor" stroke-width="4" fill="transparent" r="26" cx="30" cy="30" stroke-dasharray="163.36" stroke-dashoffset="122.52"/>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span id="completion-percentage" class="text-xs font-bold">25%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div id="completed-today" class="metric-value">3</div>
+                    <div class="metric-label">Completed Today</div>
+                </div>
+                <div class="metric-card">
+                    <div id="total-tasks" class="metric-value">12</div>
+                    <div class="metric-label">Total Tasks</div>
+                </div>
+                <div class="metric-card">
+                    <div id="weekly-completion" class="metric-value">18</div>
+                    <div class="metric-label">This Week</div>
+                </div>
+                <div class="metric-card">
+                    <div id="completion-streak" class="metric-value">5</div>
+                    <div class="metric-label">Day Streak</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <!-- Demo Tasks -->
+            <div class="space-y-4">
+                <h3 class="text-xl font-semibold mb-4">📝 Demo Tasks (Click to Complete)</h3>
+                
+                <div class="task-demo" onclick="completeTask(this, 'Review Q3 presentation')">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-semibold text-gray-800">💼 Review Q3 presentation</h4>
+                            <p class="text-sm text-gray-600">Day Job • High Priority</p>
+                        </div>
+                        <div class="w-5 h-5 border-2 border-gray-300 rounded"></div>
+                    </div>
+                </div>
+
+                <div class="task-demo" onclick="completeTask(this, 'Update portfolio website')">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-semibold text-gray-800">🚀 Update portfolio website</h4>
+                            <p class="text-sm text-gray-600">Side Gig • Medium Priority</p>
+                        </div>
+                        <div class="w-5 h-5 border-2 border-gray-300 rounded"></div>
+                    </div>
+                </div>
+
+                <div class="task-demo" onclick="completeTask(this, 'Grocery shopping')">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-semibold text-gray-800">🏠 Grocery shopping</h4>
+                            <p class="text-sm text-gray-600">Home • Low Priority</p>
+                        </div>
+                        <div class="w-5 h-5 border-2 border-gray-300 rounded"></div>
+                    </div>
+                </div>
+
+                <div class="task-demo completed" onclick="completeTask(this, 'Morning workout')">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-semibold text-gray-800">🏃‍♂️ Morning workout</h4>
+                            <p class="text-sm text-gray-600">Personal • Completed ✓</p>
+                        </div>
+                        <div class="w-5 h-5 bg-green-500 rounded flex items-center justify-center">
+                            <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Archive Preview -->
+            <div class="bg-white rounded-lg p-6 shadow-lg">
+                <h3 class="text-xl font-semibold mb-4">📚 Archive Preview</h3>
+                
+                <div class="mb-4">
+                    <input type="text" placeholder="Search archived tasks..." class="w-full p-3 border border-gray-200 rounded-lg">
+                </div>
+
+                <div class="flex gap-2 mb-4 flex-wrap">
+                    <button class="px-3 py-1 bg-blue-500 text-white text-sm rounded-full">All</button>
+                    <button class="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded-full">Today</button>
+                    <button class="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded-full">This Week</button>
+                    <button class="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded-full">This Month</button>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="bg-gray-50 rounded-lg p-3 opacity-75">
+                        <div class="font-medium text-gray-700 line-through">💼 Submit expense reports</div>
+                        <div class="flex justify-between items-center text-xs text-gray-500 mt-1">
+                            <span>Archived: Sept 20, 2025</span>
+                            <button class="bg-green-500 text-white px-2 py-1 rounded text-xs hover:bg-green-600">
+                                ↺ Restore
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-3 opacity-75">
+                        <div class="font-medium text-gray-700 line-through">🚀 Deploy landing page</div>
+                        <div class="flex justify-between items-center text-xs text-gray-500 mt-1">
+                            <span>Archived: Sept 19, 2025</span>
+                            <button class="bg-green-500 text-white px-2 py-1 rounded text-xs hover:bg-green-600">
+                                ↺ Restore
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-3 opacity-75">
+                        <div class="font-medium text-gray-700 line-through">🏠 Clean garage</div>
+                        <div class="flex justify-between items-center text-xs text-gray-500 mt-1">
+                            <span>Archived: Sept 18, 2025</span>
+                            <button class="bg-green-500 text-white px-2 py-1 rounded text-xs hover:bg-green-600">
+                                ↺ Restore
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-4 border-t border-gray-200 text-center">
+                    <div class="grid grid-cols-2 gap-4 text-center text-sm">
+                        <div>
+                            <div class="text-lg font-bold text-gray-900">42</div>
+                            <div class="text-gray-600">Total Archived</div>
+                        </div>
+                        <div>
+                            <div class="text-lg font-bold text-gray-900">8</div>
+                            <div class="text-gray-600">This Week</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manual Test Buttons -->
+        <div class="mt-8 text-center space-x-4">
+            <button onclick="testCelebration()" class="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 font-semibold">
+                🎉 Test Celebration
+            </button>
+            <button onclick="updateMetrics()" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 font-semibold">
+                📊 Update Metrics
+            </button>
+        </div>
+    </div>
+
+    <!-- Confetti Container -->
+    <div id="confetti-container" class="confetti-container"></div>
+
+    <!-- Celebration Elements -->
+    <div id="celebration-checkmark" class="celebration-checkmark hidden">
+        <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center">
+            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        let completedTasks = 3;
+        let totalTasks = 12;
+
+        // Celebration System
+        function createConfettiPiece() {
+            const piece = document.createElement('div');
+            piece.className = 'confetti-piece';
+            
+            // Random colors
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#6c5ce7', '#fd79a8'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            piece.style.backgroundColor = color;
+            
+            // Random position and animation
+            piece.style.left = Math.random() * 100 + '%';
+            piece.style.animationDelay = Math.random() * 3 + 's';
+            piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            
+            return piece;
+        }
+
+        function showConfetti() {
+            const container = document.getElementById('confetti-container');
+            
+            // Create 50 confetti pieces
+            for (let i = 0; i < 50; i++) {
+                const piece = createConfettiPiece();
+                container.appendChild(piece);
+            }
+            
+            // Clean up after animation
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4000);
+        }
+
+        function showCheckmark() {
+            const checkmark = document.getElementById('celebration-checkmark');
+            checkmark.classList.remove('hidden');
+            
+            setTimeout(() => {
+                checkmark.classList.add('hidden');
+            }, 2000);
+        }
+
+        function showColorBurst() {
+            const burst = document.createElement('div');
+            burst.className = 'color-burst';
+            burst.style.background = 'radial-gradient(circle, #4ecdc4, #45b7d1)';
+            
+            document.body.appendChild(burst);
+            
+            setTimeout(() => {
+                burst.remove();
+            }, 1500);
+        }
+
+        function celebrate() {
+            showColorBurst();
+            setTimeout(() => showCheckmark(), 200);
+            setTimeout(() => showConfetti(), 400);
+            
+            // Play sound effect (simple beep)
+            try {
+                const audio = new Audio('data:audio/wav;base64,UklGRvIBAABXQVZFZm10IBAAAAABAAEATB+AABS0AABYOwAAGdIAAACBhgAAc3QAACEiAACJhAAAiYQAAA==');
+                audio.volume = 0.3;
+                audio.play().catch(() => {});
+            } catch (e) {
+                console.log('Audio not supported');
+            }
+        }
+
+        function completeTask(element, taskName) {
+            if (element.classList.contains('completed')) return;
+            
+            // Mark as completed
+            element.classList.add('completed');
+            const checkbox = element.querySelector('.w-5.h-5');
+            checkbox.className = 'w-5 h-5 bg-green-500 rounded flex items-center justify-center';
+            checkbox.innerHTML = `
+                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                </svg>
+            `;
+            
+            // Update task description
+            const description = element.querySelector('p');
+            description.innerHTML = description.innerHTML.replace(/•.*$/, '• Completed ✓');
+            
+            // Show celebration
+            setTimeout(() => {
+                celebrate();
+                updateMetrics();
+            }, 100);
+            
+            // Auto-archive simulation
+            setTimeout(() => {
+                element.style.opacity = '0.5';
+                element.style.transform = 'scale(0.95)';
+                const title = element.querySelector('h4');
+                title.innerHTML = '📚 ' + taskName + ' (Archived)';
+            }, 3000);
+        }
+
+        function testCelebration() {
+            celebrate();
+        }
+
+        function updateMetrics() {
+            completedTasks++;
+            
+            document.getElementById('completed-today').textContent = completedTasks;
+            
+            const percentage = Math.round((completedTasks / totalTasks) * 100);
+            document.getElementById('completion-percentage').textContent = percentage + '%';
+            
+            // Update progress circle
+            const circumference = 2 * Math.PI * 26; // r=26
+            const offset = circumference - (percentage / 100) * circumference;
+            document.getElementById('progress-circle').style.strokeDashoffset = offset;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateMetrics();
+        });
+    </script>
+</body>
+</html>
