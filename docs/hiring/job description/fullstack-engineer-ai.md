@@ -2,7 +2,6 @@
 **Location:** Remote  
 **Experience Level:** Mid to Senior (3+ years)  
 **Employment Type:** Full-time  
-**Salary Range:** $130,000 - $200,000+  
 
 ## About This Role
 
@@ -10,57 +9,34 @@ We're looking for a hands-on Full Stack Engineer who has shipped AI-powered prod
 
 ## Key Responsibilities
 
-### Product Development
 - Build and ship full-stack features using React, Node.js, and Python that integrate AI capabilities
 - Develop AI-driven user experiences including hyper-personalization, adaptive content, and intelligent assistance
 - Rapidly prototype, test, and iterate on AI-powered features based on user feedback
 - Own the development of customer-facing features end-to-end from conception to production
-
-### AI Integration & Automation
 - Integrate Large Language Models and AI frameworks into production web applications
 - Build intelligent automation systems using modern AI orchestration tools
 - Develop and maintain APIs and microservices that serve AI-powered functionality
 - Create seamless user interfaces for complex AI workflows and agent interactions
-
-### Technical Excellence
 - Implement robust CI/CD pipelines with automated testing, deployment, and monitoring
 - Design scalable architectures that handle AI workloads efficiently
-- Collaborate with cross-functional teams including ML engineers, designers, and product managers
-- Maintain high code quality standards and participate in code reviews
 
 ## Required Qualifications
 
-### Proven Track Record
 - **Shipped Products:** Demonstrated experience shipping AI-powered applications to production
 - **3+ years** of full-stack development experience with modern web technologies
 - **2+ years** working with AI/ML frameworks and integrating them into web applications
 - Experience working in fast-moving environments with short iteration cycles
-
-### Technical Skills
-
-#### Frontend Expertise
-- **React/Next.js:** Advanced proficiency with modern React patterns and Next.js
-- **JavaScript/TypeScript:** Expert-level skills with ES6+ and TypeScript
-- **UI/UX:** Experience with modern CSS frameworks, responsive design, and accessibility
-- **State Management:** Redux, Zustand, or similar state management solutions
-
-#### Backend Proficiency
-- **Node.js/Python:** Strong backend development skills in both languages
-- **APIs:** RESTful and GraphQL API design and implementation
-- **Databases:** PostgreSQL, MongoDB, Redis, and vector databases
-- **Cloud Services:** AWS, GCP, or Azure with hands-on deployment experience
-
-#### AI/ML Integration
-- **AI Frameworks:** Hands-on experience with TensorFlow, PyTorch, or Hugging Face
-- **LLM Integration:** OpenAI APIs, Anthropic Claude, or other LLM providers
-- **AI Orchestration:** LangChain, LlamaIndex, CrewAI, or similar frameworks
-- **Vector Databases:** Pinecone, Weaviate, Chroma, or similar solutions
-
-### Automation & DevOps
-- **CI/CD:** GitHub Actions, Jenkins, or similar automation tools
-- **Containerization:** Docker and Kubernetes experience
-- **Infrastructure as Code:** Terraform, AWS CDK, or similar tools
-- **Monitoring:** Application and infrastructure monitoring setup
+- Advanced proficiency with React/Next.js and modern React patterns
+- Expert-level JavaScript/TypeScript skills with ES6+ and TypeScript
+- Strong backend development skills in Node.js and Python
+- RESTful and GraphQL API design and implementation
+- Experience with PostgreSQL, MongoDB, Redis, and vector databases
+- Cloud platforms (AWS, GCP, or Azure) with hands-on deployment experience
+- Hands-on experience with AI frameworks (TensorFlow, PyTorch, or Hugging Face)
+- LLM integration experience (OpenAI APIs, Anthropic Claude, or other providers)
+- AI orchestration tools (LangChain, LlamaIndex, CrewAI, or similar frameworks)
+- CI/CD experience with GitHub Actions, Jenkins, or similar automation tools
+- Docker and Kubernetes containerization experience
 
 ## Preferred Qualifications
 
@@ -73,12 +49,12 @@ We're looking for a hands-on Full Stack Engineer who has shipped AI-powered prod
 
 ## What We Offer
 
-- **Competitive Compensation:** Base salary $130,000 - $200,000+ plus equity
-- **Remote Flexibility:** Work from anywhere with core collaboration hours
+- **Remote-First Culture:** Work from anywhere with flexible hours
 - **Learning & Development:** Conference attendance, online courses, and skill development budget
 - **Cutting-Edge Tech:** Work with the latest AI technologies and frameworks
 - **Impact:** Build products that leverage AI to solve real user problems
 - **Team Culture:** Collaborative environment with experienced engineers and researchers
+- **Comprehensive Benefits:** Health, dental, vision, and wellness programs
 
 ## Our Technology Stack
 
@@ -100,15 +76,6 @@ We're looking for a hands-on Full Stack Engineer who has shipped AI-powered prod
 - **Monitoring:** DataDog, Sentry
 - **Version Control:** Git, GitHub
 
-## Day-to-Day Work
-
-- **Morning:** Review user feedback and plan feature iterations
-- **Development:** Build and enhance AI-powered user interfaces
-- **Collaboration:** Work with ML engineers to integrate new models
-- **Testing:** Ensure AI features work reliably across different scenarios
-- **Deployment:** Ship features using automated CI/CD pipelines
-- **Iteration:** Analyze usage data and refine AI interactions
-
 ## Application Process
 
 1. **Portfolio Review:** Share your best AI-integrated projects
@@ -118,15 +85,13 @@ We're looking for a hands-on Full Stack Engineer who has shipped AI-powered prod
 
 ## Ready to Apply?
 
-Please include:
-- **Resume** highlighting your AI/full-stack experience
-- **Portfolio** with links to shipped AI-powered applications
-- **GitHub** profile showcasing your code quality
-- **Brief note** about an AI feature you're excited to build
+Send your resume along with:
+- Link to your portfolio showcasing AI-integrated projects
+- GitHub profile demonstrating your code quality
+- Brief cover letter explaining your interest in the role
+- Examples of shipped AI-powered applications
 
-We welcome applications from all backgrounds and are committed to creating an inclusive environment where everyone can thrive.
+We're committed to building a diverse and inclusive team. We encourage applications from all backgrounds and experiences.
 
 ---
-*This role is perfect for engineers who are passionate about both traditional web development and the emerging possibilities of AI automation.*
-
 *Last Updated: September 2025*
