@@ -1,0 +1,43 @@
+# Jekyll Configuration for GitHub Pages
+
+# Exclude problematic files and directories from Jekyll processing
+exclude:
+  - node_modules/
+  - tests/
+  - test-results/
+  - playwright-report/
+  - .github/
+  - .DS_Store
+  - "*.spec.js"
+  - "*.test.js"
+  - package.json
+  - package-lock.json
+  - playwright.config.js
+  - COMPREHENSIVE_CONSOLE_MONITORING_TEST_REPORT.md
+  - DASHBOARD_DATA_VERIFICATION_REPORT.md
+  - DASHBOARD_PROTOTYPE_TEST_REPORT.md
+  - DEPLOYMENT-SUMMARY.md
+  - PERSONAL_TASK_TRACKER_TEST_REPORT.md
+  - TEST_SUMMARY.md
+  - CELEBRATION_ARCHIVE_DESIGN.md
+  - ai-pm-experiments/qa-assessment-report.md
+
+# Plugins (GitHub Pages safe)
+plugins:
+  - jekyll-github-metadata
+  - jekyll-seo-tag
+
+# Basic settings
+theme: jekyll-theme-primer
+title: CRTX.in
+description: Development workspace and tools
+
+# Markdown processor
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Collections and processing
+safe: true
+incremental: false
