@@ -6501,12 +6501,38 @@
             document.body.style.overflow = 'hidden';
         });
         
+        // Simple toast notification function
+        function showToast(message, type = 'info') {
+            const colors = {
+                success: 'bg-green-600',
+                error: 'bg-red-600',
+                info: 'bg-blue-600',
+                warning: 'bg-yellow-600'
+            };
+            
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 right-4 ${colors[type]} text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in`;
+            toast.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">×</button>
+                </div>
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, 4000);
+        }
+        
         // Archive Tasks button click - archive all completed tasks
         fabArchiveBtn.addEventListener('click', async () => {
             toggleFab(); // Close FAB
             
-            // Find all completed tasks
-            const completedTasks = tasks.filter(task => task.status === 'completed');
+            // Find all completed tasks (check both 'completed' and 'done' status)
+            const completedTasks = tasks.filter(task => task.status === 'completed' || task.status === 'done');
             
             if (completedTasks.length === 0) {
                 showToast('No completed tasks to archive', 'info');
