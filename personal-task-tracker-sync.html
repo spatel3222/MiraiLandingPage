@@ -6804,22 +6804,21 @@
             
             // Save to database
             await personalTaskDB.saveTask(task);
-                
-                // Auto-archiving disabled - tasks stay in Done column
-                // User can manually archive when ready
-                // setTimeout(() => {
-                //     archiveSystem.archiveTask(task);
-                //     
-                //     // Remove from main tasks
-                //     const taskIndex = tasks.findIndex(t => t.id === taskId);
-                //     if (taskIndex !== -1) {
-                //         tasks.splice(taskIndex, 1);
-                //         saveTasksToStorage();
-                //         renderAllTasks();
-                //         metricsSystem.updateMetrics();
-                //     }
-                // }, 3000); // 3 second delay for celebration
-            }
+            
+            // Auto-archiving disabled - tasks stay in Done column
+            // User can manually archive when ready
+            // setTimeout(() => {
+            //     archiveSystem.archiveTask(task);
+            //     
+            //     // Remove from main tasks
+            //     const taskIndex = tasks.findIndex(t => t.id === taskId);
+            //     if (taskIndex !== -1) {
+            //         tasks.splice(taskIndex, 1);
+            //         saveTasksToStorage();
+            //         renderAllTasks();
+            //         metricsSystem.updateMetrics();
+            //     }
+            // }, 3000); // 3 second delay for celebration
             
             // Clear completion timestamp if unmarking as done
             if (oldStatus === 'done' && newStatus !== 'done') {
