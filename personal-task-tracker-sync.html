@@ -2310,6 +2310,12 @@
                         <span class="hidden sm:inline text-xs sm:text-sm">Focus</span>
                     </button>
                     
+                    <!-- Sync URL Button -->
+                    <button id="sync-url-btn" class="bg-blue-600 text-white px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg hover:bg-blue-700 transition flex items-center space-x-1" title="Copy Sync URL for Other Devices">
+                        <span class="text-base">🔗</span>
+                        <span class="hidden sm:inline text-xs sm:text-sm">Sync</span>
+                    </button>
+                    
                     <!-- Add Task Button - Mobile Optimized -->
                     <button id="add-task-btn" class="bg-blue-600 text-white px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg hover:bg-blue-700 transition flex items-center space-x-1 sm:space-x-2">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2812,13 +2818,33 @@
             }
 
             setupUserId() {
-                // Generate or retrieve a unique user ID for this device/browser
-                this.userId = localStorage.getItem('personalTaskUserId');
-                if (!this.userId) {
-                    this.userId = this.generateUUID();
+                // Check for user ID in URL first (for sharing across devices)
+                const urlParams = new URLSearchParams(window.location.search);
+                const urlUserId = urlParams.get('uid');
+                
+                if (urlUserId) {
+                    // User ID provided in URL - use and store it
+                    this.userId = urlUserId;
                     localStorage.setItem('personalTaskUserId', this.userId);
-                    console.log('📱 PersonalTaskDB: Generated new user ID:', this.userId);
+                    console.log('🔗 PersonalTaskDB: Using user ID from URL:', this.userId);
+                    
+                    // Clean URL to remove the uid parameter
+                    const newUrl = new URL(window.location);
+                    newUrl.searchParams.delete('uid');
+                    window.history.replaceState({}, '', newUrl);
+                } else {
+                    // Generate or retrieve a unique user ID for this device/browser
+                    this.userId = localStorage.getItem('personalTaskUserId');
+                    if (!this.userId) {
+                        this.userId = this.generateUUID();
+                        localStorage.setItem('personalTaskUserId', this.userId);
+                        console.log('📱 PersonalTaskDB: Generated new user ID:', this.userId);
+                    }
                 }
+                
+                // Show user ID and sync URL in console
+                const syncUrl = `${window.location.origin}${window.location.pathname}?uid=${this.userId}`;
+                console.log('🔗 PersonalTaskDB: To sync with other devices, open:', syncUrl);
             }
 
             // === TASK OPERATIONS ===
@@ -5743,6 +5769,28 @@
         modalBackdrop.addEventListener('click', closeTaskModal);
         closeModal.addEventListener('click', closeTaskModal);
         cancelBtn.addEventListener('click', closeTaskModal);
+        
+        // Sync URL button
+        document.getElementById('sync-url-btn').addEventListener('click', async () => {
+            const userId = personalTaskDB.userId;
+            const syncUrl = `${window.location.origin}${window.location.pathname}?uid=${userId}`;
+            
+            try {
+                await navigator.clipboard.writeText(syncUrl);
+                // Show success feedback
+                const btn = document.getElementById('sync-url-btn');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<span class="text-base">✅</span><span class="hidden sm:inline text-xs sm:text-sm">Copied!</span>';
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                }, 2000);
+                console.log('📋 Sync URL copied to clipboard:', syncUrl);
+            } catch (error) {
+                // Fallback: show URL in alert
+                alert(`Copy this URL to sync on other devices:\n\n${syncUrl}`);
+                console.log('📋 Sync URL:', syncUrl);
+            }
+        });
 
         taskForm.addEventListener('submit', async (e) => {
             e.preventDefault();
