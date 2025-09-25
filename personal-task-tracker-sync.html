@@ -11,6 +11,297 @@
     
     <!-- Custom Styles -->
     <style>
+        /* Enhanced Focus Mode Task Selection Modal Styles */
+        .task-selection-modal {
+            backdrop-filter: blur(8px);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        
+        .task-selection-modal.modal-closing {
+            animation: modalFadeOut 0.2s ease-in;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes modalFadeOut {
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+        }
+        
+        .task-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .dark .task-card:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .task-card.selected {
+            border-color: #8B5CF6 !important;
+            background: linear-gradient(135deg, #F3E8FF 0%, #EDE9FE 100%);
+            box-shadow: 0 0 0 2px #8B5CF6, 0 8px 25px rgba(139, 92, 246, 0.25);
+            transform: translateY(-1px);
+        }
+        
+        .dark .task-card.selected {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(91, 33, 182, 0.2) 100%);
+            box-shadow: 0 0 0 2px #8B5CF6, 0 8px 25px rgba(139, 92, 246, 0.4);
+        }
+        
+        .category-filter-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            border: 2px solid #E5E7EB;
+            color: #6B7280;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dark .category-filter-btn {
+            background: #374151;
+            border-color: #4B5563;
+            color: #D1D5DB;
+        }
+        
+        .category-filter-btn:hover {
+            border-color: #C4B5FD;
+            background: #F8FAFC;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+        }
+        
+        .dark .category-filter-btn:hover {
+            border-color: #8B5CF6;
+            background: #4B5563;
+        }
+        
+        .category-filter-btn.active {
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+            border-color: #8B5CF6;
+            color: white;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+        
+        .category-filter-btn .count {
+            background: rgba(255, 255, 255, 0.2);
+            color: inherit;
+            padding: 0.125rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            min-width: 1.5rem;
+            text-align: center;
+        }
+        
+        .category-filter-btn:not(.active) .count {
+            background: #E5E7EB;
+            color: #6B7280;
+        }
+        
+        .dark .category-filter-btn:not(.active) .count {
+            background: #4B5563;
+            color: #D1D5DB;
+        }
+        
+        .pagination-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            background: white;
+            border: 1px solid #E5E7EB;
+            color: #6B7280;
+            cursor: pointer;
+        }
+        
+        .dark .pagination-btn {
+            background: #374151;
+            border-color: #4B5563;
+            color: #D1D5DB;
+        }
+        
+        .pagination-btn:hover:not(.disabled) {
+            border-color: #8B5CF6;
+            color: #8B5CF6;
+            background: #F3E8FF;
+        }
+        
+        .dark .pagination-btn:hover:not(.disabled) {
+            background: #4C1D95;
+        }
+        
+        .pagination-btn.active {
+            background: #8B5CF6;
+            border-color: #8B5CF6;
+            color: white;
+        }
+        
+        .pagination-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .task-selection-modal .bg-white {
+                margin: 0.5rem;
+                max-height: calc(100vh - 1rem);
+            }
+            
+            .category-filter-btn {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.8125rem;
+            }
+            
+            .category-filter-btn .text {
+                display: none;
+            }
+            
+            .task-card {
+                padding: 0.75rem;
+            }
+            
+            .pagination-btn {
+                width: 2rem;
+                height: 2rem;
+                font-size: 0.8125rem;
+            }
+        }
+        
+        /* Focus mode task card animations */
+        @keyframes taskComplete {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .focus-task-card.completed {
+            animation: taskComplete 0.5s ease;
+        }
+        
+            border-color: #8B5CF6;
+            color: white;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .pagination-btn {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #E5E7EB;
+            background: white;
+            color: #6B7280;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .dark .pagination-btn {
+            background: #374151;
+            border-color: #4B5563;
+            color: #D1D5DB;
+        }
+        
+        .pagination-btn:hover:not(.disabled) {
+            background: #F3F4F6;
+            border-color: #D1D5DB;
+        }
+        
+        .dark .pagination-btn:hover:not(.disabled) {
+            background: #4B5563;
+            border-color: #6B7280;
+        }
+        
+        .pagination-btn.active {
+            background: #8B5CF6;
+            border-color: #8B5CF6;
+            color: white;
+        }
+        
+        .pagination-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .modal-backdrop {
+            backdrop-filter: blur(8px);
+        }
+        
+        @media (max-width: 640px) {
+            .modal-content {
+                margin: 1rem;
+                max-height: 90vh;
+            }
+            
+            .category-filter-btn {
+                font-size: 0.75rem;
+                padding: 0.375rem 0.75rem;
+            }
+            
+            .task-card {
+                padding: 0.75rem;
+            }
+        }
         /* Dark mode variables */
         :root {
             --bg-primary: #ffffff;
@@ -1414,6 +1705,9 @@
             padding: 6px 12px;
             border-radius: 6px;
             font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             white-space: nowrap;
             backdrop-filter: blur(8px);
         }
@@ -1506,6 +1800,18 @@
 
         .dark-mode .fab-action-label {
             background: rgba(0, 0, 0, 0.9);
+        }
+
+        .fab-shortcut-hint {
+            padding: 2px 6px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            font-size: 11px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-weight: 500;
+            opacity: 0.9;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            letter-spacing: 0.5px;
         }
 
         /* Confetti Animation Styles */
@@ -2756,89 +3062,555 @@
             }
             
             showTaskSelection() {
-                // Create task selection modal
+                // Initialize modal state with current Focus Mode tasks pre-selected
+                this.modalState = {
+                    searchTerm: '',
+                    currentPage: 1,
+                    tasksPerPage: 8,
+                    sortBy: 'newest',
+                    categoryFilter: 'all',
+                    selectedTasks: new Set(this.focusTasks.map(task => task.id))
+                };
+                
+                // Create enhanced task selection modal
                 const modal = document.createElement('div');
-                modal.className = 'fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4';
+                modal.className = 'task-selection-modal fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-2 sm:p-4';
                 modal.innerHTML = `
-                    <div class="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6 max-h-96 overflow-y-auto">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Select Focus Tasks</h3>
-                            <button class="text-gray-400 hover:text-gray-600" onclick="this.closest('.fixed').remove()">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+                        <!-- Header -->
+                        <div class="flex justify-between items-center p-4 sm:p-6 border-b border-gray-200 dark:border-gray-600">
+                            <div>
+                                <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">Select Focus Tasks</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Choose up to 5 tasks to focus on today</p>
+                            </div>
+                            <button class="close-modal text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                 </svg>
                             </button>
                         </div>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Choose 3-5 tasks to focus on today</p>
                         
-                        <div id="task-selection-list" class="space-y-2 mb-4">
-                            ${this.renderTaskSelectionList()}
+                        <!-- Search and Filters -->
+                        <div class="p-4 sm:p-6 space-y-4 border-b border-gray-200 dark:border-gray-600">
+                            <!-- Search Bar -->
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </div>
+                                <input type="text" id="task-search" placeholder="Search tasks by title, description, or category..." 
+                                       class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                            </div>
+                            
+                            <!-- Filter Buttons and Sort -->
+                            <div class="flex flex-col sm:flex-row gap-4 justify-between">
+                                <!-- Category Filters -->
+                                <div class="flex flex-wrap gap-2">
+                                    <button class="category-filter-btn active" data-category="all">
+                                        <span class="emoji">📋</span>
+                                        <span class="text">All</span>
+                                        <span class="count">0</span>
+                                    </button>
+                                    <button class="category-filter-btn" data-category="day-job">
+                                        <span class="emoji">💼</span>
+                                        <span class="text">Day Job</span>
+                                        <span class="count">0</span>
+                                    </button>
+                                    <button class="category-filter-btn" data-category="side-gig">
+                                        <span class="emoji">🚀</span>
+                                        <span class="text">Side Gig</span>
+                                        <span class="count">0</span>
+                                    </button>
+                                    <button class="category-filter-btn" data-category="home">
+                                        <span class="emoji">🏠</span>
+                                        <span class="text">Home</span>
+                                        <span class="count">0</span>
+                                    </button>
+                                </div>
+                                
+                                <!-- Sort Dropdown -->
+                                <div class="relative">
+                                    <select id="sort-select" class="appearance-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 py-2 px-3 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent cursor-pointer">
+                                        <option value="newest">Newest First</option>
+                                        <option value="oldest">Oldest First</option>
+                                        <option value="priority">Priority</option>
+                                        <option value="alphabetical">A-Z</option>
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                            <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
-                        <div class="flex items-center justify-between">
-                            <span id="selection-count" class="text-sm text-gray-500">0 selected</span>
-                            <button id="start-focus-btn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
-                                Start Focus Mode
-                            </button>
+                        <!-- Task List -->
+                        <div class="flex-1 overflow-y-auto p-4 sm:p-6">
+                            <div id="task-selection-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Tasks will be rendered here -->
+                            </div>
+                            
+                            <!-- Empty State -->
+                            <div id="empty-state" class="hidden text-center py-12">
+                                <div class="text-6xl mb-4">🔍</div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">No tasks found</h3>
+                                <p class="text-gray-600 dark:text-gray-400">Try adjusting your search or filters</p>
+                            </div>
+                            
+                            <!-- Loading State -->
+                            <div id="loading-state" class="hidden text-center py-12">
+                                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+                                <p class="text-gray-600 dark:text-gray-400">Loading tasks...</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <div id="pagination-container" class="px-4 sm:px-6 py-4 border-t border-gray-200 dark:border-gray-600">
+                            <!-- Pagination will be rendered here -->
+                        </div>
+                        
+                        <!-- Footer -->
+                        <div class="p-4 sm:p-6 bg-gray-50 dark:bg-gray-750 border-t border-gray-200 dark:border-gray-600 rounded-b-xl">
+                            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div class="selection-info">
+                                    <span id="selection-count" class="text-sm font-medium text-gray-700 dark:text-gray-300">0 selected</span>
+                                    <span id="selection-limit" class="text-xs text-gray-500 dark:text-gray-400 ml-2">Maximum 5 tasks</span>
+                                </div>
+                                <div class="flex gap-3">
+                                    <button id="clear-selection-btn" class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                                        Clear Selection
+                                    </button>
+                                    <button id="start-focus-btn" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-6 py-2 rounded-lg font-medium transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                                        <span class="flex items-center gap-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                            </svg>
+                                            Start Focus Mode
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 `;
                 
                 document.body.appendChild(modal);
                 
-                // Add event listeners for selection
-                modal.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-                    checkbox.addEventListener('change', () => {
-                        const selectedCount = modal.querySelectorAll('input[type="checkbox"]:checked').length;
-                        modal.querySelector('#selection-count').textContent = `${selectedCount} selected`;
-                        modal.querySelector('#start-focus-btn').disabled = selectedCount === 0;
+                // Initialize modal interactions
+                this.initializeModalInteractions(modal);
+                
+                // Initial render
+                this.renderTaskSelection();
+                
+                // Add modal to DOM with fade-in animation
+                requestAnimationFrame(() => {
+                    modal.style.opacity = '0';
+                    modal.style.transform = 'scale(0.95)';
+                    modal.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                    
+                    requestAnimationFrame(() => {
+                        modal.style.opacity = '1';
+                        modal.style.transform = 'scale(1)';
+                    });
+                });
+            }
+            
+            initializeModalInteractions(modal) {
+                // Close modal handlers
+                const closeModal = () => {
+                    modal.classList.add('modal-closing');
+                    setTimeout(() => modal.remove(), 200);
+                };
+                
+                modal.querySelector('.close-modal').addEventListener('click', closeModal);
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) closeModal();
+                });
+                
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        closeModal();
+                    }
+                });
+                
+                // Focus management
+                const focusableElements = modal.querySelectorAll('button, input, select');
+                if (focusableElements.length > 0) {
+                    focusableElements[0].focus();
+                }
+                
+                // Search functionality
+                const searchInput = modal.querySelector('#task-search');
+                let searchTimeout;
+                searchInput.addEventListener('input', (e) => {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        this.modalState.searchTerm = e.target.value.toLowerCase();
+                        this.modalState.currentPage = 1;
+                        this.renderTaskSelection();
+                    }, 300);
+                });
+                
+                // Category filter buttons
+                modal.querySelectorAll('.category-filter-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        modal.querySelectorAll('.category-filter-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.modalState.categoryFilter = btn.dataset.category;
+                        this.modalState.currentPage = 1;
+                        this.renderTaskSelection();
                     });
                 });
                 
+                // Sort dropdown
+                modal.querySelector('#sort-select').addEventListener('change', (e) => {
+                    this.modalState.sortBy = e.target.value;
+                    this.modalState.currentPage = 1;
+                    this.renderTaskSelection();
+                });
+                
+                // Clear selection button
+                modal.querySelector('#clear-selection-btn').addEventListener('click', () => {
+                    this.modalState.selectedTasks.clear();
+                    this.updateSelectionUI(modal);
+                    this.renderTaskSelection();
+                });
+                
+                // Start focus button
                 modal.querySelector('#start-focus-btn').addEventListener('click', () => {
-                    const selectedTasks = Array.from(modal.querySelectorAll('input[type="checkbox"]:checked'))
-                        .map(checkbox => parseInt(checkbox.value))
+                    const selectedTaskIds = Array.from(this.modalState.selectedTasks);
+                    const selectedTasks = selectedTaskIds
                         .map(id => tasks.find(t => t.id === id))
                         .filter(t => t);
                     
                     this.setFocusTasks(selectedTasks);
-                    modal.remove();
+                    closeModal();
                     this.renderFocusTasks();
                     this.updateProgress();
                 });
             }
             
-            renderTaskSelectionList() {
-                let incompleteTasks = tasks.filter(t => t.status !== 'done');
+            getFilteredAndSortedTasks() {
+                let filteredTasks = tasks.filter(t => t.status !== 'done');
                 
-                // Respect category filter if active
-                if (categoryFilter && categoryFilter.activeFilter !== 'all') {
-                    incompleteTasks = incompleteTasks.filter(t => t.category === categoryFilter.activeFilter);
+                // Apply search filter
+                if (this.modalState.searchTerm) {
+                    const searchTerm = this.modalState.searchTerm;
+                    filteredTasks = filteredTasks.filter(task => 
+                        task.title.toLowerCase().includes(searchTerm) ||
+                        (task.description && task.description.toLowerCase().includes(searchTerm)) ||
+                        task.category.toLowerCase().includes(searchTerm)
+                    );
                 }
                 
-                incompleteTasks = incompleteTasks.slice(0, 10);
-                
-                if (incompleteTasks.length === 0) {
-                    return '<div class="text-center text-gray-500 dark:text-gray-400 py-4">No tasks available for the selected category</div>';
+                // Apply category filter
+                if (this.modalState.categoryFilter !== 'all') {
+                    filteredTasks = filteredTasks.filter(t => t.category === this.modalState.categoryFilter);
                 }
                 
-                return incompleteTasks.map(task => {
-                    const categoryIcons = {
-                        'day-job': '💼',
-                        'side-gig': '🚀',
-                        'home': '🏠'
-                    };
+                // Apply sorting
+                filteredTasks.sort((a, b) => {
+                    switch (this.modalState.sortBy) {
+                        case 'newest':
+                            return new Date(b.createdAt || b.updatedAt) - new Date(a.createdAt || a.updatedAt);
+                        case 'oldest':
+                            return new Date(a.createdAt || a.updatedAt) - new Date(b.createdAt || b.updatedAt);
+                        case 'priority':
+                            const priorityOrder = { 'high': 3, 'medium': 2, 'low': 1 };
+                            return priorityOrder[b.priority] - priorityOrder[a.priority];
+                        case 'alphabetical':
+                            return a.title.localeCompare(b.title);
+                        default:
+                            return 0;
+                    }
+                });
+                
+                return filteredTasks;
+            }
+            
+            renderTaskSelection() {
+                const modal = document.querySelector('.task-selection-modal');
+                if (!modal) return;
+                
+                const filteredTasks = this.getFilteredAndSortedTasks();
+                const totalTasks = filteredTasks.length;
+                
+                // Update category counts
+                this.updateCategoryCounts(modal);
+                
+                // Calculate pagination
+                const totalPages = Math.ceil(totalTasks / this.modalState.tasksPerPage);
+                const startIndex = (this.modalState.currentPage - 1) * this.modalState.tasksPerPage;
+                const endIndex = startIndex + this.modalState.tasksPerPage;
+                const paginatedTasks = filteredTasks.slice(startIndex, endIndex);
+                
+                // Render tasks
+                const taskList = modal.querySelector('#task-selection-list');
+                const emptyState = modal.querySelector('#empty-state');
+                
+                if (totalTasks === 0) {
+                    taskList.innerHTML = '';
+                    emptyState.classList.remove('hidden');
+                } else {
+                    emptyState.classList.add('hidden');
+                    taskList.innerHTML = paginatedTasks.map(task => this.renderTaskCard(task)).join('');
                     
-                    return `
-                        <label class="flex items-center p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer category-${task.category}">
-                            <input type="checkbox" value="${task.id}" class="mr-3">
-                            <div class="flex-1">
-                                <div class="font-medium text-gray-900 dark:text-gray-100">${task.title}</div>
-                                <div class="text-sm text-gray-500 dark:text-gray-400">${categoryIcons[task.category]} ${task.category.replace('-', ' ').toUpperCase()} • ${task.priority.toUpperCase()}</div>
+                    // Add click handlers for task cards
+                    taskList.querySelectorAll('.task-card').forEach(card => {
+                        card.addEventListener('click', (e) => {
+                            if (e.target.type === 'checkbox') return; // Let checkbox handle itself
+                            
+                            const checkbox = card.querySelector('input[type="checkbox"]');
+                            const taskId = parseInt(checkbox.value);
+                            
+                            if (this.modalState.selectedTasks.has(taskId)) {
+                                this.modalState.selectedTasks.delete(taskId);
+                                checkbox.checked = false;
+                                card.classList.remove('selected');
+                            } else if (this.modalState.selectedTasks.size < 5) {
+                                this.modalState.selectedTasks.add(taskId);
+                                checkbox.checked = true;
+                                card.classList.add('selected');
+                            } else {
+                                // Show limit warning
+                                this.showLimitWarning(modal);
+                            }
+                            
+                            this.updateSelectionUI(modal);
+                        });
+                    });
+                    
+                    // Add checkbox handlers
+                    taskList.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                        const taskId = parseInt(checkbox.value);
+                        checkbox.checked = this.modalState.selectedTasks.has(taskId);
+                        if (checkbox.checked) {
+                            checkbox.closest('.task-card').classList.add('selected');
+                        }
+                        
+                        checkbox.addEventListener('change', (e) => {
+                            e.stopPropagation();
+                            const card = checkbox.closest('.task-card');
+                            
+                            if (checkbox.checked) {
+                                if (this.modalState.selectedTasks.size < 5) {
+                                    this.modalState.selectedTasks.add(taskId);
+                                    card.classList.add('selected');
+                                } else {
+                                    checkbox.checked = false;
+                                    this.showLimitWarning(modal);
+                                }
+                            } else {
+                                this.modalState.selectedTasks.delete(taskId);
+                                card.classList.remove('selected');
+                            }
+                            
+                            this.updateSelectionUI(modal);
+                        });
+                    });
+                }
+                
+                // Render pagination
+                this.renderPagination(modal, totalPages);
+                
+                // Update selection UI
+                this.updateSelectionUI(modal);
+            }
+            
+            renderTaskCard(task) {
+                const categoryIcons = {
+                    'day-job': '💼',
+                    'side-gig': '🚀',
+                    'home': '🏠'
+                };
+                
+                const priorityColors = {
+                    'high': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+                    'medium': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+                    'low': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                };
+                
+                const isSelected = this.modalState.selectedTasks.has(task.id);
+                
+                return `
+                    <div class="task-card ${isSelected ? 'selected' : ''} bg-white dark:bg-gray-800 rounded-xl p-4 border-2 border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-500 cursor-pointer transition-all duration-200 group hover:shadow-lg transform hover:-translate-y-1">
+                        <div class="flex items-start gap-3">
+                            <div class="flex-shrink-0 mt-1">
+                                <input type="checkbox" value="${task.id}" class="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                             </div>
-                        </label>
+                            
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h4 class="font-semibold text-gray-900 dark:text-gray-100 text-sm sm:text-base line-clamp-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                                        ${task.title}
+                                    </h4>
+                                    <div class="flex items-center gap-2 ml-2 flex-shrink-0">
+                                        <span class="text-2xl">${categoryIcons[task.category]}</span>
+                                    </div>
+                                </div>
+                                
+                                ${task.description ? `
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+                                        ${task.description}
+                                    </p>
+                                ` : ''}
+                                
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300">
+                                            ${task.category.replace('-', ' ').toUpperCase()}
+                                        </span>
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${priorityColors[task.priority]}">
+                                            ${task.priority.toUpperCase()}
+                                        </span>
+                                    </div>
+                                    
+                                    <div class="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        ${new Date(task.createdAt || task.updatedAt).toLocaleDateString()}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            updateCategoryCounts(modal) {
+                const allTasks = tasks.filter(t => t.status !== 'done');
+                
+                // Apply search filter for counts
+                let filteredForCount = allTasks;
+                if (this.modalState.searchTerm) {
+                    const searchTerm = this.modalState.searchTerm;
+                    filteredForCount = allTasks.filter(task => 
+                        task.title.toLowerCase().includes(searchTerm) ||
+                        (task.description && task.description.toLowerCase().includes(searchTerm)) ||
+                        task.category.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                const counts = {
+                    all: filteredForCount.length,
+                    'day-job': filteredForCount.filter(t => t.category === 'day-job').length,
+                    'side-gig': filteredForCount.filter(t => t.category === 'side-gig').length,
+                    'home': filteredForCount.filter(t => t.category === 'home').length
+                };
+                
+                Object.entries(counts).forEach(([category, count]) => {
+                    const button = modal.querySelector(`[data-category="${category}"] .count`);
+                    if (button) {
+                        button.textContent = count;
+                    }
+                });
+            }
+            
+            renderPagination(modal, totalPages) {
+                const container = modal.querySelector('#pagination-container');
+                
+                if (totalPages <= 1) {
+                    container.style.display = 'none';
+                    return;
+                }
+                
+                container.style.display = 'block';
+                const currentPage = this.modalState.currentPage;
+                
+                let paginationHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-700 dark:text-gray-300">
+                            Page ${currentPage} of ${totalPages}
+                        </div>
+                        <div class="flex items-center gap-1">
+                `;
+                
+                // Previous button
+                paginationHTML += `
+                    <button class="pagination-btn ${currentPage === 1 ? 'disabled' : ''}" data-page="${currentPage - 1}" ${currentPage === 1 ? 'disabled' : ''}>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                `;
+                
+                // Page numbers
+                const startPage = Math.max(1, currentPage - 2);
+                const endPage = Math.min(totalPages, currentPage + 2);
+                
+                for (let i = startPage; i <= endPage; i++) {
+                    paginationHTML += `
+                        <button class="pagination-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">
+                            ${i}
+                        </button>
                     `;
-                }).join('');
+                }
+                
+                // Next button
+                paginationHTML += `
+                    <button class="pagination-btn ${currentPage === totalPages ? 'disabled' : ''}" data-page="${currentPage + 1}" ${currentPage === totalPages ? 'disabled' : ''}>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                        </div>
+                    </div>
+                `;
+                
+                container.innerHTML = paginationHTML;
+                
+                // Add click handlers
+                container.querySelectorAll('.pagination-btn:not(.disabled)').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.modalState.currentPage = parseInt(btn.dataset.page);
+                        this.renderTaskSelection();
+                    });
+                });
+            }
+            
+            updateSelectionUI(modal) {
+                const selectedCount = this.modalState.selectedTasks.size;
+                const countElement = modal.querySelector('#selection-count');
+                const clearBtn = modal.querySelector('#clear-selection-btn');
+                const startBtn = modal.querySelector('#start-focus-btn');
+                
+                countElement.textContent = `${selectedCount} selected`;
+                
+                clearBtn.disabled = selectedCount === 0;
+                startBtn.disabled = selectedCount === 0;
+                
+                // Update selection limit indicator
+                const limitElement = modal.querySelector('#selection-limit');
+                if (selectedCount >= 5) {
+                    limitElement.textContent = 'Maximum reached';
+                    limitElement.className = 'text-xs text-red-500 dark:text-red-400 ml-2';
+                } else {
+                    limitElement.textContent = `Maximum ${5 - selectedCount} more`;
+                    limitElement.className = 'text-xs text-gray-500 dark:text-gray-400 ml-2';
+                }
+            }
+            
+            showLimitWarning(modal) {
+                const warning = document.createElement('div');
+                warning.className = 'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-[60] animate-bounce';
+                warning.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                        <span>Maximum 5 tasks allowed</span>
+                    </div>
+                `;
+                
+                document.body.appendChild(warning);
+                
+                setTimeout(() => {
+                    warning.remove();
+                }, 3000);
             }
             
             setFocusTasks(selectedTasks) {
@@ -4650,7 +5422,7 @@
             </div>
             <!-- Add Task Action -->
             <div class="fab-action" id="fab-add-action">
-                <span class="fab-action-label">Add Task</span>
+                <span class="fab-action-label">Add Task <kbd class="fab-shortcut-hint">⇧⌘T</kbd></span>
                 <button class="fab-action-button" id="fab-add-btn" aria-label="Add new task">
                     <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: #10b981;">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
@@ -4935,6 +5707,18 @@
             }
         }
 
+        // Detect OS and update shortcut hint
+        function updateShortcutHint() {
+            const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+            const shortcutHint = document.querySelector('.fab-shortcut-hint');
+            if (shortcutHint) {
+                shortcutHint.textContent = isMac ? '⇧⌘T' : '⇧Ctrl+T';
+            }
+        }
+        
+        // Update shortcut hint on page load
+        document.addEventListener('DOMContentLoaded', updateShortcutHint);
+        
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             // ESC to close FAB
@@ -4942,9 +5726,9 @@
                 toggleFab();
             }
             
-            // Command+N (Mac) or Ctrl+N (Windows/Linux) to add new task
-            if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
-                e.preventDefault(); // Prevent browser's "New Window" action
+            // Shift+Command+T (Mac) or Shift+Ctrl+T (Windows/Linux) to add new task
+            if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === 't') {
+                e.preventDefault(); // Prevent browser's default action
                 openTaskModal(); // Open the task creation modal
             }
         });
