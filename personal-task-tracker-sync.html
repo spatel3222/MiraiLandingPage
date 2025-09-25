@@ -8,6 +8,8 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✅</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <!-- Supabase Client -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     
     <!-- Custom Styles -->
     <style>
@@ -2755,6 +2757,551 @@
 
     <!-- Automatic Dark Mode Based on Time -->
     <script>
+        // Personal Task Database for Supabase Integration
+        class PersonalTaskDatabase {
+            constructor() {
+                this.supabase = null;
+                this.isOnline = false;
+                this.userId = null;
+                this.syncIntervalId = null;
+                this.lastSyncTime = null;
+                this.realtimeChannel = null;
+                
+                this.initializeSupabase();
+                this.setupUserId();
+                this.startPeriodicSync();
+                this.setupRealtimeSync();
+            }
+
+            async initializeSupabase() {
+                try {
+                    const SUPABASE_URL = 'https://fvyghgvshobufpgaclbs.supabase.co';
+                    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2eWdoZ3ZzaG9idWZwZ2FjbGJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxNDI1MjgsImV4cCI6MjA3MjcxODUyOH0.RR_PavED-XHko85FsuLVWfWapVIJZ3l3vRPq4lszmfM';
+                    
+                    if (typeof supabase !== 'undefined') {
+                        this.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                        this.isOnline = true;
+                        console.log('✅ PersonalTaskDB: Supabase connected successfully');
+                        
+                        // Test connection
+                        await this.testConnection();
+                    } else {
+                        throw new Error('Supabase client not available');
+                    }
+                } catch (error) {
+                    console.warn('⚠️ PersonalTaskDB: Supabase initialization failed, falling back to localStorage:', error);
+                    this.isOnline = false;
+                }
+            }
+
+            async testConnection() {
+                try {
+                    const { data, error } = await this.supabase
+                        .from('personal_tasks')
+                        .select('id')
+                        .limit(1);
+                    
+                    if (error) {
+                        console.warn('⚠️ PersonalTaskDB: Database table access failed:', error.message);
+                        this.isOnline = false;
+                    }
+                } catch (error) {
+                    console.warn('⚠️ PersonalTaskDB: Connection test failed:', error);
+                    this.isOnline = false;
+                }
+            }
+
+            setupUserId() {
+                // Generate or retrieve a unique user ID for this device/browser
+                this.userId = localStorage.getItem('personalTaskUserId');
+                if (!this.userId) {
+                    this.userId = this.generateUUID();
+                    localStorage.setItem('personalTaskUserId', this.userId);
+                    console.log('📱 PersonalTaskDB: Generated new user ID:', this.userId);
+                }
+            }
+
+            // === TASK OPERATIONS ===
+
+            async saveTask(task) {
+                // Always save to localStorage first (immediate response)
+                this.saveTaskLocal(task);
+                
+                // Then try to sync to Supabase if online
+                if (this.isOnline && this.supabase) {
+                    try {
+                        await this.saveTaskRemote(task);
+                    } catch (error) {
+                        console.error('❌ PersonalTaskDB: Failed to save task to Supabase:', error);
+                    }
+                }
+                
+                return task;
+            }
+
+            saveTaskLocal(task) {
+                try {
+                    const tasks = this.getTasksLocal();
+                    const existingIndex = tasks.findIndex(t => t.id === task.id);
+                    
+                    task.updatedAt = new Date().toISOString();
+                    task.syncStatus = this.isOnline ? 'syncing' : 'pending';
+                    
+                    if (existingIndex >= 0) {
+                        tasks[existingIndex] = task;
+                    } else {
+                        tasks.push(task);
+                    }
+                    
+                    localStorage.setItem('personalTasks', JSON.stringify(tasks));
+                    console.log('💾 PersonalTaskDB: Task saved locally:', task.id);
+                } catch (error) {
+                    console.error('❌ PersonalTaskDB: Failed to save task locally:', error);
+                    throw error;
+                }
+            }
+
+            async saveTaskRemote(task) {
+                const taskData = {
+                    id: task.id,
+                    user_id: this.userId,
+                    title: task.title,
+                    description: task.description || '',
+                    category: task.category,
+                    priority: task.priority,
+                    status: task.status,
+                    notes: JSON.stringify(task.notes || []),
+                    created_at: task.createdAt,
+                    updated_at: task.updatedAt,
+                    completed_at: task.completedAt || null,
+                    archived_at: task.archivedAt || null
+                };
+
+                const { data, error } = await this.supabase
+                    .from('personal_tasks')
+                    .upsert(taskData, { 
+                        onConflict: 'id,user_id',
+                        ignoreDuplicates: false 
+                    })
+                    .select()
+                    .single();
+
+                if (error) throw error;
+                
+                // Update local task sync status
+                this.updateTaskSyncStatus(task.id, 'synced');
+                
+                console.log('☁️ PersonalTaskDB: Task synced to Supabase:', task.id);
+                return data;
+            }
+
+            updateTaskSyncStatus(taskId, status) {
+                const tasks = this.getTasksLocal();
+                const task = tasks.find(t => t.id === taskId);
+                if (task) {
+                    task.syncStatus = status;
+                    localStorage.setItem('personalTasks', JSON.stringify(tasks));
+                }
+            }
+
+            async getTasks() {
+                if (this.isOnline && this.supabase) {
+                    try {
+                        return await this.getTasksWithSync();
+                    } catch (error) {
+                        console.error('❌ PersonalTaskDB: Failed to get tasks from Supabase:', error);
+                        return this.getTasksLocal();
+                    }
+                } else {
+                    return this.getTasksLocal();
+                }
+            }
+
+            getTasksLocal() {
+                try {
+                    const tasks = JSON.parse(localStorage.getItem('personalTasks') || '[]');
+                    return tasks.map(task => ({
+                        ...task,
+                        notes: Array.isArray(task.notes) ? task.notes : (task.notes ? JSON.parse(task.notes) : [])
+                    }));
+                } catch (error) {
+                    console.error('❌ PersonalTaskDB: Failed to get local tasks:', error);
+                    return [];
+                }
+            }
+
+            async getTasksRemote() {
+                const { data, error } = await this.supabase
+                    .from('personal_tasks')
+                    .select('*')
+                    .eq('user_id', this.userId)
+                    .order('updated_at', { ascending: false });
+
+                if (error) throw error;
+                
+                return (data || []).map(task => ({
+                    id: task.id,
+                    title: task.title,
+                    description: task.description,
+                    category: task.category,
+                    priority: task.priority,
+                    status: task.status,
+                    notes: task.notes ? JSON.parse(task.notes) : [],
+                    createdAt: task.created_at,
+                    updatedAt: task.updated_at,
+                    completedAt: task.completed_at,
+                    archivedAt: task.archived_at,
+                    syncStatus: 'synced'
+                }));
+            }
+
+            async getTasksWithSync() {
+                const localTasks = this.getTasksLocal();
+                const remoteTasks = await this.getTasksRemote();
+                
+                // Merge tasks, preferring newer updatedAt timestamps
+                const merged = new Map();
+                
+                // Add local tasks
+                localTasks.forEach(task => {
+                    merged.set(task.id, { ...task, source: 'local' });
+                });
+                
+                // Add/merge remote tasks (prefer newer timestamp)
+                remoteTasks.forEach(task => {
+                    const existing = merged.get(task.id);
+                    if (!existing || new Date(task.updatedAt) > new Date(existing.updatedAt)) {
+                        merged.set(task.id, { ...task, source: 'remote' });
+                    }
+                });
+                
+                const mergedTasks = Array.from(merged.values());
+                
+                // Save merged results locally
+                localStorage.setItem('personalTasks', JSON.stringify(mergedTasks));
+                
+                console.log(`🔄 PersonalTaskDB: Merged ${mergedTasks.length} tasks (${localTasks.length} local, ${remoteTasks.length} remote)`);
+                return mergedTasks;
+            }
+
+            async deleteTask(taskId) {
+                // Delete locally first
+                this.deleteTaskLocal(taskId);
+                
+                // Then try to delete from Supabase
+                if (this.isOnline && this.supabase) {
+                    try {
+                        await this.deleteTaskRemote(taskId);
+                    } catch (error) {
+                        console.error('❌ PersonalTaskDB: Failed to delete task from Supabase:', error);
+                    }
+                }
+            }
+
+            deleteTaskLocal(taskId) {
+                const tasks = this.getTasksLocal();
+                const filteredTasks = tasks.filter(t => t.id !== taskId);
+                localStorage.setItem('personalTasks', JSON.stringify(filteredTasks));
+                console.log('💾 PersonalTaskDB: Task deleted locally:', taskId);
+            }
+
+            async deleteTaskRemote(taskId) {
+                const { error } = await this.supabase
+                    .from('personal_tasks')
+                    .delete()
+                    .eq('id', taskId)
+                    .eq('user_id', this.userId);
+
+                if (error) throw error;
+                console.log('☁️ PersonalTaskDB: Task deleted from Supabase:', taskId);
+            }
+
+            // === FOCUS TASKS OPERATIONS ===
+
+            async saveFocusTasks(focusTasks) {
+                // Save locally first
+                localStorage.setItem('dailyFocusTasks', JSON.stringify(focusTasks));
+                
+                // Then sync to Supabase
+                if (this.isOnline && this.supabase) {
+                    try {
+                        await this.saveFocusTasksRemote(focusTasks);
+                    } catch (error) {
+                        console.error('❌ PersonalTaskDB: Failed to save focus tasks to Supabase:', error);
+                    }
+                }
+            }
+
+            async saveFocusTasksRemote(focusTasks) {
+                const focusData = {
+                    user_id: this.userId,
+                    tasks: JSON.stringify(focusTasks),
+                    updated_at: new Date().toISOString()
+                };
+
+                const { error } = await this.supabase
+                    .from('daily_focus_tasks')
+                    .upsert(focusData, { onConflict: 'user_id' });
+
+                if (error) throw error;
+                console.log('☁️ PersonalTaskDB: Focus tasks synced to Supabase');
+            }
+
+            async getFocusTasks() {
+                if (this.isOnline && this.supabase) {
+                    try {
+                        return await this.getFocusTasksWithSync();
+                    } catch (error) {
+                        console.error('❌ PersonalTaskDB: Failed to get focus tasks from Supabase:', error);
+                        return this.getFocusTasksLocal();
+                    }
+                } else {
+                    return this.getFocusTasksLocal();
+                }
+            }
+
+            getFocusTasksLocal() {
+                try {
+                    return JSON.parse(localStorage.getItem('dailyFocusTasks') || '[]');
+                } catch (error) {
+                    console.error('❌ PersonalTaskDB: Failed to get local focus tasks:', error);
+                    return [];
+                }
+            }
+
+            async getFocusTasksWithSync() {
+                const localFocusTasks = this.getFocusTasksLocal();
+                
+                try {
+                    const { data, error } = await this.supabase
+                        .from('daily_focus_tasks')
+                        .select('*')
+                        .eq('user_id', this.userId)
+                        .single();
+
+                    if (error && error.code !== 'PGRST116') throw error; // PGRST116 = no rows found
+                    
+                    if (data && data.tasks) {
+                        const remoteFocusTasks = JSON.parse(data.tasks);
+                        const remoteUpdateTime = new Date(data.updated_at);
+                        const localUpdateTime = new Date(localStorage.getItem('dailyFocusTasksUpdated') || '1970-01-01');
+                        
+                        if (remoteUpdateTime > localUpdateTime) {
+                            localStorage.setItem('dailyFocusTasks', JSON.stringify(remoteFocusTasks));
+                            localStorage.setItem('dailyFocusTasksUpdated', data.updated_at);
+                            return remoteFocusTasks;
+                        }
+                    }
+                } catch (error) {
+                    console.error('❌ PersonalTaskDB: Failed to sync focus tasks:', error);
+                }
+                
+                return localFocusTasks;
+            }
+
+            // === SYNC AND REALTIME ===
+
+            async performFullSync() {
+                if (!this.isOnline || !this.supabase) {
+                    console.log('📱 PersonalTaskDB: Skipping sync - offline mode');
+                    return { success: false, reason: 'offline' };
+                }
+
+                try {
+                    console.log('🔄 PersonalTaskDB: Starting full sync...');
+                    
+                    // Sync pending local tasks to remote
+                    const localTasks = this.getTasksLocal();
+                    const pendingTasks = localTasks.filter(task => 
+                        task.syncStatus === 'pending' || task.syncStatus === 'syncing'
+                    );
+                    
+                    for (const task of pendingTasks) {
+                        try {
+                            await this.saveTaskRemote(task);
+                        } catch (error) {
+                            console.error(`❌ PersonalTaskDB: Failed to sync task ${task.id}:`, error);
+                        }
+                    }
+                    
+                    // Perform full task sync
+                    await this.getTasksWithSync();
+                    
+                    // Sync focus tasks
+                    await this.getFocusTasksWithSync();
+                    
+                    this.lastSyncTime = new Date().toISOString();
+                    localStorage.setItem('lastSyncTime', this.lastSyncTime);
+                    
+                    console.log('✅ PersonalTaskDB: Full sync completed');
+                    this.triggerSyncEvent('success');
+                    
+                    return { success: true, timestamp: this.lastSyncTime };
+                } catch (error) {
+                    console.error('❌ PersonalTaskDB: Full sync failed:', error);
+                    this.triggerSyncEvent('error', error);
+                    return { success: false, error: error.message };
+                }
+            }
+
+            startPeriodicSync() {
+                if (this.syncIntervalId) return;
+                
+                // Sync every 5 minutes
+                this.syncIntervalId = setInterval(async () => {
+                    if (this.isOnline) {
+                        await this.performFullSync();
+                    }
+                }, 5 * 60 * 1000);
+                
+                console.log('⏰ PersonalTaskDB: Periodic sync started (5min intervals)');
+            }
+
+            stopPeriodicSync() {
+                if (this.syncIntervalId) {
+                    clearInterval(this.syncIntervalId);
+                    this.syncIntervalId = null;
+                    console.log('⏸️ PersonalTaskDB: Periodic sync stopped');
+                }
+            }
+
+            setupRealtimeSync() {
+                if (!this.isOnline || !this.supabase) return;
+
+                try {
+                    this.realtimeChannel = this.supabase
+                        .channel(`personal_tasks_${this.userId}`)
+                        .on('postgres_changes', 
+                            { event: '*', schema: 'public', table: 'personal_tasks', filter: `user_id=eq.${this.userId}` },
+                            (payload) => {
+                                console.log('🔄 PersonalTaskDB: Real-time update received:', payload);
+                                this.handleRealtimeUpdate(payload);
+                            }
+                        )
+                        .on('postgres_changes',
+                            { event: '*', schema: 'public', table: 'daily_focus_tasks', filter: `user_id=eq.${this.userId}` },
+                            (payload) => {
+                                console.log('🔄 PersonalTaskDB: Real-time focus update received:', payload);
+                                this.handleRealtimeFocusUpdate(payload);
+                            }
+                        )
+                        .subscribe();
+
+                    console.log('👂 PersonalTaskDB: Real-time listeners activated');
+                } catch (error) {
+                    console.warn('⚠️ PersonalTaskDB: Real-time setup failed:', error);
+                }
+            }
+
+            async handleRealtimeUpdate(payload) {
+                try {
+                    // Refresh tasks from database and update UI
+                    await this.getTasksWithSync();
+                    
+                    // Trigger custom event for UI updates
+                    const event = new CustomEvent('personalTasksUpdated', {
+                        detail: { type: payload.eventType, task: payload.new || payload.old }
+                    });
+                    window.dispatchEvent(event);
+                } catch (error) {
+                    console.error('❌ PersonalTaskDB: Failed to handle realtime update:', error);
+                }
+            }
+
+            async handleRealtimeFocusUpdate(payload) {
+                try {
+                    await this.getFocusTasksWithSync();
+                    
+                    const event = new CustomEvent('focusTasksUpdated', {
+                        detail: { type: payload.eventType, data: payload.new || payload.old }
+                    });
+                    window.dispatchEvent(event);
+                } catch (error) {
+                    console.error('❌ PersonalTaskDB: Failed to handle focus realtime update:', error);
+                }
+            }
+
+            triggerSyncEvent(status, error = null) {
+                const event = new CustomEvent('personalTaskSyncStatus', {
+                    detail: { status, error, timestamp: new Date().toISOString() }
+                });
+                window.dispatchEvent(event);
+            }
+
+            // === MIGRATION AND UTILITIES ===
+
+            async migrateExistingData() {
+                if (!this.isOnline || !this.supabase) {
+                    console.log('📱 PersonalTaskDB: Skipping migration - offline mode');
+                    return { success: false, reason: 'offline' };
+                }
+
+                try {
+                    console.log('🔄 PersonalTaskDB: Starting data migration...');
+                    
+                    const localTasks = this.getTasksLocal();
+                    const localFocusTasks = this.getFocusTasksLocal();
+                    
+                    let migratedTasks = 0;
+                    
+                    // Migrate all local tasks
+                    for (const task of localTasks) {
+                        try {
+                            // Mark as pending migration
+                            task.syncStatus = 'pending';
+                            await this.saveTaskRemote(task);
+                            migratedTasks++;
+                        } catch (error) {
+                            console.error(`❌ PersonalTaskDB: Failed to migrate task ${task.id}:`, error);
+                        }
+                    }
+                    
+                    // Migrate focus tasks
+                    if (localFocusTasks.length > 0) {
+                        await this.saveFocusTasksRemote(localFocusTasks);
+                    }
+                    
+                    // Mark migration as complete
+                    localStorage.setItem('personalTasksMigrated', 'true');
+                    
+                    console.log(`✅ PersonalTaskDB: Migration completed - ${migratedTasks} tasks migrated`);
+                    return { success: true, migratedTasks, migratedFocusTasks: localFocusTasks.length };
+                } catch (error) {
+                    console.error('❌ PersonalTaskDB: Migration failed:', error);
+                    return { success: false, error: error.message };
+                }
+            }
+
+            generateUUID() {
+                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    const r = Math.random() * 16 | 0;
+                    const v = c == 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+
+            getConnectionStatus() {
+                return {
+                    online: this.isOnline,
+                    database: this.isOnline ? 'Supabase' : 'localStorage',
+                    realtime: this.realtimeChannel ? 'Active' : 'Offline',
+                    userId: this.userId,
+                    lastSync: this.lastSyncTime
+                };
+            }
+
+            async destroy() {
+                this.stopPeriodicSync();
+                if (this.realtimeChannel) {
+                    this.realtimeChannel.unsubscribe();
+                }
+                console.log('🔌 PersonalTaskDB: Connection destroyed');
+            }
+        }
+
+        // Initialize the global personal task database instance
+        window.personalTaskDB = new PersonalTaskDatabase();
+
         // Automatic Dark Mode Manager
         class AutoDarkMode {
             constructor() {
@@ -2973,12 +3520,32 @@
         // Daily Focus Mode Manager
         class DailyFocusMode {
             constructor() {
-                this.focusTasks = JSON.parse(localStorage.getItem('dailyFocusTasks')) || [];
+                this.focusTasks = [];
                 this.isActive = false;
+                this.initialized = false;
                 this.init();
             }
+
+            async init() {
+                // Load focus tasks from database
+                await this.loadFocusTasks();
+                this.setupEventListeners();
+                this.initialized = true;
+            }
+
+            async loadFocusTasks() {
+                try {
+                    this.focusTasks = await personalTaskDB.getFocusTasks();
+                    console.log(`Loaded ${this.focusTasks.length} focus tasks from database`);
+                } catch (error) {
+                    console.error('Error loading focus tasks from database:', error);
+                    // Fallback to localStorage
+                    this.focusTasks = JSON.parse(localStorage.getItem('dailyFocusTasks')) || [];
+                }
+            }
+
+            setupEventListeners() {
             
-            init() {
                 // Event listeners
                 document.getElementById('focus-mode-btn').addEventListener('click', () => {
                     this.toggle();
@@ -3612,9 +4179,12 @@
                 }, 3000);
             }
             
-            setFocusTasks(selectedTasks) {
+            async setFocusTasks(selectedTasks) {
                 this.focusTasks = selectedTasks.slice(0, 5); // Max 5 tasks
-                localStorage.setItem('dailyFocusTasks', JSON.stringify(this.focusTasks));
+                
+                // Save to database
+                await personalTaskDB.saveFocusTasks(this.focusTasks);
+                console.log(`Saved ${this.focusTasks.length} focus tasks to database`);
             }
             
             renderFocusTasks() {
@@ -4277,7 +4847,7 @@
         }
 
         // Migrate existing tasks to add notes property if missing
-        function migrateTasks() {
+        async function migrateTasks() {
             let needsMigration = false;
             tasks.forEach(task => {
                 if (!task.notes) {
@@ -4288,25 +4858,113 @@
             });
             
             if (needsMigration) {
-                saveTasksToStorage();
+                await saveTasksToStorage();
                 console.log('Task migration completed');
             }
         }
 
-        // Run migration
-        migrateTasks();
+        // Initialize tasks and run migration when database is ready
+        (async function initializeApp() {
+            // Wait a bit for database to initialize
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            await initializeTasks();
+            await migrateTasks();
+            
+            // Now render the UI
+            renderAllTasks();
+            updateTaskCounts();
+            
+            console.log('✅ PersonalTaskTracker: App initialized with database integration');
+        })();
+
+        // Setup real-time update handlers
+        window.addEventListener('personalTasksUpdated', async (event) => {
+            console.log('🔄 Real-time update received:', event.detail);
+            // Refresh tasks from database
+            tasks = await personalTaskDB.getTasks();
+            renderAllTasks();
+            updateTaskCounts();
+        });
+
+        window.addEventListener('focusTasksUpdated', async (event) => {
+            console.log('🔄 Focus tasks updated:', event.detail);
+            // Refresh focus tasks if Focus Mode is initialized
+            if (window.dailyFocusMode && window.dailyFocusMode.initialized) {
+                await window.dailyFocusMode.loadFocusTasks();
+                window.dailyFocusMode.renderFocusTasks();
+            }
+        });
+
+        window.addEventListener('personalTaskSyncStatus', (event) => {
+            const { status, error, timestamp } = event.detail;
+            console.log(`📡 Sync status: ${status}`, error ? error : '');
+            
+            // Update sync status indicator
+            updateSyncStatusIndicator(status, error);
+        });
+        
+        // Function to update sync status indicator
+        function updateSyncStatusIndicator(status, error = null) {
+            const statusEl = document.getElementById('sync-status');
+            const iconEl = document.getElementById('sync-status-icon');
+            const textEl = document.getElementById('sync-status-text');
+            
+            if (!statusEl || !iconEl || !textEl) return;
+            
+            switch (status) {
+                case 'success':
+                    iconEl.textContent = '🟢'; // Green circle
+                    textEl.textContent = 'Synced';
+                    statusEl.className = statusEl.className.replace('opacity-0', 'opacity-75');
+                    setTimeout(() => {
+                        statusEl.className = statusEl.className.replace('opacity-75', 'opacity-0');
+                    }, 2000);
+                    break;
+                case 'error':
+                    iconEl.textContent = '🔴'; // Red circle
+                    textEl.textContent = 'Sync Error';
+                    statusEl.className = statusEl.className.replace('opacity-0', 'opacity-100');
+                    statusEl.title = `Sync Error: ${error || 'Unknown error'}`;
+                    break;
+                case 'syncing':
+                    iconEl.textContent = '🟡'; // Yellow circle
+                    textEl.textContent = 'Syncing...';
+                    statusEl.className = statusEl.className.replace('opacity-0', 'opacity-75');
+                    break;
+                case 'offline':
+                    iconEl.textContent = '🔘'; // Offline
+                    textEl.textContent = 'Offline Mode';
+                    statusEl.className = statusEl.className.replace('opacity-0', 'opacity-50');
+                    break;
+                default:
+                    iconEl.textContent = '🟡';
+                    textEl.textContent = 'Initializing...';
+                    statusEl.className = statusEl.className.replace('opacity-100 opacity-75 opacity-50', 'opacity-0');
+            }
+        }
+        
+        // Initialize sync status indicator
+        setTimeout(() => {
+            const connectionStatus = personalTaskDB.getConnectionStatus();
+            updateSyncStatusIndicator(connectionStatus.online ? 'success' : 'offline');
+        }, 2000);
 
         // Enhanced saveTasksToStorage with sync integration
-        function saveTasksToStorage() {
+        async function saveTasksToStorage() {
             try {
                 if (!Array.isArray(tasks)) {
                     console.error('Attempting to save invalid tasks array, reinitializing');
                     tasks = [];
                 }
                 
-                localStorage.setItem('personalTasks', JSON.stringify(tasks));
+                // Save all tasks using the database
+                for (const task of tasks) {
+                    await personalTaskDB.saveTask(task);
+                }
+                
                 localStorage.setItem('taskIdCounter', taskIdCounter.toString());
-                console.log(`Saved ${tasks.length} tasks to localStorage`);
+                console.log(`Saved ${tasks.length} tasks via PersonalTaskDB`);
                 
                 // Trigger Google Drive sync if enabled and connected
                 if (googleDriveSync && GOOGLE_CONFIG.ENABLED) {
@@ -4314,13 +4972,14 @@
                 }
                 
             } catch (error) {
-                console.error('Error saving tasks to localStorage:', error);
+                console.error('Error saving tasks via PersonalTaskDB:', error);
+                // Fallback to direct localStorage save
                 try {
-                    localStorage.removeItem('personalTasks');
-                    localStorage.removeItem('taskIdCounter');
-                    console.log('Cleared corrupted localStorage data');
-                } catch (clearError) {
-                    console.error('Error clearing localStorage:', clearError);
+                    localStorage.setItem('personalTasks', JSON.stringify(tasks));
+                    localStorage.setItem('taskIdCounter', taskIdCounter.toString());
+                    console.log('Fallback: Saved tasks to localStorage directly');
+                } catch (fallbackError) {
+                    console.error('Error with fallback save:', fallbackError);
                 }
             }
         }
@@ -4388,7 +5047,7 @@
         }
 
         // Task management functions
-        function createTask(title, description = '', category = 'day-job', priority = 'medium', status = 'to-do') {
+        async function createTask(title, description = '', category = 'day-job', priority = 'medium', status = 'to-do') {
             const task = {
                 id: taskIdCounter++,
                 title,
@@ -4401,9 +5060,12 @@
                 updatedAt: new Date().toISOString()
             };
             
+            // Save to database
+            await personalTaskDB.saveTask(task);
+            
+            // Add to local tasks array
             tasks.push(task);
             localStorage.setItem('taskIdCounter', taskIdCounter.toString());
-            saveTasksToStorage();
             renderTask(task);
             updateTaskCounts();
             
@@ -4416,7 +5078,7 @@
             return task;
         }
 
-        function updateTask(taskId, updates) {
+        async function updateTask(taskId, updates) {
             if (!Array.isArray(tasks)) {
                 console.error('Tasks array is invalid, reinitializing');
                 tasks = [];
@@ -4432,6 +5094,9 @@
                 const oldStatus = task.status;
                 Object.assign(task, updates);
                 task.updatedAt = new Date().toISOString();
+                
+                // Save to database
+                await personalTaskDB.saveTask(task);
                 
                 // Handle task completion
                 if (updates.status === 'done' && oldStatus !== 'done') {
@@ -4455,19 +5120,26 @@
             }
         }
 
-        function updateTaskStatus(taskId, newStatus) {
+        async function updateTaskStatus(taskId, newStatus) {
             const task = tasks.find(t => t.id === taskId);
             if (task) {
                 task.status = newStatus;
                 task.updatedAt = new Date().toISOString();
-                saveTasksToStorage();
+                
+                // Save to database
+                await personalTaskDB.saveTask(task);
             }
         }
 
-        function deleteTask(taskId) {
+        async function deleteTask(taskId) {
             if (confirm('Are you sure you want to delete this task?')) {
+                // Delete from database
+                await personalTaskDB.deleteTask(taskId);
+                
+                // Update local tasks array
                 tasks = tasks.filter(t => t.id !== taskId);
-                saveTasksToStorage();
+                
+                // Update UI
                 document.querySelector(`[data-task-id="${taskId}"]`).remove();
                 updateTaskCounts();
                 
@@ -5056,7 +5728,7 @@
         closeModal.addEventListener('click', closeTaskModal);
         cancelBtn.addEventListener('click', closeTaskModal);
 
-        taskForm.addEventListener('submit', (e) => {
+        taskForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             console.log('Form submitted - starting save process');
             
@@ -5072,7 +5744,7 @@
                 
                 if (taskId) {
                     console.log('Updating existing task:', taskId);
-                    updateTask(parseInt(taskId), {
+                    await updateTask(parseInt(taskId), {
                         title,
                         description,
                         category,
@@ -5083,7 +5755,7 @@
                     renderAllTasks();
                 } else {
                     console.log('Creating new task');
-                    createTask(title, description, category, priority, status);
+                    await createTask(title, description, category, priority, status);
                 }
                 
                 console.log('Task saved successfully, closing modal');
@@ -5299,6 +5971,7 @@
             dailyFocus = new DailyFocusMode();
             // Make it globally accessible for onclick handlers
             window.dailyFocus = dailyFocus;
+            window.dailyFocusMode = dailyFocus; // Also make available for real-time updates
             
             // Initialize Google Drive sync
             googleDriveSync = new GoogleDriveSync();
@@ -5310,6 +5983,12 @@
     <div class="fixed bottom-2 left-2 text-xs text-gray-400 font-mono opacity-60 hover:opacity-100 transition-opacity z-10" 
          title="Personal Task Tracker - Focus Edition">
         v2024.focus.5
+    </div>
+    
+    <!-- Sync Status Indicator -->
+    <div id="sync-status" class="fixed top-4 right-4 text-xs text-gray-500 bg-white dark:bg-gray-800 px-2 py-1 rounded-full border border-gray-200 dark:border-gray-600 opacity-0 hover:opacity-100 transition-opacity z-20"
+         title="Database Sync Status">
+        <span id="sync-status-icon">🟡</span> <span id="sync-status-text">Initializing...</span>
     </div>
     </div> <!-- End of app-content div -->
 
@@ -6089,12 +6768,13 @@
         });
 
         // Task Status Update Function with Celebration and Archive Integration
-        function updateTaskStatus(taskId, newStatus) {
+        async function updateTaskStatus(taskId, newStatus) {
             const task = tasks.find(t => t.id === taskId);
             if (!task) return;
             
             const oldStatus = task.status;
             task.status = newStatus;
+            task.updatedAt = new Date().toISOString();
             
             // Set completion timestamp when marking as done
             if (newStatus === 'done' && oldStatus !== 'done') {
@@ -6105,6 +6785,10 @@
                 
                 // Update metrics immediately
                 metricsSystem.updateMetrics();
+            }
+            
+            // Save to database
+            await personalTaskDB.saveTask(task);
                 
                 // Auto-archiving disabled - tasks stay in Done column
                 // User can manually archive when ready
