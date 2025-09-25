@@ -4935,10 +4935,17 @@
             }
         }
 
-        // Keyboard shortcut to close FAB
+        // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
+            // ESC to close FAB
             if (e.key === 'Escape' && fabOpen) {
                 toggleFab();
+            }
+            
+            // Command+N (Mac) or Ctrl+N (Windows/Linux) to add new task
+            if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
+                e.preventDefault(); // Prevent browser's "New Window" action
+                openTaskModal(); // Open the task creation modal
             }
         });
     </script>
