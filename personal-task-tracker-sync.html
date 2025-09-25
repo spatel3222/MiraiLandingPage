@@ -4863,6 +4863,21 @@
             }
         }
 
+        // Initialize tasks from database/localStorage
+        async function initializeTasks() {
+            try {
+                // Try to load tasks from database first
+                tasks = await personalTaskDB.getTasks();
+                console.log(`📚 Loaded ${tasks.length} tasks from database`);
+            } catch (error) {
+                console.warn('Failed to load from database, using localStorage:', error);
+                // Fallback to localStorage
+                const savedTasks = localStorage.getItem('personalTasks');
+                tasks = savedTasks ? JSON.parse(savedTasks) : [];
+                console.log(`📱 Loaded ${tasks.length} tasks from localStorage`);
+            }
+        }
+
         // Initialize tasks and run migration when database is ready
         (async function initializeApp() {
             // Wait a bit for database to initialize
