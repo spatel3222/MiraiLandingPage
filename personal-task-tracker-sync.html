@@ -2310,6 +2310,12 @@
                         <span class="hidden sm:inline text-xs sm:text-sm">Focus</span>
                     </button>
                     
+                    <!-- Migration Button -->
+                    <button id="migrate-tasks-btn" class="bg-purple-600 text-white px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg hover:bg-purple-700 transition flex items-center space-x-1" title="Sync All Local Tasks to Database">
+                        <span class="text-base">📤</span>
+                        <span class="hidden sm:inline text-xs sm:text-sm">Migrate</span>
+                    </button>
+                    
                     <!-- Sync URL Button -->
                     <button id="sync-url-btn" class="bg-blue-600 text-white px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg hover:bg-blue-700 transition flex items-center space-x-1" title="Copy Sync URL for Other Devices">
                         <span class="text-base">🔗</span>
@@ -3041,6 +3047,71 @@
 
                 if (error) throw error;
                 console.log('☁️ PersonalTaskDB: Task deleted from Supabase:', taskId);
+            }
+
+            // === MIGRATION HELPER ===
+            
+            async migrateLocalTasksToSupabase() {
+                if (!this.isOnline || !this.supabase) {
+                    console.warn('⚠️ Cannot migrate: Supabase not available');
+                    return false;
+                }
+
+                try {
+                    const localTasks = this.getTasksLocal();
+                    const remoteTasks = await this.getTasksRemote();
+                    const remoteTaskIds = new Set(remoteTasks.map(t => t.id));
+                    
+                    // Find tasks that exist locally but not in Supabase
+                    const tasksToMigrate = localTasks.filter(task => !remoteTaskIds.has(task.id));
+                    
+                    if (tasksToMigrate.length === 0) {
+                        console.log('✅ Migration: No tasks need to be migrated');
+                        return true;
+                    }
+                    
+                    console.log(`🔄 Migration: Uploading ${tasksToMigrate.length} tasks to Supabase...`);
+                    
+                    // Upload each task to Supabase
+                    for (const task of tasksToMigrate) {
+                        try {
+                            await this.saveTaskRemote(task);
+                            console.log(`✅ Migration: Uploaded task "${task.title}"`);
+                        } catch (error) {
+                            console.error(`❌ Migration: Failed to upload task "${task.title}":`, error);
+                        }
+                    }
+                    
+                    console.log(`🎉 Migration complete! ${tasksToMigrate.length} tasks uploaded to Supabase`);
+                    
+                    // Show success notification
+                    this.showMigrationSuccess(tasksToMigrate.length);
+                    
+                    return true;
+                    
+                } catch (error) {
+                    console.error('❌ Migration failed:', error);
+                    return false;
+                }
+            }
+            
+            showMigrationSuccess(count) {
+                const notification = document.createElement('div');
+                notification.className = 'fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in';
+                notification.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">🎉</span>
+                        <div>
+                            <div class="font-medium">Migration Complete!</div>
+                            <div class="text-sm opacity-90">${count} tasks synced to all devices</div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 5000);
             }
 
             // === FOCUS TASKS OPERATIONS ===
@@ -5789,6 +5860,44 @@
                 // Fallback: show URL in alert
                 alert(`Copy this URL to sync on other devices:\n\n${syncUrl}`);
                 console.log('📋 Sync URL:', syncUrl);
+            }
+        });
+        
+        // Migration button
+        document.getElementById('migrate-tasks-btn').addEventListener('click', async () => {
+            const btn = document.getElementById('migrate-tasks-btn');
+            const originalHTML = btn.innerHTML;
+            
+            // Show loading state
+            btn.innerHTML = '<span class="text-base">⏳</span><span class="hidden sm:inline text-xs sm:text-sm">Migrating...</span>';
+            btn.disabled = true;
+            
+            try {
+                const success = await personalTaskDB.migrateLocalTasksToSupabase();
+                
+                if (success) {
+                    // Show success state
+                    btn.innerHTML = '<span class="text-base">✅</span><span class="hidden sm:inline text-xs sm:text-sm">Done!</span>';
+                    
+                    // Refresh the task display to show all synced tasks
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                } else {
+                    // Show error state
+                    btn.innerHTML = '<span class="text-base">❌</span><span class="hidden sm:inline text-xs sm:text-sm">Error</span>';
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                        btn.disabled = false;
+                    }, 3000);
+                }
+            } catch (error) {
+                console.error('Migration error:', error);
+                btn.innerHTML = '<span class="text-base">❌</span><span class="hidden sm:inline text-xs sm:text-sm">Error</span>';
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.disabled = false;
+                }, 3000);
             }
         });
 
