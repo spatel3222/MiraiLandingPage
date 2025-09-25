@@ -5280,7 +5280,7 @@
                     <span>${formatDate(task.createdAt)}</span>
                 </div>
                 ${task.status === 'done' ? `
-                    <button onclick="archiveTaskManually(${task.id})" class="mt-3 w-full bg-purple-600 text-white px-3 py-1 rounded-md text-sm hover:bg-purple-700 transition">
+                    <button onclick="event.stopPropagation(); archiveTaskManually(${task.id})" class="mt-3 w-full bg-purple-600 text-white px-3 py-1 rounded-md text-sm hover:bg-purple-700 transition">
                         📚 Archive Task
                     </button>
                 ` : ''}
