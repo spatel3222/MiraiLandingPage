@@ -5377,11 +5377,6 @@
                     </span>
                     <span>${formatDate(task.createdAt)}</span>
                 </div>
-                ${task.status === 'done' ? `
-                    <button onclick="event.stopPropagation(); archiveTaskManually(${task.id})" class="mt-3 w-full bg-purple-600 text-white px-3 py-1 rounded-md text-sm hover:bg-purple-700 transition">
-                        📚 Archive Task
-                    </button>
-                ` : ''}
             `;
             
             // Touch-optimized event handling
@@ -6271,6 +6266,15 @@
                     </svg>
                 </button>
             </div>
+            <!-- Archive Tasks Action -->
+            <div class="fab-action" id="fab-archive-action">
+                <span class="fab-action-label">Archive Tasks</span>
+                <button class="fab-action-button" id="fab-archive-btn" aria-label="Archive completed tasks">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: #f59e0b;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 8l6 6 6-6M5 8h14l-1 10H6L5 8z"></path>
+                    </svg>
+                </button>
+            </div>
             <!-- Add Task Action -->
             <div class="fab-action" id="fab-add-action">
                 <span class="fab-action-label">Add Task <kbd class="fab-shortcut-hint">⇧⌘T</kbd></span>
@@ -6448,6 +6452,7 @@
         const fabActions = document.querySelectorAll('.fab-action');
         const fabAddBtn = document.getElementById('fab-add-btn');
         const fabUploadBtn = document.getElementById('fab-upload-btn');
+        const fabArchiveBtn = document.getElementById('fab-archive-btn');
         const uploadModal = document.getElementById('upload-modal');
         const uploadModalBackdrop = document.getElementById('upload-modal-backdrop');
         const closeUploadModal = document.getElementById('close-upload-modal');
@@ -6494,6 +6499,36 @@
             toggleFab(); // Close FAB
             uploadModal.classList.add('active');
             document.body.style.overflow = 'hidden';
+        });
+        
+        // Archive Tasks button click - archive all completed tasks
+        fabArchiveBtn.addEventListener('click', async () => {
+            toggleFab(); // Close FAB
+            
+            // Find all completed tasks
+            const completedTasks = tasks.filter(task => task.status === 'completed');
+            
+            if (completedTasks.length === 0) {
+                showToast('No completed tasks to archive', 'info');
+                return;
+            }
+            
+            // Confirm archive action
+            const confirmed = confirm(`Archive ${completedTasks.length} completed task${completedTasks.length === 1 ? '' : 's'}?`);
+            if (!confirmed) return;
+            
+            try {
+                // Archive each completed task
+                for (const task of completedTasks) {
+                    await archiveTaskManually(task.id);
+                }
+                
+                showToast(`Archived ${completedTasks.length} completed task${completedTasks.length === 1 ? '' : 's'}!`, 'success');
+                renderAllTasks(); // Refresh the display
+            } catch (error) {
+                console.error('Error archiving tasks:', error);
+                showToast('Error archiving tasks', 'error');
+            }
         });
 
         // Close upload modal
