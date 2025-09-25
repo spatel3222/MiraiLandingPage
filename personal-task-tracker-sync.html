@@ -2935,6 +2935,7 @@
                     .from('personal_tasks')
                     .select('*')
                     .eq('user_id', this.userId)
+                    .is('archived_at', null)  // Exclude archived tasks
                     .order('updated_at', { ascending: false });
 
                 if (error) throw error;
@@ -6886,11 +6887,23 @@
         
         // Make functions globally available
         // Manual archive function for Done tasks
-        function archiveTaskManually(taskId) {
+        async function archiveTaskManually(taskId) {
             const task = tasks.find(t => t.id === taskId);
             if (!task || task.status !== 'done') return;
             
-            // Archive the task
+            // Mark task as archived in database first
+            task.archivedAt = new Date().toISOString();
+            task.status = 'archived';
+            
+            try {
+                // Update in database to mark as archived
+                await personalTaskDB.saveTask(task);
+                console.log(`🗃️ Task archived in database: ${task.title}`);
+            } catch (error) {
+                console.warn('Failed to archive task in database:', error);
+            }
+            
+            // Archive the task in localStorage
             archiveSystem.archiveTask(task);
             
             // Remove from main tasks array
@@ -6901,6 +6914,7 @@
                 renderAllTasks();
                 metricsSystem.updateMetrics();
             }
+        }
             
             // Show success feedback
             const backdrop = document.createElement('div');
