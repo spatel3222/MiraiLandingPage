@@ -1,0 +1,900 @@
+{
+  "title": "MOI - Boutique Fine Jewellery – MOI - Boutique Everyday Luxury",
+  "bodyStyles": {
+    "fontFamily": "\"BentonSans Book\", sans-serif",
+    "fontSize": "16px",
+    "lineHeight": "normal",
+    "color": "rgb(20, 19, 20)",
+    "backgroundColor": "rgb(255, 255, 255)"
+  },
+  "headings": [
+    {
+      "tag": "h3",
+      "text": "SHOP BY STYLE",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY EDIT",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY GEMSTONE",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY STYLE",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY EDIT",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY STYLE",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY EDIT",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY GEMSTONE",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY STYLE",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY STYLE",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "DESIGN STYLE",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "GEMSTONES",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "CURATION",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "OCCASSION",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY STYLE",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY CURATION",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "Shop by Style",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "Shop by Curation",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY STYLE",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY EDIT",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY GEMSTONE",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY STYLE",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY EDIT",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY STYLE",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY EDIT",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY GEMSTONE",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY STYLE",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "SHOP BY STYLE",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "DESIGN STYLE",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "GEMSTONES",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "Curation",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "Occasion",
+      "styles": {
+        "fontFamily": "BentonSans",
+        "fontSize": "12px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "12px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "Cart",
+      "styles": {
+        "fontFamily": "\"BentonSans Book\", sans-serif",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "color": "rgb(20, 19, 20)",
+        "lineHeight": "14px"
+      }
+    },
+    {
+      "tag": "h5",
+      "text": "No more products available for purchase",
+      "styles": {
+        "fontFamily": "\"BentonSans Book\", sans-serif",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "color": "rgb(114, 28, 36)",
+        "lineHeight": "16.8px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "Eva Mini Sage Earrings",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "17px",
+        "fontWeight": "600",
+        "color": "rgb(20, 19, 20)",
+        "lineHeight": "22.1px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "Sylvia Torque Necklace",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "17px",
+        "fontWeight": "600",
+        "color": "rgb(20, 19, 20)",
+        "lineHeight": "22.1px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "Sylvia Bracelet",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "17px",
+        "fontWeight": "600",
+        "color": "rgb(20, 19, 20)",
+        "lineHeight": "22.1px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "here's what the moi family has to say",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "17px",
+        "fontWeight": "600",
+        "color": "rgb(20, 19, 20)",
+        "lineHeight": "20.4px"
+      }
+    },
+    {
+      "tag": "h1",
+      "text": "a colourful mosaic",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "40px",
+        "fontWeight": "500",
+        "color": "rgb(255, 255, 255)",
+        "lineHeight": "42px"
+      }
+    },
+    {
+      "tag": "h1",
+      "text": "a colorful mosaic",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "40px",
+        "fontWeight": "500",
+        "color": "rgb(255, 255, 255)",
+        "lineHeight": "42px"
+      }
+    },
+    {
+      "tag": "h2",
+      "text": "",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(20, 19, 20)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "our top favourites",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(44, 44, 44)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "new in : green",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "new in : green",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "shop by category",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "necklaces",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(255, 255, 255)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "bracelets",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(255, 255, 255)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "earrings",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(255, 255, 255)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "rings",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(255, 255, 255)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "necklaces",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(255, 255, 255)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "bracelets",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(255, 255, 255)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "earrings",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(255, 255, 255)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "rings",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(255, 255, 255)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "behno x moi",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "behno x moi",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h2",
+      "text": "reviews",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h2",
+      "text": "Divia Thani",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "22px"
+      }
+    },
+    {
+      "tag": "h2",
+      "text": "Neha Sahai",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "22px"
+      }
+    },
+    {
+      "tag": "h2",
+      "text": "Nikita Dhond",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "18px",
+        "fontWeight": "500",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "22px"
+      }
+    },
+    {
+      "tag": "h2",
+      "text": "the moi muse",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "27px",
+        "fontWeight": "100",
+        "color": "rgb(20, 19, 20)",
+        "lineHeight": "32.4px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "forever craftsmanship for everyday luxury",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(44, 44, 44)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "your purchase, their aspirations",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "your purchase, their aspirations",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "32px",
+        "fontWeight": "400",
+        "color": "rgb(63, 62, 62)",
+        "lineHeight": "34px"
+      }
+    },
+    {
+      "tag": "h2",
+      "text": "join our world",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "40px",
+        "fontWeight": "500",
+        "color": "rgb(255, 255, 255)",
+        "lineHeight": "50px"
+      }
+    },
+    {
+      "tag": "h2",
+      "text": "About Us",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "28px",
+        "fontWeight": "400",
+        "color": "rgb(20, 19, 20)",
+        "lineHeight": "37px"
+      }
+    },
+    {
+      "tag": "h2",
+      "text": "Get in touch",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "28px",
+        "fontWeight": "400",
+        "color": "rgb(20, 19, 20)",
+        "lineHeight": "37px"
+      }
+    },
+    {
+      "tag": "h2",
+      "text": "Help",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "28px",
+        "fontWeight": "400",
+        "color": "rgb(20, 19, 20)",
+        "lineHeight": "37px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "Cart",
+      "styles": {
+        "fontFamily": "\"BentonSans Book\", sans-serif",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "color": "rgb(20, 19, 20)",
+        "lineHeight": "14px"
+      }
+    },
+    {
+      "tag": "h5",
+      "text": "No more products available for purchase",
+      "styles": {
+        "fontFamily": "\"BentonSans Book\", sans-serif",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "color": "rgb(114, 28, 36)",
+        "lineHeight": "16.8px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "Eva Mini Sage Earrings",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "17px",
+        "fontWeight": "600",
+        "color": "rgb(20, 19, 20)",
+        "lineHeight": "22.1px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "Sylvia Torque Necklace",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "17px",
+        "fontWeight": "600",
+        "color": "rgb(20, 19, 20)",
+        "lineHeight": "22.1px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "Sylvia Bracelet",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "17px",
+        "fontWeight": "600",
+        "color": "rgb(20, 19, 20)",
+        "lineHeight": "22.1px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "here's what the moi family has to say",
+      "styles": {
+        "fontFamily": "orpheuspro, sans-serif",
+        "fontSize": "17px",
+        "fontWeight": "600",
+        "color": "rgb(20, 19, 20)",
+        "lineHeight": "20.4px"
+      }
+    },
+    {
+      "tag": "h3",
+      "text": "Cart",
+      "styles": {
+        "fontFamily": "\"BentonSans Book\", sans-serif",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "color": "rgb(20, 19, 20)",
+        "lineHeight": "14px"
+      }
+    },
+    {
+      "tag": "h5",
+      "text": "No more products available for purchase",
+      "styles": {
+        "fontFamily": "\"BentonSans Book\", sans-serif",
+        "fontSize": "14px",
+        "fontWeight": "500",
+        "color": "rgb(114, 28, 36)",
+        "lineHeight": "16.8px"
+      }
+    }
+  ],
+  "containers": [
+    {
+      "selector": "div.container",
+      "styles": {
+        "backgroundColor": "rgba(255, 255, 255, 0)",
+        "color": "rgb(20, 19, 20)",
+        "padding": "0px",
+        "margin": "0px",
+        "maxWidth": "none"
+      }
+    },
+    {
+      "selector": "div.main",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(20, 19, 20)",
+        "padding": "0px",
+        "margin": "0px",
+        "maxWidth": "none"
+      }
+    },
+    {
+      "selector": "main.main-content.wizzy-main-content#MainContent",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(20, 19, 20)",
+        "padding": "0px",
+        "margin": "0px",
+        "maxWidth": "none"
+      }
+    },
+    {
+      "selector": "div.container",
+      "styles": {
+        "backgroundColor": "rgba(255, 255, 255, 0)",
+        "color": "rgb(20, 19, 20)",
+        "padding": "0px",
+        "margin": "0px",
+        "maxWidth": "none"
+      }
+    },
+    {
+      "selector": "div.main",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(20, 19, 20)",
+        "padding": "0px",
+        "margin": "0px",
+        "maxWidth": "none"
+      }
+    },
+    {
+      "selector": "div.main",
+      "styles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(20, 19, 20)",
+        "padding": "0px",
+        "margin": "0px",
+        "maxWidth": "none"
+      }
+    }
+  ],
+  "stylesheetCount": 57
+}

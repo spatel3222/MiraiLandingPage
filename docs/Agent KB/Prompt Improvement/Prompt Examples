@@ -1,0 +1,41 @@
+➣SWOT Analysis
+Act as a business strategist. Create a SWOT analysis for [INSERT BUSINESS] in the [INSERT INDUSTRY] using competitive landscape data and internal factors.
+
+➣Growth Levers
+Identify 5 scalable growth levers for a [TYPE OF BUSINESS], focusing on revenue expansion, operational leverage, and brand amplification.
+
+➣30-60-90 Plan
+Create a 30-60-90 day performance plan for a new [INSERT ROLE] joining [COMPANY], including onboarding goals, KPIs, and early wins.
+
+➣Revenue Model Canvas
+Build a lean revenue model for a business offering [PRODUCT/SERVICE], including ideal pricing, CAC, LTV, and monthly recurring revenue projection.
+
+➣Churn Fix
+Recommend 3 evidence-based strategies to reduce churn for a SaaS product serving [TARGET CUSTOMER], using customer behavior and feedback loops.
+
+➣KPI Dashboard Blueprint
+List the 7 most important KPIs for a [BUSINESS TYPE] to track across acquisition, retention, product usage, and financial health.
+
+➣Pricing Strategy
+Act as a pricing expert. Suggest 3 pricing strategies for [OFFER] targeting [SEGMENT], using value-based pricing, tiering, and competitive positioning.
+
+➣Go-to-Market Plan
+Develop a go-to-market strategy for launching [PRODUCT] to [TARGET MARKET], covering positioning, channels, acquisition, and launch metrics.
+
+➣Value Proposition
+Write a compelling value proposition for [BRAND or PRODUCT] that highlights customer pain, the solution, and key differentiators.
+
+➣Pivot Ideas
+Suggest 3 smart pivot directions for a startup struggling with [SPECIFIC PROBLEM], including new customer segments, use cases, or product angles.
+
+
+
+// links
+* https://www.anthropic.com/news/prompt-engineering-for-business-performance
+* https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/introduction-prompt-design
+* https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview
+* https://docs.claude.com/en/docs/test-and-evaluate/develop-tests#consistency-faq-bot-cosine-similarity-evaluation
+* https://www.lyzr.ai/blog/prompt-engineering-techniques/
+* https://www.promptingguide.ai/papers?ref=dailydev
+* gemini/prompts/intro_prompt_design.ipynb
+

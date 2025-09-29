@@ -1,0 +1,193 @@
+{
+  "brandAnalysis": {
+    "brandName": "MOI - Boutique Fine Jewellery",
+    "website": "https://vibewithmoi.in/",
+    "tagline": "Boutique Everyday Luxury",
+    "captureDate": "2025-09-29T03:16:54.289Z",
+    "colorPalette": {
+      "primary": {
+        "name": "Deep Charcoal",
+        "hex": "#141314",
+        "rgb": "rgb(20, 19, 20)",
+        "usage": "Primary text, headings, body content"
+      },
+      "secondary": {
+        "name": "Warm Grey",
+        "hex": "#3F3E3E",
+        "rgb": "rgb(63, 62, 62)",
+        "usage": "Secondary text, navigation labels, category headers"
+      },
+      "accent": {
+        "name": "Rich Red",
+        "hex": "#721C24",
+        "rgb": "rgb(114, 28, 36)",
+        "usage": "Error messages, sale notifications"
+      },
+      "neutral": {
+        "name": "Pure White",
+        "hex": "#FFFFFF",
+        "rgb": "rgb(255, 255, 255)",
+        "usage": "Backgrounds, overlay text on images"
+      },
+      "darkGrey": {
+        "name": "Medium Grey",
+        "hex": "#2C2C2C",
+        "rgb": "rgb(44, 44, 44)",
+        "usage": "Emphasized content sections"
+      },
+      "extended": {
+        "complementary": {
+          "name": "Soft Beige/Cream",
+          "estimated_hex": "#F5F3F0",
+          "usage": "Background sections, product cards",
+          "source": "Observed in product showcase areas"
+        },
+        "metallic": {
+          "name": "Gold Accents",
+          "estimated_hex": "#D4AF37",
+          "usage": "Product details, jewelry highlights",
+          "source": "Product imagery and metallic elements"
+        },
+        "muted": {
+          "name": "Soft Grey",
+          "estimated_hex": "#F8F8F8",
+          "usage": "Subtle backgrounds, content separation",
+          "source": "Content area backgrounds"
+        }
+      }
+    },
+    "typography": {
+      "primaryFont": {
+        "family": "orpheuspro",
+        "fallback": "sans-serif",
+        "usage": "Headings, product names, section titles",
+        "characteristics": "Elegant serif font, sophisticated and premium feel"
+      },
+      "secondaryFont": {
+        "family": "BentonSans Book",
+        "fallback": "sans-serif",
+        "usage": "Body text, navigation, UI elements",
+        "characteristics": "Clean sans-serif, highly readable"
+      },
+      "supportingFont": {
+        "family": "BentonSans",
+        "fallback": "sans-serif",
+        "usage": "Category labels, small text elements",
+        "characteristics": "Consistent with secondary but variations in weight"
+      },
+      "hierarchy": {
+        "h1": {
+          "size": "40px",
+          "weight": "500",
+          "lineHeight": "42px-50px",
+          "usage": "Hero headings, main page titles"
+        },
+        "h2": {
+          "size": "27px-32px",
+          "weight": "100-400",
+          "lineHeight": "32.4px-37px",
+          "usage": "Section headings, major content blocks"
+        },
+        "h3": {
+          "size": "12px-32px",
+          "weight": "400-600",
+          "lineHeight": "12px-34px",
+          "usage": "Product titles, category labels, subsections"
+        },
+        "body": {
+          "size": "16px",
+          "weight": "normal",
+          "lineHeight": "normal",
+          "usage": "General content, descriptions"
+        }
+      }
+    },
+    "designPrinciples": {
+      "visualStyle": "Minimalist luxury with sophisticated typography",
+      "layout": "Clean, spacious layouts with generous white space",
+      "imagery": "High-quality product photography with professional models",
+      "colorUsage": "Monochromatic with strategic color accents",
+      "spacing": "Generous padding and margins for premium feel"
+    },
+    "brandPersonality": {
+      "tone": "Sophisticated, accessible luxury",
+      "adjectives": [
+        "Elegant",
+        "Modern",
+        "Refined",
+        "Approachable",
+        "Premium"
+      ],
+      "target": "Women seeking everyday luxury jewelry",
+      "positioning": "Boutique fine jewelry for discerning customers"
+    },
+    "uiPatterns": {
+      "navigation": "Clean horizontal navigation with category dropdowns",
+      "buttons": "Minimal styling with clear typography",
+      "cards": "Simple product cards with focus on imagery",
+      "layout": "Grid-based with flexible responsive design",
+      "contrast": "High contrast for readability"
+    }
+  },
+  "dashboardRecommendations": {
+    "colorScheme": {
+      "primary": "#141314",
+      "secondary": "#3F3E3E",
+      "background": "#FFFFFF",
+      "cards": "#F5F3F0",
+      "accent": "#721C24",
+      "success": "#2D5530",
+      "borders": "#E8E8E8",
+      "text": {
+        "primary": "#141314",
+        "secondary": "#3F3E3E",
+        "light": "#FFFFFF"
+      }
+    },
+    "typography": {
+      "headings": "orpheuspro, serif",
+      "body": "BentonSans Book, sans-serif",
+      "ui": "BentonSans, sans-serif",
+      "hierarchy": {
+        "dashboard_title": "32px, weight 400",
+        "section_headers": "18px, weight 500",
+        "metric_labels": "12px, weight 500",
+        "data_values": "16px-24px, weight 600"
+      }
+    },
+    "designElements": {
+      "spacing": "Generous padding (24px-32px) to maintain luxury feel",
+      "cards": "Subtle shadows, rounded corners (8px), beige backgrounds",
+      "charts": "Minimal design with brand colors, clean lines",
+      "icons": "Simple, minimal icons in brand grey",
+      "buttons": "Minimal styling, clear typography, brand colors"
+    },
+    "dataVisualization": {
+      "primary_chart_colors": [
+        "#141314",
+        "#3F3E3E",
+        "#721C24",
+        "#2D5530"
+      ],
+      "background_colors": [
+        "#F5F3F0",
+        "#F8F8F8"
+      ],
+      "text_colors": [
+        "#141314",
+        "#3F3E3E"
+      ],
+      "principles": [
+        "High contrast for accessibility",
+        "Minimal decoration to focus on data",
+        "Consistent with brand's sophisticated aesthetic",
+        "Use brand red sparingly for important alerts/metrics"
+      ]
+    }
+  },
+  "metadata": {
+    "analysis_date": "2025-09-29T03:16:54.290Z",
+    "source_website": "vibewithmoi.in",
+    "analysis_method": "Automated screenshot analysis + CSS extraction"
+  }
+}

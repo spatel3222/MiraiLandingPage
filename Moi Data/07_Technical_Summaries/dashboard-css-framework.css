@@ -1,0 +1,566 @@
+/* 
+ * MOI Brand-Aligned Dashboard CSS Framework
+ * Based on vibewithmoi.in brand analysis
+ * Generated: 2025
+ */
+
+/* ===== MOI BRAND COLOR SYSTEM ===== */
+:root {
+    /* Primary Brand Colors (Extracted from vibewithmoi.in) */
+    --moi-primary: #141314;        /* Deep Charcoal - Primary text, main elements */
+    --moi-secondary: #3F3E3E;      /* Warm Grey - Secondary text, navigation */
+    --moi-accent: #721C24;         /* Rich Red - Alerts, error states, important CTA */
+    --moi-neutral: #FFFFFF;        /* Pure White - Backgrounds, cards */
+    --moi-medium-grey: #2C2C2C;    /* Medium Grey - Emphasized content */
+    
+    /* Extended Palette (Derived from visual analysis) */
+    --moi-background: #F5F3F0;     /* Soft Beige - Card backgrounds, sections */
+    --moi-light-grey: #F8F8F8;     /* Light Grey - Subtle backgrounds */
+    --moi-success: #2D5530;        /* Deep Green - Positive metrics, success states */
+    --moi-warning: #B45309;        /* Warm Orange - Warning states */
+    --moi-border: #E8E8E8;         /* Border Grey - Subtle separators */
+    --moi-shadow: rgba(20, 19, 20, 0.08); /* Subtle shadows */
+    --moi-shadow-hover: rgba(20, 19, 20, 0.12); /* Hover shadows */
+    
+    /* Typography Variables (Web-safe alternatives to orpheuspro & BentonSans) */
+    --font-primary: 'Crimson Text', 'Times New Roman', serif; /* Elegant serif for headings */
+    --font-secondary: 'Inter', 'Helvetica Neue', sans-serif; /* Clean sans for body */
+    --font-ui: 'Inter', 'Arial', sans-serif; /* UI elements and labels */
+    
+    /* Spacing System (Consistent with MOI's generous spacing) */
+    --spacing-xs: 8px;
+    --spacing-sm: 16px;
+    --spacing-md: 24px;
+    --spacing-lg: 32px;
+    --spacing-xl: 48px;
+    --spacing-xxl: 64px;
+    
+    /* Typography Scale */
+    --text-xs: 12px;
+    --text-sm: 14px;
+    --text-base: 16px;
+    --text-lg: 18px;
+    --text-xl: 24px;
+    --text-2xl: 28px;
+    --text-3xl: 32px;
+    --text-4xl: 40px;
+    
+    /* Layout Constants */
+    --border-radius: 8px;
+    --border-radius-lg: 12px;
+    --max-width: 1400px;
+    
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.2s ease;
+    --transition-slow: 0.3s ease;
+}
+
+/* ===== BASE STYLES ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-secondary);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    color: var(--moi-primary);
+    background-color: var(--moi-neutral);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== TYPOGRAPHY SYSTEM ===== */
+.moi-heading-1 {
+    font-family: var(--font-primary);
+    font-size: var(--text-4xl);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--moi-primary);
+    letter-spacing: -0.5px;
+    margin-bottom: var(--spacing-md);
+}
+
+.moi-heading-2 {
+    font-family: var(--font-primary);
+    font-size: var(--text-2xl);
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--moi-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.moi-heading-3 {
+    font-family: var(--font-primary);
+    font-size: var(--text-lg);
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--moi-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.moi-label {
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--moi-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: var(--spacing-xs);
+}
+
+.moi-body {
+    font-family: var(--font-secondary);
+    font-size: var(--text-base);
+    color: var(--moi-primary);
+    line-height: 1.6;
+}
+
+.moi-body-sm {
+    font-family: var(--font-secondary);
+    font-size: var(--text-sm);
+    color: var(--moi-secondary);
+    line-height: 1.5;
+}
+
+/* ===== DASHBOARD LAYOUT ===== */
+.moi-dashboard {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+    background: var(--moi-neutral);
+    min-height: 100vh;
+}
+
+.moi-dashboard-header {
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--moi-border);
+}
+
+.moi-dashboard-title {
+    font-family: var(--font-primary);
+    font-size: var(--text-3xl);
+    font-weight: 400;
+    color: var(--moi-primary);
+    margin-bottom: var(--spacing-xs);
+    letter-spacing: -0.5px;
+}
+
+.moi-dashboard-subtitle {
+    font-family: var(--font-secondary);
+    font-size: var(--text-base);
+    color: var(--moi-secondary);
+    font-weight: 300;
+}
+
+/* ===== CARD SYSTEM ===== */
+.moi-card {
+    background: var(--moi-background);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    box-shadow: 0 2px 12px var(--moi-shadow);
+    border: 1px solid var(--moi-border);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.moi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px var(--moi-shadow-hover);
+}
+
+.moi-card-white {
+    background: var(--moi-neutral);
+}
+
+.moi-card-title {
+    font-family: var(--font-primary);
+    font-size: var(--text-lg);
+    font-weight: 500;
+    color: var(--moi-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+/* ===== METRICS COMPONENTS ===== */
+.moi-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+}
+
+.moi-metric {
+    background: var(--moi-background);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    box-shadow: 0 2px 12px var(--moi-shadow);
+    border: 1px solid var(--moi-border);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.moi-metric:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px var(--moi-shadow-hover);
+}
+
+.moi-metric-label {
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--moi-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: var(--spacing-xs);
+}
+
+.moi-metric-value {
+    font-family: var(--font-secondary);
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--moi-primary);
+    margin-bottom: var(--spacing-xs);
+    line-height: 1.2;
+}
+
+.moi-metric-value-large {
+    font-size: var(--text-2xl);
+}
+
+.moi-metric-change {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.moi-metric-change.positive {
+    color: var(--moi-success);
+}
+
+.moi-metric-change.negative {
+    color: var(--moi-accent);
+}
+
+.moi-metric-change.neutral {
+    color: var(--moi-secondary);
+}
+
+/* ===== CHART COMPONENTS ===== */
+.moi-chart-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+}
+
+.moi-chart-container {
+    background: var(--moi-background);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    box-shadow: 0 2px 12px var(--moi-shadow);
+    border: 1px solid var(--moi-border);
+}
+
+.moi-chart-title {
+    font-family: var(--font-primary);
+    font-size: var(--text-lg);
+    font-weight: 500;
+    color: var(--moi-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.moi-chart-placeholder {
+    height: 300px;
+    background: linear-gradient(135deg, var(--moi-light-grey) 0%, var(--moi-background) 100%);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--moi-secondary);
+    font-style: italic;
+    border: 2px dashed var(--moi-border);
+    text-align: center;
+    font-size: var(--text-sm);
+}
+
+/* ===== TABLE COMPONENTS ===== */
+.moi-table-container {
+    background: var(--moi-background);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    box-shadow: 0 2px 12px var(--moi-shadow);
+    border: 1px solid var(--moi-border);
+    overflow-x: auto;
+}
+
+.moi-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.moi-table th {
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--moi-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: var(--spacing-sm);
+    text-align: left;
+    border-bottom: 2px solid var(--moi-border);
+}
+
+.moi-table td {
+    font-family: var(--font-secondary);
+    font-size: var(--text-sm);
+    color: var(--moi-primary);
+    padding: var(--spacing-sm);
+    border-bottom: 1px solid var(--moi-border);
+}
+
+.moi-table tr:hover {
+    background-color: var(--moi-light-grey);
+}
+
+/* ===== STATUS INDICATORS ===== */
+.moi-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: var(--text-sm);
+}
+
+.moi-status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.moi-status-active .moi-status-indicator {
+    background-color: var(--moi-success);
+}
+
+.moi-status-warning .moi-status-indicator {
+    background-color: var(--moi-warning);
+}
+
+.moi-status-error .moi-status-indicator {
+    background-color: var(--moi-accent);
+}
+
+.moi-status-inactive .moi-status-indicator {
+    background-color: var(--moi-secondary);
+}
+
+/* ===== BUTTON SYSTEM ===== */
+.moi-button {
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--moi-primary);
+    background: transparent;
+    color: var(--moi-primary);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all var(--transition-base);
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.moi-button:hover {
+    background: var(--moi-primary);
+    color: var(--moi-neutral);
+    transform: translateY(-1px);
+}
+
+.moi-button.primary {
+    background: var(--moi-primary);
+    color: var(--moi-neutral);
+}
+
+.moi-button.primary:hover {
+    background: var(--moi-secondary);
+}
+
+.moi-button.secondary {
+    border-color: var(--moi-secondary);
+    color: var(--moi-secondary);
+}
+
+.moi-button.secondary:hover {
+    background: var(--moi-secondary);
+    color: var(--moi-neutral);
+}
+
+.moi-button.accent {
+    border-color: var(--moi-accent);
+    color: var(--moi-accent);
+}
+
+.moi-button.accent:hover {
+    background: var(--moi-accent);
+    color: var(--moi-neutral);
+}
+
+/* ===== UTILITY CLASSES ===== */
+.moi-text-primary { color: var(--moi-primary); }
+.moi-text-secondary { color: var(--moi-secondary); }
+.moi-text-accent { color: var(--moi-accent); }
+.moi-text-success { color: var(--moi-success); }
+.moi-text-warning { color: var(--moi-warning); }
+
+.moi-bg-primary { background-color: var(--moi-primary); }
+.moi-bg-secondary { background-color: var(--moi-secondary); }
+.moi-bg-background { background-color: var(--moi-background); }
+.moi-bg-neutral { background-color: var(--moi-neutral); }
+.moi-bg-light { background-color: var(--moi-light-grey); }
+
+.moi-border { border: 1px solid var(--moi-border); }
+.moi-border-top { border-top: 1px solid var(--moi-border); }
+.moi-border-bottom { border-bottom: 1px solid var(--moi-border); }
+
+.moi-shadow { box-shadow: 0 2px 12px var(--moi-shadow); }
+.moi-shadow-hover { box-shadow: 0 4px 20px var(--moi-shadow-hover); }
+
+.moi-rounded { border-radius: var(--border-radius); }
+.moi-rounded-lg { border-radius: var(--border-radius-lg); }
+
+/* Spacing utilities */
+.moi-p-xs { padding: var(--spacing-xs); }
+.moi-p-sm { padding: var(--spacing-sm); }
+.moi-p-md { padding: var(--spacing-md); }
+.moi-p-lg { padding: var(--spacing-lg); }
+.moi-p-xl { padding: var(--spacing-xl); }
+
+.moi-m-xs { margin: var(--spacing-xs); }
+.moi-m-sm { margin: var(--spacing-sm); }
+.moi-m-md { margin: var(--spacing-md); }
+.moi-m-lg { margin: var(--spacing-lg); }
+.moi-m-xl { margin: var(--spacing-xl); }
+
+.moi-mb-xs { margin-bottom: var(--spacing-xs); }
+.moi-mb-sm { margin-bottom: var(--spacing-sm); }
+.moi-mb-md { margin-bottom: var(--spacing-md); }
+.moi-mb-lg { margin-bottom: var(--spacing-lg); }
+.moi-mb-xl { margin-bottom: var(--spacing-xl); }
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 1024px) {
+    .moi-chart-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .moi-dashboard {
+        padding: var(--spacing-md);
+    }
+    
+    .moi-metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .moi-dashboard-title {
+        font-size: var(--text-xl);
+    }
+    
+    .moi-card,
+    .moi-metric,
+    .moi-chart-container,
+    .moi-table-container {
+        padding: var(--spacing-md);
+    }
+}
+
+@media (max-width: 480px) {
+    .moi-dashboard {
+        padding: var(--spacing-sm);
+    }
+    
+    .moi-dashboard-title {
+        font-size: var(--text-lg);
+    }
+    
+    .moi-metric-value {
+        font-size: var(--text-lg);
+    }
+    
+    .moi-metric-value-large {
+        font-size: var(--text-xl);
+    }
+}
+
+/* ===== CHART COLOR SYSTEM ===== */
+/* Use these CSS custom properties in your charting libraries */
+:root {
+    --moi-chart-primary: #141314;
+    --moi-chart-secondary: #3F3E3E;
+    --moi-chart-accent: #721C24;
+    --moi-chart-success: #2D5530;
+    --moi-chart-warning: #B45309;
+    --moi-chart-series-1: #141314;
+    --moi-chart-series-2: #3F3E3E;
+    --moi-chart-series-3: #721C24;
+    --moi-chart-series-4: #2D5530;
+    --moi-chart-series-5: #B45309;
+    --moi-chart-grid: #E8E8E8;
+    --moi-chart-text: #141314;
+    --moi-chart-background: #F5F3F0;
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+    .moi-dashboard {
+        padding: 0;
+        max-width: none;
+    }
+    
+    .moi-card,
+    .moi-metric,
+    .moi-chart-container,
+    .moi-table-container {
+        box-shadow: none;
+        border: 1px solid var(--moi-border);
+        break-inside: avoid;
+    }
+    
+    .moi-button {
+        display: none;
+    }
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus states for accessibility */
+.moi-button:focus,
+.moi-table th:focus,
+.moi-table td:focus {
+    outline: 2px solid var(--moi-accent);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    :root {
+        --moi-border: #000000;
+        --moi-secondary: #000000;
+    }
+}
+
+/* ===== END MOI DASHBOARD CSS FRAMEWORK ===== */
