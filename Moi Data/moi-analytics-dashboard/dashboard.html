@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOI Analytics Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'moi-charcoal': '#141314',
+                        'moi-grey': '#3F3E3E',
+                        'moi-red': '#721C24',
+                        'moi-light': '#F5F5F5',
+                        'moi-beige': '#FAF9F6'
+                    },
+                    fontFamily: {
+                        'benton': ['Inter', 'sans-serif'],
+                        'orpheus': ['Inter', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: #ffffff;
+            color: #141314;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-white">
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 px-6 py-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-moi-charcoal">
+                    MOI Analytics Dashboard
+                </h1>
+                <p class="text-moi-grey mt-1">
+                    Boutique Everyday Luxury - Marketing Intelligence
+                </p>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button class="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 transition-colors text-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    <span>Sync Data</span>
+                </button>
+                
+                <button onclick="openUploadModal()" class="flex items-center space-x-2 p-2 text-gray-600 hover:text-gray-900 transition-colors border border-gray-300 rounded-lg hover:bg-gray-50" title="Upload Data">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-6">
+        <!-- Welcome Screen -->
+        <div class="flex flex-col items-center justify-center h-96 bg-gray-50 rounded-lg">
+            <div class="text-center">
+                <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                </svg>
+                <h2 class="text-2xl font-bold text-moi-charcoal mb-2">
+                    Welcome to MOI Analytics
+                </h2>
+                <p class="text-moi-grey mb-6 max-w-md">
+                    Upload your Shopify Export CSV to begin analyzing your campaign performance and customer behavior.
+                </p>
+                <button onclick="openUploadModal()" class="bg-moi-charcoal text-white px-6 py-3 rounded-lg hover:bg-moi-grey transition-colors">
+                    Upload Shopify Data
+                </button>
+            </div>
+        </div>
+
+        <!-- Sample Dashboard Preview -->
+        <div class="mt-8 space-y-8">
+            <!-- Key Metrics Preview -->
+            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                <h2 class="text-2xl font-bold text-moi-charcoal mb-6">
+                    Key Performance Metrics
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-moi-grey">Unique Campaigns</p>
+                                <p class="text-2xl font-bold text-moi-charcoal">68</p>
+                            </div>
+                            <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                                <span class="text-red-600 text-xs">📊</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-moi-grey">Total Sessions</p>
+                                <p class="text-2xl font-bold text-moi-charcoal">69K</p>
+                            </div>
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                <span class="text-blue-600 text-xs">👥</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-moi-grey">Conversion Rate</p>
+                                <p class="text-2xl font-bold text-moi-red">0.17%</p>
+                            </div>
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                <span class="text-green-600 text-xs">🎯</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campaign Performance Tiers Preview -->
+            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                <h2 class="text-2xl font-bold text-moi-charcoal mb-6">
+                    Campaign Performance Tiers
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="bg-green-100 border-2 border-green-300 rounded-lg p-4 text-center">
+                        <h3 class="font-semibold text-green-800">Excellent</h3>
+                        <p class="text-2xl font-bold text-green-800 mt-2">3</p>
+                    </div>
+                    <div class="bg-yellow-100 border-2 border-yellow-300 rounded-lg p-4 text-center">
+                        <h3 class="font-semibold text-yellow-800">Good</h3>
+                        <p class="text-2xl font-bold text-yellow-800 mt-2">8</p>
+                    </div>
+                    <div class="bg-orange-100 border-2 border-orange-300 rounded-lg p-4 text-center">
+                        <h3 class="font-semibold text-orange-800">Average</h3>
+                        <p class="text-2xl font-bold text-orange-800 mt-2">15</p>
+                    </div>
+                    <div class="bg-red-100 border-2 border-red-300 rounded-lg p-4 text-center">
+                        <h3 class="font-semibold text-red-800">Poor</h3>
+                        <p class="text-2xl font-bold text-red-800 mt-2">42</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Preview -->
+            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                <h2 class="text-2xl font-bold text-moi-charcoal mb-6">
+                    UTM Campaign Analysis Table
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full border-collapse">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="border border-gray-200 px-4 py-2 text-left">UTM Campaign</th>
+                                <th class="border border-gray-200 px-4 py-2 text-left">Sessions</th>
+                                <th class="border border-gray-200 px-4 py-2 text-left">Conversion Rate</th>
+                                <th class="border border-gray-200 px-4 py-2 text-left">Performance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-gray-200 px-4 py-2">BOF | DPA</td>
+                                <td class="border border-gray-200 px-4 py-2">13,713</td>
+                                <td class="border border-gray-200 px-4 py-2 text-moi-red">0.13%</td>
+                                <td class="border border-gray-200 px-4 py-2">
+                                    <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs">Poor</span>
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="border border-gray-200 px-4 py-2">india-pmax-rings</td>
+                                <td class="border border-gray-200 px-4 py-2">2,035</td>
+                                <td class="border border-gray-200 px-4 py-2 text-green-600">1.13%</td>
+                                <td class="border border-gray-200 px-4 py-2">
+                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Excellent</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ChatBot Toggle -->
+    <button onclick="toggleChatBot()" class="fixed bottom-6 right-6 bg-moi-charcoal text-white p-4 rounded-full shadow-lg hover:bg-moi-grey transition-colors z-50" title="Ask questions about your data">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+        </svg>
+    </button>
+
+    <!-- Upload Modal -->
+    <div id="uploadModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 class="text-2xl font-bold text-moi-charcoal">
+                    Upload Data Files
+                </h2>
+                <button onclick="closeUploadModal()" class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+                    ✕
+                </button>
+            </div>
+
+            <div class="p-6">
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                    <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                    </svg>
+                    <p class="text-lg text-moi-charcoal mb-2">
+                        Drag and drop your Shopify Export CSV here
+                    </p>
+                    <p class="text-sm text-moi-grey">
+                        or <button class="text-blue-600 hover:text-blue-800">browse files</button>
+                    </p>
+                </div>
+                
+                <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                    <h3 class="font-semibold text-moi-charcoal mb-2">
+                        Expected Shopify Export Format
+                    </h3>
+                    <p class="text-sm text-moi-grey">
+                        Required columns: Utm campaign, Online store visitors, Sessions, 
+                        Sessions with cart additions, Sessions that reached checkout, etc.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end space-x-4 p-6 border-t border-gray-200">
+                <button onclick="closeUploadModal()" class="px-6 py-2 text-moi-grey hover:text-moi-charcoal transition-colors">
+                    Cancel
+                </button>
+                <button class="px-6 py-2 bg-moi-charcoal text-white rounded-lg hover:bg-moi-grey transition-colors">
+                    Upload & Process
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ChatBot Preview -->
+    <div id="chatBot" class="hidden fixed bottom-6 right-20 w-96 h-96 bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col z-50">
+        <div class="flex items-center justify-between p-4 border-b border-gray-200 bg-moi-beige rounded-t-lg">
+            <div class="flex items-center space-x-2">
+                <svg class="w-5 h-5 text-moi-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                </svg>
+                <h3 class="font-medium text-moi-charcoal">MOI Analytics Assistant</h3>
+            </div>
+            <button onclick="toggleChatBot()" class="p-1 text-moi-grey hover:text-moi-charcoal transition-colors">
+                ✕
+            </button>
+        </div>
+        
+        <div class="flex-1 p-4 overflow-y-auto">
+            <div class="bg-moi-beige p-3 rounded-lg mb-4">
+                <p class="text-sm text-moi-charcoal">
+                    Hi! I'm your MOI Analytics Assistant. Upload your data to start asking questions about your campaigns!
+                </p>
+            </div>
+        </div>
+        
+        <div class="p-4 border-t border-gray-200">
+            <div class="flex space-x-2">
+                <input type="text" placeholder="Ask about your campaigns..." class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-moi-red text-sm" disabled>
+                <button class="p-2 bg-gray-400 text-white rounded-lg cursor-not-allowed">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openUploadModal() {
+            document.getElementById('uploadModal').classList.remove('hidden');
+        }
+        
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.add('hidden');
+        }
+        
+        function toggleChatBot() {
+            const chatBot = document.getElementById('chatBot');
+            chatBot.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
