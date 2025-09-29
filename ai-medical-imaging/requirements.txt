@@ -1,0 +1,43 @@
+# Medical Image Classification Requirements
+# Following Stanford CS231n and Production ML Standards
+
+# Core ML/DL frameworks
+torch>=1.12.0
+torchvision>=0.13.0
+numpy>=1.21.0
+
+# Data handling and preprocessing
+Pillow>=9.0.0
+opencv-python>=4.6.0
+scikit-image>=0.19.0
+
+# Evaluation and metrics
+scikit-learn>=1.1.0
+matplotlib>=3.5.0
+seaborn>=0.11.0
+
+# Data manipulation
+pandas>=1.4.0
+
+# Medical imaging specific
+pydicom>=2.3.0  # For DICOM file handling
+nibabel>=4.0.0  # For NIfTI files (if needed)
+
+# Production ML tools
+tensorboard>=2.9.0  # For training visualization
+wandb>=0.12.0  # Alternative experiment tracking
+
+# Development and testing
+pytest>=7.0.0
+jupyter>=1.0.0
+ipykernel>=6.15.0
+
+# API and deployment (optional)
+fastapi>=0.78.0
+uvicorn>=0.18.0
+pydantic>=1.9.0
+
+# Utilities
+tqdm>=4.64.0
+pathlib2>=2.3.7
+python-dotenv>=0.20.0
