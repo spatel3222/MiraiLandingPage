@@ -23,6 +23,7 @@ export interface CampaignMetrics {
   pageviews: number;
   qualityScore: number;
   performanceTier: 'excellent' | 'good' | 'average' | 'poor';
+  adSpend?: number; // Total ad spend across Meta/Google for this campaign
 }
 
 export interface KeyMetrics {
@@ -44,10 +45,37 @@ export interface KeyMetrics {
   totalRevenue: number;
 }
 
+export interface DateRange {
+  start: Date;
+  end: Date;
+  days: number;
+}
+
+export interface PerformanceTiers {
+  excellent: number;
+  good: number;
+  average: number;
+  poor: number;
+}
+
+export interface UTMCampaign {
+  utmCampaign: string;
+  sessions?: number;
+  totalSessions?: number;
+  conversionRate?: number;
+  checkoutRate?: number;
+  performanceTier: 'excellent' | 'good' | 'average' | 'poor';
+  adSpend?: number;
+  checkoutSessions?: number;
+}
+
 export interface DashboardData {
   keyMetrics: KeyMetrics;
   campaigns: CampaignMetrics[];
   lastUpdated: string;
+  dateRange?: DateRange;
+  utmCampaigns?: UTMCampaign[];
+  performanceTiers?: PerformanceTiers;
 }
 
 export interface ChatMessage {

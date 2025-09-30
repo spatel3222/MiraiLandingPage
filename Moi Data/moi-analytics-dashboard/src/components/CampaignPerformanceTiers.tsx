@@ -1,19 +1,35 @@
 import React, { useState } from 'react';
 import { Info, TrendingUp, AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
-import type { DashboardData, CampaignMetrics } from '../types';
+import PerformanceTierModal from './PerformanceTierModal';
+import type { DashboardData } from '../types';
 
 interface Props {
   data: DashboardData;
 }
 
 const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
-  const [showInfo, setShowInfo] = useState(false);
-
+  const [showModal, setShowModal] = useState(false);
+  
+  // Use the performance tiers from the processed data
+  const { performanceTiers, utmCampaigns } = data;
+  
+  // Debug logging
+  console.log('CampaignPerformanceTiers data:', { performanceTiers, utmCampaigns });
+  
+  // Provide safe fallbacks for undefined data
+  const safeUtmCampaigns = utmCampaigns || [];
+  const safePerformanceTiers = performanceTiers || {
+    excellent: 0,
+    good: 0,
+    average: 0,
+    poor: 0
+  };
+  
   // Group campaigns by performance tier
-  const excellent = data.campaigns.filter(c => c.performanceTier === 'excellent');
-  const good = data.campaigns.filter(c => c.performanceTier === 'good');
-  const average = data.campaigns.filter(c => c.performanceTier === 'average');
-  const poor = data.campaigns.filter(c => c.performanceTier === 'poor');
+  const excellent = safeUtmCampaigns.filter(c => c.performanceTier === 'excellent');
+  const good = safeUtmCampaigns.filter(c => c.performanceTier === 'good');
+  const average = safeUtmCampaigns.filter(c => c.performanceTier === 'average');
+  const poor = safeUtmCampaigns.filter(c => c.performanceTier === 'poor');
 
   const getTierColor = (tier: string) => {
     switch (tier) {
@@ -43,30 +59,41 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
 
   const TierCard: React.FC<{ 
     tier: string; 
-    campaigns: CampaignMetrics[]; 
+    campaigns: any[]; 
     title: string; 
-  }> = ({ tier, campaigns, title }) => (
-    <div className={`rounded-lg border-2 p-4 ${getTierColor(tier)}`}>
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center space-x-2">
+    count: number;
+  }> = ({ tier, campaigns, title, count }) => (
+    <div className={`rounded-lg border-2 p-4 relative ${getTierColor(tier)}`}>
+      {/* Subtle background icon */}
+      <div className="absolute top-2 right-2 opacity-10 pointer-events-none">
+        <div className="w-8 h-8">
           {getTierIcon(tier)}
-          <h3 className="font-benton text-lg font-semibold">{title}</h3>
         </div>
-        <span className="font-benton text-2xl font-bold">{campaigns.length}</span>
+      </div>
+      
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="font-benton text-lg font-semibold">{title}</h3>
+        <span className="font-benton text-2xl font-bold">{count}</span>
       </div>
       
       {campaigns.length > 0 && (
         <div className="space-y-2">
           <div className="text-sm">
-            <p><strong>Total Sessions:</strong> {formatNumber(campaigns.reduce((sum, c) => sum + c.totalSessions, 0))}</p>
-            <p><strong>Avg Quality Score:</strong> {Math.round(campaigns.reduce((sum, c) => sum + c.qualityScore, 0) / campaigns.length)}/100</p>
+            <p><strong>Total Sessions:</strong> {formatNumber(campaigns.reduce((sum, c) => sum + (c.sessions || c.totalSessions || 0), 0))}</p>
+            <p><strong>Avg Conversion:</strong> {(campaigns.reduce((sum, c) => sum + (c.conversionRate || c.checkoutRate || 0), 0) / campaigns.length).toFixed(2)}%</p>
+            {campaigns.some(c => c.adSpend) && (
+              <p><strong>Total Ad Spend:</strong> ₹{formatNumber(campaigns.reduce((sum, c) => sum + (c.adSpend || 0), 0))}</p>
+            )}
           </div>
           
           {campaigns.length <= 3 ? (
             <div className="text-xs space-y-1">
               {campaigns.map((campaign, idx) => (
                 <div key={idx} className="truncate">
-                  • {campaign.utmCampaign} ({campaign.qualityScore}/100)
+                  • {campaign.utmCampaign} ({(campaign.conversionRate || campaign.checkoutRate || 0).toFixed(2)}%)
+                  {campaign.adSpend && (
+                    <span className="text-gray-600 ml-1">(₹{formatNumber(campaign.adSpend)})</span>
+                  )}
                 </div>
               ))}
             </div>
@@ -75,7 +102,10 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
               <div className="space-y-1 mb-1">
                 {campaigns.slice(0, 2).map((campaign, idx) => (
                   <div key={idx} className="truncate">
-                    • {campaign.utmCampaign} ({campaign.qualityScore}/100)
+                    • {campaign.utmCampaign} ({(campaign.conversionRate || campaign.checkoutRate || 0).toFixed(2)}%)
+                    {campaign.adSpend && (
+                      <span className="text-gray-600 ml-1">(₹{formatNumber(campaign.adSpend)})</span>
+                    )}
                   </div>
                 ))}
               </div>
@@ -96,35 +126,14 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
           Campaign Performance Tiers
         </h2>
         <button
-          onClick={() => setShowInfo(!showInfo)}
-          className="flex items-center space-x-1 text-moi-grey hover:text-moi-charcoal transition-colors"
-          title="Quality Score Formula"
+          onClick={() => setShowModal(true)}
+          className="flex items-center space-x-1 px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
+          title="Performance Tier Logic & Examples"
         >
           <Info className="w-5 h-5" />
-          <span className="font-benton text-sm">Formula</span>
+          <span className="font-benton text-sm font-medium">Info</span>
         </button>
       </div>
-
-      {/* Quality Score Formula Info */}
-      {showInfo && (
-        <div className="bg-moi-beige rounded-lg p-4 mb-6 border border-moi-light">
-          <h3 className="font-benton text-lg font-semibold text-moi-charcoal mb-3">
-            Quality Score Formula (0-100)
-          </h3>
-          <div className="font-benton text-sm text-moi-grey space-y-2">
-            <p><strong>Weighted Components:</strong></p>
-            <ul className="list-disc ml-6 space-y-1">
-              <li><strong>Checkout Conversion (40%):</strong> How well campaigns convert visitors to purchases</li>
-              <li><strong>Cart Addition Rate (30%):</strong> Effectiveness at getting users to add items to cart</li>
-              <li><strong>Session Engagement (20%):</strong> Average session duration quality</li>
-              <li><strong>Customer Loyalty (10%):</strong> Sessions per customer ratio</li>
-            </ul>
-            <div className="mt-3 text-xs">
-              <p><strong>Scoring:</strong> Excellent (80-100) | Good (60-79) | Average (40-59) | Poor (0-39)</p>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Performance Tiers Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -132,21 +141,25 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
           tier="excellent" 
           campaigns={excellent} 
           title="Excellent" 
+          count={safePerformanceTiers.excellent}
         />
         <TierCard 
           tier="good" 
           campaigns={good} 
           title="Good" 
+          count={safePerformanceTiers.good}
         />
         <TierCard 
           tier="average" 
           campaigns={average} 
           title="Average" 
+          count={safePerformanceTiers.average}
         />
         <TierCard 
           tier="poor" 
           campaigns={poor} 
           title="Poor" 
+          count={safePerformanceTiers.poor}
         />
       </div>
 
@@ -155,19 +168,19 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           <div>
             <p className="font-benton text-2xl font-bold text-moi-charcoal">
-              {Math.round(((excellent.length + good.length) / data.campaigns.length) * 100)}%
+              {safeUtmCampaigns.length > 0 ? Math.round(((excellent.length + good.length) / safeUtmCampaigns.length) * 100) : 0}%
             </p>
             <p className="font-benton text-sm text-moi-grey">High Quality Campaigns</p>
           </div>
           <div>
             <p className="font-benton text-2xl font-bold text-moi-charcoal">
-              {formatNumber(excellent.concat(good).reduce((sum, c) => sum + c.totalSessions, 0))}
+              {formatNumber(excellent.concat(good).reduce((sum, c) => sum + c.sessions, 0))}
             </p>
             <p className="font-benton text-sm text-moi-grey">Quality Traffic</p>
           </div>
           <div>
             <p className="font-benton text-2xl font-bold text-moi-charcoal">
-              {Math.round(data.campaigns.reduce((sum, c) => sum + c.qualityScore, 0) / data.campaigns.length)}
+              {safeUtmCampaigns.length > 0 ? (safeUtmCampaigns.reduce((sum, c) => sum + (c.conversionRate || 0), 0) / safeUtmCampaigns.length).toFixed(2) : 0}
             </p>
             <p className="font-benton text-sm text-moi-grey">Avg Quality Score</p>
           </div>
@@ -179,6 +192,11 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
           </div>
         </div>
       </div>
+
+      {/* Performance Tier Modal */}
+      {showModal && (
+        <PerformanceTierModal onClose={() => setShowModal(false)} />
+      )}
     </div>
   );
 };

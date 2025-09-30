@@ -9,17 +9,20 @@ interface Props {
 const KeyMetricsPanel: React.FC<Props> = ({ data }) => {
   const { keyMetrics } = data;
 
-  const formatNumber = (num: number): string => {
-    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
-    return num.toLocaleString();
+  const formatNumber = (num: number | null | undefined): string => {
+    if (num === null || num === undefined || isNaN(num) || !isFinite(num)) return '0';
+    const safeNum = Math.floor(Number(num));
+    if (safeNum >= 1000000) return `${(safeNum / 1000000).toFixed(1)}M`;
+    if (safeNum >= 1000) return `${(safeNum / 1000).toFixed(1)}K`;
+    return safeNum.toLocaleString();
   };
 
-  const formatCurrency = (num: number): string => {
+  const formatCurrency = (num: number | null | undefined): string => {
     return `₹${formatNumber(num)}`;
   };
 
-  const formatTime = (seconds: number): string => {
+  const formatTime = (seconds: number | null | undefined): string => {
+    if (seconds === null || seconds === undefined || isNaN(seconds)) return '0m 0s';
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}m ${remainingSeconds}s`;

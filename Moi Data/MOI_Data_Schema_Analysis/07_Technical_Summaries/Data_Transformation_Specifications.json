@@ -1,0 +1,253 @@
+{
+  "project_info": {
+    "name": "MOI Analytics Dashboard Data Pipeline",
+    "version": "1.0",
+    "last_updated": "2025-09-29",
+    "description": "Technical specifications for transforming Meta Ads, GA4, and Shopify data into analytics dashboard outputs"
+  },
+  "input_files": {
+    "meta_ads": {
+      "filename_pattern": "Meta report-*.csv",
+      "date_format": "Sep-DD-YYYY-to-Sep-DD-YYYY",
+      "encoding": "utf-8-bom",
+      "delimiter": ",",
+      "columns": {
+        "Campaign name": {"type": "string", "nullable": false},
+        "Ad set name": {"type": "string", "nullable": false},
+        "Amount spent (INR)": {"type": "float", "nullable": false, "format": "currency"},
+        "CPM (cost per 1,000 impressions)": {"type": "float", "nullable": false},
+        "CTR (link click-through rate)": {"type": "float", "nullable": false},
+        "Ad set delivery": {"type": "string", "nullable": false, "values": ["active", "paused"]},
+        "Reporting starts": {"type": "date", "format": "YYYY-MM-DD"},
+        "Reporting ends": {"type": "date", "format": "YYYY-MM-DD"}
+      }
+    },
+    "ga4_export": {
+      "filename_pattern": "GA4 Export *.csv",
+      "date_format": "YYYY-MM-DD to YYYY-MM-DD",
+      "encoding": "utf-8",
+      "delimiter": ",",
+      "header_rows": 3,
+      "columns": {
+        "Campaign": {"type": "string", "nullable": false},
+        "Currency code": {"type": "string", "nullable": false, "default": "INR"},
+        "Cost": {"type": "float", "nullable": false, "format": "currency"},
+        "CTR": {"type": "string", "nullable": false, "format": "percentage"},
+        "Avg. CPM": {"type": "float", "nullable": false}
+      }
+    },
+    "shopify_export": {
+      "filename_pattern": "Shopify Export *.csv",
+      "date_format": "YYYY-MM-DD to YYYY-MM-DD",
+      "encoding": "utf-8",
+      "delimiter": ",",
+      "file_size_warning": "100MB+",
+      "processing_method": "chunked",
+      "columns": {
+        "UTM campaign": {"type": "string", "nullable": true, "template_variables": ["{{campaign.name}}"]},
+        "UTM term": {"type": "string", "nullable": true, "template_variables": ["{{adset.name}}"]},
+        "Landing page URL": {"type": "string", "nullable": false},
+        "Online store visitors": {"type": "integer", "nullable": false, "min": 0},
+        "Pageviews": {"type": "integer", "nullable": false, "min": 0},
+        "Sessions that reached checkout": {"type": "integer", "nullable": false, "min": 0},
+        "Sessions that completed checkout": {"type": "integer", "nullable": false, "min": 0},
+        "Sessions with cart additions": {"type": "integer", "nullable": false, "min": 0},
+        "Average session duration": {"type": "float", "nullable": false, "unit": "seconds", "min": 0}
+      }
+    }
+  },
+  "output_files": {
+    "adset_level_matrices": {
+      "filename": "Adset Level Matrices.csv",
+      "description": "Campaign and ad set performance with quality metrics",
+      "primary_key": ["Campaign name", "Ad Set Name"],
+      "row_level": "ad_set",
+      "data_sources": ["meta_ads", "shopify_export"]
+    },
+    "top_level_daily_metrics": {
+      "filename": "Top Level Daily Metrics.csv",
+      "description": "Daily aggregated performance across all channels",
+      "primary_key": ["Date"],
+      "row_level": "daily",
+      "data_sources": ["meta_ads", "ga4_export", "shopify_export", "external"]
+    }
+  },
+  "transformation_rules": {
+    "data_cleaning": {
+      "currency_formatting": {
+        "rule": "Remove commas, ensure 2 decimal places",
+        "example": "51,896.96 → 51896.96"
+      },
+      "percentage_conversion": {
+        "rule": "Convert string percentages to decimal",
+        "example": "1.73% → 0.0173"
+      },
+      "template_resolution": {
+        "rule": "Replace template variables with actual values",
+        "example": "{{campaign.name}} → extracted from URL parameters"
+      },
+      "date_standardization": {
+        "rule": "Convert all dates to YYYY-MM-DD format",
+        "example": "Sep-10-2025 → 2025-09-10"
+      }
+    },
+    "attribution_mapping": {
+      "campaign_matching": {
+        "primary": "UTM campaign = Meta Campaign name",
+        "fallback": "Fuzzy match with 80% similarity threshold",
+        "unmatched": "Assign to 'Direct' category"
+      },
+      "adset_matching": {
+        "primary": "UTM term = Meta Ad set name",
+        "fallback": "Pattern matching for common variations",
+        "unmatched": "Assign to campaign-level aggregation"
+      }
+    },
+    "quality_metrics": {
+      "session_duration_threshold": 60,
+      "high_pageview_threshold": 5,
+      "quality_user_definition": "session_duration > 60 seconds",
+      "high_intent_user_definition": "pageviews > 5 AND session_duration > 60 seconds"
+    }
+  },
+  "calculated_fields": {
+    "cost_per_user": {
+      "formula": "meta_spent / shopify_users",
+      "data_type": "float",
+      "precision": 2,
+      "validation": {"max": 1000, "alert_threshold": 100}
+    },
+    "cost_per_quality_user": {
+      "formula": "meta_spent / users_with_1min_plus_session",
+      "data_type": "float",
+      "precision": 2,
+      "validation": {"max": 2000, "alert_threshold": 200}
+    },
+    "engagement_rate": {
+      "formula": "(users_with_1min_plus_session / total_users) * 100",
+      "data_type": "float",
+      "precision": 2,
+      "unit": "percentage",
+      "validation": {"min": 0, "max": 100}
+    },
+    "quality_atc_rate": {
+      "formula": "atc_with_1min_plus_session / total_atc",
+      "data_type": "float",
+      "precision": 4,
+      "unit": "decimal",
+      "validation": {"min": 0, "max": 1}
+    }
+  },
+  "aggregation_methods": {
+    "daily_aggregation": {
+      "spend": "SUM",
+      "users": "SUM",
+      "sessions": "SUM",
+      "ctr": "WEIGHTED_AVERAGE by impressions",
+      "cpm": "WEIGHTED_AVERAGE by impressions",
+      "session_duration": "WEIGHTED_AVERAGE by sessions"
+    },
+    "campaign_aggregation": {
+      "spend": "SUM",
+      "users": "SUM", 
+      "sessions": "SUM",
+      "conversions": "SUM"
+    }
+  },
+  "data_quality_checks": {
+    "required_validations": [
+      {
+        "name": "spend_reconciliation",
+        "rule": "ABS(meta_total_spend - adset_sum_spend) / meta_total_spend < 0.01",
+        "severity": "error"
+      },
+      {
+        "name": "date_consistency",
+        "rule": "All input files have same date range",
+        "severity": "error"
+      },
+      {
+        "name": "campaign_coverage",
+        "rule": ">=95% of Meta campaigns found in Shopify data",
+        "severity": "warning"
+      },
+      {
+        "name": "reasonable_ctr",
+        "rule": "CTR between 0.001 and 0.1",
+        "severity": "warning"
+      },
+      {
+        "name": "reasonable_cpm",
+        "rule": "CPM between 10 and 1000 INR",
+        "severity": "warning"
+      }
+    ]
+  },
+  "performance_optimization": {
+    "large_file_handling": {
+      "shopify_chunking": {
+        "chunk_size": 10000,
+        "memory_management": "Process in chunks to handle 100MB+ files"
+      }
+    },
+    "indexing_strategy": {
+      "utm_fields": "Create index on UTM campaign and term for faster lookups",
+      "date_fields": "Index on date columns for temporal queries"
+    },
+    "caching": {
+      "campaign_mapping": "Cache campaign/adset lookup tables",
+      "calculated_metrics": "Cache expensive calculations"
+    }
+  },
+  "error_handling": {
+    "missing_utm_data": {
+      "action": "assign_to_direct",
+      "logging": "Log all unattributed sessions"
+    },
+    "template_variables": {
+      "action": "extract_from_url_params",
+      "fallback": "manual_review_queue"
+    },
+    "zero_spend_campaigns": {
+      "action": "exclude_from_cost_metrics",
+      "logging": "Track for campaign optimization"
+    },
+    "date_mismatches": {
+      "action": "flag_for_review",
+      "severity": "high"
+    }
+  },
+  "output_formatting": {
+    "currency_display": {
+      "format": "INR with 2 decimal places",
+      "thousands_separator": "comma",
+      "example": "51,896.96"
+    },
+    "percentage_display": {
+      "format": "2 decimal places with % symbol",
+      "example": "6.48%"
+    },
+    "date_display": {
+      "adset_matrices": "DD Mon YY range format",
+      "daily_metrics": "DDD, MMM DD, YY format",
+      "example": "Wed, Sep 10, 25"
+    }
+  },
+  "implementation_notes": {
+    "critical_paths": [
+      "UTM campaign/term matching is critical for attribution accuracy",
+      "Session duration calculations require careful handling of null values",
+      "Quality user metrics are key business KPIs - validate thoroughly"
+    ],
+    "known_issues": [
+      "Template variables in Shopify data require URL parameter extraction",
+      "Large Shopify file size requires memory-efficient processing",
+      "Missing UTM data in organic traffic needs proper categorization"
+    ],
+    "scalability_considerations": [
+      "Current logic handles up to 1M Shopify rows efficiently",
+      "Consider database backend for larger data volumes",
+      "Implement incremental processing for daily updates"
+    ]
+  }
+}

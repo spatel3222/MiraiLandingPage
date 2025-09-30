@@ -1,0 +1,40 @@
+Output_File,Output_Column,Input_Source,Input_Column,Transformation_Type,Calculation_Logic,Data_Type,Sample_Value,Business_Rules
+Adset_Level_Matrices,Date Range,Static,N/A,Static Assignment,"10-23 Sep",String,"10-23 Sep",Period identifier from file names
+Adset_Level_Matrices,Campaign name,Meta_Ads,Campaign name,Direct Mapping,None,String,"TOF | ALL",Must match Shopify UTM campaign
+Adset_Level_Matrices,Ad Set Name,Meta_Ads,Ad set name,Direct Mapping,None,String,"T1 - TRLi - FEED",Must match Shopify UTM term
+Adset_Level_Matrices,Ad,Meta_Ads,N/A,Empty Field,None,String,"",Currently not populated
+Adset_Level_Matrices,Ad Set Delivery,Meta_Ads,Ad set delivery,Direct Mapping,None,String,"active",Campaign status indicator
+Adset_Level_Matrices,Spent,Meta_Ads,Amount spent (INR),Direct Mapping,Currency formatting,Currency,51896.96,Remove commas if present
+Adset_Level_Matrices,Cost per user,Calculated,N/A,Division,Meta_Spent ÷ Shopify_Users,Currency,7.80,Alert if >₹100
+Adset_Level_Matrices,Users,Shopify,Online store visitors,Aggregation,SUM by UTM campaign/term,Integer,895,Unique visitors count
+Adset_Level_Matrices,ATC,Shopify,Sessions with cart additions,Aggregation,SUM by UTM campaign/term,Integer,1,Add to cart events
+Adset_Level_Matrices,Reached Checkout,Shopify,Sessions that reached checkout,Aggregation,SUM by UTM campaign/term,Integer,0,Checkout initiations
+Adset_Level_Matrices,Conversions,Shopify,Sessions that completed checkout,Aggregation,SUM by UTM campaign/term,Integer,0,Purchase completions
+Adset_Level_Matrices,Average session duration,Shopify,Average session duration,Weighted Average,Weighted by sessions,Float,0.00,Convert to minutes
+Adset_Level_Matrices,Cost per 1 min user,Calculated,N/A,Complex Division,Meta_Spent ÷ Users_1min_plus,Currency,24.24,Quality engagement cost
+Adset_Level_Matrices,1min user/ total users (%),Calculated,N/A,Percentage,Users_1min_plus ÷ Total_Users × 100,Percentage,6.48%,Engagement quality rate
+Adset_Level_Matrices,Users with Session above 1 min,Derived,Average session duration,Complex Filter,COUNT WHERE duration > 60s,Integer,58,Quality user identification
+Adset_Level_Matrices,ATC with session duration above 1 min,Cross_Reference,Multiple,Complex Join,JOIN ATC + duration > 60s,Integer,1,Quality conversion tracking
+Adset_Level_Matrices,Reached Checkout with session duration above 1 min,Cross_Reference,Multiple,Complex Join,JOIN Checkout + duration > 60s,Integer,0,Quality checkout tracking
+Adset_Level_Matrices,Users with Above 5 page views and above 1 min,Derived,Multiple,Complex Filter,COUNT WHERE pageviews > 5 AND duration > 60s,Integer,34,High-intent user identification
+Adset_Level_Matrices,Remarks,Manual,N/A,Business Logic,Strategic notes,String,"Keep an eye/ Pause",Campaign optimization notes
+Adset_Level_Matrices,Status,Manual,N/A,Business Logic,Status assignment,String,"",Campaign status tracking
+Top_Level_Daily_Metrics,Date,Derived,Reporting starts/ends,Date Extraction,Extract from date range,Date,"Wed, Sep 10, 25",Daily breakdown format
+Top_Level_Daily_Metrics,Meta Ads - Spend,Meta_Ads,Amount spent (INR),Daily Aggregation,SUM by date,Currency,"39,829",Daily Meta spend total
+Top_Level_Daily_Metrics,Meta Ads - CTR,Meta_Ads,CTR (link click-through rate),Daily Weighted Average,Weighted by impressions,Percentage,1.49%,Daily average CTR
+Top_Level_Daily_Metrics,Meta Ads - CPM,Meta_Ads,CPM (cost per 1000 impressions),Daily Weighted Average,Weighted by impressions,Currency,59.16,Daily average CPM
+Top_Level_Daily_Metrics,Google Ads - Spend,GA4,Cost,Daily Aggregation,SUM by date,Currency,"16,080",Daily Google spend total
+Top_Level_Daily_Metrics,Google Ads - CTR,GA4,CTR,Daily Weighted Average,Weighted by impressions,Percentage,0.80%,Daily average CTR
+Top_Level_Daily_Metrics,Google Ads - CPM,GA4,Avg. CPM,Daily Weighted Average,Weighted by impressions,Currency,244.71,Daily average CPM
+Top_Level_Daily_Metrics,Total Users,Shopify,Online store visitors,Daily Aggregation,SUM by date,"7,922",Integer,Daily unique visitors
+Top_Level_Daily_Metrics,Total ATC,Shopify,Sessions with cart additions,Daily Aggregation,SUM by date,Integer,35,Daily add to cart events
+Top_Level_Daily_Metrics,Total Reached Checkout,Shopify,Sessions that reached checkout,Daily Aggregation,SUM by date,Integer,13,Daily checkout initiations
+Top_Level_Daily_Metrics,Total Abandoned Checkout,Calculated,N/A,Subtraction,Reached_Checkout - Completed_Checkout,Integer,1,Abandonment tracking
+Top_Level_Daily_Metrics,Session Duration,Shopify,Average session duration,Daily Weighted Average,Weighted by sessions,Time,0:00:42,Daily average duration
+Top_Level_Daily_Metrics,Users with Session above 1 min,Derived,Average session duration,Daily Complex Filter,COUNT WHERE duration > 60s,Integer,835,Daily quality users
+Top_Level_Daily_Metrics,Users with Above 5 page views and above 1 min,Derived,Multiple,Daily Complex Filter,COUNT WHERE pageviews > 5 AND duration > 60s,Integer,525,Daily high-intent users
+Top_Level_Daily_Metrics,ATC with session duration above 1 min,Cross_Reference,Multiple,Daily Complex Join,JOIN ATC + duration > 60s,Integer,23,Daily quality conversions
+Top_Level_Daily_Metrics,Reached Checkout with session duration above 1 min,Cross_Reference,Multiple,Daily Complex Join,JOIN Checkout + duration > 60s,Integer,8,Daily quality checkouts
+Top_Level_Daily_Metrics,General Queries,External,N/A,Manual Input,From customer service data,Integer,9,Customer inquiry tracking
+Top_Level_Daily_Metrics,Open Queries,External,N/A,Manual Input,From customer service data,Integer,2,Unresolved inquiry tracking
+Top_Level_Daily_Metrics,Online Orders,External,N/A,Manual Input,From order management system,Integer,0,Daily order completion tracking
