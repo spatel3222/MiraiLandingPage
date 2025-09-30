@@ -43,9 +43,9 @@ const UploadModal: React.FC<Props> = ({ onClose, onUpload, isLoading }) => {
       return;
     }
     
-    // Validate file size (max 50MB)
-    if (file.size > 50 * 1024 * 1024) {
-      setError('File size must be less than 50MB.');
+    // Validate file size (max 200MB)
+    if (file.size > 200 * 1024 * 1024) {
+      setError('File size must be less than 200MB.');
       return;
     }
     
@@ -211,7 +211,7 @@ const UploadModal: React.FC<Props> = ({ onClose, onUpload, isLoading }) => {
                     </button>
                   </p>
                   <p className="font-benton text-xs text-moi-grey">
-                    Maximum file size: 50MB
+                    Maximum file size: 200MB
                   </p>
                 </div>
               )}

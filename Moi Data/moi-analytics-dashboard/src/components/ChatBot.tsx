@@ -32,7 +32,8 @@ const ChatBot: React.FC<Props> = ({ data, onClose }) => {
 
   useEffect(scrollToBottom, [messages]);
 
-  const formatNumber = (num: number): string => {
+  const formatNumber = (num: number | null | undefined): string => {
+    if (num === null || num === undefined || isNaN(num)) return '0';
     if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
     if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
     return num.toLocaleString();
@@ -41,12 +42,31 @@ const ChatBot: React.FC<Props> = ({ data, onClose }) => {
   const generateResponse = (query: string): string => {
     const lowerQuery = query.toLowerCase();
 
+    // Try to answer from output files first, then fallback to input data
+    // Check if we have processed dashboard data available
+    const hasOutputData = data && data.keyMetrics && data.utmCampaigns && data.utmCampaigns.length > 0;
+    
     // Top performing campaigns
     if (lowerQuery.includes('top') && (lowerQuery.includes('campaign') || lowerQuery.includes('perform'))) {
+      if (hasOutputData) {
+        // Use processed output data
+        const topCampaigns = data.utmCampaigns
+          .filter(c => c.performanceTier === 'excellent' || c.performanceTier === 'good')
+          .sort((a, b) => (b.conversionRate || b.checkoutRate || 0) - (a.conversionRate || a.checkoutRate || 0))
+          .slice(0, 5);
+        
+        if (topCampaigns.length > 0) {
+          return `**Top Performing Campaigns (from processed data):**\n\n${topCampaigns.map((c, i) => 
+            `${i + 1}. ${c.utmCampaign}\n   • Conversion Rate: ${(c.conversionRate || c.checkoutRate || 0).toFixed(2)}%\n   • Sessions: ${formatNumber(c.totalSessions || c.sessions)}\n   • Performance: ${c.performanceTier}${c.adSpend ? `\n   • Ad Spend: ₹${formatNumber(c.adSpend)}` : ''}`
+          ).join('\n\n')}`;
+        }
+      }
+      
+      // Fallback to input data if output data not available
       const topCampaigns = data.campaigns
-        .filter(c => c.qualityScore >= 60)
-        .sort((a, b) => b.qualityScore - a.qualityScore)
-        .slice(0, 5);
+        ?.filter(c => c.qualityScore >= 60)
+        ?.sort((a, b) => b.qualityScore - a.qualityScore)
+        ?.slice(0, 5) || [];
 
       if (topCampaigns.length === 0) {
         return "No campaigns currently meet the high-performance criteria (Quality Score ≥60). Focus on optimizing conversion rates and user engagement.";
@@ -61,10 +81,30 @@ const ChatBot: React.FC<Props> = ({ data, onClose }) => {
 
     // Low conversion campaigns
     if (lowerQuery.includes('low') && lowerQuery.includes('conversion')) {
+      if (hasOutputData) {
+        // Use processed output data
+        const lowConversionCampaigns = data.utmCampaigns
+          .filter(c => c.performanceTier === 'poor' || c.performanceTier === 'average')
+          .filter(c => (c.totalSessions || c.sessions || 0) > 100)
+          .sort((a, b) => (b.totalSessions || b.sessions || 0) - (a.totalSessions || a.sessions || 0))
+          .slice(0, 5);
+
+        if (lowConversionCampaigns.length === 0) {
+          return "Good news! No high-traffic campaigns have critically low conversion rates. Your optimization efforts are paying off.";
+        }
+
+        const tableRows = lowConversionCampaigns.map(c => 
+          `| ${c.utmCampaign} | ${formatNumber(c.totalSessions || c.sessions || 0)} | ${(c.conversionRate || c.checkoutRate || 0).toFixed(2)}% | ${c.performanceTier} |`
+        ).join('\n');
+
+        return `**Low Conversion Campaigns (from processed data):**\n\n| Campaign | Sessions | Conversion | Performance |\n|----------|----------|------------|-------------|\n${tableRows}\n\n**Action:** These campaigns have good traffic but poor conversion. Focus on landing page optimization and user experience.`;
+      }
+      
+      // Fallback to input data
       const lowConversionCampaigns = data.campaigns
-        .filter(c => c.checkoutRate < 0.5 && c.totalSessions > 100)
-        .sort((a, b) => b.totalSessions - a.totalSessions)
-        .slice(0, 5);
+        ?.filter(c => c.checkoutRate < 0.5 && c.totalSessions > 100)
+        ?.sort((a, b) => b.totalSessions - a.totalSessions)
+        ?.slice(0, 5) || [];
 
       if (lowConversionCampaigns.length === 0) {
         return "Good news! No high-traffic campaigns have critically low conversion rates. Your optimization efforts are paying off.";
@@ -80,18 +120,51 @@ const ChatBot: React.FC<Props> = ({ data, onClose }) => {
     // Overall performance summary
     if (lowerQuery.includes('overall') || lowerQuery.includes('summary') || lowerQuery.includes('performance')) {
       const { keyMetrics } = data;
-      const excellentCampaigns = data.campaigns.filter(c => c.performanceTier === 'excellent');
-      const poorCampaigns = data.campaigns.filter(c => c.performanceTier === 'poor');
+      
+      if (hasOutputData) {
+        // Use processed output data
+        const excellentCampaigns = data.utmCampaigns.filter(c => c.performanceTier === 'excellent');
+        const goodCampaigns = data.utmCampaigns.filter(c => c.performanceTier === 'good');
+        const poorCampaigns = data.utmCampaigns.filter(c => c.performanceTier === 'poor');
+        const avgCampaigns = data.utmCampaigns.filter(c => c.performanceTier === 'average');
+        
+        const totalAdSpend = data.utmCampaigns.reduce((sum, c) => sum + (c.adSpend || 0), 0);
+        
+        return `**Overall Performance Summary (from processed data):**\n\n| Metric | Value |\n|--------|-------|\n| Total Campaigns | ${data.utmCampaigns.length} |\n| Total Sessions | ${formatNumber(data.utmCampaigns.reduce((sum, c) => sum + (c.sessions || c.totalSessions || 0), 0))} |\n| Overall Conversion | ${data.utmCampaigns.length > 0 ? (data.utmCampaigns.reduce((sum, c) => sum + (c.conversionRate || c.checkoutRate || 0), 0) / data.utmCampaigns.length).toFixed(2) : 0}% |\n| Excellent Campaigns | ${excellentCampaigns.length} |\n| Good Campaigns | ${goodCampaigns.length} |\n| Average Campaigns | ${avgCampaigns.length} |\n| Need Optimization | ${poorCampaigns.length} |${totalAdSpend > 0 ? `\n| Total Ad Spend | ₹${formatNumber(totalAdSpend)} |` : ''}\n\n**Assessment:** ${excellentCampaigns.length + goodCampaigns.length > poorCampaigns.length + avgCampaigns.length ? 'Strong overall performance' : 'Performance needs improvement'}. Focus on optimizing the ${poorCampaigns.length} underperforming campaigns.`;
+      }
+      
+      // Fallback to input data
+      const excellentCampaigns = data.campaigns?.filter(c => c.performanceTier === 'excellent') || [];
+      const poorCampaigns = data.campaigns?.filter(c => c.performanceTier === 'poor') || [];
 
       return `**Overall Performance Summary:**\n\n| Metric | Value |\n|--------|-------|\n| Total Campaigns | ${keyMetrics.uniqueCampaigns} |\n| Total Sessions | ${formatNumber(keyMetrics.totalSessions)} |\n| Overall Conversion | ${keyMetrics.overallConversionRate}% |\n| Excellent Campaigns | ${excellentCampaigns.length} |\n| Need Optimization | ${poorCampaigns.length} |\n\n**Assessment:** ${keyMetrics.overallConversionRate < 1 ? 'Conversion rates need improvement' : 'Performance is solid'}. Focus on optimizing the ${poorCampaigns.length} underperforming campaigns.`;
     }
 
     // Campaigns needing optimization
     if (lowerQuery.includes('optimization') || lowerQuery.includes('optimize') || lowerQuery.includes('improve')) {
+      if (hasOutputData) {
+        // Use processed output data
+        const needOptimization = data.utmCampaigns
+          .filter(c => c.performanceTier === 'poor' || (c.performanceTier === 'average' && (c.sessions || c.totalSessions || 0) > 100))
+          .sort((a, b) => (b.sessions || b.totalSessions || 0) - (a.sessions || a.totalSessions || 0))
+          .slice(0, 5);
+
+        if (needOptimization.length === 0) {
+          return "Excellent! All your campaigns are performing well. Consider scaling your successful campaigns for growth.";
+        }
+
+        const tableRows = needOptimization.map(c => 
+          `| ${c.utmCampaign} | ${formatNumber(c.sessions || c.totalSessions || 0)} | ${(c.conversionRate || c.checkoutRate || 0).toFixed(2)}% | ${c.performanceTier} |${c.adSpend ? ` ₹${formatNumber(c.adSpend)} |` : ''}`
+        ).join('\n');
+
+        return `**Campaigns Needing Optimization (from processed data):**\n\n| Campaign | Sessions | Conversion | Performance${needOptimization.some(c => c.adSpend) ? ' | Ad Spend' : ''} |\n|----------|----------|------------|------------|${needOptimization.some(c => c.adSpend) ? '----------|' : ''}\n${tableRows}\n\n**Priority:** Start with ${needOptimization[0].utmCampaign} - it has the most traffic but ${needOptimization[0].performanceTier} performance.`;
+      }
+      
+      // Fallback to input data
       const needOptimization = data.campaigns
-        .filter(c => c.performanceTier === 'poor' || (c.performanceTier === 'average' && c.totalSessions > 100))
-        .sort((a, b) => b.totalSessions - a.totalSessions)
-        .slice(0, 5);
+        ?.filter(c => c.performanceTier === 'poor' || (c.performanceTier === 'average' && c.totalSessions > 100))
+        ?.sort((a, b) => b.totalSessions - a.totalSessions)
+        ?.slice(0, 5) || [];
 
       if (needOptimization.length === 0) {
         return "Excellent! All your campaigns are performing well. Consider scaling your successful campaigns for growth.";
@@ -105,7 +178,21 @@ const ChatBot: React.FC<Props> = ({ data, onClose }) => {
     }
 
     // Campaign specific queries
-    const mentionedCampaign = data.campaigns.find(c => 
+    let mentionedCampaign = null;
+    
+    if (hasOutputData) {
+      // Check processed output data first
+      mentionedCampaign = data.utmCampaigns.find(c => 
+        lowerQuery.includes(c.utmCampaign.toLowerCase())
+      );
+      
+      if (mentionedCampaign) {
+        return `**${mentionedCampaign.utmCampaign} Performance (from processed data):**\n\n| Metric | Value |\n|--------|-------|\n| Sessions | ${formatNumber(mentionedCampaign.sessions || mentionedCampaign.totalSessions || 0)} |\n| Conversion Rate | ${(mentionedCampaign.conversionRate || mentionedCampaign.checkoutRate || 0).toFixed(2)}% |\n| Performance Tier | ${mentionedCampaign.performanceTier} |${mentionedCampaign.adSpend ? `\n| Ad Spend | ₹${formatNumber(mentionedCampaign.adSpend)} |` : ''}\n\n**Recommendation:** ${mentionedCampaign.performanceTier === 'excellent' || mentionedCampaign.performanceTier === 'good' ? 'Great performance! Consider scaling this campaign.' : 'Focus on improving conversion and engagement metrics.'}`;
+      }
+    }
+    
+    // Fallback to input data
+    mentionedCampaign = data.campaigns?.find(c => 
       lowerQuery.includes(c.utmCampaign.toLowerCase())
     );
 
@@ -115,6 +202,16 @@ const ChatBot: React.FC<Props> = ({ data, onClose }) => {
 
     // Revenue related queries
     if (lowerQuery.includes('revenue') || lowerQuery.includes('money') || lowerQuery.includes('sales')) {
+      if (hasOutputData) {
+        // Use processed output data with ad spend
+        const totalAdSpend = data.utmCampaigns.reduce((sum, c) => sum + (c.adSpend || 0), 0);
+        const totalSessions = data.utmCampaigns.reduce((sum, c) => sum + (c.sessions || c.totalSessions || 0), 0);
+        const totalCheckouts = data.utmCampaigns.reduce((sum, c) => sum + (c.checkoutSessions || 0), 0);
+        
+        return `**Revenue Insights (from processed data):**\n\n| Metric | Value |\n|--------|-------|\n| Estimated Revenue | ₹${formatNumber(data.keyMetrics.totalRevenue)} |\n| Total Ad Spend | ₹${formatNumber(totalAdSpend)} |\n| Total Sessions | ${formatNumber(totalSessions)} |\n| Checkout Sessions | ${formatNumber(totalCheckouts)} |\n| ROAS | ${totalAdSpend > 0 ? (data.keyMetrics.totalRevenue / totalAdSpend).toFixed(2) + 'x' : 'N/A'} |\n\n**Analysis:** ${totalAdSpend > 0 && data.keyMetrics.totalRevenue / totalAdSpend >= 3 ? 'Strong ROAS performance' : totalAdSpend > 0 ? 'ROAS needs improvement' : 'Connect ad spend data for ROAS analysis'}.`;
+      }
+      
+      // Fallback to input data
       return `**Revenue Insights:**\n\n| Metric | Value |\n|--------|-------|\n| Estimated Revenue | ₹${formatNumber(data.keyMetrics.totalRevenue)} |\n| Checkout Sessions | ${formatNumber(data.keyMetrics.totalCheckoutSessions)} |\n| Conversion Rate | ${data.keyMetrics.overallConversionRate}% |\n\n**Note:** Revenue is estimated based on checkout sessions. Connect actual sales data for precise tracking.`;
     }
 
@@ -192,7 +289,7 @@ const ChatBot: React.FC<Props> = ({ data, onClose }) => {
   };
 
   return (
-    <div className="fixed bottom-6 right-20 w-96 h-96 bg-white rounded-lg shadow-2xl border border-moi-light flex flex-col z-50">
+    <div className="fixed bottom-6 right-20 w-[32rem] h-[36rem] bg-white rounded-lg shadow-2xl border border-moi-light flex flex-col z-50">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-moi-light bg-moi-beige rounded-t-lg">
         <div className="flex items-center space-x-2">

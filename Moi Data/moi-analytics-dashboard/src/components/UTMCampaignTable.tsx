@@ -11,7 +11,7 @@ type SortDirection = 'asc' | 'desc';
 
 const UTMCampaignTable: React.FC<Props> = ({ data }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortField, setSortField] = useState<SortField>('totalSessions');
+  const [sortField, setSortField] = useState<SortField>('sessions');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [performanceFilter, setPerformanceFilter] = useState<string>('all');
   const [minSessions, setMinSessions] = useState<number>(0);
@@ -19,7 +19,12 @@ const UTMCampaignTable: React.FC<Props> = ({ data }) => {
 
   // Apply filters and sorting
   const filteredAndSortedData = useMemo(() => {
-    let filtered = data.campaigns.filter(campaign => {
+    // Check if utmCampaigns exists and is an array
+    if (!data.utmCampaigns || !Array.isArray(data.utmCampaigns)) {
+      return [];
+    }
+    
+    let filtered = data.utmCampaigns.filter(campaign => {
       // Search filter
       const matchesSearch = campaign.utmCampaign.toLowerCase().includes(searchTerm.toLowerCase());
       
@@ -27,7 +32,7 @@ const UTMCampaignTable: React.FC<Props> = ({ data }) => {
       const matchesPerformance = performanceFilter === 'all' || campaign.performanceTier === performanceFilter;
       
       // Minimum sessions filter
-      const matchesSessions = campaign.totalSessions >= minSessions;
+      const matchesSessions = campaign.sessions >= minSessions;
       
       return matchesSearch && matchesPerformance && matchesSessions;
     });
@@ -51,7 +56,7 @@ const UTMCampaignTable: React.FC<Props> = ({ data }) => {
     });
 
     return filtered;
-  }, [data.campaigns, searchTerm, sortField, sortDirection, performanceFilter, minSessions]);
+  }, [data.utmCampaigns, searchTerm, sortField, sortDirection, performanceFilter, minSessions]);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -66,7 +71,7 @@ const UTMCampaignTable: React.FC<Props> = ({ data }) => {
     setSearchTerm('');
     setPerformanceFilter('all');
     setMinSessions(0);
-    setSortField('totalSessions');
+    setSortField('sessions');
     setSortDirection('desc');
   };
 
@@ -89,15 +94,15 @@ const UTMCampaignTable: React.FC<Props> = ({ data }) => {
       headers.join(','),
       ...filteredAndSortedData.map(campaign => [
         `"${campaign.utmCampaign}"`,
-        campaign.totalCustomers,
-        campaign.totalSessions,
-        campaign.sessionsPerCustomer,
-        campaign.avgSessionDuration,
+        campaign.visitors || 0,
+        campaign.sessions,
+        (campaign.sessions / (campaign.visitors || 1)).toFixed(2),
+        campaign.averageSessionDuration || 0,
         campaign.checkoutSessions,
-        campaign.checkoutRate,
+        ((campaign.checkoutSessions / campaign.sessions) * 100).toFixed(2),
         campaign.cartAdditions,
-        campaign.cartRate,
-        campaign.qualityScore,
+        ((campaign.cartAdditions / campaign.sessions) * 100).toFixed(2),
+        campaign.conversionRate,
         campaign.performanceTier
       ].join(','))
     ].join('\n');
@@ -111,7 +116,8 @@ const UTMCampaignTable: React.FC<Props> = ({ data }) => {
     window.URL.revokeObjectURL(url);
   };
 
-  const formatNumber = (num: number): string => {
+  const formatNumber = (num: number | null | undefined): string => {
+    if (num === null || num === undefined || isNaN(num)) return '0';
     if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
     if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
     return num.toLocaleString();
@@ -119,7 +125,7 @@ const UTMCampaignTable: React.FC<Props> = ({ data }) => {
 
   const SortableHeader: React.FC<{ field: SortField; children: React.ReactNode }> = ({ field, children }) => (
     <th 
-      className="px-4 py-3 text-left font-benton font-semibold text-moi-charcoal cursor-pointer hover:bg-moi-beige transition-colors"
+      className="px-4 py-3 text-left font-benton font-semibold text-moi-charcoal cursor-pointer hover:bg-moi-beige transition-colors text-sm"
       onClick={() => handleSort(field)}
     >
       <div className="flex items-center space-x-1">
@@ -231,10 +237,10 @@ const UTMCampaignTable: React.FC<Props> = ({ data }) => {
         {/* Results Summary */}
         <div className="mt-4 flex items-center justify-between text-sm font-benton text-moi-grey">
           <span>
-            Showing {filteredAndSortedData.length} of {data.campaigns.length} campaigns
+            Showing {filteredAndSortedData.length} of {data.utmCampaigns?.length || 0} campaigns
           </span>
           <span>
-            Total Sessions: {formatNumber(filteredAndSortedData.reduce((sum, c) => sum + c.totalSessions, 0))}
+            Total Sessions: {formatNumber(filteredAndSortedData.reduce((sum, c) => sum + c.sessions, 0))}
           </span>
         </div>
       </div>
@@ -245,15 +251,15 @@ const UTMCampaignTable: React.FC<Props> = ({ data }) => {
           <thead className="bg-moi-beige border-b border-moi-light">
             <tr>
               <SortableHeader field="utmCampaign">UTM Campaign</SortableHeader>
-              <SortableHeader field="totalCustomers">Total Customers</SortableHeader>
-              <SortableHeader field="totalSessions">Total Sessions</SortableHeader>
-              <SortableHeader field="sessionsPerCustomer">Sessions/Customer</SortableHeader>
-              <SortableHeader field="avgSessionDuration">Avg Session Duration (sec)</SortableHeader>
+              <SortableHeader field="visitors">Total Customers</SortableHeader>
+              <SortableHeader field="sessions">Total Sessions</SortableHeader>
+              <SortableHeader field="sessions">Sessions/Customer</SortableHeader>
+              <SortableHeader field="averageSessionDuration">Avg Session Duration (sec)</SortableHeader>
               <SortableHeader field="checkoutSessions">Checkout Sessions</SortableHeader>
-              <SortableHeader field="checkoutRate">Checkout Rate (%)</SortableHeader>
+              <SortableHeader field="conversionRate">Checkout Rate (%)</SortableHeader>
               <SortableHeader field="cartAdditions">Cart Additions</SortableHeader>
-              <SortableHeader field="cartRate">Cart Rate (%)</SortableHeader>
-              <SortableHeader field="qualityScore">Quality Score</SortableHeader>
+              <SortableHeader field="cartAdditions">Cart Rate (%)</SortableHeader>
+              <SortableHeader field="conversionRate">Quality Score</SortableHeader>
               <SortableHeader field="performanceTier">Performance Tier</SortableHeader>
             </tr>
           </thead>
@@ -265,45 +271,45 @@ const UTMCampaignTable: React.FC<Props> = ({ data }) => {
                   index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
                 }`}
               >
-                <td className="px-4 py-3 font-benton font-medium text-moi-charcoal max-w-xs">
+                <td className="px-4 py-3 font-benton font-medium text-moi-charcoal max-w-xs text-sm">
                   <div className="truncate" title={campaign.utmCampaign}>
                     {campaign.utmCampaign}
                   </div>
                 </td>
-                <td className="px-4 py-3 font-benton text-moi-charcoal">
-                  {formatNumber(campaign.totalCustomers)}
+                <td className="px-4 py-3 font-benton text-moi-charcoal text-sm">
+                  {formatNumber(campaign.visitors)}
                 </td>
-                <td className="px-4 py-3 font-benton text-moi-charcoal font-medium">
-                  {formatNumber(campaign.totalSessions)}
+                <td className="px-4 py-3 font-benton text-moi-charcoal font-medium text-sm">
+                  {formatNumber(campaign.sessions)}
                 </td>
-                <td className="px-4 py-3 font-benton text-moi-charcoal">
-                  {campaign.sessionsPerCustomer}
+                <td className="px-4 py-3 font-benton text-moi-charcoal text-sm">
+                  {(campaign.sessions / (campaign.visitors || 1)).toFixed(2)}
                 </td>
-                <td className="px-4 py-3 font-benton text-moi-charcoal">
-                  {campaign.avgSessionDuration}
+                <td className="px-4 py-3 font-benton text-moi-charcoal text-sm">
+                  {campaign.averageSessionDuration}s
                 </td>
-                <td className="px-4 py-3 font-benton text-moi-charcoal">
+                <td className="px-4 py-3 font-benton text-moi-charcoal text-sm">
                   {campaign.checkoutSessions}
                 </td>
-                <td className="px-4 py-3 font-benton text-moi-charcoal">
-                  <span className={`${campaign.checkoutRate > 1 ? 'text-moi-green font-medium' : 'text-moi-red'}`}>
-                    {campaign.checkoutRate}%
+                <td className="px-4 py-3 font-benton text-moi-charcoal text-sm">
+                  <span className={`${campaign.conversionRate > 1 ? 'text-green-600 font-medium' : 'text-red-600'}`}>
+                    {campaign.conversionRate.toFixed(2)}%
                   </span>
                 </td>
-                <td className="px-4 py-3 font-benton text-moi-charcoal">
+                <td className="px-4 py-3 font-benton text-moi-charcoal text-sm">
                   {campaign.cartAdditions}
                 </td>
-                <td className="px-4 py-3 font-benton text-moi-charcoal">
-                  <span className={`${campaign.cartRate > 1 ? 'text-moi-green font-medium' : 'text-moi-red'}`}>
-                    {campaign.cartRate}%
+                <td className="px-4 py-3 font-benton text-moi-charcoal text-sm">
+                  <span className={`${((campaign.cartAdditions / campaign.sessions) * 100) > 1 ? 'text-moi-green font-medium' : 'text-moi-red'}`}>
+                    {((campaign.cartAdditions / campaign.sessions) * 100).toFixed(2)}%
                   </span>
                 </td>
-                <td className="px-4 py-3 font-benton text-moi-charcoal">
-                  <span className={`font-medium ${campaign.qualityScore >= 60 ? 'text-moi-green' : 'text-moi-red'}`}>
-                    {campaign.qualityScore}/100
+                <td className="px-4 py-3 font-benton text-moi-charcoal text-sm">
+                  <span className={`font-medium ${campaign.conversionRate >= 0.6 ? 'text-moi-green' : 'text-moi-red'}`}>
+                    {campaign.conversionRate.toFixed(1)}/100
                   </span>
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-4 py-3 text-sm">
                   {getPerformanceBadge(campaign.performanceTier)}
                 </td>
               </tr>
