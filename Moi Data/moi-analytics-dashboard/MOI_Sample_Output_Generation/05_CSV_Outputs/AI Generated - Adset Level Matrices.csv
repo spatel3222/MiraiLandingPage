@@ -1,7 +1,9 @@
-Date Range,Campaign name,Ad Set Name,Ad Set Delivery,Spent,Cost per user,Users,ATC,Reached Checkout,Conversions,Average session duration,Cost per 1 min user,1min user/ total users (%),Users with Session above 1 min,ATC with session duration above 1 min,Reached Checkout with session duration above 1 min,Users with Above 5 page views and above 1 min,Remarks,Status
-"Sep 10-23, 2025","TOF | ALL","T1 - TRLi - FEED","Active","51,896.96","214.34","242","7","4","2","248.6","155.07","67.8%","164","5","3","89","High engagement feed campaign","Active"
-"Sep 10-23, 2025","TOF | ALL","T2 - TRLi","Active","40,969.26","214.34","191","3","2","1","198.4","122.27","62.3%","119","2","1","67","Standard retargeting performance","Active"
-"Sep 10-23, 2025","MOF","MOF | DABA | ENGDi","Active","17,734.50","214.34","83","2","1","0","312.8","113.11","78.3%","65","2","1","34","High CPM but quality traffic","Active"
-"Sep 15-18, 2025","TOF | ALL","T1 - TRLi - FEED","Active","14,827.70","189.23","78","2","1","1","265.2","142.56","71.8%","56","1","1","28","Weekend performance dip","Active"
-"Sep 19-23, 2025","TOF | ALL","T2 - TRLi","Active","22,541.28","198.76","113","2","1","0","189.7","124.89","58.4%","66","1","0","35","Workweek recovery","Active"
-"Sep 20-23, 2025","MOF","MOF | DABA | ENGDi","Active","8,956.12","156.78","57","1","0","0","298.5","109.34","74.5%","42","1","0","22","Consistent quality metrics","Active"
+Date,Campaign Name,Campaign ID,Adset Name,Adset ID,Platform,Spend,Impressions,CTR,CPM,CPC,Users,ATC,Reached Checkout,Purchases,Revenue,ROAS
+"Sun, Sep 28, 25","BOF | DPA","123456","VC & ATC_60 Days - IG","789012","Meta","0","0",0,0,0,146,0,0,0,0,0.00
+"Sun, Sep 28, 25","TOF | AND","123457","TOF | Mumbai | TRLa","789013","Meta","0","0",0,0,0,369,1,1,0,0,0.00
+"Sun, Sep 28, 25","Unknown Campaign","234567","Unknown AdSet","890123","Meta","0","0",0,0,0,612,13,6,0,0,0.00
+"Sun, Sep 28, 25","TOF | ALL","345678","T1 - TRLi - FEED","901234","Meta","0","0",0,0,0,529,1,0,0,0,0.00
+"Sun, Sep 28, 25","TOF | ALL","345678","T2 - TRLi","901235","Meta","0","0",0,0,0,459,0,0,0,0,0.00
+"Sun, Sep 28, 25","BOF | DPA","123456","VC & ATC_180 Days - FBi","789014","Meta","0","0",0,0,0,263,3,2,0,0,0.00
+"Sun, Sep 28, 25","TOF | ALL","345678","T1 - FB - TRLi","901236","Meta","0","0",0,0,0,438,2,1,0,0,0.00
+"Sun, Sep 28, 25","TOF | Story/Reel","456789","T1 | TRL | IGi | RL","012345","Meta","0","0",0,0,0,537,1,1,0,0,0.00

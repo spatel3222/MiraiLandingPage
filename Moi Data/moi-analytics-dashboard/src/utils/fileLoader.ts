@@ -30,34 +30,88 @@ export const loadExistingOutputFiles = async (): Promise<DashboardData | null> =
     const topLevelData = await loadTopLevelFile();
     const adsetData = await loadAdsetFile();
     
+    console.log('LoadExistingOutputFiles results:', {
+      topLevelFound: !!topLevelData,
+      adsetFound: !!adsetData,
+      topLevelRows: topLevelData?.length || 0,
+      adsetRows: adsetData?.length || 0
+    });
+    
     if (topLevelData && adsetData) {
-      console.log('Found existing output files, processing data...');
+      console.log('🔍 Found existing output files, processing data...');
+      console.log('  - topLevelData rows:', topLevelData.length);
+      console.log('  - adsetData rows:', adsetData.length);
+      console.log('  - adsetData campaigns:', adsetData.map(row => row.campaignName));
       return processOutputFiles(topLevelData, adsetData);
     } else if (topLevelData) {
-      console.log('Found top-level file only, using sample adset data...');
-      // Use sample adset data if only top-level is found
-      const sampleAdsetData = [{
-        date: "Sample",
-        campaignName: "BOF | DPA", 
-        campaignId: "123456",
-        adsetName: "DPA - Broad",
-        adsetId: "789012",
-        platform: "Meta",
-        spend: 2500,
-        impressions: 42300,
-        ctr: 1.45,
-        cpm: 59.10,
-        cpc: 4.08,
-        users: 500,
-        atc: 3,
-        reachedCheckout: 1,
-        purchases: 0,
-        revenue: 0,
-        roas: 0.00
-      }];
+      console.log('🔍 Found top-level file only, using THREE campaign sample data...');
+      console.log('  - topLevelData rows:', topLevelData.length);
+      // Use proper sample adset data with 3 campaigns matching the exported files
+      const sampleAdsetData = [
+        {
+          date: "Sun, Sep 28, 25",
+          campaignName: "BOF | DPA",
+          campaignId: "123456",
+          adsetName: "DPA - Broad",
+          adsetId: "789012",
+          platform: "Meta",
+          spend: 2500,
+          impressions: 42300,
+          ctr: 1.45,
+          cpm: 59.10,
+          cpc: 4.08,
+          users: 523,
+          atc: 3,
+          reachedCheckout: 1,
+          purchases: 0,
+          revenue: 0,
+          roas: 0.00
+        },
+        {
+          date: "Sun, Sep 28, 25",
+          campaignName: "TOF | Interest",
+          campaignId: "123457",
+          adsetName: "Luxury Shoppers",
+          adsetId: "789013",
+          platform: "Meta",
+          spend: 1800,
+          impressions: 28500,
+          ctr: 1.23,
+          cpm: 63.16,
+          cpc: 5.14,
+          users: 351,
+          atc: 2,
+          reachedCheckout: 0,
+          purchases: 0,
+          revenue: 0,
+          roas: 0.00
+        },
+        {
+          date: "Sun, Sep 28, 25",
+          campaignName: "india-pmax-rings",
+          campaignId: "234567",
+          adsetName: "Performance Max",
+          adsetId: "890123",
+          platform: "Google",
+          spend: 1200,
+          impressions: 4900,
+          ctr: 2.04,
+          cpm: 244.90,
+          cpc: 12.00,
+          users: 100,
+          atc: 1,
+          reachedCheckout: 1,
+          purchases: 1,
+          revenue: 2500,
+          roas: 2.08
+        }
+      ];
+      console.log('  - sampleAdsetData campaigns:', sampleAdsetData.map(row => row.campaignName));
+      console.log('  - Processing with', sampleAdsetData.length, 'sample adset records');
       return processOutputFiles(topLevelData, sampleAdsetData);
     }
     
+    console.log('🔍 No files found in loadExistingOutputFiles, returning null');
     return null;
   } catch (error) {
     console.log('No existing output files found or error loading them:', error);
@@ -66,11 +120,35 @@ export const loadExistingOutputFiles = async (): Promise<DashboardData | null> =
 };
 
 const loadTopLevelFile = async () => {
+  // First, check for server-side saved content from Export Reports
+  try {
+    const serverContent = localStorage.getItem('moi-server-topLevel');
+    const serverTimestamp = localStorage.getItem('moi-server-topLevel-timestamp');
+    
+    if (serverContent && serverTimestamp) {
+      // Check if the saved content is recent (less than 24 hours)
+      const age = Date.now() - new Date(serverTimestamp).getTime();
+      if (age < 24 * 60 * 60 * 1000) { // 24 hours
+        console.log('🔍 Loading top-level data from Export Reports server-side cache');
+        return parseTopLevelCSV(serverContent);
+      }
+    }
+  } catch (error) {
+    console.log('No server-side saved content available for top-level file');
+  }
+  
   // Try different file paths and names
   for (const basePath of OUTPUT_FILE_PATHS) {
     for (const filename of TOP_LEVEL_FILENAMES) {
       try {
-        const response = await fetch(`${basePath}${filename}`);
+        // Add cache-busting parameter to force fresh load
+        const cacheBuster = `?t=${Date.now()}`;
+        const response = await fetch(`${basePath}${filename}${cacheBuster}`, {
+          cache: 'no-cache',
+          headers: {
+            'Cache-Control': 'no-cache'
+          }
+        });
         if (response.ok) {
           const csvContent = await response.text();
           console.log(`Loaded top-level file: ${basePath}${filename}`);
@@ -97,15 +175,45 @@ const loadTopLevelFile = async () => {
 };
 
 const loadAdsetFile = async () => {
+  // First, check for server-side saved content from Export Reports
+  try {
+    const serverContent = localStorage.getItem('moi-server-adset');
+    const serverTimestamp = localStorage.getItem('moi-server-adset-timestamp');
+    
+    if (serverContent && serverTimestamp) {
+      // Check if the saved content is recent (less than 24 hours)
+      const age = Date.now() - new Date(serverTimestamp).getTime();
+      if (age < 24 * 60 * 60 * 1000) { // 24 hours
+        console.log('🔍 Loading adset data from Export Reports server-side cache');
+        const parsedData = parseAdsetCSV(serverContent);
+        console.log(`🔍 Parsed server-side adset data:`, parsedData);
+        return parsedData;
+      }
+    }
+  } catch (error) {
+    console.log('No server-side saved content available for adset file');
+  }
+  
   // Try different file paths and names
   for (const basePath of OUTPUT_FILE_PATHS) {
     for (const filename of ADSET_FILENAMES) {
       try {
-        const response = await fetch(`${basePath}${filename}`);
+        // Add cache-busting parameter to force fresh load
+        const cacheBuster = `?t=${Date.now()}`;
+        const response = await fetch(`${basePath}${filename}${cacheBuster}`, {
+          cache: 'no-cache',
+          headers: {
+            'Cache-Control': 'no-cache'
+          }
+        });
         if (response.ok) {
           const csvContent = await response.text();
-          console.log(`Loaded adset file: ${basePath}${filename}`);
-          return parseAdsetCSV(csvContent);
+          console.log(`🔍 Loaded adset file: ${basePath}${filename}`);
+          console.log(`🔍 CSV content preview:`, csvContent.substring(0, 200) + '...');
+          console.log(`🔍 CSV total length:`, csvContent.length);
+          const parsedData = parseAdsetCSV(csvContent);
+          console.log(`🔍 Parsed adset data:`, parsedData);
+          return parsedData;
         }
       } catch (error) {
         // Continue to next file
@@ -144,7 +252,18 @@ export const loadCachedOutputData = (): DashboardData | null => {
       const cacheAge = Date.now() - new Date(cachedTimestamp).getTime();
       if (cacheAge < 24 * 60 * 60 * 1000) { // 24 hours
         console.log('Loading cached output data');
-        return JSON.parse(cachedData);
+        const parsedData = JSON.parse(cachedData);
+        
+        // Check if this data has the campaign count bug (keyMetrics.uniqueCampaigns === 0 but campaigns exist)
+        if (parsedData.keyMetrics && parsedData.keyMetrics.uniqueCampaigns === 0 && 
+            parsedData.utmCampaigns && parsedData.utmCampaigns.length > 0) {
+          console.log('Detected cached data with campaign count bug, clearing cache to force reprocessing...');
+          localStorage.removeItem('moi-output-data');
+          localStorage.removeItem('moi-output-timestamp');
+          return null;
+        }
+        
+        return parsedData;
       }
     }
     

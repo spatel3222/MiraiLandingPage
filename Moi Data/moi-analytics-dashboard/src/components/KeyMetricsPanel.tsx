@@ -43,7 +43,7 @@ const KeyMetricsPanel: React.FC<Props> = ({ data }) => {
           <div className="bg-moi-beige rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-benton text-sm text-moi-grey">Unique Campaigns</p>
+                <p className="font-benton text-sm text-moi-grey">Total Unique Campaigns</p>
                 <p className="font-benton text-2xl font-bold text-moi-charcoal">
                   {keyMetrics.uniqueCampaigns}
                 </p>
