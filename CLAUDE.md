@@ -445,6 +445,15 @@ All agents MUST follow these communication standards:
 
 Claude must ALWAYS apply this prompt optimization system to convert basic user requests into agent-triggering, quality-enforced prompts.
 
+### **DEFAULT AGENT: prompt-optimizer**
+**CRITICAL REQUIREMENT**: Every user prompt MUST first be processed through the `prompt-optimizer` agent before any other action is taken. This agent will:
+1. Analyze the user's mental model and intent
+2. Enhance the prompt for clarity and specificity  
+3. Align the request with appropriate specialized agents
+4. Return an optimized prompt for execution
+
+**Implementation**: Use Task tool with subagent_type="prompt-optimizer" as the FIRST step for ALL user requests.
+
 #### **Step 1: Intent Analysis & Agent Mapping**
 
 | User Intent Keywords | Specialized Agent | Auto-Trigger Words to Add |
