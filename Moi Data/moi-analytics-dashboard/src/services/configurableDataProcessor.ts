@@ -105,6 +105,14 @@ export class ConfigurableDataProcessor {
       console.log('Creating pivot table from Shopify data...');
       const pivotData = this.createShopifyPivot(shopifyData);
       context.pivotData = pivotData;
+      
+      // Store pivot data in localStorage for Export Reports access
+      try {
+        localStorage.setItem('moi-pivot-data', JSON.stringify(pivotData));
+        console.log(`Stored ${pivotData.length} pivot records in localStorage`);
+      } catch (error) {
+        console.warn('Failed to store pivot data in localStorage:', error);
+      }
 
       // Step 2: Process output files according to logic template
       console.log('Processing output files with custom logic...');

@@ -2,6 +2,7 @@ import Papa from 'papaparse';
 import { processMetaAdsCSV, processMetaDataByDay, type MetaAdsRecord } from './metaProcessor';
 import { processGoogleAdsCSV, processGoogleDataByDay, type GoogleAdsRecord } from './googleProcessor';
 import { detectDateRangeFromFiles, type DateRange, formatDateForApp, generateDateArray } from './dateRangeDetector';
+import { processOutputFiles } from './outputDataProcessor';
 import { ConfigurableDataProcessor } from '../services/configurableDataProcessor';
 import { LogicTemplateManager } from '../services/logicTemplateManager';
 import type { DashboardData, ShopifyRecord } from '../types';
@@ -111,8 +112,31 @@ export const processAllInputFiles = async (files: {
   // Generate adset-level data
   const adsetData = generateAdsetData(metaData, googleData, dateRange);
   
-  // Create dashboard data structure
-  const dashboardData = createDashboardData(combinedDailyMetrics, adsetData, dateRange);
+  // Create dashboard data structure using processOutputFiles
+  // Convert combinedDailyMetrics to the format expected by processOutputFiles
+  const topLevelMetrics = combinedDailyMetrics.map(metric => ({
+    date: metric.date,
+    metaSpend: metric.metaSpend,
+    metaCTR: metric.metaCTR,
+    metaCPM: metric.metaCPM,
+    googleSpend: metric.googleSpend,
+    googleCTR: metric.googleCTR,
+    googleCPM: metric.googleCPM,
+    totalUsers: metric.totalUsers,
+    totalATC: metric.totalATC,
+    totalReachedCheckout: metric.totalReachedCheckout,
+    totalAbandonedCheckout: metric.totalAbandonedCheckout,
+    sessionDuration: metric.sessionDuration,
+    usersAbove1Min: metric.usersAbove1Min,
+    users5PagesAbove1Min: metric.users5PagesAbove1Min,
+    atcAbove1Min: metric.atcAbove1Min,
+    checkoutAbove1Min: metric.checkoutAbove1Min,
+    generalQueries: metric.generalQueries,
+    openQueries: metric.openQueries,
+    onlineOrders: metric.onlineOrders
+  }));
+  
+  const dashboardData = processOutputFiles(topLevelMetrics, adsetData, dateRange);
   
   return {
     dailyMetrics: combinedDailyMetrics,
@@ -272,28 +296,6 @@ const generateAdsetData = (metaData: MetaAdsRecord[], googleData: GoogleAdsRecor
   return adsetData;
 };
 
-const createDashboardData = (dailyMetrics: IntegratedDailyMetrics[], adsetData: any[], dateRange: DateRange): DashboardData => {
-  // This would convert the integrated data back to the dashboard format
-  // For now, return a basic structure - this would need to be implemented based on existing logic
-  return {
-    keyMetrics: {
-      uniqueCampaigns: adsetData.length,
-      avgAdsetsPerCampaign: 1,
-      avgTrafficPerCampaign: Math.floor(dailyMetrics.reduce((sum, d) => sum + d.totalUsers, 0) / adsetData.length),
-      totalUniqueUsers: dailyMetrics.reduce((sum, d) => sum + d.totalUsers, 0),
-      totalSessions: dailyMetrics.reduce((sum, d) => sum + d.totalUsers, 0),
-      avgSessionTime: dailyMetrics.reduce((sum, d) => sum + d.sessionDuration, 0) / dailyMetrics.length,
-      avgPageviewsPerSession: 3.2,
-      totalATC: dailyMetrics.reduce((sum, d) => sum + d.totalATC, 0),
-      totalCheckoutSessions: dailyMetrics.reduce((sum, d) => sum + d.totalReachedCheckout, 0),
-      overallConversionRate: 2.5,
-      totalRevenue: dailyMetrics.reduce((sum, d) => sum + d.onlineOrders, 0) * 2500
-    },
-    campaigns: [], // Would need to process adset data into campaign format
-    lastUpdated: new Date().toISOString(),
-    dateRange
-  };
-};
 
 /**
  * Convert configurable processor output to dashboard format
@@ -306,8 +308,8 @@ const convertConfigurableOutputToDashboard = (
   const topLevelData = outputFiles['Top Level Daily.csv'] || [];
   const adSetLevelData = outputFiles['Ad Set Level.csv'] || [];
   
-  // Convert top level data to daily metrics format
-  const dailyMetrics: IntegratedDailyMetrics[] = topLevelData.map(record => ({
+  // Convert top level data to the format expected by processOutputFiles
+  const topLevelMetrics = topLevelData.map(record => ({
     date: record['Date'] || record['date'] || '',
     metaSpend: parseFloat(record['Meta Spend'] || record['metaSpend'] || '0'),
     metaCTR: parseFloat(record['Meta CTR'] || record['metaCTR'] || '0'),
@@ -328,34 +330,40 @@ const convertConfigurableOutputToDashboard = (
     openQueries: parseFloat(record['Open Queries'] || record['openQueries'] || '0'),
     onlineOrders: parseFloat(record['Online Orders'] || record['onlineOrders'] || '0')
   }));
-  
-  // Convert ad set level data  
-  const adsetData = adSetLevelData.map(record => ({
+
+  // Convert ad set level data to the format expected by processOutputFiles
+  const adsetMetrics = adSetLevelData.map(record => ({
     date: record['Date'] || record['date'] || '',
-    campaignName: record['Campaign name'] || record['Campaign Name'] || record['campaignName'] || '',
+    campaignName: record['Campaign name'] || record['Campaign Name'] || record['campaignName'] || record['UTM Campaign'] || '',
     campaignId: `config_${Math.random().toString(36).substr(2, 9)}`,
-    adsetName: record['Ad Set Name'] || record['adsetName'] || '',
+    adsetName: record['Ad Set Name'] || record['adsetName'] || record['Ad set name'] || record['UTM Term'] || '',
     adsetId: `config_adset_${Math.random().toString(36).substr(2, 9)}`,
-    platform: "Configurable",
+    platform: record['Platform'] || record['platform'] || 'Configurable',
     spend: parseFloat(record['Ad Set Level Spent'] || record['spend'] || '0'),
-    impressions: 0, // Would need to be calculated or provided
-    ctr: 0,
-    cpm: 0,
-    cpc: parseFloat(record['Cost per user'] || record['costPerUser'] || '0'),
+    impressions: parseFloat(record['Ad Set Level Impressions'] || record['impressions'] || '0'),
+    ctr: parseFloat(record['Ad Set Level CTR'] || record['ctr'] || '0'),
+    cpm: parseFloat(record['Ad Set Level CPM'] || record['cpm'] || '0'),
+    cpc: parseFloat(record['Cost per user'] || record['costPerUser'] || record['cpc'] || '0'),
     users: parseFloat(record['Ad Set Level Users'] || record['users'] || '0'),
     atc: parseFloat(record['Ad Set Level ATC'] || record['atc'] || '0'),
     reachedCheckout: parseFloat(record['Ad Set Level Reached Checkout'] || record['reachedCheckout'] || '0'),
-    purchases: parseFloat(record['Ad Set Level Conversions'] || record['conversions'] || '0'),
-    revenue: 0,
-    roas: 0
+    purchases: parseFloat(record['Ad Set Level Conversions'] || record['conversions'] || record['purchases'] || '0'),
+    revenue: parseFloat(record['Ad Set Level Revenue'] || record['revenue'] || '0'),
+    roas: parseFloat(record['Ad Set Level ROAS'] || record['roas'] || '0')
   }));
+
+  // Convert data to daily metrics format for internal use
+  const dailyMetrics: IntegratedDailyMetrics[] = topLevelMetrics;
   
-  // Create dashboard data
-  const dashboardData = createDashboardData(dailyMetrics, adsetData, dateRange);
+  // Use the existing processOutputFiles function for correct dashboard data processing
+  const dashboardData = processOutputFiles(topLevelMetrics, adsetMetrics, dateRange);
+  
+  console.log(`Processed configurable data: ${topLevelMetrics.length} daily records, ${adsetMetrics.length} adset records`);
+  console.log(`Dashboard data: ${dashboardData.keyMetrics.uniqueCampaigns} unique campaigns`);
   
   return {
     dailyMetrics,
-    adsetData,
+    adsetData: adsetMetrics,
     dashboardData,
     dateRange
   };

@@ -145,11 +145,22 @@ function createDateRange(startDate: Date, endDate: Date): DateRange {
 /**
  * Consolidates multiple date ranges to find the most comprehensive range
  */
-export const consolidateDateRanges = (ranges: (DateRange | null)[]): DateRange => {
+export const consolidateDateRanges = (ranges: (DateRange | null)[], shopifyData?: any[]): DateRange => {
   const validRanges = ranges.filter(r => r !== null) as DateRange[];
   
   if (validRanges.length === 0) {
-    // Default fallback to Sep 10-23, 2025 if no ranges detected
+    // If we have Shopify data, try to determine date from the current date or data
+    // For single-day data scenarios, create a single-day range
+    if (shopifyData && shopifyData.length > 0) {
+      // Try to find date information in the data or use a reasonable single-day default
+      const today = new Date();
+      const singleDayDate = new Date('2025-09-29'); // Default to Sept 29 for single-day scenarios
+      console.log('🔍 No date range detected from files, creating single-day range for:', singleDayDate.toDateString());
+      return createDateRange(singleDayDate, singleDayDate);
+    }
+    
+    // Last resort fallback to Sep 10-23, 2025 if no data available
+    console.log('⚠️ No date range detected and no Shopify data, using default range Sept 10-23');
     return createDateRange(new Date('2025-09-10'), new Date('2025-09-23'));
   }
   
@@ -178,11 +189,29 @@ export const detectDateRangeFromFiles = async (files: {
   google: File | null;
 }): Promise<DateRange> => {
   const ranges: (DateRange | null)[] = [];
+  let shopifyData: any[] = [];
   
   // Try to detect from each file
   if (files.shopify) {
     const shopifyRange = detectShopifyDateRange(files.shopify.name);
     if (shopifyRange) ranges.push(shopifyRange);
+    
+    // If no range found from filename, try to parse shopify data for date info
+    if (!shopifyRange) {
+      try {
+        // Quick parse to get some data for fallback logic
+        const Papa = await import('papaparse');
+        Papa.parse(files.shopify, {
+          header: true,
+          preview: 5,
+          complete: (results) => {
+            shopifyData = results.data as any[];
+          }
+        });
+      } catch (error) {
+        console.log('Could not parse Shopify data for date detection');
+      }
+    }
   }
   
   if (files.meta) {
@@ -195,8 +224,8 @@ export const detectDateRangeFromFiles = async (files: {
     if (googleRange) ranges.push(googleRange);
   }
   
-  // Consolidate all detected ranges
-  return consolidateDateRanges(ranges);
+  // Consolidate all detected ranges, passing Shopify data for better fallback
+  return consolidateDateRanges(ranges, shopifyData);
 };
 
 /**

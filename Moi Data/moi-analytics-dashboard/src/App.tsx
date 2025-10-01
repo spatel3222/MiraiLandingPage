@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Settings, MessageCircle, Download, X, Send, FileUp } from 'lucide-react';
+import { Settings, MessageCircle, Download, X, Send, FileUp, RotateCcw } from 'lucide-react';
 import KeyMetricsPanel from './components/KeyMetricsPanel';
 import CampaignPerformanceTiers from './components/CampaignPerformanceTiers';
 import UTMCampaignTable from './components/UTMCampaignTable';
@@ -10,7 +10,7 @@ import ChatBot from './components/ChatBot';
 import LogicTemplateSettings from './components/LogicTemplateSettings';
 import { processShopifyCSV } from './utils/csvProcessor';
 import { generateSampleOutputData } from './utils/outputDataProcessor';
-import { loadCachedOutputData, cacheOutputData, checkForRecentOutputFiles } from './utils/fileLoader';
+import { loadCachedOutputData, cacheOutputData, checkForRecentOutputFiles, loadExistingOutputFiles } from './utils/fileLoader';
 import { processAllInputFiles } from './utils/integratedDataProcessor';
 import type { DashboardData } from './types';
 
@@ -29,18 +29,44 @@ function App() {
   // Load cached data or output files on mount
   useEffect(() => {
     const loadDataOnStartup = async () => {
+      // Check if user just reset all data
+      const wasReset = localStorage.getItem('moi-reset-flag');
+      if (wasReset) {
+        console.log('Reset flag detected, skipping automatic data loading...');
+        localStorage.removeItem('moi-reset-flag');
+        return; // Exit early, don't load any data
+      }
+      
       // Clear any potentially corrupted cache first
       console.log('Checking for corrupted cache...');
+      
+      // Force cache clear for this version (campaign count bug fix)
+      const CACHE_VERSION = 'v1.1.0-campaign-fix';
+      const currentCacheVersion = localStorage.getItem('moi-cache-version');
+      if (currentCacheVersion !== CACHE_VERSION) {
+        console.log('Cache version mismatch, clearing all cached data...');
+        localStorage.removeItem('moi-dashboard-data');
+        localStorage.removeItem('moi-dashboard-timestamp');
+        localStorage.removeItem('moi-output-data');
+        localStorage.removeItem('moi-output-timestamp');
+        localStorage.setItem('moi-cache-version', CACHE_VERSION);
+      }
       
       // First, try to load cached dashboard data
       const cachedData = localStorage.getItem('moi-dashboard-data');
       const cachedTimestamp = localStorage.getItem('moi-dashboard-timestamp');
       
+      console.log('🔍 App.tsx data loading check:');
+      console.log('  - cachedData exists:', !!cachedData);
+      console.log('  - cachedTimestamp:', cachedTimestamp);
+      
       if (cachedData && cachedTimestamp) {
+        console.log('📋 Loading from cached dashboard data...');
         try {
           const parsedData = JSON.parse(cachedData);
           // Validate the data structure
           if (parsedData.keyMetrics && typeof parsedData.keyMetrics.totalUniqueUsers === 'number') {
+            console.log('✅ Valid cached data found - uniqueCampaigns:', parsedData.keyMetrics.uniqueCampaigns);
             setDashboardData(parsedData);
             setLastUpdated(cachedTimestamp);
             setReportGenerated(true);
@@ -58,9 +84,10 @@ function App() {
       }
       
       // If no cached dashboard data, try to load from output files
+      console.log('📂 Trying to load from cached output files...');
       const outputData = loadCachedOutputData();
       if (outputData) {
-        console.log('Auto-loading dashboard from existing output files...');
+        console.log('📄 Auto-loading dashboard from cached output files - uniqueCampaigns:', outputData.keyMetrics.uniqueCampaigns);
         setDashboardData(outputData);
         setReportGenerated(true);
         setAutoLoadedData(true);
@@ -78,6 +105,29 @@ function App() {
             // User can see the loaded data is already displayed
           }
         }, 1000);
+      } else {
+        // Try to load from existing output files (with fallback sample data)
+        console.log('🗂️ No cached data found, trying to load existing output files...');
+        loadExistingOutputFiles().then(existingData => {
+          if (existingData) {
+            console.log('📁 Loaded data from existing output files - uniqueCampaigns:', existingData.keyMetrics.uniqueCampaigns);
+            setDashboardData(existingData);
+            setReportGenerated(true);
+            setAutoLoadedData(true);
+            
+            const timestamp = new Date().toISOString();
+            setLastUpdated(timestamp);
+            
+            // Cache this data for future use
+            localStorage.setItem('moi-dashboard-data', JSON.stringify(existingData));
+            localStorage.setItem('moi-dashboard-timestamp', timestamp);
+            cacheOutputData(existingData);
+          } else {
+            console.log('No data available, dashboard will show empty state');
+          }
+        }).catch(error => {
+          console.error('Error loading existing output files:', error);
+        });
       }
     };
     
@@ -160,6 +210,42 @@ function App() {
       alert('Error generating reports. Please check the file formats and try again.');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleResetAllData = () => {
+    if (window.confirm('🔄 Reset All Data\n\nThis will:\n• Clear all cached dashboard data\n• Clear all output files cache\n• Clear all localStorage data\n• Reset custom logic templates\n• Return dashboard to empty state\n\nAre you sure you want to continue?')) {
+      try {
+        // Clear all MOI-related localStorage items
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && (key.startsWith('moi-') || key.includes('moi'))) {
+            keysToRemove.push(key);
+          }
+        }
+        
+        keysToRemove.forEach(key => {
+          localStorage.removeItem(key);
+          console.log(`Removed localStorage key: ${key}`);
+        });
+        
+        // Set reset flag to prevent automatic data loading on next mount
+        localStorage.setItem('moi-reset-flag', 'true');
+        
+        // Reset React state
+        setDashboardData(null);
+        setLastUpdated(null);
+        setReportGenerated(false);
+        setAutoLoadedData(false);
+        
+        console.log('🔄 All data reset successfully');
+        alert('✅ All data has been reset successfully!\n\nThe dashboard is now in a fresh state.');
+        
+      } catch (error) {
+        console.error('Error resetting data:', error);
+        alert('❌ Error resetting data. Please check the console for details.');
+      }
     }
   };
 
@@ -265,6 +351,14 @@ Reached Checkout ",Total Abandoned Checkout,Session Duration,Users with Session 
             )}
             
             <button
+              onClick={handleResetAllData}
+              className="flex items-center space-x-2 p-2 text-red-500 hover:text-red-700 transition-colors"
+              title="Reset All Data (Testing)"
+            >
+              <RotateCcw className="w-5 h-5" />
+            </button>
+            
+            <button
               onClick={() => setShowLogicSettings(true)}
               className="flex items-center space-x-2 p-2 text-moi-grey hover:text-moi-charcoal transition-colors"
               title="Logic Template Settings"
@@ -290,7 +384,7 @@ Reached Checkout ",Total Abandoned Checkout,Session Duration,Users with Session 
           </div>
         ) : (
           <div className="space-y-8">
-              {/* Key Metrics Preview */}
+              {/* Empty State - All Zeros */}
               <div className="bg-white rounded-lg border border-moi-light p-6">
                 <h2 className="font-orpheus text-2xl font-bold text-moi-charcoal mb-6">
                   Key Performance Metrics
@@ -300,8 +394,8 @@ Reached Checkout ",Total Abandoned Checkout,Session Duration,Users with Session 
                   <div className="bg-moi-beige rounded-lg p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-benton text-sm text-moi-grey">Unique Campaigns</p>
-                        <p className="font-benton text-2xl font-bold text-moi-charcoal">68</p>
+                        <p className="font-benton text-sm text-moi-grey">Total Unique Campaigns</p>
+                        <p className="font-benton text-2xl font-bold text-moi-charcoal">0</p>
                       </div>
                       <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
                         <span className="text-moi-red text-xs">📊</span>
@@ -313,7 +407,7 @@ Reached Checkout ",Total Abandoned Checkout,Session Duration,Users with Session 
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="font-benton text-sm text-moi-grey">Total Sessions</p>
-                        <p className="font-benton text-2xl font-bold text-moi-charcoal">69K</p>
+                        <p className="font-benton text-2xl font-bold text-moi-charcoal">0</p>
                       </div>
                       <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                         <span className="text-blue-600 text-xs">👥</span>
@@ -325,7 +419,7 @@ Reached Checkout ",Total Abandoned Checkout,Session Duration,Users with Session 
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="font-benton text-sm text-moi-grey">Conversion Rate</p>
-                        <p className="font-benton text-2xl font-bold text-moi-red">0.17%</p>
+                        <p className="font-benton text-2xl font-bold text-moi-red">0%</p>
                       </div>
                       <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
                         <span className="text-green-600 text-xs">🎯</span>
@@ -335,7 +429,7 @@ Reached Checkout ",Total Abandoned Checkout,Session Duration,Users with Session 
                 </div>
               </div>
 
-              {/* Campaign Performance Tiers Preview */}
+              {/* Campaign Performance Tiers Empty State */}
               <div className="bg-white rounded-lg border border-moi-light p-6">
                 <h2 className="font-orpheus text-2xl font-bold text-moi-charcoal mb-6">
                   Campaign Performance Tiers
@@ -343,57 +437,31 @@ Reached Checkout ",Total Abandoned Checkout,Session Duration,Users with Session 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div className="bg-green-100 border-2 border-green-300 rounded-lg p-4 text-center">
                     <h3 className="font-benton font-semibold text-green-800">Excellent</h3>
-                    <p className="font-benton text-2xl font-bold text-green-800 mt-2">3</p>
+                    <p className="font-benton text-2xl font-bold text-green-800 mt-2">0</p>
                   </div>
                   <div className="bg-yellow-100 border-2 border-yellow-300 rounded-lg p-4 text-center">
                     <h3 className="font-benton font-semibold text-yellow-800">Good</h3>
-                    <p className="font-benton text-2xl font-bold text-yellow-800 mt-2">8</p>
+                    <p className="font-benton text-2xl font-bold text-yellow-800 mt-2">0</p>
                   </div>
                   <div className="bg-orange-100 border-2 border-orange-300 rounded-lg p-4 text-center">
                     <h3 className="font-benton font-semibold text-orange-800">Average</h3>
-                    <p className="font-benton text-2xl font-bold text-orange-800 mt-2">15</p>
+                    <p className="font-benton text-2xl font-bold text-orange-800 mt-2">0</p>
                   </div>
                   <div className="bg-red-100 border-2 border-red-300 rounded-lg p-4 text-center">
                     <h3 className="font-benton font-semibold text-red-800">Poor</h3>
-                    <p className="font-benton text-2xl font-bold text-red-800 mt-2">42</p>
+                    <p className="font-benton text-2xl font-bold text-red-800 mt-2">0</p>
                   </div>
                 </div>
               </div>
 
-              {/* Table Preview */}
+              {/* Table Empty State */}
               <div className="bg-white rounded-lg border border-moi-light p-6">
                 <h2 className="font-orpheus text-2xl font-bold text-moi-charcoal mb-6">
                   UTM Campaign Analysis Table
                 </h2>
-                <div className="overflow-x-auto">
-                  <table className="w-full border-collapse">
-                    <thead className="bg-moi-beige">
-                      <tr>
-                        <th className="border border-moi-light px-4 py-3 text-left font-benton font-semibold text-moi-charcoal">UTM Campaign</th>
-                        <th className="border border-moi-light px-4 py-3 text-left font-benton font-semibold text-moi-charcoal">Sessions</th>
-                        <th className="border border-moi-light px-4 py-3 text-left font-benton font-semibold text-moi-charcoal">Conversion Rate</th>
-                        <th className="border border-moi-light px-4 py-3 text-left font-benton font-semibold text-moi-charcoal">Performance</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td className="border border-moi-light px-4 py-2 font-benton text-moi-charcoal">BOF | DPA</td>
-                        <td className="border border-moi-light px-4 py-2 font-benton text-moi-charcoal">13,713</td>
-                        <td className="border border-moi-light px-4 py-2 font-benton text-moi-red">0.13%</td>
-                        <td className="border border-moi-light px-4 py-2">
-                          <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium border border-red-300">Poor</span>
-                        </td>
-                      </tr>
-                      <tr className="bg-gray-50">
-                        <td className="border border-moi-light px-4 py-2 font-benton text-moi-charcoal">india-pmax-rings</td>
-                        <td className="border border-moi-light px-4 py-2 font-benton text-moi-charcoal">2,035</td>
-                        <td className="border border-moi-light px-4 py-2 font-benton text-green-600">1.13%</td>
-                        <td className="border border-moi-light px-4 py-2">
-                          <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium border border-green-300">Excellent</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div className="text-center py-12 text-moi-grey">
+                  <p className="font-benton text-lg mb-2">No campaigns to display</p>
+                  <p className="font-benton text-sm">Upload data files to generate reports and view campaign analysis</p>
                 </div>
               </div>
             </div>

@@ -1,4 +1,5 @@
 import type { DashboardData } from '../types';
+import type { DateRange } from './dateRangeDetector';
 
 interface TopLevelMetricsRow {
   date: string;
@@ -44,8 +45,22 @@ interface AdsetMetricsRow {
 
 export const processOutputFiles = (
   topLevelData: TopLevelMetricsRow[],
-  adsetData: AdsetMetricsRow[]
+  adsetData: AdsetMetricsRow[],
+  dateRange?: DateRange
 ): DashboardData => {
+  // 🔍 DEBUG: Log incoming data
+  console.log('📊 processOutputFiles called with:');
+  console.log('  - topLevelData length:', topLevelData?.length || 0);
+  console.log('  - adsetData length:', adsetData?.length || 0);
+  console.log('  - dateRange:', dateRange ? `${dateRange.startDate.toDateString()} to ${dateRange.endDate.toDateString()}` : 'undefined');
+  
+  if (adsetData && adsetData.length > 0) {
+    console.log('🔍 adsetData campaigns:', adsetData.map(row => row.campaignName));
+    console.log('🔍 adsetData sample:', adsetData.slice(0, 2));
+  } else {
+    console.log('⚠️ adsetData is empty or null:', adsetData);
+  }
+  
   // Ensure we have valid data
   if (!topLevelData || topLevelData.length === 0) {
     console.warn('No top-level data provided, using defaults');
@@ -135,7 +150,22 @@ export const processOutputFiles = (
   };
 
   // Get unique campaigns with safety checks
-  const uniqueCampaigns = adsetData && adsetData.length > 0 ? new Set(adsetData.map(row => row.campaignName)).size : 1;
+  console.log('🔍 Computing uniqueCampaigns...');
+  console.log('  - adsetData exists:', !!adsetData);
+  console.log('  - adsetData length:', adsetData?.length || 0);
+  
+  let uniqueCampaigns;
+  if (adsetData && adsetData.length > 0) {
+    const campaignNames = adsetData.map(row => row.campaignName);
+    const uniqueNames = new Set(campaignNames);
+    uniqueCampaigns = uniqueNames.size;
+    console.log('  - Campaign names found:', campaignNames);
+    console.log('  - Unique campaign names:', Array.from(uniqueNames));
+    console.log('  - Unique campaign count:', uniqueCampaigns);
+  } else {
+    uniqueCampaigns = 1;
+    console.log('  - Using fallback uniqueCampaigns = 1 (no adset data)');
+  }
   
   // Calculate average adsets per campaign
   const totalAdsets = adsetData && adsetData.length > 0 ? new Set(adsetData.map(row => row.adsetId)).size : 1;
@@ -159,7 +189,10 @@ export const processOutputFiles = (
       totalRevenue
     },
     performanceTiers,
-    utmCampaigns: utmCampaigns.sort((a, b) => b.sessions - a.sessions) // Sort by sessions descending
+    utmCampaigns: utmCampaigns.sort((a, b) => b.sessions - a.sessions), // Sort by sessions descending
+    campaigns: [], // Keep empty for now, maintain compatibility
+    lastUpdated: new Date().toISOString(),
+    dateRange // Include the date range for export filename generation
   };
 };
 
@@ -195,13 +228,46 @@ export const parseTopLevelCSV = (csvContent: string): TopLevelMetricsRow[] => {
   });
 };
 
+// Proper CSV parser that handles quoted values with commas
+const parseCSVLine = (line: string): string[] => {
+  const values: string[] = [];
+  let current = '';
+  let inQuotes = false;
+  
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    
+    if (char === '"') {
+      inQuotes = !inQuotes;
+    } else if (char === ',' && !inQuotes) {
+      values.push(current.trim());
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+  
+  // Add the last value
+  values.push(current.trim());
+  
+  return values;
+};
+
 export const parseAdsetCSV = (csvContent: string): AdsetMetricsRow[] => {
   const lines = csvContent.split('\n').filter(line => line.trim());
   // Skip header row
   const dataLines = lines.slice(1);
   
-  return dataLines.map(line => {
-    const values = line.split(',').map(v => v.replace(/"/g, '').trim());
+  console.log('🔍 parseAdsetCSV: Processing', dataLines.length, 'data lines');
+  
+  return dataLines.map((line, index) => {
+    const values = parseCSVLine(line);
+    
+    console.log(`🔍 parseAdsetCSV: Line ${index + 1}:`, {
+      raw: line,
+      parsed: values,
+      campaignName: values[1]
+    });
     
     return {
       date: values[0] || '',
