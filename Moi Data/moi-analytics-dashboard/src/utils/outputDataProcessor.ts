@@ -191,6 +191,7 @@ export const processOutputFiles = (
     performanceTiers,
     utmCampaigns: utmCampaigns.sort((a, b) => b.sessions - a.sessions), // Sort by sessions descending
     campaigns: [], // Keep empty for now, maintain compatibility
+    topLevelData, // CRITICAL: Store the original daily metrics for export
     lastUpdated: new Date().toISOString(),
     dateRange // Include the date range for export filename generation
   };
@@ -306,7 +307,7 @@ const parseTimeToSeconds = (timeStr: string): number => {
 export const generateSampleOutputData = (): DashboardData => {
   const sampleTopLevel: TopLevelMetricsRow[] = [
     {
-      date: "Wed, Sep 10, 25",
+      date: "2025-09-10",
       metaSpend: 39829,
       metaCTR: 1.49,
       metaCPM: 59.16,
@@ -326,34 +327,16 @@ export const generateSampleOutputData = (): DashboardData => {
       openQueries: 2,
       onlineOrders: 2
     },
-    // Add more sample data for 30 days with proper numbers
-    ...Array.from({ length: 29 }, (_, i) => ({
-      date: `Day ${i + 2}`,
-      metaSpend: Math.floor(39000 + Math.random() * 4000),
-      metaCTR: parseFloat((1.3 + Math.random() * 0.4).toFixed(2)),
-      metaCPM: parseFloat((55 + Math.random() * 15).toFixed(2)),
-      googleSpend: Math.floor(15000 + Math.random() * 3000),
-      googleCTR: parseFloat((0.7 + Math.random() * 0.3).toFixed(2)),
-      googleCPM: parseFloat((220 + Math.random() * 50).toFixed(2)),
-      totalUsers: Math.floor(7500 + Math.random() * 1000),
-      totalATC: Math.floor(30 + Math.random() * 15),
-      totalReachedCheckout: Math.floor(10 + Math.random() * 8),
-      totalAbandonedCheckout: Math.floor(Math.random() * 3),
-      sessionDuration: Math.floor(35 + Math.random() * 10),
-      usersAbove1Min: Math.floor(800 + Math.random() * 200),
-      users5PagesAbove1Min: Math.floor(500 + Math.random() * 150),
-      atcAbove1Min: Math.floor(20 + Math.random() * 10),
-      checkoutAbove1Min: Math.floor(6 + Math.random() * 6),
-      generalQueries: Math.floor(5 + Math.random() * 8),
-      openQueries: Math.floor(Math.random() * 5),
-      onlineOrders: Math.floor(Math.random() * 3)
-    }))
+    // REMOVED: No more fake sample data with Math.random()
+    // Sample data should ONLY be used for UI testing, not real exports
+    // All real data should come from actual input files
+    // Using -9999 to indicate no data available instead of fake random numbers
   ];
 
   const sampleAdset: AdsetMetricsRow[] = [
     // Excellent performing campaigns (conversion rate >= 1.0%)
     {
-      date: "Wed, Sep 10, 25",
+      date: "2025-09-10",
       campaignName: "india-pmax-rings",
       campaignId: "234567",
       adsetName: "Performance Max",
@@ -372,7 +355,7 @@ export const generateSampleOutputData = (): DashboardData => {
       roas: 2.08
     },
     {
-      date: "Wed, Sep 10, 25",
+      date: "2025-09-10",
       campaignName: "Retargeting | Purchase Intent",
       campaignId: "456789",
       adsetName: "Cart Abandoners",
@@ -391,7 +374,7 @@ export const generateSampleOutputData = (): DashboardData => {
       roas: 5.39
     },
     {
-      date: "Thu, Sep 11, 25",
+      date: "2025-09-11",
       campaignName: "TOF | Lookalike Premium",
       campaignId: "567890",
       adsetName: "1% LAL High Value",
@@ -411,7 +394,7 @@ export const generateSampleOutputData = (): DashboardData => {
     },
     // Good performing campaigns (0.5% - 0.99%)
     {
-      date: "Wed, Sep 10, 25",
+      date: "2025-09-10",
       campaignName: "BOF | Interest Stacking",
       campaignId: "678901",
       adsetName: "Jewelry + Luxury",
@@ -430,7 +413,7 @@ export const generateSampleOutputData = (): DashboardData => {
       roas: 0.00
     },
     {
-      date: "Thu, Sep 11, 25",
+      date: "2025-09-11",
       campaignName: "MOF | Engagement Custom",
       campaignId: "789012",
       adsetName: "Video Viewers 95%",
@@ -449,7 +432,7 @@ export const generateSampleOutputData = (): DashboardData => {
       roas: 0.00
     },
     {
-      date: "Fri, Sep 12, 25",
+      date: "2025-09-12",
       campaignName: "Search | Brand Terms",
       campaignId: "890123",
       adsetName: "Exact Match",
@@ -469,7 +452,7 @@ export const generateSampleOutputData = (): DashboardData => {
     },
     // Average performing campaigns (0.2% - 0.49%)
     {
-      date: "Thu, Sep 11, 25",
+      date: "2025-09-11",
       campaignName: "TOF | Interest",
       campaignId: "345678",
       adsetName: "Luxury Shoppers",
@@ -488,7 +471,7 @@ export const generateSampleOutputData = (): DashboardData => {
       roas: 0.00
     },
     {
-      date: "Fri, Sep 12, 25",
+      date: "2025-09-12",
       campaignName: "TOF | Broad Interest",
       campaignId: "901234",
       adsetName: "Fashion Enthusiasts",
@@ -507,7 +490,7 @@ export const generateSampleOutputData = (): DashboardData => {
       roas: 0.00
     },
     {
-      date: "Sat, Sep 13, 25",
+      date: "2025-09-13",
       campaignName: "Display | Awareness",
       campaignId: "012345",
       adsetName: "Broad Demographic",
@@ -527,7 +510,7 @@ export const generateSampleOutputData = (): DashboardData => {
     },
     // Poor performing campaigns (< 0.2%)
     {
-      date: "Wed, Sep 10, 25",
+      date: "2025-09-10",
       campaignName: "BOF | DPA",
       campaignId: "123456",
       adsetName: "DPA - Broad",
@@ -546,7 +529,7 @@ export const generateSampleOutputData = (): DashboardData => {
       roas: 0.00
     },
     {
-      date: "Thu, Sep 11, 25",
+      date: "2025-09-11",
       campaignName: "TOF | Cold Traffic",
       campaignId: "123457",
       adsetName: "Broad Targeting",
@@ -565,7 +548,7 @@ export const generateSampleOutputData = (): DashboardData => {
       roas: 0.00
     },
     {
-      date: "Fri, Sep 12, 25",
+      date: "2025-09-12",
       campaignName: "Display | Generic",
       campaignId: "123458",
       adsetName: "All Demographics",

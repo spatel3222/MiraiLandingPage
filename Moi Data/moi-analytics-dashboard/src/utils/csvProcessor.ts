@@ -8,7 +8,25 @@ export const processShopifyCSV = (file: File): Promise<DashboardData> => {
       skipEmptyLines: true,
       complete: (results) => {
         try {
-          const data = results.data as ShopifyRecord[];
+          // Convert string values to numbers for numeric fields
+          const data = (results.data as any[]).map(record => ({
+            ...record,
+            'Online store visitors': parseFloat(record['Online store visitors'] || '0'),
+            'Sessions': parseFloat(record['Sessions'] || '0'),
+            'Sessions with cart additions': parseFloat(record['Sessions with cart additions'] || '0'),
+            'Sessions that reached checkout': parseFloat(record['Sessions that reached checkout'] || '0'),
+            'Average session duration': parseFloat(record['Average session duration'] || '0'),
+            'Pageviews': parseFloat(record['Pageviews'] || '0')
+          })) as ShopifyRecord[];
+          
+          console.log('🔍 Shopify CSV parsing - sample converted record:', {
+            campaign: data[0]?.['Utm campaign'],
+            visitors: data[0]?.['Online store visitors'],
+            visitorsType: typeof data[0]?.['Online store visitors'],
+            sessions: data[0]?.['Sessions'],
+            atc: data[0]?.['Sessions with cart additions']
+          });
+          
           const processedData = processShopifyData(data);
           resolve(processedData);
         } catch (error) {
@@ -142,13 +160,15 @@ const calculateKeyMetrics = (campaigns: CampaignMetrics[]): KeyMetrics => {
   const overallConversionRate = totalSessions > 0 ? (totalCheckoutSessions / totalSessions) * 100 : 0;
   
   // Since we don't have revenue data in Shopify export, we'll estimate based on checkouts
-  // This is a placeholder - real implementation would need revenue data
-  const estimatedAOV = 2500; // Average Order Value in INR (placeholder)
-  const totalRevenue = totalCheckoutSessions * estimatedAOV;
+  // FIXED: No more hardcoded AOV - use -9999 to indicate no real revenue data
+  const estimatedAOV = -9999; // No real AOV data available - use -9999 instead of fake value
+  const totalRevenue = totalCheckoutSessions > 0 && estimatedAOV !== -9999 
+    ? totalCheckoutSessions * estimatedAOV 
+    : -9999; // No real revenue calculation possible
 
   return {
     uniqueCampaigns,
-    avgAdsetsPerCampaign: 1, // Placeholder - would need actual adset data
+    avgAdsetsPerCampaign: -9999, // No real adset data available - use -9999
     avgTrafficPerCampaign: Math.round(totalSessions / uniqueCampaigns),
     
     totalUniqueUsers,

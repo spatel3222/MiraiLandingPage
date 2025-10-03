@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>🔧 Cache Status Monitor</title>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            padding: 20px; 
+            background: #f5f7fa; 
+            margin: 0; 
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        .status-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .cache-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .cache-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid #ddd;
+        }
+        
+        .cache-card.cleared { border-left-color: #28a745; }
+        .cache-card.has-data { border-left-color: #007bff; }
+        .cache-card.corrupted { border-left-color: #dc3545; }
+        .cache-card.missing { border-left-color: #ffc107; }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-indicator.green { background: #28a745; }
+        .status-indicator.blue { background: #007bff; }
+        .status-indicator.red { background: #dc3545; }
+        .status-indicator.yellow { background: #ffc107; }
+        
+        .console-mirror {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+        
+        .log-entry {
+            margin: 2px 0;
+            padding: 2px 0;
+        }
+        
+        .log-entry.cache { color: #569cd6; }
+        .log-entry.file { color: #4ec9b0; }
+        .log-entry.error { color: #f44747; }
+        .log-entry.success { color: #b5cea8; }
+        
+        button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        
+        button:hover { background: #0056b3; }
+        button.danger { background: #dc3545; }
+        button.success { background: #28a745; }
+        
+        .real-time-status {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #e9ecef;
+        }
+        
+        .timestamp {
+            font-size: 11px;
+            color: #6c757d;
+            margin-left: 10px;
+        }
+        
+        .metric-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="status-header">
+            <h1>🔧 Cache Status Monitor</h1>
+            <p>Real-time monitoring of cache clearing and file loading processes</p>
+            <div>Cache Version: <span id="cache-version">Checking...</span></div>
+        </div>
+        
+        <div class="real-time-status">
+            <h3>📊 Real-Time Status</h3>
+            <div class="cache-grid">
+                <div>
+                    <strong>Cache State:</strong> <span id="cache-state">Analyzing...</span><br>
+                    <strong>Last Action:</strong> <span id="last-action">None</span><br>
+                    <strong>Items in Storage:</strong> <span id="storage-count" class="metric-value">0</span>
+                </div>
+                <div>
+                    <strong>Data Freshness:</strong> <span id="data-freshness">Checking...</span><br>
+                    <strong>Total Size:</strong> <span id="total-size" class="metric-value">0KB</span><br>
+                    <strong>Last Updated:</strong> <span id="last-updated">Never</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cache-grid" id="cache-status-grid">
+            <!-- Populated by JavaScript -->
+        </div>
+        
+        <div>
+            <button onclick="forceCacheClear()" class="danger">🧹 Force Clear All Cache</button>
+            <button onclick="refreshStatus()" class="success">🔄 Refresh Status</button>
+            <button onclick="exportCacheData()">📋 Export Cache Info</button>
+            <button onclick="window.open('/total_users_debug.html', '_blank')">🔍 Debug Total Users</button>
+        </div>
+        
+        <div class="console-mirror" id="console-mirror">
+            <div><strong>🖥️ Console Log Mirror (Refreshes every 2 seconds)</strong></div>
+            <div id="console-logs">Waiting for console logs...</div>
+        </div>
+    </div>
+
+    <script>
+        let logBuffer = [];
+        
+        // Override console.log to capture logs
+        const originalConsoleLog = console.log;
+        console.log = function(...args) {
+            originalConsoleLog.apply(console, args);
+            
+            const timestamp = new Date().toLocaleTimeString();
+            const logText = args.join(' ');
+            
+            // Categorize log types
+            let category = 'normal';
+            if (logText.includes('CACHE') || logText.includes('🧹') || logText.includes('🔧')) {
+                category = 'cache';
+            } else if (logText.includes('FILE') || logText.includes('📁') || logText.includes('🔄')) {
+                category = 'file';
+            } else if (logText.includes('ERROR') || logText.includes('❌')) {
+                category = 'error';
+            } else if (logText.includes('✅') || logText.includes('SUCCESS')) {
+                category = 'success';
+            }
+            
+            logBuffer.push({
+                timestamp,
+                text: logText,
+                category
+            });
+            
+            // Keep only last 50 logs
+            if (logBuffer.length > 50) {
+                logBuffer = logBuffer.slice(-50);
+            }
+            
+            updateConsoleDisplay();
+        };
+        
+        function updateConsoleDisplay() {
+            const consoleDiv = document.getElementById('console-logs');
+            const logs = logBuffer.slice(-20); // Show last 20 logs
+            
+            consoleDiv.innerHTML = logs.map(log => 
+                `<div class="log-entry ${log.category}">
+                    <span class="timestamp">[${log.timestamp}]</span> ${log.text}
+                </div>`
+            ).join('');
+            
+            // Auto-scroll to bottom
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+        
+        function getCacheStatus() {
+            const cacheKeys = [
+                'moi-cache-version',
+                'moi-dashboard-data',
+                'moi-dashboard-timestamp',
+                'moi-output-data',
+                'moi-output-timestamp',
+                'moi-shopify-data',
+                'moi-meta-data',
+                'moi-google-data',
+                'moi-pivot-data'
+            ];
+            
+            const status = {};
+            let totalSize = 0;
+            let itemCount = 0;
+            
+            cacheKeys.forEach(key => {
+                const data = localStorage.getItem(key);
+                if (data) {
+                    status[key] = {
+                        exists: true,
+                        size: data.length,
+                        sizeKB: Math.round(data.length / 1024),
+                        type: key.includes('timestamp') ? 'timestamp' : 'data'
+                    };
+                    totalSize += data.length;
+                    itemCount++;
+                } else {
+                    status[key] = { exists: false, size: 0, sizeKB: 0 };
+                }
+            });
+            
+            return { status, totalSize, itemCount };
+        }
+        
+        function updateStatus() {
+            const { status, totalSize, itemCount } = getCacheStatus();
+            
+            // Update header info
+            document.getElementById('cache-version').textContent = status['moi-cache-version'].exists ? 
+                localStorage.getItem('moi-cache-version') : 'Not Set';
+            
+            // Update real-time status
+            const hasData = status['moi-dashboard-data'].exists;
+            const hasOutput = status['moi-output-data'].exists;
+            
+            let cacheState = 'Empty';
+            if (hasData && hasOutput) cacheState = '✅ Fully Loaded';
+            else if (hasData || hasOutput) cacheState = '⚠️ Partially Loaded';
+            else cacheState = '🔄 Cleared/Empty';
+            
+            document.getElementById('cache-state').textContent = cacheState;
+            document.getElementById('storage-count').textContent = itemCount;
+            document.getElementById('total-size').textContent = Math.round(totalSize / 1024) + 'KB';
+            
+            // Check last updated
+            const dashboardTimestamp = localStorage.getItem('moi-dashboard-timestamp');
+            const outputTimestamp = localStorage.getItem('moi-output-timestamp');
+            const lastUpdated = dashboardTimestamp || outputTimestamp || 'Never';
+            
+            if (lastUpdated !== 'Never') {
+                const date = new Date(lastUpdated);
+                document.getElementById('last-updated').textContent = date.toLocaleString();
+                
+                const now = new Date();
+                const age = Math.round((now - date) / 1000 / 60); // minutes
+                document.getElementById('data-freshness').textContent = 
+                    age < 1 ? 'Fresh (< 1 min)' : 
+                    age < 60 ? `${age} minutes old` : 
+                    `${Math.round(age/60)} hours old`;
+            } else {
+                document.getElementById('last-updated').textContent = 'Never';
+                document.getElementById('data-freshness').textContent = 'No data';
+            }
+            
+            // Update cache grid
+            updateCacheGrid(status);
+        }
+        
+        function updateCacheGrid(status) {
+            const grid = document.getElementById('cache-status-grid');
+            
+            const cards = Object.entries(status).map(([key, info]) => {
+                const displayName = key.replace('moi-', '').replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+                
+                let cardClass = 'missing';
+                let statusText = 'Missing';
+                let indicator = 'yellow';
+                
+                if (info.exists) {
+                    if (info.type === 'timestamp') {
+                        cardClass = 'has-data';
+                        statusText = `Timestamp: ${new Date(localStorage.getItem(key)).toLocaleString()}`;
+                        indicator = 'blue';
+                    } else {
+                        cardClass = 'has-data';
+                        statusText = `${info.sizeKB}KB data present`;
+                        indicator = 'blue';
+                        
+                        // Check if it's valid JSON
+                        try {
+                            JSON.parse(localStorage.getItem(key));
+                        } catch (e) {
+                            cardClass = 'corrupted';
+                            statusText = 'Corrupted data';
+                            indicator = 'red';
+                        }
+                    }
+                }
+                
+                return `
+                    <div class="cache-card ${cardClass}">
+                        <h4><span class="status-indicator ${indicator}"></span>${displayName}</h4>
+                        <p><strong>Status:</strong> ${statusText}</p>
+                        <p><strong>Key:</strong> <code>${key}</code></p>
+                        ${info.exists ? `<button onclick="inspectItem('${key}')">Inspect</button>` : ''}
+                    </div>
+                `;
+            }).join('');
+            
+            grid.innerHTML = cards;
+        }
+        
+        function inspectItem(key) {
+            const data = localStorage.getItem(key);
+            if (data) {
+                try {
+                    const parsed = JSON.parse(data);
+                    console.log(`🔍 Inspecting ${key}:`, parsed);
+                    alert(`Data for ${key} logged to console`);
+                } catch (e) {
+                    console.log(`🔍 Raw data for ${key}:`, data);
+                    alert(`Raw data for ${key} logged to console`);
+                }
+            }
+        }
+        
+        function forceCacheClear() {
+            if (confirm('This will clear ALL cache data. Continue?')) {
+                console.log('🧹 MANUAL CACHE CLEAR INITIATED');
+                
+                const keys = Object.keys(localStorage).filter(key => key.startsWith('moi-'));
+                keys.forEach(key => {
+                    localStorage.removeItem(key);
+                    console.log(`  ✓ Removed ${key}`);
+                });
+                
+                localStorage.setItem('moi-cache-version', 'v1.6.1-manual-clear-' + Date.now());
+                console.log('✅ MANUAL CACHE CLEAR COMPLETE');
+                
+                refreshStatus();
+                alert('Cache cleared! Refresh the main app to load fresh data.');
+            }
+        }
+        
+        function refreshStatus() {
+            updateStatus();
+            console.log('🔄 Status refreshed at', new Date().toLocaleString());
+        }
+        
+        function exportCacheData() {
+            const { status, totalSize, itemCount } = getCacheStatus();
+            const report = {
+                timestamp: new Date().toISOString(),
+                cacheVersion: localStorage.getItem('moi-cache-version'),
+                totalSize: Math.round(totalSize / 1024) + 'KB',
+                itemCount,
+                status
+            };
+            
+            const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cache-status-${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // Initialize and auto-refresh
+        updateStatus();
+        setInterval(updateStatus, 2000); // Update every 2 seconds
+        
+        console.log('🔧 Cache Status Monitor initialized');
+    </script>
+</body>
+</html>

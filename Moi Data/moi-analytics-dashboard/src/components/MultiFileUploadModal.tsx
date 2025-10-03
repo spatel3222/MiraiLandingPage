@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { X, Upload, FileText, AlertCircle, CheckCircle, Clock, Download, Info } from 'lucide-react';
+import { X, Upload, FileText, AlertCircle, CheckCircle, Clock, Download, Info, Zap } from 'lucide-react';
 import { LogicTemplateManager } from '../services/logicTemplateManager';
+import { PythonConverterBridge } from '../utils/pythonConverterBridge';
 
 interface UploadedFile {
   shopify: File | null;
@@ -139,6 +140,20 @@ const MultiFileUploadModal: React.FC<Props> = ({ onClose, onGenerateReport, isPr
     }));
     
     onGenerateReport(uploadedFiles, hasCustomTemplate);
+  };
+
+  const handlePythonBridge = async () => {
+    if (!canGenerateReport) {
+      setError('Please upload at least the Shopify export file to bridge to Python.');
+      return;
+    }
+    
+    try {
+      setError('');
+      await PythonConverterBridge.bridgeFilesToPython(uploadedFiles);
+    } catch (error) {
+      setError(`Bridge failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   };
 
   const fileTypes: Array<{
@@ -341,6 +356,19 @@ const MultiFileUploadModal: React.FC<Props> = ({ onClose, onGenerateReport, isPr
                 <span>
                   {isProcessing ? 'Generating Reports...' : 'Generate Reports'}
                 </span>
+              </button>
+
+              <button
+                onClick={handlePythonBridge}
+                disabled={!canGenerateReport}
+                className={`px-6 py-2 rounded-lg font-benton flex items-center space-x-2 transition-all ${
+                  canGenerateReport
+                    ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                }`}
+              >
+                <Zap className="w-4 h-4" />
+                <span>Bridge to Python</span>
               </button>
             </div>
           </div>

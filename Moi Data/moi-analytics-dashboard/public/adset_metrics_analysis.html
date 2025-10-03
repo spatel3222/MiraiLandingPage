@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AdSet Level Metrics Analysis</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f2f2f2; font-weight: bold; }
+        .error { color: red; }
+        .success { color: green; }
+        .warning { color: orange; }
+        .estimated { background-color: #fff3cd; }
+        .calculated { background-color: #d4edda; }
+        .from-file { background-color: #d1ecf1; }
+        .code { background: #f5f5f5; padding: 4px; font-family: monospace; }
+        .legend { margin: 20px 0; }
+        .legend span { padding: 8px; margin: 5px; display: inline-block; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>📊 AdSet Level Metrics Analysis</h1>
+    <button onclick="analyzeAdSetMetrics()">Analyze Current AdSet Data</button>
+    
+    <div class="legend">
+        <strong>Legend:</strong>
+        <span class="from-file">From Original Files</span>
+        <span class="calculated">Calculated/Derived</span>
+        <span class="estimated">Estimated/Random</span>
+    </div>
+    
+    <div id="analysis"></div>
+    
+    <h2>📋 AdSet Level Metrics Reference Table</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Metric</th>
+                <th>Input Source</th>
+                <th>Formula/Logic</th>
+                <th>Data Quality</th>
+                <th>Expected Value</th>
+                <th>Issues</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="from-file">
+                <td><strong>Date</strong></td>
+                <td>Date Range Detection</td>
+                <td><span class="code">dateRange.startDate (Sept 29, 2025)</span></td>
+                <td>From File</td>
+                <td>2025-09-29</td>
+                <td>Should match actual data date</td>
+            </tr>
+            <tr class="from-file">
+                <td><strong>Campaign Name</strong></td>
+                <td>Meta/Google CSV</td>
+                <td><span class="code">Meta: 'Campaign name'<br>Google: 'Campaign'</span></td>
+                <td>From File</td>
+                <td>Actual campaign names</td>
+                <td>Direct mapping, should be accurate</td>
+            </tr>
+            <tr class="calculated">
+                <td><strong>Campaign ID</strong></td>
+                <td>Generated</td>
+                <td><span class="code">Meta: `meta_${index + 100000}`<br>Google: `google_${index + 300000}`</span></td>
+                <td>Generated</td>
+                <td>Unique IDs per platform</td>
+                <td>Synthetic but consistent</td>
+            </tr>
+            <tr class="from-file">
+                <td><strong>Ad Set Name</strong></td>
+                <td>Meta CSV / Google Campaign</td>
+                <td><span class="code">Meta: 'Ad set name'<br>Google: Same as Campaign (no adsets)</span></td>
+                <td>From File</td>
+                <td>Actual adset names</td>
+                <td>Google uses campaign name as adset</td>
+            </tr>
+            <tr class="calculated">
+                <td><strong>Ad Set ID</strong></td>
+                <td>Generated</td>
+                <td><span class="code">Meta: `meta_adset_${index + 200000}`<br>Google: `google_adset_${index + 400000}`</span></td>
+                <td>Generated</td>
+                <td>Unique IDs per adset</td>
+                <td>Synthetic but consistent</td>
+            </tr>
+            <tr class="calculated">
+                <td><strong>Platform</strong></td>
+                <td>Hardcoded</td>
+                <td><span class="code">"Meta" or "Google"</span></td>
+                <td>Hardcoded</td>
+                <td>Meta/Google labels</td>
+                <td>Accurate source identification</td>
+            </tr>
+            <tr class="from-file">
+                <td><strong>Ad Set Level Spent</strong></td>
+                <td>Meta/Google CSV</td>
+                <td><span class="code">Meta: 'Amount spent (INR)'<br>Google: 'Cost' (cleaned)</span></td>
+                <td>From File</td>
+                <td>Meta: ~57,721 total<br>Google: ~17,048 total</td>
+                <td>Should match original file totals</td>
+            </tr>
+            <tr class="calculated">
+                <td><strong>Impressions</strong></td>
+                <td>Calculated from spend/CPM</td>
+                <td><span class="code">Math.floor(spend / cpm * 1000)</span></td>
+                <td>Calculated</td>
+                <td>Derived from spend and CPM</td>
+                <td>Only as accurate as CPM data</td>
+            </tr>
+            <tr class="from-file">
+                <td><strong>CTR</strong></td>
+                <td>Meta/Google CSV</td>
+                <td><span class="code">Meta: 'CTR (link click-through rate)'<br>Google: 'CTR' (% removed)</span></td>
+                <td>From File</td>
+                <td>Meta: ~1.36%<br>Google: ~5.22%</td>
+                <td>Should match file averages</td>
+            </tr>
+            <tr class="from-file">
+                <td><strong>CPM</strong></td>
+                <td>Meta/Google CSV</td>
+                <td><span class="code">Meta: 'CPM (cost per 1,000 impressions)'<br>Google: 'Avg. CPM'</span></td>
+                <td>From File</td>
+                <td>Meta: ~192.10<br>Google: varies</td>
+                <td>Google CPM may be 0 if missing</td>
+            </tr>
+            <tr class="calculated">
+                <td><strong>CPC</strong></td>
+                <td>Not Available</td>
+                <td><span class="code">Always 0 (no clicks data)</span></td>
+                <td>Missing</td>
+                <td>0</td>
+                <td>❌ No clicks data in source files</td>
+            </tr>
+            <tr class="estimated">
+                <td><strong>Ad Set Level Users</strong></td>
+                <td>Random Estimation</td>
+                <td><span class="code">Meta: Math.floor(Math.random() * 1000)<br>Google: Math.floor(Math.random() * 500)</span></td>
+                <td>🚨 Random</td>
+                <td>0-1000 (Meta)<br>0-500 (Google)</td>
+                <td>❌ COMPLETELY FAKE DATA!</td>
+            </tr>
+            <tr class="calculated">
+                <td><strong>Cost per User</strong></td>
+                <td>Calculated from spend/users</td>
+                <td><span class="code">adSetLevelSpent / adSetLevelUsers</span></td>
+                <td>Calculated</td>
+                <td>Varies based on fake users</td>
+                <td>❌ Based on fake user data</td>
+            </tr>
+            <tr class="estimated">
+                <td><strong>Ad Set Level ATC</strong></td>
+                <td>Random Estimation</td>
+                <td><span class="code">Meta: Math.floor(Math.random() * 10)<br>Google: Math.floor(Math.random() * 8)</span></td>
+                <td>🚨 Random</td>
+                <td>0-10 (Meta)<br>0-8 (Google)</td>
+                <td>❌ COMPLETELY FAKE DATA!</td>
+            </tr>
+            <tr class="estimated">
+                <td><strong>Ad Set Level Reached Checkout</strong></td>
+                <td>Random Estimation</td>
+                <td><span class="code">Meta: Math.floor(Math.random() * 5)<br>Google: Math.floor(Math.random() * 4)</span></td>
+                <td>🚨 Random</td>
+                <td>0-5 (Meta)<br>0-4 (Google)</td>
+                <td>❌ COMPLETELY FAKE DATA!</td>
+            </tr>
+            <tr class="estimated">
+                <td><strong>Ad Set Level Conversions</strong></td>
+                <td>Random Estimation</td>
+                <td><span class="code">Meta: Math.floor(Math.random() * 3)<br>Google: Math.floor(Math.random() * 2)</span></td>
+                <td>🚨 Random</td>
+                <td>0-3 (Meta)<br>0-2 (Google)</td>
+                <td>❌ COMPLETELY FAKE DATA!</td>
+            </tr>
+            <tr class="calculated">
+                <td><strong>Ad Set Level Avg Session Duration</strong></td>
+                <td>Not Available</td>
+                <td><span class="code">Always 0 (no session data)</span></td>
+                <td>Missing</td>
+                <td>0</td>
+                <td>❌ No session data in ad platforms</td>
+            </tr>
+            <tr class="estimated">
+                <td><strong>Ad Set Level Users Above 1 Min</strong></td>
+                <td>Not Available</td>
+                <td><span class="code">Always 0 (not calculated)</span></td>
+                <td>Missing</td>
+                <td>0</td>
+                <td>❌ No engagement time data</td>
+            </tr>
+            <tr class="calculated">
+                <td><strong>Cost per 1 Min User</strong></td>
+                <td>Division by zero</td>
+                <td><span class="code">adSetLevelSpent / usersAbove1Min</span></td>
+                <td>Error</td>
+                <td>0 (division by zero)</td>
+                <td>❌ Based on missing data</td>
+            </tr>
+            <tr class="calculated">
+                <td><strong>1 Min User Percent</strong></td>
+                <td>Percentage calculation</td>
+                <td><span class="code">(usersAbove1Min / totalUsers) * 100</span></td>
+                <td>Calculated</td>
+                <td>0% (no 1min users)</td>
+                <td>❌ Based on missing data</td>
+            </tr>
+            <tr class="calculated">
+                <td><strong>Revenue</strong></td>
+                <td>Not Available</td>
+                <td><span class="code">Always 0 (no purchase value data)</span></td>
+                <td>Missing</td>
+                <td>0</td>
+                <td>❌ No revenue data in source files</td>
+            </tr>
+            <tr class="calculated">
+                <td><strong>ROAS</strong></td>
+                <td>Calculated from revenue/spend</td>
+                <td><span class="code">revenue / spend (always 0/spend = 0)</span></td>
+                <td>Calculated</td>
+                <td>0</td>
+                <td>❌ No revenue data to calculate ROAS</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>🚨 Critical Issues Identified</h2>
+    <div class="error">
+        <h3>Major Data Quality Problems:</h3>
+        <ul>
+            <li><strong>🎲 Random User Data:</strong> Users are generated with Math.random() - completely fake!</li>
+            <li><strong>🎲 Random Engagement:</strong> ATC, checkouts, conversions all random numbers</li>
+            <li><strong>📊 Missing Website Data:</strong> No connection to Shopify visitor/session data</li>
+            <li><strong>💰 No Revenue Tracking:</strong> ROAS cannot be calculated without purchase values</li>
+            <li><strong>⏱️ No Engagement Time:</strong> Session duration and time-based metrics unavailable</li>
+            <li><strong>🔗 No Attribution:</strong> No connection between ad platforms and website conversions</li>
+        </ul>
+    </div>
+
+    <h2>🎯 Recommendations</h2>
+    <div class="warning">
+        <h3>To Fix AdSet Level Data:</h3>
+        <ol>
+            <li><strong>Connect Shopify to Ad Platforms:</strong> Use UTM tracking to attribute visitors to specific campaigns/adsets</li>
+            <li><strong>Real User Attribution:</strong> Replace random users with actual attributed visitors from Shopify</li>
+            <li><strong>Real Conversion Data:</strong> Connect Shopify order data to ad campaigns via UTM parameters</li>
+            <li><strong>Session Duration:</strong> Pull engagement metrics from Shopify data per UTM source</li>
+            <li><strong>Revenue Attribution:</strong> Link Shopify order values to specific campaigns for ROAS calculation</li>
+        </ol>
+    </div>
+
+    <script>
+        function analyzeAdSetMetrics() {
+            const output = document.getElementById('analysis');
+            output.innerHTML = '<h2>📋 Current AdSet Data Analysis</h2>';
+            
+            // Check dashboard data for adset information
+            const dashboardData = localStorage.getItem('moi-dashboard-data');
+            if (dashboardData) {
+                try {
+                    const dashboard = JSON.parse(dashboardData);
+                    if (dashboard.adsetData && dashboard.adsetData.length > 0) {
+                        const adsetCount = dashboard.adsetData.length;
+                        const metaCampaigns = dashboard.adsetData.filter(a => a.platform === 'Meta').length;
+                        const googleCampaigns = dashboard.adsetData.filter(a => a.platform === 'Google').length;
+                        
+                        const totalSpend = dashboard.adsetData.reduce((sum, a) => sum + (a.spend || 0), 0);
+                        const totalUsers = dashboard.adsetData.reduce((sum, a) => sum + (a.users || 0), 0);
+                        const totalATC = dashboard.adsetData.reduce((sum, a) => sum + (a.atc || 0), 0);
+                        
+                        output.innerHTML += `
+                            <div class="success">
+                                <h3>✅ AdSet Data Summary</h3>
+                                <p><strong>Total AdSets:</strong> ${adsetCount}</p>
+                                <p><strong>Meta Campaigns:</strong> ${metaCampaigns}</p>
+                                <p><strong>Google Campaigns:</strong> ${googleCampaigns}</p>
+                                <p><strong>Total Spend:</strong> ₹${totalSpend.toLocaleString()}</p>
+                                <p><strong>Total Users (RANDOM):</strong> ${totalUsers.toLocaleString()}</p>
+                                <p><strong>Total ATC (RANDOM):</strong> ${totalATC.toLocaleString()}</p>
+                                <p><strong>Avg Cost per User:</strong> ₹${totalUsers > 0 ? (totalSpend / totalUsers).toFixed(2) : 0}</p>
+                            </div>
+                        `;
+                        
+                        // Show sample records
+                        const sampleMeta = dashboard.adsetData.find(a => a.platform === 'Meta');
+                        const sampleGoogle = dashboard.adsetData.find(a => a.platform === 'Google');
+                        
+                        output.innerHTML += `
+                            <div class="warning">
+                                <h3>⚠️ Sample AdSet Records</h3>
+                                <h4>Meta Sample:</h4>
+                                <pre>${JSON.stringify(sampleMeta, null, 2)}</pre>
+                                <h4>Google Sample:</h4>
+                                <pre>${JSON.stringify(sampleGoogle, null, 2)}</pre>
+                            </div>
+                        `;
+                        
+                    } else {
+                        output.innerHTML += `<div class="error">❌ No adset data found in dashboard</div>`;
+                    }
+                } catch (e) {
+                    output.innerHTML += `<div class="error">Error parsing dashboard data: ${e.message}</div>`;
+                }
+            } else {
+                output.innerHTML += `<div class="error">❌ No dashboard data found</div>`;
+            }
+            
+            output.innerHTML += `
+                <div class="error">
+                    <h3>🚨 Data Quality Assessment</h3>
+                    <p><strong>Real Data:</strong> Campaign names, spend amounts, CTR, CPM</p>
+                    <p><strong>Fake Data:</strong> Users, ATC, checkouts, conversions (all random numbers!)</p>
+                    <p><strong>Missing Data:</strong> Revenue, session duration, engagement metrics</p>
+                    <p><strong>Recommendation:</strong> AdSet Level export should warn users about fake data</p>
+                </div>
+            `;
+        }
+        
+        // Auto-run on load
+        window.onload = analyzeAdSetMetrics;
+    </script>
+</body>
+</html>

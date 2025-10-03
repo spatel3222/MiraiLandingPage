@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOI LocalStorage Inspector</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .data-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 4px; }
+        .data-section h3 { margin-top: 0; color: #333; }
+        .data-content { background: #f8f9fa; padding: 10px; border-radius: 4px; overflow-x: auto; white-space: pre-wrap; font-size: 12px; max-height: 300px; overflow-y: auto; }
+        .error { color: #dc3545; }
+        .success { color: #28a745; }
+        .info { color: #007bff; }
+        button { padding: 8px 16px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 MOI LocalStorage Inspector</h1>
+        <p>Complete data flow inspection for MOI Analytics Dashboard localStorage keys.</p>
+        
+        <div class="data-section">
+            <h2>📥 INPUT FILES (3) - Original uploaded data</h2>
+            <button onclick="inspectShopifyData()">📊 moi-shopify-data</button>
+            <button onclick="inspectMetaData()">📈 moi-meta-data</button>
+            <button onclick="inspectGoogleData()">📉 moi-google-data</button>
+        </div>
+        
+        <div class="data-section">
+            <h2>⚙️ PROCESSING (1) - Dashboard state</h2>
+            <button onclick="inspectDashboardData()">🎯 moi-dashboard-data</button>
+        </div>
+        
+        <div class="data-section">
+            <h2>📤 OUTPUT FILES (3) - Generated CSV content</h2>
+            <button onclick="inspectServerTopLevel()">📊 moi-server-topLevel</button>
+            <button onclick="inspectServerAdset()">📈 moi-server-adset</button>
+            <button onclick="inspectPivotData()">📉 moi-pivot-data</button>
+        </div>
+        
+        <div class="data-section">
+            <h2>🔧 UTILITY</h2>
+            <button onclick="inspectAllKeys()">🔑 Show All MOI Keys</button>
+            <button onclick="showDataFlow()">🌊 Show Data Flow Summary</button>
+            <button onclick="diagnostics()">🩺 Run Diagnostics</button>
+            <button onclick="clearDisplay()">🧹 Clear Display</button>
+        </div>
+        
+        <div id="output"></div>
+    </div>
+
+    <script>
+        let currentLogBox = null;
+        let logCount = 0;
+
+        function log(message, type = 'info') {
+            const output = document.getElementById('output');
+            
+            // Create new log box every 15 messages or if this is the first message
+            if (!currentLogBox || logCount >= 15) {
+                currentLogBox = document.createElement('div');
+                currentLogBox.className = 'data-section';
+                currentLogBox.innerHTML = '<div class="data-content"></div>';
+                output.appendChild(currentLogBox);
+                logCount = 0;
+            }
+            
+            const contentDiv = currentLogBox.querySelector('.data-content');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type;
+            messageDiv.textContent = message;
+            contentDiv.appendChild(messageDiv);
+            
+            logCount++;
+        }
+
+        function inspectShopifyData() {
+            try {
+                const data = localStorage.getItem('moi-shopify-data');
+                if (!data) {
+                    log('❌ No moi-shopify-data found in localStorage', 'error');
+                    return;
+                }
+
+                const parsed = JSON.parse(data);
+                log(`✅ Found moi-shopify-data with ${parsed.length} rows`, 'success');
+                
+                if (parsed.length > 0) {
+                    const headers = Object.keys(parsed[0]);
+                    log(`📋 Headers: ${headers.join(', ')}`, 'info');
+                    
+                    const first5 = parsed.slice(0, 5);
+                    first5.forEach((row, i) => {
+                        const content = Object.entries(row).map(([key, value]) => `  ${key}: ${JSON.stringify(value)}`).join('\n');
+                        log(`📊 Row ${i + 1}:\n${content}`, 'info');
+                    });
+                } else {
+                    log('⚠️ Data array is empty', 'error');
+                }
+            } catch (error) {
+                log(`❌ Error parsing Shopify data: ${error.message}`, 'error');
+            }
+        }
+
+        function inspectMetaData() {
+            try {
+                const data = localStorage.getItem('moi-meta-data');
+                if (!data) {
+                    log('❌ No moi-meta-data found in localStorage', 'error');
+                    return;
+                }
+
+                const parsed = JSON.parse(data);
+                log(`✅ Found moi-meta-data with ${parsed.length} rows`, 'success');
+                
+                if (parsed.length > 0) {
+                    const headers = Object.keys(parsed[0]);
+                    log(`📋 Headers: ${headers.join(', ')}`, 'info');
+                    
+                    const first5 = parsed.slice(0, 5);
+                    first5.forEach((row, i) => {
+                        const content = Object.entries(row).map(([key, value]) => `  ${key}: ${JSON.stringify(value)}`).join('\n');
+                        log(`📊 Row ${i + 1}:\n${content}`, 'info');
+                    });
+                } else {
+                    log('⚠️ Data array is empty', 'error');
+                }
+            } catch (error) {
+                log(`❌ Error parsing Meta data: ${error.message}`, 'error');
+            }
+        }
+
+        function inspectGoogleData() {
+            try {
+                const data = localStorage.getItem('moi-google-data');
+                if (!data) {
+                    log('❌ No moi-google-data found in localStorage', 'error');
+                    return;
+                }
+
+                const parsed = JSON.parse(data);
+                log(`✅ Found moi-google-data with ${parsed.length} rows`, 'success');
+                
+                if (parsed.length > 0) {
+                    const headers = Object.keys(parsed[0]);
+                    log(`📋 Headers: ${headers.join(', ')}`, 'info');
+                    
+                    const first5 = parsed.slice(0, 5);
+                    first5.forEach((row, i) => {
+                        const content = Object.entries(row).map(([key, value]) => `  ${key}: ${JSON.stringify(value)}`).join('\n');
+                        log(`📊 Row ${i + 1}:\n${content}`, 'info');
+                    });
+                } else {
+                    log('⚠️ Data array is empty', 'error');
+                }
+            } catch (error) {
+                log(`❌ Error parsing Google data: ${error.message}`, 'error');
+            }
+        }
+
+        function inspectDashboardData() {
+            try {
+                const data = localStorage.getItem('moi-dashboard-data');
+                if (!data) {
+                    log('❌ No moi-dashboard-data found in localStorage', 'error');
+                    return;
+                }
+
+                const parsed = JSON.parse(data);
+                log(`✅ Found moi-dashboard-data (processed dashboard state)`, 'success');
+                
+                const summary = {
+                    'lastUpdated': parsed.lastUpdated,
+                    'keyMetrics': parsed.keyMetrics ? Object.keys(parsed.keyMetrics) : 'not found',
+                    'campaigns': parsed.campaigns ? `${parsed.campaigns.length} campaigns` : 'not found',
+                    'utmCampaigns': parsed.utmCampaigns ? `${parsed.utmCampaigns.length} UTM campaigns` : 'not found',
+                    'topLevelData': parsed.topLevelData ? `${parsed.topLevelData.length} rows` : 'not found'
+                };
+                
+                log(`📋 Dashboard Data Summary:\n${Object.entries(summary).map(([key, value]) => `  ${key}: ${JSON.stringify(value)}`).join('\n')}`, 'info');
+                
+                if (parsed.campaigns && parsed.campaigns.length > 0) {
+                    log(`📊 First Campaign:\n${Object.entries(parsed.campaigns[0]).map(([key, value]) => `  ${key}: ${JSON.stringify(value)}`).join('\n')}`, 'info');
+                }
+            } catch (error) {
+                log(`❌ Error parsing Dashboard data: ${error.message}`, 'error');
+            }
+        }
+
+        function inspectServerTopLevel() {
+            try {
+                const data = localStorage.getItem('moi-server-topLevel');
+                if (!data) {
+                    log('❌ No moi-server-topLevel found in localStorage', 'error');
+                    return;
+                }
+
+                const lines = data.split('\n').filter(line => line.trim());
+                log(`✅ Found moi-server-topLevel CSV with ${lines.length} lines`, 'success');
+                
+                if (lines.length > 0) {
+                    log(`📋 Headers: ${lines[0]}`, 'info');
+                    
+                    if (lines.length > 1) {
+                        const dataLines = lines.slice(1, 6); // First 5 data rows
+                        dataLines.forEach((line, i) => {
+                            log(`📊 Row ${i + 1}: ${line}`, 'info');
+                        });
+                    }
+                } else {
+                    log('⚠️ CSV is empty', 'error');
+                }
+            } catch (error) {
+                log(`❌ Error parsing Server TopLevel data: ${error.message}`, 'error');
+            }
+        }
+
+        function inspectServerAdset() {
+            try {
+                const data = localStorage.getItem('moi-server-adset');
+                if (!data) {
+                    log('❌ No moi-server-adset found in localStorage', 'error');
+                    return;
+                }
+
+                const lines = data.split('\n').filter(line => line.trim());
+                log(`✅ Found moi-server-adset CSV with ${lines.length} lines`, 'success');
+                
+                if (lines.length > 0) {
+                    log(`📋 Headers: ${lines[0]}`, 'info');
+                    
+                    if (lines.length > 1) {
+                        const dataLines = lines.slice(1, 6); // First 5 data rows
+                        dataLines.forEach((line, i) => {
+                            log(`📊 Row ${i + 1}: ${line}`, 'info');
+                        });
+                    }
+                } else {
+                    log('⚠️ CSV is empty', 'error');
+                }
+            } catch (error) {
+                log(`❌ Error parsing Server Adset data: ${error.message}`, 'error');
+            }
+        }
+
+        function inspectPivotData() {
+            try {
+                const data = localStorage.getItem('moi-pivot-data');
+                if (!data) {
+                    log('❌ No moi-pivot-data found in localStorage', 'error');
+                    return;
+                }
+
+                const parsed = JSON.parse(data);
+                log(`✅ Found moi-pivot-data with ${parsed.length} rows`, 'success');
+                
+                if (parsed.length > 0) {
+                    const headers = Object.keys(parsed[0]);
+                    log(`📋 Headers: ${headers.join(', ')}`, 'info');
+                    
+                    const first5 = parsed.slice(0, 5);
+                    first5.forEach((row, i) => {
+                        const content = Object.entries(row).map(([key, value]) => `  ${key}: ${JSON.stringify(value)}`).join('\n');
+                        log(`📊 Row ${i + 1}:\n${content}`, 'info');
+                    });
+                } else {
+                    log('⚠️ Data array is empty', 'error');
+                }
+            } catch (error) {
+                log(`❌ Error parsing Pivot data: ${error.message}`, 'error');
+            }
+        }
+
+        function showDataFlow() {
+            log(`🌊 MOI Analytics Dashboard Data Flow:
+
+📥 INPUT FILES (Original uploaded data):
+   ├── moi-shopify-data   → Raw Shopify Export records (JSON)
+   ├── moi-meta-data      → Raw Meta Ads records (JSON)  
+   └── moi-google-data    → Raw Google Ads records (JSON)
+
+⚙️ PROCESSING (Dashboard state):
+   └── moi-dashboard-data → Processed dashboard state with aggregated metrics
+
+📤 OUTPUT FILES (Generated CSV content):
+   ├── moi-server-topLevel → Top Level Daily Metrics CSV
+   ├── moi-server-adset   → AdSet Level Matrices CSV
+   └── moi-pivot-data     → Pivot Temp data (JSON)
+
+🔄 FLOW: Input Files → Processing → Output Files → Export Downloads`, 'success');
+        }
+
+        function inspectAllKeys() {
+            // Debug: Check ALL localStorage keys first
+            const allKeys = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key) {
+                    allKeys.push(key);
+                }
+            }
+            
+            log(`🔍 DEBUGGING: Total localStorage keys found: ${allKeys.length}`, 'info');
+            if (allKeys.length > 0) {
+                log(`🔍 All keys: ${allKeys.join(', ')}`, 'info');
+                
+                // Show substantial data content for each key to debug properly
+                allKeys.forEach(key => {
+                    const value = localStorage.getItem(key);
+                    if (value) {
+                        log(`📝 KEY: ${key} (${value.length} chars)`, 'success');
+                        
+                        // Show first 500 characters of data
+                        const preview = value.substring(0, 500);
+                        log(preview, 'info');
+                        
+                        if (value.length > 500) {
+                            log(`... (${value.length - 500} more characters)`, 'info');
+                        }
+                        log('---', 'info');
+                    } else {
+                        log(`📝 ${key}: null/empty`, 'error');
+                    }
+                });
+            }
+            
+            // Now check for MOI keys
+            const moiKeys = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('moi-')) {
+                    const value = localStorage.getItem(key);
+                    const size = value ? value.length : 0;
+                    const type = key.includes('server-') ? 'CSV' : 'JSON';
+                    moiKeys.push(`${key}: ${size} characters (${type})`);
+                }
+            }
+            
+            if (moiKeys.length > 0) {
+                log(`🔑 Found ${moiKeys.length} MOI keys in localStorage:\n${moiKeys.join('\n')}`, 'success');
+            } else {
+                log('❌ No MOI keys found in localStorage', 'error');
+                log('💡 TROUBLESHOOTING:', 'info');
+                log('1. Make sure you uploaded files through the Dashboard Generate Report', 'info');
+                log('2. Check browser console for any JavaScript errors during upload', 'info');
+                log('3. Verify you\'re on the same domain (localhost:3000) as the dashboard', 'info');
+                log('4. Try refreshing the dashboard and re-uploading files', 'info');
+            }
+        }
+
+        function diagnostics() {
+            log('🩺 RUNNING DIAGNOSTICS...', 'info');
+            
+            // Check current URL and suggest correct one
+            const currentUrl = window.location.href;
+            log(`📍 Current URL: ${currentUrl}`, 'info');
+            
+            if (!currentUrl.includes('5173')) {
+                log('⚠️ WARNING: Dashboard runs on port 5173, but inspector is on different port!', 'error');
+                log('💡 FIX: Open inspector at http://localhost:5173/inspect_localStorage.html', 'error');
+            } else {
+                log('✅ URL looks correct (both on port 5173)', 'success');
+            }
+            
+            // Check localStorage basics
+            try {
+                localStorage.setItem('test-key', 'test-value');
+                const testValue = localStorage.getItem('test-key');
+                localStorage.removeItem('test-key');
+                
+                if (testValue === 'test-value') {
+                    log('✅ localStorage is working correctly', 'success');
+                } else {
+                    log('❌ localStorage test failed', 'error');
+                }
+            } catch (e) {
+                log(`❌ localStorage error: ${e.message}`, 'error');
+            }
+            
+            // Check for any storage at all
+            const totalKeys = localStorage.length;
+            log(`📊 Total localStorage keys: ${totalKeys}`, 'info');
+            
+            if (totalKeys === 0) {
+                log('💡 TROUBLESHOOTING STEPS:', 'info');
+                log('1. Make sure inspector URL is http://localhost:5173/inspect_localStorage.html', 'info');
+                log('2. Go to dashboard at http://localhost:5173/', 'info');
+                log('3. Upload 3 files and click Generate Report', 'info');
+                log('4. Watch browser console for errors during upload', 'info');
+                log('5. Come back to inspector and click Show All MOI Keys', 'info');
+            }
+        }
+
+        function clearDisplay() {
+            document.getElementById('output').innerHTML = '';
+            currentLogBox = null;
+            logCount = 0;
+        }
+
+        // Auto-run inspection on page load
+        window.onload = function() {
+            log('🚀 MOI LocalStorage Inspector ready!', 'success');
+            log('💡 Tip: Make sure you have uploaded files to the MOI Analytics Dashboard first, then come back to this page to inspect the data.', 'info');
+        };
+    </script>
+</body>
+</html>

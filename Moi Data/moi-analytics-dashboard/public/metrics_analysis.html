@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Top Level Daily Metrics Analysis</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f2f2f2; font-weight: bold; }
+        .error { color: red; }
+        .success { color: green; }
+        .warning { color: orange; }
+        .code { background: #f5f5f5; padding: 4px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>Top Level Daily Metrics Analysis</h1>
+    <button onclick="analyzeMetrics()">Analyze Current Data</button>
+    
+    <div id="analysis"></div>
+    
+    <h2>📊 Top Level Daily Metrics Reference</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Metric</th>
+                <th>Input Source</th>
+                <th>Formula/Logic</th>
+                <th>Expected Value</th>
+                <th>Current Issue</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Meta Spend</strong></td>
+                <td>Meta Ads CSV</td>
+                <td><span class="code">Sum of 'Amount spent (INR)' for the day</span></td>
+                <td>~57,721 (from original file)</td>
+                <td>Should match file total</td>
+            </tr>
+            <tr>
+                <td><strong>Meta CTR</strong></td>
+                <td>Meta Ads CSV</td>
+                <td><span class="code">Average of CTR values</span></td>
+                <td>~1.36% (calculated average)</td>
+                <td>Should be weighted average</td>
+            </tr>
+            <tr>
+                <td><strong>Meta CPM</strong></td>
+                <td>Meta Ads CSV</td>
+                <td><span class="code">Average of CPM values</span></td>
+                <td>~192.10 (calculated average)</td>
+                <td>Should be weighted average</td>
+            </tr>
+            <tr>
+                <td><strong>Google Spend</strong></td>
+                <td>Google Ads CSV</td>
+                <td><span class="code">Sum of 'Cost' for the day</span></td>
+                <td>~17,048 (from original file)</td>
+                <td>Should match file total</td>
+            </tr>
+            <tr>
+                <td><strong>Google CTR</strong></td>
+                <td>Google Ads CSV</td>
+                <td><span class="code">Average of CTR values</span></td>
+                <td>~5.22% (calculated average)</td>
+                <td>Should be weighted average</td>
+            </tr>
+            <tr>
+                <td><strong>Google CPM</strong></td>
+                <td>Google Ads CSV</td>
+                <td><span class="code">Average of CPM values (if available)</span></td>
+                <td>0.00 (missing in Google data)</td>
+                <td>Google CPM not in CSV</td>
+            </tr>
+            <tr class="warning">
+                <td><strong>Total Users</strong></td>
+                <td>Shopify CSV</td>
+                <td><span class="code">Sum of 'Online store visitors' ÷ dayCount</span></td>
+                <td>8,495 ÷ 30 days = ~283 per day</td>
+                <td class="error">Currently 43,335 - WAY TOO HIGH!</td>
+            </tr>
+            <tr>
+                <td><strong>Total ATC</strong></td>
+                <td>Shopify CSV</td>
+                <td><span class="code">Sum of 'Sessions with cart additions' ÷ dayCount</span></td>
+                <td>Should be distributed daily</td>
+                <td>Check calculation logic</td>
+            </tr>
+            <tr>
+                <td><strong>Total Reached Checkout</strong></td>
+                <td>Shopify CSV</td>
+                <td><span class="code">Sum of 'Sessions that reached checkout' ÷ dayCount</span></td>
+                <td>Should be distributed daily</td>
+                <td>Check calculation logic</td>
+            </tr>
+            <tr>
+                <td><strong>Total Abandoned Checkout</strong></td>
+                <td>Estimated</td>
+                <td><span class="code">Math.floor(Math.random() * 3)</span></td>
+                <td>Random 0-2</td>
+                <td>Pure estimation, no real data</td>
+            </tr>
+            <tr>
+                <td><strong>Session Duration</strong></td>
+                <td>Shopify CSV</td>
+                <td><span class="code">Average of 'Average session duration'</span></td>
+                <td>Should be weighted average</td>
+                <td>Check averaging logic</td>
+            </tr>
+            <tr>
+                <td><strong>Users Above 1min</strong></td>
+                <td>Estimated</td>
+                <td><span class="code">(totalUsers / dayCount) * 0.1</span></td>
+                <td>~28 per day (10% of users)</td>
+                <td>Estimation, no real data</td>
+            </tr>
+            <tr>
+                <td><strong>Users 5 Pages Above 1min</strong></td>
+                <td>Estimated</td>
+                <td><span class="code">(totalUsers / dayCount) * 0.06</span></td>
+                <td>~17 per day (6% of users)</td>
+                <td>Estimation, no real data</td>
+            </tr>
+            <tr class="warning">
+                <td><strong>ATC with session duration above 1 min</strong></td>
+                <td>Shopify CSV (Estimated)</td>
+                <td><span class="code">Math.floor((totalATC / dayCount) * 0.7)</span></td>
+                <td>70% of total ATC</td>
+                <td>Estimated percentage, no real session duration data</td>
+            </tr>
+            <tr class="warning">
+                <td><strong>Reached Checkout with session duration above 1 min</strong></td>
+                <td>Shopify CSV (Estimated)</td>
+                <td><span class="code">Math.floor((totalCheckout / dayCount) * 0.6)</span></td>
+                <td>60% of total reached checkout</td>
+                <td>Estimated percentage, no real session duration data</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>🔍 Suspected Issues</h2>
+    <div class="warning">
+        <h3>Total Users Problem (43,335 vs expected ~283):</h3>
+        <ul>
+            <li><strong>Possible Cause 1:</strong> Not dividing by dayCount (using full total instead of daily)</li>
+            <li><strong>Possible Cause 2:</strong> Multiplying instead of dividing</li>
+            <li><strong>Possible Cause 3:</strong> Wrong data source (using session data instead of visitor data)</li>
+            <li><strong>Possible Cause 4:</strong> Data aggregation error in processAllInputFiles()</li>
+        </ul>
+    </div>
+
+    <script>
+        function analyzeMetrics() {
+            const output = document.getElementById('analysis');
+            output.innerHTML = '<h2>📋 Current Data Analysis</h2>';
+            
+            // Get Shopify data
+            const shopifyData = localStorage.getItem('moi-shopify-data');
+            if (shopifyData) {
+                try {
+                    const parsed = JSON.parse(shopifyData);
+                    const totalVisitors = parsed.reduce((sum, record) => {
+                        return sum + (parseFloat(record['Online store visitors'] || 0));
+                    }, 0);
+                    
+                    const totalSessions = parsed.reduce((sum, record) => {
+                        return sum + (parseFloat(record['Sessions'] || 0));
+                    }, 0);
+                    
+                    const totalATC = parsed.reduce((sum, record) => {
+                        return sum + (parseFloat(record['Sessions with cart additions'] || 0));
+                    }, 0);
+                    
+                    output.innerHTML += `
+                        <div class="success">
+                            <h3>✅ Shopify Data Summary</h3>
+                            <p><strong>Records:</strong> ${parsed.length.toLocaleString()}</p>
+                            <p><strong>Total 'Online store visitors':</strong> ${totalVisitors.toLocaleString()}</p>
+                            <p><strong>Total 'Sessions':</strong> ${totalSessions.toLocaleString()}</p>
+                            <p><strong>Total 'Sessions with cart additions':</strong> ${totalATC.toLocaleString()}</p>
+                            <p><strong>Expected daily visitors (÷30):</strong> ${Math.floor(totalVisitors / 30).toLocaleString()}</p>
+                        </div>
+                    `;
+                    
+                } catch (e) {
+                    output.innerHTML += `<div class="error">Error parsing Shopify data: ${e.message}</div>`;
+                }
+            }
+            
+            // Get Top Level data
+            const topLevelData = localStorage.getItem('moi-server-topLevel');
+            if (topLevelData) {
+                try {
+                    const lines = topLevelData.split('\\n');
+                    const headers = lines[0].split(',');
+                    const totalUsersIndex = headers.findIndex(h => h.includes('Total Users'));
+                    
+                    if (totalUsersIndex !== -1 && lines.length > 1) {
+                        const firstDayValues = lines[1].split(',');
+                        const firstDayUsers = parseFloat(firstDayValues[totalUsersIndex] || 0);
+                        
+                        output.innerHTML += `
+                            <div class="warning">
+                                <h3>⚠️ Top Level Daily Data</h3>
+                                <p><strong>Headers:</strong> ${headers.join(', ')}</p>
+                                <p><strong>First day 'Total Users':</strong> ${firstDayUsers.toLocaleString()}</p>
+                                <p><strong>Sample row:</strong> ${lines[1]}</p>
+                            </div>
+                        `;
+                    }
+                } catch (e) {
+                    output.innerHTML += `<div class="error">Error parsing Top Level data: ${e.message}</div>`;
+                }
+            }
+            
+            // Calculate the difference
+            output.innerHTML += `
+                <div class="error">
+                    <h3>🚨 Issue Identified</h3>
+                    <p>Expected: ~283 users per day (8,495 ÷ 30)</p>
+                    <p>Actual: 43,335 users per day</p>
+                    <p><strong>Ratio:</strong> ${(43335 / 283).toFixed(1)}x too high!</p>
+                    <p><strong>Possible cause:</strong> Using total sessions instead of visitors, or not dividing by days</p>
+                </div>
+            `;
+        }
+        
+        // Auto-run on load
+        window.onload = analyzeMetrics;
+    </script>
+</body>
+</html>

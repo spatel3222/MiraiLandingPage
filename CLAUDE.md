@@ -189,6 +189,57 @@ All agents have access to:
 
 ---
 
+## **🛡️ CRITICAL: Debug & Update Safety Protocol**
+
+### **RULE 1: Never Break Working Features**
+Before ANY change: Think → Research → Test → Validate existing functionality remains intact
+
+### **RULE 2: Debug Mode (MANDATORY SEQUENCE)**
+
+#### **STEP 1: Root Cause Analysis FIRST**
+```
+1. Find actual root cause (not symptoms)
+2. List ALL affected systems
+3. Document dependencies
+```
+
+#### **STEP 2: Present Before Fixing**
+```
+🔍 ROOT CAUSE: [file:line - exact issue]
+⚠️ WILL AFFECT: [list all connected features]
+💡 SOLUTION: [proposed fix with pros/cons]
+
+AWAITING YOUR APPROVAL...
+```
+
+#### **STEP 3: Research Before Implementation**
+- Search entire codebase for usages
+- Check git history for past related fixes
+- Identify ALL side effects
+
+#### **STEP 4: Fix ONLY After Approval**
+- Wait for explicit "yes"
+- Test the fix AND all related features
+- Confirm nothing broke
+
+### **Quick Debug Template**
+```
+🔍 ROOT CAUSE: [exact issue at file:line]
+⚠️ AFFECTS: [Feature A, Feature B, Feature C]
+💡 FIX: [specific solution]
+✅ WILL TEST: [list of validations]
+
+May I proceed? (yes/no)
+```
+
+### **Remember: ALWAYS**
+1. Root cause FIRST, fix SECOND
+2. Show impact analysis BEFORE touching code
+3. Get approval BEFORE implementing
+4. Test everything that could be affected
+
+---
+
 ## **🚀 Getting Started**
 
 ### **For New Projects**

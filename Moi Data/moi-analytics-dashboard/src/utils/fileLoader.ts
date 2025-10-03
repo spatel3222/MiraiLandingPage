@@ -3,6 +3,8 @@ import type { DashboardData } from '../types';
 
 // Define possible file paths for the output files
 const OUTPUT_FILE_PATHS = [
+  // Public directory (accessible via HTTP)
+  '/',
   // MOI Sample Output Generation folder
   '/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/MOI_Sample_Output_Generation/05_CSV_Outputs/',
   // MOI Data Schema Analysis folder  
@@ -12,6 +14,7 @@ const OUTPUT_FILE_PATHS = [
 ];
 
 const TOP_LEVEL_FILENAMES = [
+  'Top Level Daily.csv', // Most recent correct file (57721 on single day)
   'AI Generated - Top Level Daily Metrics_Complete.csv',
   'AI Generated -  Top Level Daily Metrics.csv',
   'Top Level Daily Metrics.csv',

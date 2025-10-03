@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Force Data Refresh</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .status { margin: 10px 0; padding: 10px; background: #f0f0f0; border-radius: 5px; }
+        .success { color: green; font-weight: bold; }
+        .info { color: blue; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Force Complete Data Refresh</h1>
+    
+    <div id="status"></div>
+    
+    <button onclick="clearAllCache()">1. Clear All Cache</button>
+    <button onclick="window.open('http://localhost:5175/', '_blank')">2. Open Main App</button>
+    <button onclick="checkData()">3. Check Current Data</button>
+    
+    <div id="results"></div>
+
+    <script>
+        function clearAllCache() {
+            const status = document.getElementById('status');
+            let html = '<div class="status">';
+            
+            // Clear all MOI related items
+            const keysToRemove = [
+                'moi-cache-version',
+                'moi-dashboard-data',
+                'moi-dashboard-timestamp',
+                'moi-output-data',
+                'moi-output-timestamp',
+                'moi-shopify-data',
+                'moi-meta-data',
+                'moi-google-data',
+                'moi-pivot-data',
+                'moi-configurable-logic',
+                'moi-logic-templates',
+                'moi-reset-flag'
+            ];
+            
+            keysToRemove.forEach(key => {
+                localStorage.removeItem(key);
+                html += `<div class="info">✓ Removed: ${key}</div>`;
+            });
+            
+            // Force new cache version
+            localStorage.setItem('moi-cache-version', 'v1.5.1-force-refresh-' + Date.now());
+            html += '<div class="success">✅ All cache cleared! Now click "Open Main App" to reload fresh data.</div>';
+            html += '</div>';
+            
+            status.innerHTML = html;
+        }
+        
+        function checkData() {
+            const results = document.getElementById('results');
+            const shopifyData = localStorage.getItem('moi-shopify-data');
+            const outputData = localStorage.getItem('moi-output-data');
+            
+            let html = '<h2>Current Data Status:</h2>';
+            html += '<div class="status">';
+            
+            if (shopifyData) {
+                const shopify = JSON.parse(shopifyData);
+                html += `<div>Shopify Records: ${shopify.length}</div>`;
+                if (shopify.length > 0) {
+                    html += `<div>First Record Day: ${shopify[0].Day || 'Missing'}</div>`;
+                    html += `<div>Total Visitors: ${shopify.reduce((sum, r) => sum + (r['Online store visitors'] || 0), 0)}</div>`;
+                }
+            } else {
+                html += '<div>No Shopify data in cache</div>';
+            }
+            
+            if (outputData) {
+                const output = JSON.parse(outputData);
+                if (output.dailyMetrics && output.dailyMetrics.length > 0) {
+                    html += `<div>Daily Metrics Date: ${output.dailyMetrics[0].date}</div>`;
+                    html += `<div>Total Users in Output: ${output.dailyMetrics[0].totalUsers}</div>`;
+                }
+                if (output.dateRange) {
+                    html += `<div>Date Range: ${output.dateRange.startDate} to ${output.dateRange.endDate}</div>`;
+                    html += `<div>Day Count: ${output.dateRange.dayCount}</div>`;
+                }
+            } else {
+                html += '<div>No output data in cache</div>';
+            }
+            
+            html += '</div>';
+            results.innerHTML = html;
+        }
+        
+        // Auto-check on load
+        window.addEventListener('load', () => {
+            checkData();
+        });
+    </script>
+</body>
+</html>

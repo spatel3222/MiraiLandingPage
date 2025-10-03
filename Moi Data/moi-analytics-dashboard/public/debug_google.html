@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Google Data</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        pre { background: #f5f5f5; padding: 15px; overflow: auto; }
+    </style>
+</head>
+<body>
+    <h1>Google Ads Data Debug</h1>
+    <div id="output"></div>
+    
+    <script>
+        const output = document.getElementById('output');
+        
+        // Get Google data from localStorage
+        const googleDataRaw = localStorage.getItem('moi-google-data');
+        
+        if (googleDataRaw) {
+            try {
+                const googleData = JSON.parse(googleDataRaw);
+                
+                output.innerHTML = `
+                    <h2>Raw Data (${googleDataRaw.length} bytes)</h2>
+                    <pre>${googleDataRaw}</pre>
+                    
+                    <h2>Parsed Data (${googleData.length} records)</h2>
+                    <pre>${JSON.stringify(googleData, null, 2)}</pre>
+                    
+                    <h2>First Record Analysis</h2>
+                    <pre>${JSON.stringify(googleData[0], null, 2)}</pre>
+                    
+                    <h2>Column Names Found</h2>
+                    <pre>${Object.keys(googleData[0] || {}).join('\n')}</pre>
+                `;
+            } catch (e) {
+                output.innerHTML = `<p style="color:red">Error parsing Google data: ${e.message}</p>`;
+            }
+        } else {
+            output.innerHTML = '<p style="color:red">No Google data found in localStorage</p>';
+        }
+    </script>
+</body>
+</html>

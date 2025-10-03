@@ -1,0 +1,1405 @@
+===== MOI Data Conversion Logic Test =====
+Starting file conversion process...
+
+Step 1: Reading input files...
+✓ Loaded 7 Google Ads records
+✓ Loaded 76 Meta Ads records
+✓ Loaded 8322 Shopify records
+
+Step 2: Creating pivot table...
+Creating granular Campaign+AdSet level pivot...
+Created pivot with 78 Campaign+AdSet combinations
+
+Step 3: Processing output files...
+Processing 11 fields for Ad Set Level output
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_60 Days - IG", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_60 Days - IG',
+  'Amount spent (INR)': '950.77',
+  'CPM (cost per 1,000 impressions)': '92.20929105',
+  'CTR (link click-through rate)': '3.83086025',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_60 Days - IG", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_60 Days - IG',
+  'Amount spent (INR)': '950.77',
+  'CPM (cost per 1,000 impressions)': '92.20929105',
+  'CTR (link click-through rate)': '3.83086025',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 950.77 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | AND", AdSet: "TOF | Mumbai | TRLa", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | AND',
+  'Ad set name': 'TOF | Mumbai | TRLa',
+  'Amount spent (INR)': '1204.83',
+  'CPM (cost per 1,000 impressions)': '17.64879078',
+  'CTR (link click-through rate)': '0.90233934',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | AND", AdSet: "TOF | Mumbai | TRLa", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | AND',
+  'Ad set name': 'TOF | Mumbai | TRLa',
+  'Amount spent (INR)': '1204.83',
+  'CPM (cost per 1,000 impressions)': '17.64879078',
+  'CTR (link click-through rate)': '0.90233934',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 1204.83 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "Unknown Campaign", AdSet: "Unknown AdSet", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "Unknown Campaign", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "Unknown Campaign", AdSet: "Unknown AdSet", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "Unknown Campaign", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "TOF | ALL", AdSet: "T1 - TRLi - FEED", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | ALL',
+  'Ad set name': 'T1 - TRLi - FEED',
+  'Amount spent (INR)': '3753.37',
+  'CPM (cost per 1,000 impressions)': '63.13065563',
+  'CTR (link click-through rate)': '1.14542335',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | ALL", AdSet: "T1 - TRLi - FEED", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | ALL',
+  'Ad set name': 'T1 - TRLi - FEED',
+  'Amount spent (INR)': '3753.37',
+  'CPM (cost per 1,000 impressions)': '63.13065563',
+  'CTR (link click-through rate)': '1.14542335',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 3753.37 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | ALL", AdSet: "T2 -  TRLi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | ALL',
+  'Ad set name': 'T2 -  TRLi',
+  'Amount spent (INR)': '2861.8',
+  'CPM (cost per 1,000 impressions)': '44.56105384',
+  'CTR (link click-through rate)': '0.82526237',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | ALL", AdSet: "T2 -  TRLi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | ALL',
+  'Ad set name': 'T2 -  TRLi',
+  'Amount spent (INR)': '2861.8',
+  'CPM (cost per 1,000 impressions)': '44.56105384',
+  'CTR (link click-through rate)': '0.82526237',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 2861.8 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_180 Days - FBi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_180 Days - FBi',
+  'Amount spent (INR)': '1005.32',
+  'CPM (cost per 1,000 impressions)': '90.63469167',
+  'CTR (link click-through rate)': '3.29065994',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_180 Days - FBi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_180 Days - FBi',
+  'Amount spent (INR)': '1005.32',
+  'CPM (cost per 1,000 impressions)': '90.63469167',
+  'CTR (link click-through rate)': '3.29065994',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 1005.32 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | ALL", AdSet: "T1 - FB - TRLi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | ALL',
+  'Ad set name': 'T1 - FB - TRLi',
+  'Amount spent (INR)': '1531.85',
+  'CPM (cost per 1,000 impressions)': '33.56817285',
+  'CTR (link click-through rate)': '1.17018013',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | ALL", AdSet: "T1 - FB - TRLi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | ALL',
+  'Ad set name': 'T1 - FB - TRLi',
+  'Amount spent (INR)': '1531.85',
+  'CPM (cost per 1,000 impressions)': '33.56817285',
+  'CTR (link click-through rate)': '1.17018013',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 1531.85 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | Story/Reel", AdSet: "T1 | TRL | IGi | RL", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Story/Reel',
+  'Ad set name': 'T1 | TRL | IGi | RL',
+  'Amount spent (INR)': '3103.23',
+  'CPM (cost per 1,000 impressions)': '47.48630451',
+  'CTR (link click-through rate)': '0.46518745',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | Story/Reel", AdSet: "T1 | TRL | IGi | RL", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Story/Reel',
+  'Ad set name': 'T1 | TRL | IGi | RL',
+  'Amount spent (INR)': '3103.23',
+  'CPM (cost per 1,000 impressions)': '47.48630451',
+  'CTR (link click-through rate)': '0.46518745',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 3103.23 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_1 Day - FB", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_1 Day - FB',
+  'Amount spent (INR)': '451.64',
+  'CPM (cost per 1,000 impressions)': '222.59241005',
+  'CTR (link click-through rate)': '5.86495811',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_1 Day - FB", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_1 Day - FB',
+  'Amount spent (INR)': '451.64',
+  'CPM (cost per 1,000 impressions)': '222.59241005',
+  'CTR (link click-through rate)': '5.86495811',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 451.64 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_14 Days - FB", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_14 Days - FB',
+  'Amount spent (INR)': '748.57',
+  'CPM (cost per 1,000 impressions)': '130.20873195',
+  'CTR (link click-through rate)': '6.10540964',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_14 Days - FB", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_14 Days - FB',
+  'Amount spent (INR)': '748.57',
+  'CPM (cost per 1,000 impressions)': '130.20873195',
+  'CTR (link click-through rate)': '6.10540964',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 748.57 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_60 Days - IGi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_60 Days - IGi',
+  'Amount spent (INR)': '751.2',
+  'CPM (cost per 1,000 impressions)': '84.47093219',
+  'CTR (link click-through rate)': '2.30518385',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_60 Days - IGi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_60 Days - IGi',
+  'Amount spent (INR)': '751.2',
+  'CPM (cost per 1,000 impressions)': '84.47093219',
+  'CTR (link click-through rate)': '2.30518385',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 751.2 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_1 Day - IG", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_1 Day - IG',
+  'Amount spent (INR)': '1034.25',
+  'CPM (cost per 1,000 impressions)': '300.13058619',
+  'CTR (link click-through rate)': '8.06732443',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_1 Day - IG", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_1 Day - IG',
+  'Amount spent (INR)': '1034.25',
+  'CPM (cost per 1,000 impressions)': '300.13058619',
+  'CTR (link click-through rate)': '8.06732443',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 1034.25 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "MOF", AdSet: "MOF | DABA | ENGDi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'MOF',
+  'Ad set name': 'MOF | DABA | ENGDi',
+  'Amount spent (INR)': '1376.64',
+  'CPM (cost per 1,000 impressions)': '148.12136862',
+  'CTR (link click-through rate)': '3.04497525',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "MOF", AdSet: "MOF | DABA | ENGDi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'MOF',
+  'Ad set name': 'MOF | DABA | ENGDi',
+  'Amount spent (INR)': '1376.64',
+  'CPM (cost per 1,000 impressions)': '148.12136862',
+  'CTR (link click-through rate)': '3.04497525',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 1376.64 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | CUSTOM | AUTO", AdSet: "T2 - INT JWLi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | CUSTOM | AUTO',
+  'Ad set name': 'T2 - INT JWLi',
+  'Amount spent (INR)': '898.27',
+  'CPM (cost per 1,000 impressions)': '28.87121139',
+  'CTR (link click-through rate)': '0.66210266',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | CUSTOM | AUTO", AdSet: "T2 - INT JWLi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | CUSTOM | AUTO',
+  'Ad set name': 'T2 - INT JWLi',
+  'Amount spent (INR)': '898.27',
+  'CPM (cost per 1,000 impressions)': '28.87121139',
+  'CTR (link click-through rate)': '0.66210266',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 898.27 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | ALL", AdSet: "IND - TRLi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | ALL',
+  'Ad set name': 'IND - TRLi',
+  'Amount spent (INR)': '2000.4',
+  'CPM (cost per 1,000 impressions)': '24.19594799',
+  'CTR (link click-through rate)': '0.76322951',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | ALL", AdSet: "IND - TRLi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | ALL',
+  'Ad set name': 'IND - TRLi',
+  'Amount spent (INR)': '2000.4',
+  'CPM (cost per 1,000 impressions)': '24.19594799',
+  'CTR (link click-through rate)': '0.76322951',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 2000.4 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | 80k", AdSet: "LUXE | IGi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | 80k',
+  'Ad set name': 'LUXE | IGi',
+  'Amount spent (INR)': '565.81',
+  'CPM (cost per 1,000 impressions)': '58.5482202',
+  'CTR (link click-through rate)': '0.90024834',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | 80k", AdSet: "LUXE | IGi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | 80k',
+  'Ad set name': 'LUXE | IGi',
+  'Amount spent (INR)': '565.81',
+  'CPM (cost per 1,000 impressions)': '58.5482202',
+  'CTR (link click-through rate)': '0.90024834',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 565.81 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_60 Days - FB", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_60 Days - FB',
+  'Amount spent (INR)': '457.98',
+  'CPM (cost per 1,000 impressions)': '68.83811814',
+  'CTR (link click-through rate)': '3.38193296',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_60 Days - FB", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_60 Days - FB',
+  'Amount spent (INR)': '457.98',
+  'CPM (cost per 1,000 impressions)': '68.83811814',
+  'CTR (link click-through rate)': '3.38193296',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 457.98 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | Story/Reel", AdSet: "TRL | IGi | ST", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Story/Reel',
+  'Ad set name': 'TRL | IGi | ST',
+  'Amount spent (INR)': '1390.99',
+  'CPM (cost per 1,000 impressions)': '197.443577',
+  'CTR (link click-through rate)': '1.66075231',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | Story/Reel", AdSet: "TRL | IGi | ST", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Story/Reel',
+  'Ad set name': 'TRL | IGi | ST',
+  'Amount spent (INR)': '1390.99',
+  'CPM (cost per 1,000 impressions)': '197.443577',
+  'CTR (link click-through rate)': '1.66075231',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 1390.99 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "BOF | DPA", AdSet: "VC"
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "BOF | DPA", AdSet: "VC"
+Looking up Meta data for Campaign: "TOF | AND", AdSet: "TOF | Delhi | TRLa", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | AND',
+  'Ad set name': 'TOF | Delhi | TRLa',
+  'Amount spent (INR)': '1237.5',
+  'CPM (cost per 1,000 impressions)': '22.04860492',
+  'CTR (link click-through rate)': '1.29351816',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | AND", AdSet: "TOF | Delhi | TRLa", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | AND',
+  'Ad set name': 'TOF | Delhi | TRLa',
+  'Amount spent (INR)': '1237.5',
+  'CPM (cost per 1,000 impressions)': '22.04860492',
+  'CTR (link click-through rate)': '1.29351816',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 1237.5 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | New Arrivals", AdSet: "T1 - TRLi - FEED SV", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | New Arrivals',
+  'Ad set name': 'T1 - TRLi - FEED SV',
+  'Amount spent (INR)': '494.15',
+  'CPM (cost per 1,000 impressions)': '126.57530738',
+  'CTR (link click-through rate)': '0.84528689',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | New Arrivals", AdSet: "T1 - TRLi - FEED SV", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | New Arrivals',
+  'Ad set name': 'T1 - TRLi - FEED SV',
+  'Amount spent (INR)': '494.15',
+  'CPM (cost per 1,000 impressions)': '126.57530738',
+  'CTR (link click-through rate)': '0.84528689',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 494.15 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | CUSTOM | AUTO", AdSet: "T1 - INT JWLi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | CUSTOM | AUTO',
+  'Ad set name': 'T1 - INT JWLi',
+  'Amount spent (INR)': '1541.48',
+  'CPM (cost per 1,000 impressions)': '43.70637103',
+  'CTR (link click-through rate)': '0.76270946',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | CUSTOM | AUTO", AdSet: "T1 - INT JWLi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | CUSTOM | AUTO',
+  'Ad set name': 'T1 - INT JWLi',
+  'Amount spent (INR)': '1541.48',
+  'CPM (cost per 1,000 impressions)': '43.70637103',
+  'CTR (link click-through rate)': '0.76270946',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 1541.48 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | India Modern", AdSet: "TOF | Bangalore | TIFFi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | India Modern',
+  'Ad set name': 'TOF | Bangalore | TIFFi',
+  'Amount spent (INR)': '492.43',
+  'CPM (cost per 1,000 impressions)': '65.9210174',
+  'CTR (link click-through rate)': '1.35207497',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | India Modern", AdSet: "TOF | Bangalore | TIFFi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | India Modern',
+  'Ad set name': 'TOF | Bangalore | TIFFi',
+  'Amount spent (INR)': '492.43',
+  'CPM (cost per 1,000 impressions)': '65.9210174',
+  'CTR (link click-through rate)': '1.35207497',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 492.43 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | CUSTOM | AUTO", AdSet: "TRL | IGi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | CUSTOM | AUTO',
+  'Ad set name': 'TRL | IGi',
+  'Amount spent (INR)': '526.23',
+  'CPM (cost per 1,000 impressions)': '270.55526992',
+  'CTR (link click-through rate)': '1.28534704',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | CUSTOM | AUTO", AdSet: "TRL | IGi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | CUSTOM | AUTO',
+  'Ad set name': 'TRL | IGi',
+  'Amount spent (INR)': '526.23',
+  'CPM (cost per 1,000 impressions)': '270.55526992',
+  'CTR (link click-through rate)': '1.28534704',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 526.23 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | Chennai Store", AdSet: "LUXEi - IG", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Chennai Store',
+  'Ad set name': 'LUXEi - IG',
+  'Amount spent (INR)': '304.96',
+  'CPM (cost per 1,000 impressions)': '43.36746303',
+  'CTR (link click-through rate)': '0.19908987',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | Chennai Store", AdSet: "LUXEi - IG", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Chennai Store',
+  'Ad set name': 'LUXEi - IG',
+  'Amount spent (INR)': '304.96',
+  'CPM (cost per 1,000 impressions)': '43.36746303',
+  'CTR (link click-through rate)': '0.19908987',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 304.96 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "t1-pmax-earrings-22766100463", AdSet: "Unknown AdSet", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "t1-pmax-earrings-22766100463", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "t1-pmax-earrings-22766100463", AdSet: "Unknown AdSet", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "t1-pmax-earrings-22766100463", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "MOF", AdSet: "MOF | New Arrivals", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'MOF',
+  'Ad set name': 'MOF | New Arrivals',
+  'Amount spent (INR)': '512.57',
+  'CPM (cost per 1,000 impressions)': '910.42628774',
+  'CTR (link click-through rate)': '2.13143872',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "MOF", AdSet: "MOF | New Arrivals", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'MOF',
+  'Ad set name': 'MOF | New Arrivals',
+  'Amount spent (INR)': '512.57',
+  'CPM (cost per 1,000 impressions)': '910.42628774',
+  'CTR (link click-through rate)': '2.13143872',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 512.57 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "t1-pmax-rings-22753626610", AdSet: "Unknown AdSet", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "t1-pmax-rings-22753626610", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "t1-pmax-rings-22753626610", AdSet: "Unknown AdSet", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "t1-pmax-rings-22753626610", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "TOF | Chennai Store", AdSet: "TRLi - IG", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Chennai Store',
+  'Ad set name': 'TRLi - IG',
+  'Amount spent (INR)': '539.17',
+  'CPM (cost per 1,000 impressions)': '87.15971549',
+  'CTR (link click-through rate)': '0.38797284',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | Chennai Store", AdSet: "TRLi - IG", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Chennai Store',
+  'Ad set name': 'TRLi - IG',
+  'Amount spent (INR)': '539.17',
+  'CPM (cost per 1,000 impressions)': '87.15971549',
+  'CTR (link click-through rate)': '0.38797284',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 539.17 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | India Modern", AdSet: "TOF | Delhi | TIFFi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | India Modern',
+  'Ad set name': 'TOF | Delhi | TIFFi',
+  'Amount spent (INR)': '748.38',
+  'CPM (cost per 1,000 impressions)': '62.53175134',
+  'CTR (link click-through rate)': '1.14471925',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | India Modern", AdSet: "TOF | Delhi | TIFFi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | India Modern',
+  'Ad set name': 'TOF | Delhi | TIFFi',
+  'Amount spent (INR)': '748.38',
+  'CPM (cost per 1,000 impressions)': '62.53175134',
+  'CTR (link click-through rate)': '1.14471925',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 748.38 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | India Modern", AdSet: "TOF | Mumbai | TIFFi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | India Modern',
+  'Ad set name': 'TOF | Mumbai | TIFFi',
+  'Amount spent (INR)': '741.82',
+  'CPM (cost per 1,000 impressions)': '70.91969407',
+  'CTR (link click-through rate)': '1.57743786',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | India Modern", AdSet: "TOF | Mumbai | TIFFi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | India Modern',
+  'Ad set name': 'TOF | Mumbai | TIFFi',
+  'Amount spent (INR)': '741.82',
+  'CPM (cost per 1,000 impressions)': '70.91969407',
+  'CTR (link click-through rate)': '1.57743786',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 741.82 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | Chennai Store", AdSet: "INT JWLi - IG", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Chennai Store',
+  'Ad set name': 'INT JWLi - IG',
+  'Amount spent (INR)': '506.03',
+  'CPM (cost per 1,000 impressions)': '29.02213811',
+  'CTR (link click-through rate)': '0.17779307',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | Chennai Store", AdSet: "INT JWLi - IG", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Chennai Store',
+  'Ad set name': 'INT JWLi - IG',
+  'Amount spent (INR)': '506.03',
+  'CPM (cost per 1,000 impressions)': '29.02213811',
+  'CTR (link click-through rate)': '0.17779307',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 506.03 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_180 Days - IGi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_180 Days - IGi',
+  'Amount spent (INR)': '490.46',
+  'CPM (cost per 1,000 impressions)': '79.7495935',
+  'CTR (link click-through rate)': '1.78861789',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_180 Days - IGi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_180 Days - IGi',
+  'Amount spent (INR)': '490.46',
+  'CPM (cost per 1,000 impressions)': '79.7495935',
+  'CTR (link click-through rate)': '1.78861789',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 490.46 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_14 Days - IG", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_14 Days - IG',
+  'Amount spent (INR)': '995.46',
+  'CPM (cost per 1,000 impressions)': '104.41157961',
+  'CTR (link click-through rate)': '5.90518146',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_14 Days - IG", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_14 Days - IG',
+  'Amount spent (INR)': '995.46',
+  'CPM (cost per 1,000 impressions)': '104.41157961',
+  'CTR (link click-through rate)': '5.90518146',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 995.46 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | Chennai Store", AdSet: "OCCi - IG", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Chennai Store',
+  'Ad set name': 'OCCi - IG',
+  'Amount spent (INR)': '509.47',
+  'CPM (cost per 1,000 impressions)': '159.45852895',
+  'CTR (link click-through rate)': '0.46948357',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | Chennai Store", AdSet: "OCCi - IG", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Chennai Store',
+  'Ad set name': 'OCCi - IG',
+  'Amount spent (INR)': '509.47',
+  'CPM (cost per 1,000 impressions)': '159.45852895',
+  'CTR (link click-through rate)': '0.46948357',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 509.47 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "t1-pmax-bracelets-22976580870", AdSet: "Unknown AdSet", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "t1-pmax-bracelets-22976580870", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "t1-pmax-bracelets-22976580870", AdSet: "Unknown AdSet", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "t1-pmax-bracelets-22976580870", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "TOF | New Arrivals", AdSet: "T1 - TRLi - RL SV", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | New Arrivals',
+  'Ad set name': 'T1 - TRLi - RL SV',
+  'Amount spent (INR)': '529.93',
+  'CPM (cost per 1,000 impressions)': '50.40232072',
+  'CTR (link click-through rate)': '0.61822332',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | New Arrivals", AdSet: "T1 - TRLi - RL SV", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | New Arrivals',
+  'Ad set name': 'T1 - TRLi - RL SV',
+  'Amount spent (INR)': '529.93',
+  'CPM (cost per 1,000 impressions)': '50.40232072',
+  'CTR (link click-through rate)': '0.61822332',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 529.93 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | AND", AdSet: "TOF | Bangalore | TRLa", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | AND',
+  'Ad set name': 'TOF | Bangalore | TRLa',
+  'Amount spent (INR)': '592.52',
+  'CPM (cost per 1,000 impressions)': '15.45234059',
+  'CTR (link click-through rate)': '0.74325205',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | AND", AdSet: "TOF | Bangalore | TRLa", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | AND',
+  'Ad set name': 'TOF | Bangalore | TRLa',
+  'Amount spent (INR)': '592.52',
+  'CPM (cost per 1,000 impressions)': '15.45234059',
+  'CTR (link click-through rate)': '0.74325205',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 592.52 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_1 Day - IGi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_1 Day - IGi',
+  'Amount spent (INR)': '866.71',
+  'CPM (cost per 1,000 impressions)': '365.23809524',
+  'CTR (link click-through rate)': '5.18331226',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_1 Day - IGi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_1 Day - IGi',
+  'Amount spent (INR)': '866.71',
+  'CPM (cost per 1,000 impressions)': '365.23809524',
+  'CTR (link click-through rate)': '5.18331226',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 866.71 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "brand_search-14337891333", AdSet: "Unknown AdSet", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "brand_search-14337891333", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "brand_search-14337891333", AdSet: "Unknown AdSet", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "brand_search-14337891333", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "MOF", AdSet: "MOF | DABA | IGi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'MOF',
+  'Ad set name': 'MOF | DABA | IGi',
+  'Amount spent (INR)': '1282.82',
+  'CPM (cost per 1,000 impressions)': '423.79253386',
+  'CTR (link click-through rate)': '3.66699703',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "MOF", AdSet: "MOF | DABA | IGi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'MOF',
+  'Ad set name': 'MOF | DABA | IGi',
+  'Amount spent (INR)': '1282.82',
+  'CPM (cost per 1,000 impressions)': '423.79253386',
+  'CTR (link click-through rate)': '3.66699703',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 1282.82 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "MOF", AdSet: "MOF | New Arrivals | RL SV", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'MOF',
+  'Ad set name': 'MOF | New Arrivals | RL SV',
+  'Amount spent (INR)': '499.03',
+  'CPM (cost per 1,000 impressions)': '337.18243243',
+  'CTR (link click-through rate)': '1.01351351',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "MOF", AdSet: "MOF | New Arrivals | RL SV", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'MOF',
+  'Ad set name': 'MOF | New Arrivals | RL SV',
+  'Amount spent (INR)': '499.03',
+  'CPM (cost per 1,000 impressions)': '337.18243243',
+  'CTR (link click-through rate)': '1.01351351',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 499.03 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | All That Grace", AdSet: "ARL | IGi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | All That Grace',
+  'Ad set name': 'ARL | IGi',
+  'Amount spent (INR)': '1238.08',
+  'CPM (cost per 1,000 impressions)': '365',
+  'CTR (link click-through rate)': '1.5625',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | All That Grace", AdSet: "ARL | IGi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | All That Grace',
+  'Ad set name': 'ARL | IGi',
+  'Amount spent (INR)': '1238.08',
+  'CPM (cost per 1,000 impressions)': '365',
+  'CTR (link click-through rate)': '1.5625',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 1238.08 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_14 Days - IGi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_14 Days - IGi',
+  'Amount spent (INR)': '772.18',
+  'CPM (cost per 1,000 impressions)': '174.26765967',
+  'CTR (link click-through rate)': '3.74633266',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "BOF | DPA", AdSet: "VC & ATC_14 Days - IGi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'BOF | DPA',
+  'Ad set name': 'VC & ATC_14 Days - IGi',
+  'Amount spent (INR)': '772.18',
+  'CPM (cost per 1,000 impressions)': '174.26765967',
+  'CTR (link click-through rate)': '3.74633266',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 772.18 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | Bangalore", AdSet: "LUXEi", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "TOF | Bangalore", AdSet: "LUXEi"
+Looking up Meta data for Campaign: "TOF | Bangalore", AdSet: "LUXEi", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "TOF | Bangalore", AdSet: "LUXEi"
+Looking up Meta data for Campaign: "TOF | 80k", AdSet: "OCC – IGi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | 80k',
+  'Ad set name': 'OCC – IGi',
+  'Amount spent (INR)': '496.22',
+  'CPM (cost per 1,000 impressions)': '29.78332633',
+  'CTR (link click-through rate)': '0.63021427',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | 80k", AdSet: "OCC – IGi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | 80k',
+  'Ad set name': 'OCC – IGi',
+  'Amount spent (INR)': '496.22',
+  'CPM (cost per 1,000 impressions)': '29.78332633',
+  'CTR (link click-through rate)': '0.63021427',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 496.22 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "bof_yt_all_products-22942055261", AdSet: "Unknown AdSet", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "bof_yt_all_products-22942055261", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "bof_yt_all_products-22942055261", AdSet: "Unknown AdSet", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "bof_yt_all_products-22942055261", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "TOF | Delhi", AdSet: "BTY1i", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "TOF | Delhi", AdSet: "BTY1i"
+Looking up Meta data for Campaign: "TOF | Delhi", AdSet: "BTY1i", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "TOF | Delhi", AdSet: "BTY1i"
+Looking up Meta data for Campaign: "TOF | Chennai Store", AdSet: "COM - LUXEi - IG", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Chennai Store',
+  'Ad set name': 'COM - LUXEi - IG',
+  'Amount spent (INR)': '141.43',
+  'CPM (cost per 1,000 impressions)': '49.38198324',
+  'CTR (link click-through rate)': '0.17458101',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | Chennai Store", AdSet: "COM - LUXEi - IG", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Chennai Store',
+  'Ad set name': 'COM - LUXEi - IG',
+  'Amount spent (INR)': '141.43',
+  'CPM (cost per 1,000 impressions)': '49.38198324',
+  'CTR (link click-through rate)': '0.17458101',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 141.43 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | New Arrivals", AdSet: "T1 - INT JWLi - FEED DABA", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | New Arrivals',
+  'Ad set name': 'T1 - INT JWLi - FEED DABA',
+  'Amount spent (INR)': '416.48',
+  'CPM (cost per 1,000 impressions)': '152.8928047',
+  'CTR (link click-through rate)': '0.77092511',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | New Arrivals", AdSet: "T1 - INT JWLi - FEED DABA", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | New Arrivals',
+  'Ad set name': 'T1 - INT JWLi - FEED DABA',
+  'Amount spent (INR)': '416.48',
+  'CPM (cost per 1,000 impressions)': '152.8928047',
+  'CTR (link click-through rate)': '0.77092511',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 416.48 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF+%7C+80k", AdSet: "LUXE+%7C+IGi", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "TOF+%7C+80k", AdSet: "LUXE+%7C+IGi"
+Looking up Meta data for Campaign: "TOF+%7C+80k", AdSet: "LUXE+%7C+IGi", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "TOF+%7C+80k", AdSet: "LUXE+%7C+IGi"
+Looking up Meta data for Campaign: "TOF | Ahmedabad Store", AdSet: "LUXEi - IG", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Ahmedabad Store',
+  'Ad set name': 'LUXEi - IG',
+  'Amount spent (INR)': '85.46',
+  'CPM (cost per 1,000 impressions)': '147.09122203',
+  'CTR (link click-through rate)': '0.8605852',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | Ahmedabad Store", AdSet: "LUXEi - IG", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Ahmedabad Store',
+  'Ad set name': 'LUXEi - IG',
+  'Amount spent (INR)': '85.46',
+  'CPM (cost per 1,000 impressions)': '147.09122203',
+  'CTR (link click-through rate)': '0.8605852',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 85.46 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "MOF", AdSet: "MOF | MUMi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'MOF',
+  'Ad set name': 'MOF | MUMi',
+  'Amount spent (INR)': '504.68',
+  'CPM (cost per 1,000 impressions)': '407.32849072',
+  'CTR (link click-through rate)': '0.88781275',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "MOF", AdSet: "MOF | MUMi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'MOF',
+  'Ad set name': 'MOF | MUMi',
+  'Amount spent (INR)': '504.68',
+  'CPM (cost per 1,000 impressions)': '407.32849072',
+  'CTR (link click-through rate)': '0.88781275',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 504.68 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | Ahmedabad Store", AdSet: "TRLi - IG", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Ahmedabad Store',
+  'Ad set name': 'TRLi - IG',
+  'Amount spent (INR)': '73.94',
+  'CPM (cost per 1,000 impressions)': '99.64959569',
+  'CTR (link click-through rate)': '0.67385445',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | Ahmedabad Store", AdSet: "TRLi - IG", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Ahmedabad Store',
+  'Ad set name': 'TRLi - IG',
+  'Amount spent (INR)': '73.94',
+  'CPM (cost per 1,000 impressions)': '99.64959569',
+  'CTR (link click-through rate)': '0.67385445',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 73.94 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "The behno New York x Moi collaboration", AdSet: "The behno New York x Moi collaboration - Reach", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'The behno New York x Moi collaboration',
+  'Ad set name': 'The behno New York x Moi collaboration - Reach',
+  'Amount spent (INR)': '105.47',
+  'CPM (cost per 1,000 impressions)': '32.51233046',
+  'CTR (link click-through rate)': '0.12330456',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "The behno New York x Moi collaboration", AdSet: "The behno New York x Moi collaboration - Reach", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'The behno New York x Moi collaboration',
+  'Ad set name': 'The behno New York x Moi collaboration - Reach',
+  'Amount spent (INR)': '105.47',
+  'CPM (cost per 1,000 impressions)': '32.51233046',
+  'CTR (link click-through rate)': '0.12330456',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 105.47 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | 80k", AdSet: "T1 - LUXEi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | 80k',
+  'Ad set name': 'T1 - LUXEi',
+  'Amount spent (INR)': '957.25',
+  'CPM (cost per 1,000 impressions)': '158.77425775',
+  'CTR (link click-through rate)': '1.95720683',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | 80k", AdSet: "T1 - LUXEi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | 80k',
+  'Ad set name': 'T1 - LUXEi',
+  'Amount spent (INR)': '957.25',
+  'CPM (cost per 1,000 impressions)': '158.77425775',
+  'CTR (link click-through rate)': '1.95720683',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 957.25 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | New Arrivals", AdSet: "T1 - INT JWLi - ST SV", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | New Arrivals',
+  'Ad set name': 'T1 - INT JWLi - ST SV',
+  'Amount spent (INR)': '155.59',
+  'CPM (cost per 1,000 impressions)': '156.05817452',
+  'CTR (link click-through rate)': '1.00300903',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | New Arrivals", AdSet: "T1 - INT JWLi - ST SV", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | New Arrivals',
+  'Ad set name': 'T1 - INT JWLi - ST SV',
+  'Amount spent (INR)': '155.59',
+  'CPM (cost per 1,000 impressions)': '156.05817452',
+  'CTR (link click-through rate)': '1.00300903',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 155.59 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | New Arrivals", AdSet: "T1 - TRLi - ST SI", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | New Arrivals',
+  'Ad set name': 'T1 - TRLi - ST SI',
+  'Amount spent (INR)': '455.13',
+  'CPM (cost per 1,000 impressions)': '142.228125',
+  'CTR (link click-through rate)': '0.4375',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | New Arrivals", AdSet: "T1 - TRLi - ST SI", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | New Arrivals',
+  'Ad set name': 'T1 - TRLi - ST SI',
+  'Amount spent (INR)': '455.13',
+  'CPM (cost per 1,000 impressions)': '142.228125',
+  'CTR (link click-through rate)': '0.4375',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 455.13 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | Chennai Store", AdSet: "COM - TRLi - IG", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Chennai Store',
+  'Ad set name': 'COM - TRLi - IG',
+  'Amount spent (INR)': '60.54',
+  'CPM (cost per 1,000 impressions)': '18.62769231',
+  'CTR (link click-through rate)': '0.12307692',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | Chennai Store", AdSet: "COM - TRLi - IG", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Chennai Store',
+  'Ad set name': 'COM - TRLi - IG',
+  'Amount spent (INR)': '60.54',
+  'CPM (cost per 1,000 impressions)': '18.62769231',
+  'CTR (link click-through rate)': '0.12307692',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 60.54 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | India Modern", AdSet: "INT JWLY - IGi", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "TOF | India Modern", AdSet: "INT JWLY - IGi"
+Looking up Meta data for Campaign: "TOF | India Modern", AdSet: "INT JWLY - IGi", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "TOF | India Modern", AdSet: "INT JWLY - IGi"
+Looking up Meta data for Campaign: "TOF | Ahmedabad Store", AdSet: "INT JWLi - IG", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Ahmedabad Store',
+  'Ad set name': 'INT JWLi - IG',
+  'Amount spent (INR)': '29.19',
+  'CPM (cost per 1,000 impressions)': '116.29482072',
+  'CTR (link click-through rate)': '',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | Ahmedabad Store", AdSet: "INT JWLi - IG", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | Ahmedabad Store',
+  'Ad set name': 'INT JWLi - IG',
+  'Amount spent (INR)': '29.19',
+  'CPM (cost per 1,000 impressions)': '116.29482072',
+  'CTR (link click-through rate)': '',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 29.19 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF | New Arrivals", AdSet: "T1 - INT JWLi - FEED SI", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | New Arrivals',
+  'Ad set name': 'T1 - INT JWLi - FEED SI',
+  'Amount spent (INR)': '380.9',
+  'CPM (cost per 1,000 impressions)': '94.61003477',
+  'CTR (link click-through rate)': '0.29806259',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "TOF | New Arrivals", AdSet: "T1 - INT JWLi - FEED SI", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'TOF | New Arrivals',
+  'Ad set name': 'T1 - INT JWLi - FEED SI',
+  'Amount spent (INR)': '380.9',
+  'CPM (cost per 1,000 impressions)': '94.61003477',
+  'CTR (link click-through rate)': '0.29806259',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 380.9 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "{{campaign.name}}", AdSet: "{{adset.name}}", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "{{campaign.name}}", AdSet: "{{adset.name}}"
+Looking up Meta data for Campaign: "{{campaign.name}}", AdSet: "{{adset.name}}", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "{{campaign.name}}", AdSet: "{{adset.name}}"
+Looking up Meta data for Campaign: "pmax_ring-17551380699", AdSet: "Unknown AdSet", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "pmax_ring-17551380699", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "pmax_ring-17551380699", AdSet: "Unknown AdSet", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "pmax_ring-17551380699", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "MOF", AdSet: "MOF | BLRi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'MOF',
+  'Ad set name': 'MOF | BLRi',
+  'Amount spent (INR)': '224.07',
+  'CPM (cost per 1,000 impressions)': '472.72151899',
+  'CTR (link click-through rate)': '0.63291139',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "MOF", AdSet: "MOF | BLRi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'MOF',
+  'Ad set name': 'MOF | BLRi',
+  'Amount spent (INR)': '224.07',
+  'CPM (cost per 1,000 impressions)': '472.72151899',
+  'CTR (link click-through rate)': '0.63291139',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 224.07 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "MOF", AdSet: "MOF | DELi", Field: "Ad Set Delivery"
+✓ Found matching Meta row: {
+  'Campaign name': 'MOF',
+  'Ad set name': 'MOF | DELi',
+  'Amount spent (INR)': '432.28',
+  'CPM (cost per 1,000 impressions)': '649.06906907',
+  'CTR (link click-through rate)': '0.9009009',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved text value: active for field: Ad Set Delivery
+Looking up Meta data for Campaign: "MOF", AdSet: "MOF | DELi", Field: "Amount spent (INR)"
+✓ Found matching Meta row: {
+  'Campaign name': 'MOF',
+  'Ad set name': 'MOF | DELi',
+  'Amount spent (INR)': '432.28',
+  'CPM (cost per 1,000 impressions)': '649.06906907',
+  'CTR (link click-through rate)': '0.9009009',
+  'Ad set delivery': 'active',
+  'Reporting starts': '2025-09-29',
+  'Reporting ends': '2025-09-29'
+}
+✓ Retrieved value: 432.28 for field: Amount spent (INR)
+Looking up Meta data for Campaign: "TOF %7C ALL", AdSet: "T1 - TRLi", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "TOF %7C ALL", AdSet: "T1 - TRLi"
+Looking up Meta data for Campaign: "TOF %7C ALL", AdSet: "T1 - TRLi", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "TOF %7C ALL", AdSet: "T1 - TRLi"
+Looking up Meta data for Campaign: "MOF", AdSet: "MOF+%7C+DELi", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "MOF", AdSet: "MOF+%7C+DELi"
+Looking up Meta data for Campaign: "MOF", AdSet: "MOF+%7C+DELi", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "MOF", AdSet: "MOF+%7C+DELi"
+Looking up Meta data for Campaign: "TOF | ALL", AdSet: "T1 - TRLi", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "TOF | ALL", AdSet: "T1 - TRLi"
+Looking up Meta data for Campaign: "TOF | ALL", AdSet: "T1 - TRLi", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "TOF | ALL", AdSet: "T1 - TRLi"
+Looking up Meta data for Campaign: "Moi_Ahmedabad_Store-22448000147", AdSet: "Unknown AdSet", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "Moi_Ahmedabad_Store-22448000147", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "Moi_Ahmedabad_Store-22448000147", AdSet: "Unknown AdSet", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "Moi_Ahmedabad_Store-22448000147", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "TOF | Bangalore", AdSet: "TRLa", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "TOF | Bangalore", AdSet: "TRLa"
+Looking up Meta data for Campaign: "TOF | Bangalore", AdSet: "TRLa", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "TOF | Bangalore", AdSet: "TRLa"
+Looking up Meta data for Campaign: "sag_organic", AdSet: "Unknown AdSet", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "sag_organic", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "sag_organic", AdSet: "Unknown AdSet", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "sag_organic", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "TOF | DABA | ALL | A+", AdSet: "TOF | DABA | ALL | A+", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "TOF | DABA | ALL | A+", AdSet: "TOF | DABA | ALL | A+"
+Looking up Meta data for Campaign: "TOF | DABA | ALL | A+", AdSet: "TOF | DABA | ALL | A+", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "TOF | DABA | ALL | A+", AdSet: "TOF | DABA | ALL | A+"
+Looking up Meta data for Campaign: "TOF | Mumbai", AdSet: "TRLa", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "TOF | Mumbai", AdSet: "TRLa"
+Looking up Meta data for Campaign: "TOF | Mumbai", AdSet: "TRLa", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "TOF | Mumbai", AdSet: "TRLa"
+Looking up Meta data for Campaign: "TOF | All That Grace", AdSet: "END | IGi", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "TOF | All That Grace", AdSet: "END | IGi"
+Looking up Meta data for Campaign: "TOF | All That Grace", AdSet: "END | IGi", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "TOF | All That Grace", AdSet: "END | IGi"
+Looking up Meta data for Campaign: "TOF | India", AdSet: "IND - TRLi", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "TOF | India", AdSet: "IND - TRLi"
+Looking up Meta data for Campaign: "TOF | India", AdSet: "IND - TRLi", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "TOF | India", AdSet: "IND - TRLi"
+Looking up Meta data for Campaign: "TOF", AdSet: "Unknown AdSet", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "TOF", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "TOF", AdSet: "Unknown AdSet", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "TOF", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "pmax_earrings-19114863587", AdSet: "Unknown AdSet", Field: "Ad Set Delivery"
+✗ No matching Meta row found for Campaign: "pmax_earrings-19114863587", AdSet: "Unknown AdSet"
+Looking up Meta data for Campaign: "pmax_earrings-19114863587", AdSet: "Unknown AdSet", Field: "Amount spent (INR)"
+✗ No matching Meta row found for Campaign: "pmax_earrings-19114863587", AdSet: "Unknown AdSet"
+Generated 78 Ad Set Level records
+Processing 10 fields for Top Level Daily output
+Generated Top Level Daily record
+
+Step 4: Saving output files...
+✓ Saved Ad Set Level data to: /Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/MOI Original Data/Output Example/Adset Level Matrices.csv
+  Records: 78
+✓ Saved Top Level Daily data to: /Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/MOI Original Data/Output Example/Top Level Daily Metrics_Complete.csv
+  Records: 1
+✓ Saved Pivot temp data to: /Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/MOI Original Data/Output Example/pivot_temp.csv
+  Records: 78
+
+===== Conversion Completed Successfully =====
+All files have been processed and saved to the Output Example directory.
+
+Generated Files:
+1. Adset Level Matrices.csv - Ad set level performance metrics
+2. Top Level Daily Metrics_Complete.csv - Daily aggregated metrics
+3. pivot_temp.csv - Intermediate pivot table for lookups

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fix Google Ads Data</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; cursor: pointer; }
+        .success { color: green; }
+        .error { color: red; }
+        pre { background: #f5f5f5; padding: 10px; overflow: auto; }
+    </style>
+</head>
+<body>
+    <h1>Fix Google Ads Data</h1>
+    
+    <button onclick="checkGoogleData()">Check Current Google Data</button>
+    <button onclick="fixGoogleData()">Fix/Add Sample Google Data</button>
+    <button onclick="clearGoogleData()">Clear Google Data</button>
+    
+    <div id="output"></div>
+    
+    <script>
+        function checkGoogleData() {
+            const output = document.getElementById('output');
+            const data = localStorage.getItem('moi-google-data');
+            
+            if (data) {
+                try {
+                    const parsed = JSON.parse(data);
+                    output.innerHTML = `
+                        <p class="success">✅ Google data exists (${parsed.length} records)</p>
+                        <pre>${JSON.stringify(parsed, null, 2)}</pre>
+                    `;
+                } catch (e) {
+                    output.innerHTML = `<p class="error">❌ Error parsing data: ${e.message}</p>`;
+                }
+            } else {
+                output.innerHTML = '<p class="error">❌ No Google data found</p>';
+            }
+        }
+        
+        function fixGoogleData() {
+            const sampleData = [
+                {
+                    "Campaign": "BOF-YT-ALL PRODUCTS",
+                    "Campaign state": "Enabled",
+                    "Campaign type": "Demand Gen",
+                    "Clicks": "60",
+                    "Impr.": "3467",
+                    "CTR": "1.73%",
+                    "Currency code": "INR",
+                    "Avg. CPC": "7.71",
+                    "Cost": "462.69",
+                    "Conversions": "0.00"
+                },
+                {
+                    "Campaign": "Brand-Search",
+                    "Campaign state": "Enabled", 
+                    "Campaign type": "Search",
+                    "Clicks": "93",
+                    "Impr.": "492",
+                    "CTR": "18.90%",
+                    "Currency code": "INR",
+                    "Avg. CPC": "84.34",
+                    "Cost": "7843.83",
+                    "Conversions": "0.00"
+                },
+                {
+                    "Campaign": "Moi Ahmedabad - Local Store Visits",
+                    "Campaign state": "Enabled",
+                    "Campaign type": "Performance Max",
+                    "Clicks": "9",
+                    "Impr.": "142",
+                    "CTR": "6.34%",
+                    "Currency code": "INR",
+                    "Avg. CPC": "58.80",
+                    "Cost": "529.22",
+                    "Conversions": "7.00"
+                },
+                {
+                    "Campaign": "Moi Chennai - Local Store Visits",
+                    "Campaign state": "Enabled",
+                    "Campaign type": "Performance Max",
+                    "Clicks": "29",
+                    "Impr.": "397",
+                    "CTR": "7.30%",
+                    "Currency code": "INR",
+                    "Avg. CPC": "17.25",
+                    "Cost": "500.15",
+                    "Conversions": "6.00"
+                },
+                {
+                    "Campaign": "T1 Pmax Bracelets",
+                    "Campaign state": "Enabled",
+                    "Campaign type": "Performance Max",
+                    "Clicks": "19",
+                    "Impr.": "2433",
+                    "CTR": "0.78%",
+                    "Currency code": "INR",
+                    "Avg. CPC": "27.78",
+                    "Cost": "527.90",
+                    "Conversions": "0.00"
+                },
+                {
+                    "Campaign": "T1 Pmax Earrings",
+                    "Campaign state": "Enabled",
+                    "Campaign type": "Performance Max",
+                    "Clicks": "198",
+                    "Impr.": "25792",
+                    "CTR": "0.77%",
+                    "Currency code": "INR",
+                    "Avg. CPC": "20.08",
+                    "Cost": "3976.18",
+                    "Conversions": "0.00"
+                },
+                {
+                    "Campaign": "T1 Pmax Rings",
+                    "Campaign state": "Enabled",
+                    "Campaign type": "Performance Max",
+                    "Clicks": "252",
+                    "Impr.": "33875",
+                    "CTR": "0.74%",
+                    "Currency code": "INR",
+                    "Avg. CPC": "12.73",
+                    "Cost": "3208.38",
+                    "Conversions": "0.00"
+                }
+            ];
+            
+            try {
+                localStorage.setItem('moi-google-data', JSON.stringify(sampleData));
+                const output = document.getElementById('output');
+                output.innerHTML = `
+                    <p class="success">✅ Google data fixed/added successfully!</p>
+                    <pre>${JSON.stringify(sampleData, null, 2)}</pre>
+                    <p>Total cost: ₹${sampleData.reduce((sum, row) => sum + parseFloat(row.Cost), 0)}</p>
+                    <p><a href="/data_inspector.html" target="_blank">Open Data Inspector</a> to verify</p>
+                `;
+            } catch (e) {
+                document.getElementById('output').innerHTML = `<p class="error">❌ Error: ${e.message}</p>`;
+            }
+        }
+        
+        function clearGoogleData() {
+            localStorage.removeItem('moi-google-data');
+            document.getElementById('output').innerHTML = '<p class="success">✅ Google data cleared</p>';
+        }
+        
+        // Check on load
+        window.onload = checkGoogleData;
+    </script>
+</body>
+</html>

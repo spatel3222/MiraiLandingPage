@@ -1,0 +1,5 @@
+Campaign performance
+"September 29, 2025 - September 29, 2025"
+Campaign,Campaign state,Campaign type,Clicks,Impr.,CTR,Currency code,Avg. CPC,Cost,Impr. (Abs. Top) %,Impr. (Top) %,Conversions,View-through conv.,Cost / conv.,Conv. rate
+"Test Google Campaign 1",Enabled,Search,100,5000,2.00%,INR,10.00,1500.00,80.0%,90.0%,5,2,300.00,5.0%
+"Test Google Campaign 2",Enabled,Display,150,7500,2.50%,INR,8.00,2500.00,70.0%,85.0%,8,3,312.50,5.3%

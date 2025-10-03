@@ -1,4 +1,5 @@
 export interface ShopifyRecord {
+  'Day'?: string;
   'Utm campaign': string;
   'Utm term': string;
   'Landing page url': string;
@@ -76,6 +77,7 @@ export interface DashboardData {
   dateRange?: DateRange;
   utmCampaigns?: UTMCampaign[];
   performanceTiers?: PerformanceTiers;
+  topLevelData?: any[]; // Store original daily metrics for export
 }
 
 export interface ChatMessage {

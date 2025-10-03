@@ -1,0 +1,1317 @@
+{
+  "config": {
+    "configFile": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/playwright.config.ts",
+    "rootDir": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 4
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ],
+      [
+        "line",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "Mobile Chrome",
+        "name": "Mobile Chrome",
+        "testDir": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.1",
+    "workers": 4,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://localhost:5175",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "dashboard-regression.test.ts",
+      "file": "dashboard-regression.test.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Dashboard Regression Tests",
+          "file": "dashboard-regression.test.ts",
+          "line": 12,
+          "column": 6,
+          "specs": [
+            {
+              "title": "01. Dashboard Load and Initial Render",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3465,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Starting console monitoring...\n"
+                        },
+                        {
+                          "text": "🔍 Test 01: Validating dashboard loads correctly...\n"
+                        },
+                        {
+                          "text": "✅ Found component: Dashboard\n"
+                        },
+                        {
+                          "text": "✅ Found component: Analytics\n"
+                        },
+                        {
+                          "text": "✅ Found component: MOI\n"
+                        },
+                        {
+                          "text": "📊 JavaScript errors on load: 0\n"
+                        },
+                        {
+                          "text": "🛑 Stopped console monitoring\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-03T06:20:50.955Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "991707ed8eb9f031c51d-d915ff14c36ce386f454",
+              "file": "dashboard-regression.test.ts",
+              "line": 37,
+              "column": 3
+            },
+            {
+              "title": "02. Data Loading and Processing",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 5906,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m2\u001b[39m\nReceived:   \u001b[31m1\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m2\u001b[39m\nReceived:   \u001b[31m1\u001b[39m\n    at /Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests/dashboard-regression.test.ts:195:26",
+                        "location": {
+                          "file": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests/dashboard-regression.test.ts",
+                          "column": 26,
+                          "line": 195
+                        },
+                        "snippet": "  193 |     console.log(`📊 Data processing errors: ${processingErrors.length}`);\n  194 |     \n> 195 |     expect(foundMetrics).toBeGreaterThan(2); // Should find some key metrics\n      |                          ^\n  196 |   });\n  197 |\n  198 |   test('03. UI Component Functionality', async ({ page }) => {"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests/dashboard-regression.test.ts",
+                            "column": 26,
+                            "line": 195
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m2\u001b[39m\nReceived:   \u001b[31m1\u001b[39m\n\n  193 |     console.log(`📊 Data processing errors: ${processingErrors.length}`);\n  194 |     \n> 195 |     expect(foundMetrics).toBeGreaterThan(2); // Should find some key metrics\n      |                          ^\n  196 |   });\n  197 |\n  198 |   test('03. UI Component Functionality', async ({ page }) => {\n    at /Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests/dashboard-regression.test.ts:195:26"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🔍 Starting console monitoring...\n"
+                        },
+                        {
+                          "text": "🔍 Test 02: Validating data loading and processing...\n"
+                        },
+                        {
+                          "text": "📊 Found 30 elements with numeric data\n"
+                        },
+                        {
+                          "text": "✅ Found metric: Sessions\n"
+                        },
+                        {
+                          "text": "📈 Found 1 out of 7 expected metrics\n"
+                        },
+                        {
+                          "text": "📊 Data processing errors: 0\n"
+                        },
+                        {
+                          "text": "🛑 Stopped console monitoring\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-03T06:20:50.953Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results/dashboard-regression-Dashb-8af43-Data-Loading-and-Processing-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results/dashboard-regression-Dashb-8af43-Data-Loading-and-Processing-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results/dashboard-regression-Dashb-8af43-Data-Loading-and-Processing-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests/dashboard-regression.test.ts",
+                        "column": 26,
+                        "line": 195
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "991707ed8eb9f031c51d-d834e929ee7d0faf14dd",
+              "file": "dashboard-regression.test.ts",
+              "line": 83,
+              "column": 3
+            },
+            {
+              "title": "03. UI Component Functionality",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 5029,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Starting console monitoring...\n"
+                        },
+                        {
+                          "text": "🔍 Test 03: Validating UI component functionality...\n"
+                        },
+                        {
+                          "text": "🔘 Found 4 interactive buttons\n"
+                        },
+                        {
+                          "text": "✅ Successfully clicked button: \"Generate Reports\"\n"
+                        },
+                        {
+                          "text": "📊 Successful button interactions: 1\n"
+                        },
+                        {
+                          "text": "📱 UI/responsive errors: 0\n"
+                        },
+                        {
+                          "text": "🛑 Stopped console monitoring\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-03T06:20:50.944Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "991707ed8eb9f031c51d-5c8d59be7ca2d53b23a6",
+              "file": "dashboard-regression.test.ts",
+              "line": 198,
+              "column": 3
+            },
+            {
+              "title": "04. Export Modal Accessibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 3054,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Starting console monitoring...\n"
+                        },
+                        {
+                          "text": "🔍 Test 04: Testing export modal accessibility without triggering downloads...\n"
+                        },
+                        {
+                          "text": "❌ Export button not found for accessibility testing\n"
+                        },
+                        {
+                          "text": "   Available button: \"Generate Reports\"\n"
+                        },
+                        {
+                          "text": "   Available button: \"\"\n"
+                        },
+                        {
+                          "text": "   Available button: \"\"\n"
+                        },
+                        {
+                          "text": "   Available button: \"\"\n"
+                        },
+                        {
+                          "text": "♿ Accessibility warnings: 0\n"
+                        },
+                        {
+                          "text": "🛑 Stopped console monitoring\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-03T06:20:50.944Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "991707ed8eb9f031c51d-2e028086333db52b3b73",
+              "file": "dashboard-regression.test.ts",
+              "line": 267,
+              "column": 3
+            },
+            {
+              "title": "05. Performance and Memory Validation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2756,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Starting console monitoring...\n"
+                        },
+                        {
+                          "text": "🔍 Test 05: Validating performance and memory usage...\n"
+                        },
+                        {
+                          "text": "📊 Initial memory usage: {}\n"
+                        },
+                        {
+                          "text": "⏱️ Load time with large dataset: 590ms\n"
+                        },
+                        {
+                          "text": "📊 Final memory usage: {}\n"
+                        },
+                        {
+                          "text": "⚡ Performance warnings: 0\n"
+                        },
+                        {
+                          "text": "🛑 Stopped console monitoring\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-03T06:20:54.887Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "991707ed8eb9f031c51d-26e704efb83fee352066",
+              "file": "dashboard-regression.test.ts",
+              "line": 344,
+              "column": 3
+            },
+            {
+              "title": "06. Error Recovery and Edge Cases",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5279,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Starting console monitoring...\n"
+                        },
+                        {
+                          "text": "🔍 Test 06: Testing error recovery and edge cases...\n"
+                        },
+                        {
+                          "text": "📊 Empty state errors: 0\n"
+                        },
+                        {
+                          "text": "📊 Malformed data errors: 0\n"
+                        },
+                        {
+                          "text": "📊 Stress test errors: 0\n"
+                        },
+                        {
+                          "text": "📊 Total edge case errors: 0\n"
+                        },
+                        {
+                          "text": "🛑 Stopped console monitoring\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-03T06:20:55.259Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "991707ed8eb9f031c51d-ae33163eb2ee1ed3e2dc",
+              "file": "dashboard-regression.test.ts",
+              "line": 428,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "debug-localStorage.test.ts",
+      "file": "debug-localStorage.test.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Debug localStorage issues with file uploads",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 2,
+                  "status": "passed",
+                  "duration": 16907,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "🚀 Starting localStorage debugging test...\n"
+                    },
+                    {
+                      "text": "\n📊 STEP 1: Initial localStorage state\n"
+                    },
+                    {
+                      "text": "Initial localStorage keys: [ { key: \u001b[32m'moi-cache-version'\u001b[39m, size: \u001b[33m18\u001b[39m, hasData: \u001b[33mtrue\u001b[39m } ]\n"
+                    },
+                    {
+                      "text": "\n📊 STEP 2: Testing upload modal\n"
+                    },
+                    {
+                      "text": "⚠️ Upload modal selector not found, trying alternative selectors...\n"
+                    },
+                    {
+                      "text": "Found 3 file input elements\n"
+                    },
+                    {
+                      "text": "\n📊 STEP 3: Creating test files and uploading\n"
+                    },
+                    {
+                      "text": "Processing file input 0: Shopify Export\n"
+                    },
+                    {
+                      "text": "✅ Set test-shopify.csv to Shopify Export input\n"
+                    },
+                    {
+                      "text": "Processing file input 1: Meta Ads\n"
+                    },
+                    {
+                      "text": "✅ Set test-meta.csv to Meta Ads input\n"
+                    },
+                    {
+                      "text": "Processing file input 2: Google Ads\n"
+                    },
+                    {
+                      "text": "✅ Set test-google.csv to Google Ads input\n"
+                    },
+                    {
+                      "text": "\n📊 STEP 4: Submitting upload form\n"
+                    },
+                    {
+                      "text": "✅ Found Generate Reports button\n"
+                    },
+                    {
+                      "text": "✅ Clicked Generate Reports button\n"
+                    },
+                    {
+                      "text": "\n📊 STEP 5: Checking localStorage after upload\n"
+                    },
+                    {
+                      "text": "All localStorage keys after upload: [\n  {\n    key: \u001b[32m'moi-output-timestamp'\u001b[39m,\n    size: \u001b[33m24\u001b[39m,\n    hasData: \u001b[33mtrue\u001b[39m,\n    preview: \u001b[32m'2025-10-03T06:21:07.768Z'\u001b[39m\n  },\n  { key: \u001b[32m'moi-google-data'\u001b[39m, size: \u001b[33m2\u001b[39m, hasData: \u001b[33mtrue\u001b[39m, preview: \u001b[32m'[]'\u001b[39m },\n  {\n    key: \u001b[32m'moi-pivot-data'\u001b[39m,\n    size: \u001b[33m482\u001b[39m,\n    hasData: \u001b[33mtrue\u001b[39m,\n    preview: \u001b[32m'[{\"UTM Campaign\":\"Test Campaign 1\",\"UTM Term\":\"Test Term 1\",\"Online store visitors\":100,\"Sessions\":1'\u001b[39m\n  },\n  {\n    key: \u001b[32m'moi-dashboard-data'\u001b[39m,\n    size: \u001b[33m1372\u001b[39m,\n    hasData: \u001b[33mtrue\u001b[39m,\n    preview: \u001b[32m'{\"keyMetrics\":{\"uniqueCampaigns\":2,\"avgAdsetsPerCampaign\":1,\"avgTrafficPerCampaign\":150,\"totalUnique'\u001b[39m\n  },\n  {\n    key: \u001b[32m'moi-cache-version'\u001b[39m,\n    size: \u001b[33m18\u001b[39m,\n    hasData: \u001b[33mtrue\u001b[39m,\n    preview: \u001b[32m'v1.2.0-upload-only'\u001b[39m\n  },\n  {\n    key: \u001b[32m'moi-shopify-data'\u001b[39m,\n    size: \u001b[33m450\u001b[39m,\n    hasData: \u001b[33mtrue\u001b[39m,\n    preview: \u001b[32m'[{\"Day\":\"2025-09-29\",\"UTM campaign\":\"Test Campaign 1\",\"UTM term\":\"Test Term 1\",\"Online store visitor'\u001b[39m\n  },\n  {\n    key: \u001b[32m'moi-meta-data'\u001b[39m,\n    size: \u001b[33m399\u001b[39m,\n    hasData: \u001b[33mtrue\u001b[39m,\n    preview: \u001b[32m'[{\"Campaign name\":\"Test Meta Campaign\",\"Ad set name\":\"Test Meta AdSet\",\"Amount spent (INR)\":2500,\"CT'\u001b[39m\n  },\n  {\n    key: \u001b[32m'moi-output-data'\u001b[39m,\n    size: \u001b[33m1372\u001b[39m,\n    hasData: \u001b[33mtrue\u001b[39m,\n    preview: \u001b[32m'{\"keyMetrics\":{\"uniqueCampaigns\":2,\"avgAdsetsPerCampaign\":1,\"avgTrafficPerCampaign\":150,\"totalUnique'\u001b[39m\n  },\n  {\n    key: \u001b[32m'moi-dashboard-timestamp'\u001b[39m,\n    size: \u001b[33m24\u001b[39m,\n    hasData: \u001b[33mtrue\u001b[39m,\n    preview: \u001b[32m'2025-10-03T06:21:07.768Z'\u001b[39m\n  }\n]\n"
+                    },
+                    {
+                      "text": "MOI-specific keys: [\n  {\n    key: \u001b[32m'moi-output-timestamp'\u001b[39m,\n    size: \u001b[33m24\u001b[39m,\n    hasData: \u001b[33mtrue\u001b[39m,\n    preview: \u001b[32m'2025-10-03T06:21:07.768Z'\u001b[39m\n  },\n  { key: \u001b[32m'moi-google-data'\u001b[39m, size: \u001b[33m2\u001b[39m, hasData: \u001b[33mtrue\u001b[39m, preview: \u001b[32m'[]'\u001b[39m },\n  {\n    key: \u001b[32m'moi-pivot-data'\u001b[39m,\n    size: \u001b[33m482\u001b[39m,\n    hasData: \u001b[33mtrue\u001b[39m,\n    preview: \u001b[32m'[{\"UTM Campaign\":\"Test Campaign 1\",\"UTM Term\":\"Test Term 1\",\"Online store visitors\":100,\"Sessions\":1'\u001b[39m\n  },\n  {\n    key: \u001b[32m'moi-dashboard-data'\u001b[39m,\n    size: \u001b[33m1372\u001b[39m,\n    hasData: \u001b[33mtrue\u001b[39m,\n    preview: \u001b[32m'{\"keyMetrics\":{\"uniqueCampaigns\":2,\"avgAdsetsPerCampaign\":1,\"avgTrafficPerCampaign\":150,\"totalUnique'\u001b[39m\n  },\n  {\n    key: \u001b[32m'moi-cache-version'\u001b[39m,\n    size: \u001b[33m18\u001b[39m,\n    hasData: \u001b[33mtrue\u001b[39m,\n    preview: \u001b[32m'v1.2.0-upload-only'\u001b[39m\n  },\n  {\n    key: \u001b[32m'moi-shopify-data'\u001b[39m,\n    size: \u001b[33m450\u001b[39m,\n    hasData: \u001b[33mtrue\u001b[39m,\n    preview: \u001b[32m'[{\"Day\":\"2025-09-29\",\"UTM campaign\":\"Test Campaign 1\",\"UTM term\":\"Test Term 1\",\"Online store visitor'\u001b[39m\n  },\n  {\n    key: \u001b[32m'moi-meta-data'\u001b[39m,\n    size: \u001b[33m399\u001b[39m,\n    hasData: \u001b[33mtrue\u001b[39m,\n    preview: \u001b[32m'[{\"Campaign name\":\"Test Meta Campaign\",\"Ad set name\":\"Test Meta AdSet\",\"Amount spent (INR)\":2500,\"CT'\u001b[39m\n  },\n  {\n    key: \u001b[32m'moi-output-data'\u001b[39m,\n    size: \u001b[33m1372\u001b[39m,\n    hasData: \u001b[33mtrue\u001b[39m,\n    preview: \u001b[32m'{\"keyMetrics\":{\"uniqueCampaigns\":2,\"avgAdsetsPerCampaign\":1,\"avgTrafficPerCampaign\":150,\"totalUnique'\u001b[39m\n  },\n  {\n    key: \u001b[32m'moi-dashboard-timestamp'\u001b[39m,\n    size: \u001b[33m24\u001b[39m,\n    hasData: \u001b[33mtrue\u001b[39m,\n    preview: \u001b[32m'2025-10-03T06:21:07.768Z'\u001b[39m\n  }\n]\n"
+                    },
+                    {
+                      "text": "\n📊 STEP 6: Testing data inspector\n"
+                    },
+                    {
+                      "text": "Inspector status results: [\n  { label: \u001b[32m'Shopify Export'\u001b[39m, status: \u001b[32m'FOUND'\u001b[39m },\n  { label: \u001b[32m'Meta Ads'\u001b[39m, status: \u001b[32m'FOUND'\u001b[39m },\n  { label: \u001b[32m'Google Ads'\u001b[39m, status: \u001b[32m'FOUND'\u001b[39m },\n  { label: \u001b[32m'Dashboard State'\u001b[39m, status: \u001b[32m'FOUND'\u001b[39m },\n  { label: \u001b[32m'Top Level CSV'\u001b[39m, status: \u001b[32m'MISSING'\u001b[39m },\n  { label: \u001b[32m'AdSet Level CSV'\u001b[39m, status: \u001b[32m'MISSING'\u001b[39m },\n  { label: \u001b[32m'Pivot Data'\u001b[39m, status: \u001b[32m'FOUND'\u001b[39m }\n]\n"
+                    },
+                    {
+                      "text": "\n📊 STEP 7: Final debugging analysis\n"
+                    },
+                    {
+                      "text": "Final localStorage analysis: [\n  {\n    key: \u001b[32m'moi-shopify-data'\u001b[39m,\n    exists: \u001b[33mtrue\u001b[39m,\n    size: \u001b[33m450\u001b[39m,\n    isValidJSON: \u001b[33mtrue\u001b[39m\n  },\n  { key: \u001b[32m'moi-meta-data'\u001b[39m, exists: \u001b[33mtrue\u001b[39m, size: \u001b[33m399\u001b[39m, isValidJSON: \u001b[33mtrue\u001b[39m },\n  { key: \u001b[32m'moi-google-data'\u001b[39m, exists: \u001b[33mtrue\u001b[39m, size: \u001b[33m2\u001b[39m, isValidJSON: \u001b[33mtrue\u001b[39m },\n  {\n    key: \u001b[32m'moi-dashboard-data'\u001b[39m,\n    exists: \u001b[33mtrue\u001b[39m,\n    size: \u001b[33m1372\u001b[39m,\n    isValidJSON: \u001b[33mtrue\u001b[39m\n  }\n]\n"
+                    },
+                    {
+                      "text": "📸 Final screenshot saved as debug-final-state.png\n"
+                    },
+                    {
+                      "text": "\n📋 DEBUGGING SUMMARY:\n"
+                    },
+                    {
+                      "text": "- Initial keys found: \u001b[33m1\u001b[39m\n"
+                    },
+                    {
+                      "text": "- Keys after upload: \u001b[33m9\u001b[39m\n"
+                    },
+                    {
+                      "text": "- MOI keys found: \u001b[33m9\u001b[39m\n"
+                    },
+                    {
+                      "text": "- Expected keys analysis: [\n  {\n    key: \u001b[32m'moi-shopify-data'\u001b[39m,\n    exists: \u001b[33mtrue\u001b[39m,\n    size: \u001b[33m450\u001b[39m,\n    isValidJSON: \u001b[33mtrue\u001b[39m\n  },\n  { key: \u001b[32m'moi-meta-data'\u001b[39m, exists: \u001b[33mtrue\u001b[39m, size: \u001b[33m399\u001b[39m, isValidJSON: \u001b[33mtrue\u001b[39m },\n  { key: \u001b[32m'moi-google-data'\u001b[39m, exists: \u001b[33mtrue\u001b[39m, size: \u001b[33m2\u001b[39m, isValidJSON: \u001b[33mtrue\u001b[39m },\n  {\n    key: \u001b[32m'moi-dashboard-data'\u001b[39m,\n    exists: \u001b[33mtrue\u001b[39m,\n    size: \u001b[33m1372\u001b[39m,\n    isValidJSON: \u001b[33mtrue\u001b[39m\n  }\n]\n"
+                    },
+                    {
+                      "text": "✅ All expected keys found!\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-10-03T06:20:56.870Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "16f7c763b3ccbecbff2e-ba1212b78537864b9f37",
+          "file": "debug-localStorage.test.ts",
+          "line": 3,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "export-validation.test.ts",
+      "file": "export-validation.test.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Export System Validation",
+          "file": "export-validation.test.ts",
+          "line": 15,
+          "column": 6,
+          "specs": [
+            {
+              "title": "01. Validate Meta Ads Data Export",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 12476,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('button:has-text(\"Export\"), button:has-text(\"Download\"), [data-testid=\"export-button\"]').first()\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('button:has-text(\"Export\"), button:has-text(\"Download\"), [data-testid=\"export-button\"]').first()\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('button:has-text(\"Export\"), button:has-text(\"Download\"), [data-testid=\"export-button\"]').first()\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('button:has-text(\"Export\"), button:has-text(\"Download\"), [data-testid=\"export-button\"]').first()\u001b[22m\n\n    at /Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests/export-validation.test.ts:81:40",
+                        "location": {
+                          "file": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests/export-validation.test.ts",
+                          "column": 40,
+                          "line": 81
+                        },
+                        "snippet": "  79 |     \n  80 |     const exportButton = page.locator('button:has-text(\"Export\"), button:has-text(\"Download\"), [data-testid=\"export-button\"]');\n> 81 |     await expect(exportButton.first()).toBeVisible({ timeout: 10000 });\n     |                                        ^\n  82 |     \n  83 |     await exportButton.first().click();\n  84 |     await page.waitForTimeout(1000);"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests/export-validation.test.ts",
+                            "column": 40,
+                            "line": 81
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m failed\n\nLocator:  locator('button:has-text(\"Export\"), button:has-text(\"Download\"), [data-testid=\"export-button\"]').first()\nExpected: visible\nReceived: <element(s) not found>\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('button:has-text(\"Export\"), button:has-text(\"Download\"), [data-testid=\"export-button\"]').first()\u001b[22m\n\n\n  79 |     \n  80 |     const exportButton = page.locator('button:has-text(\"Export\"), button:has-text(\"Download\"), [data-testid=\"export-button\"]');\n> 81 |     await expect(exportButton.first()).toBeVisible({ timeout: 10000 });\n     |                                        ^\n  82 |     \n  83 |     await exportButton.first().click();\n  84 |     await page.waitForTimeout(1000);\n    at /Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests/export-validation.test.ts:81:40"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🔍 Starting console monitoring...\n"
+                        },
+                        {
+                          "text": "🔍 Test 01: Validating Meta Ads spend/CTR/CPM export...\n"
+                        },
+                        {
+                          "text": "🛑 Stopped console monitoring\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-03T06:20:57.669Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results/export-validation-Export-S-09918-lidate-Meta-Ads-Data-Export-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results/export-validation-Export-S-09918-lidate-Meta-Ads-Data-Export-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results/export-validation-Export-S-09918-lidate-Meta-Ads-Data-Export-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests/export-validation.test.ts",
+                        "column": 40,
+                        "line": 81
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "fab29cda379c8cb1194b-38e54c3664ff160acf81",
+              "file": "export-validation.test.ts",
+              "line": 41,
+              "column": 3
+            },
+            {
+              "title": "02. Validate Google Ads Data Export",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 60976,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests/export-validation.test.ts",
+                            "column": 32,
+                            "line": 199
+                          },
+                          "message": "Error: locator.click: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Export\"), button:has-text(\"Download\")').first()\u001b[22m\n\n\n  197 |     // Trigger export\n  198 |     const exportButton = page.locator('button:has-text(\"Export\"), button:has-text(\"Download\")');\n> 199 |     await exportButton.first().click();\n      |                                ^\n  200 |     await page.waitForTimeout(1000);\n  201 |     \n  202 |     const topLevelButton = page.locator('button:has-text(\"Top Level\"), button:has-text(\"Daily Metrics\")');\n    at /Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests/export-validation.test.ts:199:32"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🔍 Starting console monitoring...\n"
+                        },
+                        {
+                          "text": "🔍 Test 02: Validating Google Ads spend/CTR/CPM export...\n"
+                        },
+                        {
+                          "text": "🛑 Stopped console monitoring\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-03T06:20:58.199Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results/export-validation-Export-S-0267d-date-Google-Ads-Data-Export-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results/export-validation-Export-S-0267d-date-Google-Ads-Data-Export-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results/export-validation-Export-S-0267d-date-Google-Ads-Data-Export-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "fab29cda379c8cb1194b-226a8b5138fde2b95c92",
+              "file": "export-validation.test.ts",
+              "line": 161,
+              "column": 3
+            },
+            {
+              "title": "03. Validate Session Duration Calculations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 60983,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests/export-validation.test.ts",
+                            "column": 32,
+                            "line": 322
+                          },
+                          "message": "Error: locator.click: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Export\"), button:has-text(\"Download\")').first()\u001b[22m\n\n\n  320 |     // Trigger export to test session calculations\n  321 |     const exportButton = page.locator('button:has-text(\"Export\"), button:has-text(\"Download\")');\n> 322 |     await exportButton.first().click();\n      |                                ^\n  323 |     await page.waitForTimeout(1000);\n  324 |     \n  325 |     const topLevelButton = page.locator('button:has-text(\"Top Level\"), button:has-text(\"Daily Metrics\")');\n    at /Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests/export-validation.test.ts:322:32"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🔍 Starting console monitoring...\n"
+                        },
+                        {
+                          "text": "🔍 Test 03: Validating session duration calculations...\n"
+                        },
+                        {
+                          "text": "🛑 Stopped console monitoring\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-03T06:21:00.552Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results/export-validation-Export-S-105d2-ssion-Duration-Calculations-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results/export-validation-Export-S-105d2-ssion-Duration-Calculations-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results/export-validation-Export-S-105d2-ssion-Duration-Calculations-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "fab29cda379c8cb1194b-010155ea68a6285c3a42",
+              "file": "export-validation.test.ts",
+              "line": 241,
+              "column": 3
+            },
+            {
+              "title": "04. End-to-End Export Validation",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "timedOut",
+                      "duration": 61031,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests/export-validation.test.ts",
+                            "column": 32,
+                            "line": 448
+                          },
+                          "message": "Error: locator.click: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Export\"), button:has-text(\"Download\")').first()\u001b[22m\n\n\n  446 |     // Test both Top Level and Adset exports\n  447 |     const exportButton = page.locator('button:has-text(\"Export\"), button:has-text(\"Download\")');\n> 448 |     await exportButton.first().click();\n      |                                ^\n  449 |     await page.waitForTimeout(1000);\n  450 |     \n  451 |     await page.screenshot({ path: 'test-results/04-export-modal.png', fullPage: true });\n    at /Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/tests/export-validation.test.ts:448:32"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🔍 Starting console monitoring...\n"
+                        },
+                        {
+                          "text": "🔍 Test 04: Complete end-to-end export validation...\n"
+                        },
+                        {
+                          "text": "🛑 Stopped console monitoring\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-03T06:21:10.560Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results/export-validation-Export-S-fe8e0-nd-to-End-Export-Validation-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results/export-validation-Export-S-fe8e0-nd-to-End-Export-Validation-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/test-results/export-validation-Export-S-fe8e0-nd-to-End-Export-Validation-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "fab29cda379c8cb1194b-cb3c212b9ab4f6ff8c2e",
+              "file": "export-validation.test.ts",
+              "line": 380,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "localStorage-debug.test.ts",
+      "file": "localStorage-debug.test.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "localStorage Debugging Suite",
+          "file": "localStorage-debug.test.ts",
+          "line": 14,
+          "column": 6,
+          "specs": [
+            {
+              "title": "01. Identify localStorage Key Mismatch",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1682,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Starting console monitoring...\n"
+                        },
+                        {
+                          "text": "🔍 Test 01: Investigating localStorage key structure...\n"
+                        },
+                        {
+                          "text": "📊 Key Analysis Results:\n"
+                        },
+                        {
+                          "text": "Expected keys status: {\n  \u001b[32m'moi-meta-data'\u001b[39m: \u001b[33mfalse\u001b[39m,\n  \u001b[32m'moi-google-data'\u001b[39m: \u001b[33mfalse\u001b[39m,\n  \u001b[32m'moi-shopify-data'\u001b[39m: \u001b[33mfalse\u001b[39m\n}\n"
+                        },
+                        {
+                          "text": "Available keys: [ \u001b[32m'moi-cache-version'\u001b[39m ]\n"
+                        },
+                        {
+                          "text": "Mismatch analysis: [\n  \u001b[32m'Missing \"moi-meta-data\" with no similar keys found'\u001b[39m,\n  \u001b[32m'Missing \"moi-google-data\" with no similar keys found'\u001b[39m,\n  \u001b[32m'Missing \"moi-shopify-data\" with no similar keys found'\u001b[39m\n]\n"
+                        },
+                        {
+                          "text": "🚨 ISSUE CONFIRMED: Export system expects keys that do not exist\n"
+                        },
+                        {
+                          "text": "   moi-meta-data exists: false\n"
+                        },
+                        {
+                          "text": "   moi-google-data exists: false\n"
+                        },
+                        {
+                          "text": "📂 Server-side keys found: []\n"
+                        },
+                        {
+                          "text": "💾 Complete localStorage state: [ \u001b[32m'moi-cache-version'\u001b[39m ]\n"
+                        },
+                        {
+                          "text": "🛑 Stopped console monitoring\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-03T06:21:13.789Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "250cbe0b8d268d132448-223a14064978f0c8b17e",
+              "file": "localStorage-debug.test.ts",
+              "line": 46,
+              "column": 3
+            },
+            {
+              "title": "02. Reproduce Export System Failure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2137,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Starting console monitoring...\n"
+                        },
+                        {
+                          "text": "🔍 Test 02: Reproducing export system failure...\n"
+                        },
+                        {
+                          "text": "❌ No export button found on page\n"
+                        },
+                        {
+                          "text": "🔍 Found 4 buttons on page\n"
+                        },
+                        {
+                          "text": "   Button 1: \"Generate Reports\"\n"
+                        },
+                        {
+                          "text": "   Button 2: \"\"\n"
+                        },
+                        {
+                          "text": "   Button 3: \"\"\n"
+                        },
+                        {
+                          "text": "   Button 4: \"\"\n"
+                        },
+                        {
+                          "text": "🛑 Stopped console monitoring\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-03T06:21:15.476Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "250cbe0b8d268d132448-d81f005929fc70e9a405",
+              "file": "localStorage-debug.test.ts",
+              "line": 95,
+              "column": 3
+            },
+            {
+              "title": "03. Fix localStorage Key Issue",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2494,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Starting console monitoring...\n"
+                        },
+                        {
+                          "text": "🔍 Test 03: Testing localStorage key fix...\n"
+                        },
+                        {
+                          "text": "📊 Initial broken state: [\n  \u001b[32m'Missing \"moi-meta-data\" with no similar keys found'\u001b[39m,\n  \u001b[32m'Missing \"moi-google-data\" with no similar keys found'\u001b[39m,\n  \u001b[32m'Missing \"moi-shopify-data\" with no similar keys found'\u001b[39m\n]\n"
+                        },
+                        {
+                          "text": "📊 Fixed state: {\n  \u001b[32m'moi-meta-data'\u001b[39m: \u001b[33mtrue\u001b[39m,\n  \u001b[32m'moi-google-data'\u001b[39m: \u001b[33mtrue\u001b[39m,\n  \u001b[32m'moi-shopify-data'\u001b[39m: \u001b[33mfalse\u001b[39m\n}\n"
+                        },
+                        {
+                          "text": "📊 Final localStorage state: [\n  \u001b[32m'moi-google-data'\u001b[39m,\n  \u001b[32m'moi-server-topLevel'\u001b[39m,\n  \u001b[32m'moi-server-topLevel-timestamp'\u001b[39m,\n  \u001b[32m'moi-meta-data'\u001b[39m,\n  \u001b[32m'moi-cache-version'\u001b[39m\n]\n"
+                        },
+                        {
+                          "text": "🛑 Stopped console monitoring\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-03T06:21:17.620Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "250cbe0b8d268d132448-38a037722a9e3373c55d",
+              "file": "localStorage-debug.test.ts",
+              "line": 173,
+              "column": 3
+            },
+            {
+              "title": "04. Test Session Duration Calculations",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2240,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Starting console monitoring...\n"
+                        },
+                        {
+                          "text": "🔍 Test 04: Testing session duration calculations...\n"
+                        },
+                        {
+                          "text": "📊 Session-related UI elements found: [\n  {\n    tag: \u001b[32m'HTML'\u001b[39m,\n    text: \u001b[32m'import { injectIntoGlobalHook } from \"/@react-refresh\";\\n'\u001b[39m +\n      \u001b[32m'injectIntoGlobalHook(window);\\n'\u001b[39m +\n      \u001b[32m'window.$RefreshReg$ = () => {};\\n'\u001b[39m +\n      \u001b[32m'window.$RefreshSig$ = () => (type) => type;\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'    \\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'    \\n'\u001b[39m +\n      \u001b[32m'    \\n'\u001b[39m +\n      \u001b[32m'    \\n'\u001b[39m +\n      \u001b[32m'    \\n'\u001b[39m +\n      \u001b[32m'    \\n'\u001b[39m +\n      \u001b[32m'    \\n'\u001b[39m +\n      \u001b[32m'    MOI Analytics Dashboard\\n'\u001b[39m +\n      \u001b[32m'  *, ::before, ::after {\\n'\u001b[39m +\n      \u001b[32m'  --tw-border-spacing-x: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-border-spacing-y: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-translate-x: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-translate-y: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-rotate: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-skew-x: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-skew-y: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-scale-x: 1;\\n'\u001b[39m +\n      \u001b[32m'  --tw-scale-y: 1;\\n'\u001b[39m +\n      \u001b[32m'  --tw-pan-x:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-pan-y:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-pinch-zoom:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-scroll-snap-strictness: proximity;\\n'\u001b[39m +\n      \u001b[32m'  --tw-gradient-from-position:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-gradient-via-position:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-gradient-to-position:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ordinal:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-slashed-zero:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-numeric-figure:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-numeric-spacing:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-numeric-fraction:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-inset:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-offset-width: 0px;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-offset-color: #fff;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-color: rgb(59 130 246 / 0.5);\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-offset-shadow: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-shadow: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-shadow: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-shadow-colored: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-blur:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-brightness:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contrast:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-grayscale:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-hue-rotate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-invert:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-saturate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-sepia:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-drop-shadow:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-blur:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-brightness:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-contrast:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-grayscale:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-hue-rotate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-invert:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-opacity:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-saturate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-sepia:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-size:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-layout:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-paint:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-style:  ;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'::backdrop {\\n'\u001b[39m +\n      \u001b[32m'  --tw-border-spacing-x: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-border-spacing-y: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-translate-x: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-translate-y: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-rotate: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-skew-x: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-skew-y: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-scale-x: 1;\\n'\u001b[39m +\n      \u001b[32m'  --tw-scale-y: 1;\\n'\u001b[39m +\n      \u001b[32m'  --tw-pan-x:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-pan-y:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-pinch-zoom:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-scroll-snap-strictness: proximity;\\n'\u001b[39m +\n      \u001b[32m'  --tw-gradient-from-position:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-gradient-via-position:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-gradient-to-position:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ordinal:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-slashed-zero:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-numeric-figure:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-numeric-spacing:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-numeric-fraction:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-inset:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-offset-width: 0px;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-offset-color: #fff;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-color: rgb(59 130 246 / 0.5);\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-offset-shadow: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-shadow: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-shadow: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-shadow-colored: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-blur:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-brightness:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contrast:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-grayscale:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-hue-rotate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-invert:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-saturate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-sepia:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-drop-shadow:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-blur:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-brightness:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-contrast:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-grayscale:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-hue-rotate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-invert:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-opacity:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-saturate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-sepia:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-size:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-layout:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-paint:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-style:  ;\\n'\u001b[39m +\n      \u001b[32m'}/*\\n'\u001b[39m +\n      \u001b[32m'! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com\\n'\u001b[39m +\n      \u001b[32m'*//*\\n'\u001b[39m +\n      \u001b[32m'1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)\\n'\u001b[39m +\n      \u001b[32m'2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'*,\\n'\u001b[39m +\n      \u001b[32m'::before,\\n'\u001b[39m +\n      \u001b[32m'::after {\\n'\u001b[39m +\n      \u001b[32m'  box-sizing: border-box; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  border-width: 0; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  border-style: solid; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  border-color: #e5e7eb; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'::before,\\n'\u001b[39m +\n      \u001b[32m'::after {\\n'\u001b[39m +\n      \u001b[32m\"  --tw-content: '';\\n\"\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Use a consistent sensible line-height in all browsers.\\n'\u001b[39m +\n      \u001b[32m'2. Prevent adjustments of font size after orientation changes in iOS.\\n'\u001b[39m +\n      \u001b[32m'3. Use a more readable tab size.\\n'\u001b[39m +\n      \u001b[32m\"4. Use the user's configured `sans` font-family by default.\\n\"\u001b[39m +\n      \u001b[32m\"5. Use the user's configured `sans` font-feature-settings by default.\\n\"\u001b[39m +\n      \u001b[32m\"6. Use the user's configured `sans` font-variation-settings by default.\\n\"\u001b[39m +\n      \u001b[32m'7. Disable tap highlights on iOS\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'html,\\n'\u001b[39m +\n      \u001b[32m':host {\\n'\u001b[39m +\n      \u001b[32m'  line-height: 1.5; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  -webkit-text-size-adjust: 100%; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  -moz-tab-size: 4; /* 3 */\\n'\u001b[39m +\n      \u001b[32m'  -o-tab-size: 4;\\n'\u001b[39m +\n      \u001b[32m'     tab-size: 4; /* 3 */\\n'\u001b[39m +\n      \u001b[32m'  font-family: ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"; /* 4 */\\n'\u001b[39m +\n      \u001b[32m'  font-feature-settings: normal; /* 5 */\\n'\u001b[39m +\n      \u001b[32m'  font-variation-settings: normal; /* 6 */\\n'\u001b[39m +\n      \u001b[32m'  -webkit-tap-highlight-color: transparent; /* 7 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Remove the margin in all browsers.\\n'\u001b[39m +\n      \u001b[32m'2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'body {\\n'\u001b[39m +\n      \u001b[32m'  margin: 0; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  line-height: inherit; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Add the correct height in Firefox.\\n'\u001b[39m +\n      \u001b[32m'2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)\\n'\u001b[39m +\n      \u001b[32m'3. Ensure horizontal rules are visible by default.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'hr {\\n'\u001b[39m +\n      \u001b[32m'  height: 0; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  color: inherit; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  border-top-width: 1px; /* 3 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Add the correct text decoration in Chrome, Edge, and Safari.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'abbr:where([title]) {\\n'\u001b[39m +\n      \u001b[32m'  -webkit-text-decoration: underline dotted;\\n'\u001b[39m +\n      \u001b[32m'          text-decoration: underline dotted;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Remove the default font size and weight for headings.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'h1,\\n'\u001b[39m +\n      \u001b[32m'h2,\\n'\u001b[39m +\n      \u001b[32m'h3,\\n'\u001b[39m +\n      \u001b[32m'h4,\\n'\u001b[39m +\n      \u001b[32m'h5,\\n'\u001b[39m +\n      \u001b[32m'h6 {\\n'\u001b[39m +\n      \u001b[32m'  font-size: inherit;\\n'\u001b[39m +\n      \u001b[32m'  font-weight: inherit;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Reset links to optimize for opt-in styling instead of opt-out.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'a {\\n'\u001b[39m +\n      \u001b[32m'  color: inherit;\\n'\u001b[39m +\n      \u001b[32m'  text-decoration: inherit;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Add the correct font weight in Edge and Safari.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'b,\\n'\u001b[39m +\n      \u001b[32m'strong {\\n'\u001b[39m +\n      \u001b[32m'  font-weight: bolder;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m\"1. Use the user's configured `mono` font-family by default.\\n\"\u001b[39m +\n      \u001b[32m\"2. Use the user's configured `mono` font-feature-settings by default.\\n\"\u001b[39m +\n      \u001b[32m\"3. Use the user's configured `mono` font-variation-settings by default.\\n\"\u001b[39m +\n      \u001b[32m'4. Correct the odd `em` font sizing in all browsers.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'code,\\n'\u001b[39m +\n      \u001b[32m'kbd,\\n'\u001b[39m +\n      \u001b[32m'samp,\\n'\u001b[39m +\n      \u001b[32m'pre {\\n'\u001b[39m +\n      \u001b[32m'  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  font-feature-settings: normal; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  font-variation-settings: normal; /* 3 */\\n'\u001b[39m +\n      \u001b[32m'  font-size: 1em; /* 4 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Add the correct font size in all browsers.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'small {\\n'\u001b[39m +\n      \u001b[32m'  font-size: 80%;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Prevent `sub` and `sup` elements from affecting the line height in all browsers.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'sub,\\n'\u001b[39m +\n      \u001b[32m'sup {\\n'\u001b[39m +\n      \u001b[32m'  font-size: 75%;\\n'\u001b[39m +\n      \u001b[32m'  line-height: 0;\\n'\u001b[39m +\n      \u001b[32m'  position: relative;\\n'\u001b[39m +\n      \u001b[32m'  vertical-align: baseline;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'sub {\\n'\u001b[39m +\n      \u001b[32m'  bottom: -0.25em;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'sup {\\n'\u001b[39m +\n      \u001b[32m'  top: -0.5em;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)\\n'\u001b[39m +\n      \u001b[32m'2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)\\n'\u001b[39m +\n      \u001b[32m'3. Remove gaps between table borders by default.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'table {\\n'\u001b[39m +\n      \u001b[32m'  text-indent: 0; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  border-color: inherit; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  border-collapse: collapse; /* 3 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Change the font styles in all browsers.\\n'\u001b[39m +\n      \u001b[32m'2. Remove the margin in Firefox and Safari.\\n'\u001b[39m +\n      \u001b[32m'3. Remove default padding in all browsers.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'button,\\n'\u001b[39m +\n      \u001b[32m'input,\\n'\u001b[39m +\n      \u001b[32m'optgroup,\\n'\u001b[39m +\n      \u001b[32m'select,\\n'\u001b[39m +\n      \u001b[32m'textarea {\\n'\u001b[39m +\n      \u001b[32m'  font-family: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  font-feature-settings: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  font-variation-settings: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  font-size: 100%; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  font-weight: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  line-height: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  letter-spacing: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  color: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  margin: 0; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  padding: 0; /* 3 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Remove the inheritance of text transform in Edge and Firefox.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'button,\\n'\u001b[39m +\n      \u001b[32m'select {\\n'\u001b[39m +\n      \u001b[32m'  text-transform: none;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Correct the inability to style clickable types in iOS and Safari.\\n'\u001b[39m +\n      \u001b[32m'2. Remove default button styles.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'button,\\n'\u001b[39m +\n      \u001b[32m\"input:where([type='button']),\\n\"\u001b[39m +\n      \u001b[32m\"input:where([type='reset']),\\n\"\u001b[39m +\n      \u001b[32m\"input:where([type='submit']) {\\n\"\u001b[39m +\n      \u001b[32m'  -webkit-appearance: button; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  background-color: transparent; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  background-image: none; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Use the modern Firefox focus style for all focusable elements.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m':-moz-focusring {\\n'\u001b[39m +\n      \u001b[32m'  outline: auto;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m':-moz-ui-invalid {\\n'\u001b[39m +\n      \u001b[32m'  box-shadow: none;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Add the correct vertical alignment in Chrome and Firefox.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'progress {\\n'\u001b[39m +\n      \u001b[32m'  vertical-align: baseline;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Correct the cursor style of increment and decrement buttons in Safari.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'::-webkit-inner-spin-button,\\n'\u001b[39m +\n      \u001b[32m'::-webkit-outer-spin-button {\\n'\u001b[39m +\n      \u001b[32m'  height: auto;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Correct the odd appearance in Chrome and Safari.\\n'\u001b[39m +\n      \u001b[32m'2. Correct the outline style in Safari.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m\"[type='search'] {\\n\"\u001b[39m +\n      \u001b[32m'  -webkit-appearance: textfield; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  outline-offset: -2px; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Remove the inner padding in Chrome and Safari on macOS.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'::-webkit-search-decoration {\\n'\u001b[39m +\n      \u001b[32m'  -webkit-appearance: none;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Correct the inability to style clickable types in iOS and Safari.\\n'\u001b[39m +\n      \u001b[32m'2. Change font properties to `inherit` in Safari.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'::-webkit-file-upload-button {\\n'\u001b[39m +\n      \u001b[32m'  -webkit-appearance: button; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  font: inherit; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Add the correct display in Chrome and Safari.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'summary {\\n'\u001b[39m +\n      \u001b[32m'  display: list-item;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Removes the default spacing and border for appropriate elements.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'blockquote,\\n'\u001b[39m +\n      \u001b[32m'dl,\\n'\u001b[39m +\n      \u001b[32m'dd,\\n'\u001b[39m +\n      \u001b[32m'h1,\\n'\u001b[39m +\n      \u001b[32m'h2,\\n'\u001b[39m +\n      \u001b[32m'h3,\\n'\u001b[39m +\n      \u001b[32m'h4,\\n'\u001b[39m +\n      \u001b[32m'h5,\\n'\u001b[39m +\n      \u001b[32m'h6,\\n'\u001b[39m +\n      \u001b[32m'hr,\\n'\u001b[39m +\n      \u001b[32m'figure,\\n'\u001b[39m +\n      \u001b[32m'p,\\n'\u001b[39m +\n      \u001b[32m'pre {\\n'\u001b[39m +\n      \u001b[32m'  margin: 0;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'fieldset {\\n'\u001b[39m +\n      \u001b[32m'  margin: 0;\\n'\u001b[39m +\n      \u001b[32m'  padding: 0;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'legend {\\n'\u001b[39m +\n      \u001b[32m'  padding: 0;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'ol,\\n'\u001b[39m +\n      \u001b[32m'ul,\\n'\u001b[39m +\n      \u001b[32m'menu {\\n'\u001b[39m +\n      \u001b[32m'  list-style: none;\\n'\u001b[39m +\n      \u001b[32m'  margin: 0;\\n'\u001b[39m +\n      \u001b[32m'  padding: 0;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Reset default styling for dialogs.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'dialog {\\n'\u001b[39m +\n      \u001b[32m'  padding: 0;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Prevent resizing textareas horizontally by default.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'textarea {\\n'\u001b[39m +\n      \u001b[32m'  resize: vertical;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)\\n'\u001b[39m +\n      \u001b[32m\"2. Set the default placeholder color to the user's configured gray 400 color.\\n\"\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'input::-moz-placeholder, textarea::-moz-placeholder {\\n'\u001b[39m +\n      \u001b[32m'  opacity: 1; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  color: #9ca3af; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'input::placeholder,\\n'\u001b[39m +\n      \u001b[32m'textarea::placeholder {\\n'\u001b[39m +\n      \u001b[32m'  opacity: 1; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  color: #9ca3af; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Set the default cursor for buttons.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'button,\\n'\u001b[39m +\n      \u001b[32m'[role=\"button\"] {\\n'\u001b[39m +\n      \u001b[32m'  cursor: pointer;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m\"Make sure disabled buttons don't get the pointer cursor.\\n\"\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m':disabled {\\n'\u001b[39m +\n      \u001b[32m'  cursor: default;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)\\n'\u001b[39m +\n      \u001b[32m'2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://'\u001b[39m... 22934 more characters,\n    className: \u001b[32m''\u001b[39m\n  },\n  {\n    tag: \u001b[32m'HEAD'\u001b[39m,\n    text: \u001b[32m'import { injectIntoGlobalHook } from \"/@react-refresh\";\\n'\u001b[39m +\n      \u001b[32m'injectIntoGlobalHook(window);\\n'\u001b[39m +\n      \u001b[32m'window.$RefreshReg$ = () => {};\\n'\u001b[39m +\n      \u001b[32m'window.$RefreshSig$ = () => (type) => type;\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'    \\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'    \\n'\u001b[39m +\n      \u001b[32m'    \\n'\u001b[39m +\n      \u001b[32m'    \\n'\u001b[39m +\n      \u001b[32m'    \\n'\u001b[39m +\n      \u001b[32m'    \\n'\u001b[39m +\n      \u001b[32m'    \\n'\u001b[39m +\n      \u001b[32m'    MOI Analytics Dashboard\\n'\u001b[39m +\n      \u001b[32m'  *, ::before, ::after {\\n'\u001b[39m +\n      \u001b[32m'  --tw-border-spacing-x: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-border-spacing-y: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-translate-x: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-translate-y: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-rotate: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-skew-x: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-skew-y: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-scale-x: 1;\\n'\u001b[39m +\n      \u001b[32m'  --tw-scale-y: 1;\\n'\u001b[39m +\n      \u001b[32m'  --tw-pan-x:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-pan-y:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-pinch-zoom:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-scroll-snap-strictness: proximity;\\n'\u001b[39m +\n      \u001b[32m'  --tw-gradient-from-position:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-gradient-via-position:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-gradient-to-position:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ordinal:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-slashed-zero:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-numeric-figure:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-numeric-spacing:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-numeric-fraction:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-inset:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-offset-width: 0px;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-offset-color: #fff;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-color: rgb(59 130 246 / 0.5);\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-offset-shadow: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-shadow: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-shadow: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-shadow-colored: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-blur:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-brightness:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contrast:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-grayscale:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-hue-rotate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-invert:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-saturate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-sepia:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-drop-shadow:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-blur:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-brightness:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-contrast:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-grayscale:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-hue-rotate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-invert:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-opacity:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-saturate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-sepia:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-size:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-layout:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-paint:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-style:  ;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'::backdrop {\\n'\u001b[39m +\n      \u001b[32m'  --tw-border-spacing-x: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-border-spacing-y: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-translate-x: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-translate-y: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-rotate: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-skew-x: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-skew-y: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-scale-x: 1;\\n'\u001b[39m +\n      \u001b[32m'  --tw-scale-y: 1;\\n'\u001b[39m +\n      \u001b[32m'  --tw-pan-x:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-pan-y:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-pinch-zoom:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-scroll-snap-strictness: proximity;\\n'\u001b[39m +\n      \u001b[32m'  --tw-gradient-from-position:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-gradient-via-position:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-gradient-to-position:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ordinal:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-slashed-zero:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-numeric-figure:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-numeric-spacing:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-numeric-fraction:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-inset:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-offset-width: 0px;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-offset-color: #fff;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-color: rgb(59 130 246 / 0.5);\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-offset-shadow: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-shadow: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-shadow: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-shadow-colored: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-blur:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-brightness:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contrast:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-grayscale:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-hue-rotate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-invert:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-saturate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-sepia:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-drop-shadow:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-blur:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-brightness:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-contrast:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-grayscale:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-hue-rotate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-invert:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-opacity:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-saturate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-sepia:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-size:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-layout:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-paint:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-style:  ;\\n'\u001b[39m +\n      \u001b[32m'}/*\\n'\u001b[39m +\n      \u001b[32m'! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com\\n'\u001b[39m +\n      \u001b[32m'*//*\\n'\u001b[39m +\n      \u001b[32m'1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)\\n'\u001b[39m +\n      \u001b[32m'2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'*,\\n'\u001b[39m +\n      \u001b[32m'::before,\\n'\u001b[39m +\n      \u001b[32m'::after {\\n'\u001b[39m +\n      \u001b[32m'  box-sizing: border-box; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  border-width: 0; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  border-style: solid; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  border-color: #e5e7eb; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'::before,\\n'\u001b[39m +\n      \u001b[32m'::after {\\n'\u001b[39m +\n      \u001b[32m\"  --tw-content: '';\\n\"\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Use a consistent sensible line-height in all browsers.\\n'\u001b[39m +\n      \u001b[32m'2. Prevent adjustments of font size after orientation changes in iOS.\\n'\u001b[39m +\n      \u001b[32m'3. Use a more readable tab size.\\n'\u001b[39m +\n      \u001b[32m\"4. Use the user's configured `sans` font-family by default.\\n\"\u001b[39m +\n      \u001b[32m\"5. Use the user's configured `sans` font-feature-settings by default.\\n\"\u001b[39m +\n      \u001b[32m\"6. Use the user's configured `sans` font-variation-settings by default.\\n\"\u001b[39m +\n      \u001b[32m'7. Disable tap highlights on iOS\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'html,\\n'\u001b[39m +\n      \u001b[32m':host {\\n'\u001b[39m +\n      \u001b[32m'  line-height: 1.5; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  -webkit-text-size-adjust: 100%; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  -moz-tab-size: 4; /* 3 */\\n'\u001b[39m +\n      \u001b[32m'  -o-tab-size: 4;\\n'\u001b[39m +\n      \u001b[32m'     tab-size: 4; /* 3 */\\n'\u001b[39m +\n      \u001b[32m'  font-family: ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"; /* 4 */\\n'\u001b[39m +\n      \u001b[32m'  font-feature-settings: normal; /* 5 */\\n'\u001b[39m +\n      \u001b[32m'  font-variation-settings: normal; /* 6 */\\n'\u001b[39m +\n      \u001b[32m'  -webkit-tap-highlight-color: transparent; /* 7 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Remove the margin in all browsers.\\n'\u001b[39m +\n      \u001b[32m'2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'body {\\n'\u001b[39m +\n      \u001b[32m'  margin: 0; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  line-height: inherit; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Add the correct height in Firefox.\\n'\u001b[39m +\n      \u001b[32m'2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)\\n'\u001b[39m +\n      \u001b[32m'3. Ensure horizontal rules are visible by default.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'hr {\\n'\u001b[39m +\n      \u001b[32m'  height: 0; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  color: inherit; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  border-top-width: 1px; /* 3 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Add the correct text decoration in Chrome, Edge, and Safari.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'abbr:where([title]) {\\n'\u001b[39m +\n      \u001b[32m'  -webkit-text-decoration: underline dotted;\\n'\u001b[39m +\n      \u001b[32m'          text-decoration: underline dotted;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Remove the default font size and weight for headings.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'h1,\\n'\u001b[39m +\n      \u001b[32m'h2,\\n'\u001b[39m +\n      \u001b[32m'h3,\\n'\u001b[39m +\n      \u001b[32m'h4,\\n'\u001b[39m +\n      \u001b[32m'h5,\\n'\u001b[39m +\n      \u001b[32m'h6 {\\n'\u001b[39m +\n      \u001b[32m'  font-size: inherit;\\n'\u001b[39m +\n      \u001b[32m'  font-weight: inherit;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Reset links to optimize for opt-in styling instead of opt-out.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'a {\\n'\u001b[39m +\n      \u001b[32m'  color: inherit;\\n'\u001b[39m +\n      \u001b[32m'  text-decoration: inherit;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Add the correct font weight in Edge and Safari.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'b,\\n'\u001b[39m +\n      \u001b[32m'strong {\\n'\u001b[39m +\n      \u001b[32m'  font-weight: bolder;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m\"1. Use the user's configured `mono` font-family by default.\\n\"\u001b[39m +\n      \u001b[32m\"2. Use the user's configured `mono` font-feature-settings by default.\\n\"\u001b[39m +\n      \u001b[32m\"3. Use the user's configured `mono` font-variation-settings by default.\\n\"\u001b[39m +\n      \u001b[32m'4. Correct the odd `em` font sizing in all browsers.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'code,\\n'\u001b[39m +\n      \u001b[32m'kbd,\\n'\u001b[39m +\n      \u001b[32m'samp,\\n'\u001b[39m +\n      \u001b[32m'pre {\\n'\u001b[39m +\n      \u001b[32m'  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  font-feature-settings: normal; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  font-variation-settings: normal; /* 3 */\\n'\u001b[39m +\n      \u001b[32m'  font-size: 1em; /* 4 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Add the correct font size in all browsers.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'small {\\n'\u001b[39m +\n      \u001b[32m'  font-size: 80%;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Prevent `sub` and `sup` elements from affecting the line height in all browsers.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'sub,\\n'\u001b[39m +\n      \u001b[32m'sup {\\n'\u001b[39m +\n      \u001b[32m'  font-size: 75%;\\n'\u001b[39m +\n      \u001b[32m'  line-height: 0;\\n'\u001b[39m +\n      \u001b[32m'  position: relative;\\n'\u001b[39m +\n      \u001b[32m'  vertical-align: baseline;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'sub {\\n'\u001b[39m +\n      \u001b[32m'  bottom: -0.25em;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'sup {\\n'\u001b[39m +\n      \u001b[32m'  top: -0.5em;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)\\n'\u001b[39m +\n      \u001b[32m'2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)\\n'\u001b[39m +\n      \u001b[32m'3. Remove gaps between table borders by default.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'table {\\n'\u001b[39m +\n      \u001b[32m'  text-indent: 0; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  border-color: inherit; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  border-collapse: collapse; /* 3 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Change the font styles in all browsers.\\n'\u001b[39m +\n      \u001b[32m'2. Remove the margin in Firefox and Safari.\\n'\u001b[39m +\n      \u001b[32m'3. Remove default padding in all browsers.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'button,\\n'\u001b[39m +\n      \u001b[32m'input,\\n'\u001b[39m +\n      \u001b[32m'optgroup,\\n'\u001b[39m +\n      \u001b[32m'select,\\n'\u001b[39m +\n      \u001b[32m'textarea {\\n'\u001b[39m +\n      \u001b[32m'  font-family: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  font-feature-settings: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  font-variation-settings: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  font-size: 100%; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  font-weight: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  line-height: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  letter-spacing: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  color: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  margin: 0; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  padding: 0; /* 3 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Remove the inheritance of text transform in Edge and Firefox.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'button,\\n'\u001b[39m +\n      \u001b[32m'select {\\n'\u001b[39m +\n      \u001b[32m'  text-transform: none;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Correct the inability to style clickable types in iOS and Safari.\\n'\u001b[39m +\n      \u001b[32m'2. Remove default button styles.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'button,\\n'\u001b[39m +\n      \u001b[32m\"input:where([type='button']),\\n\"\u001b[39m +\n      \u001b[32m\"input:where([type='reset']),\\n\"\u001b[39m +\n      \u001b[32m\"input:where([type='submit']) {\\n\"\u001b[39m +\n      \u001b[32m'  -webkit-appearance: button; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  background-color: transparent; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  background-image: none; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Use the modern Firefox focus style for all focusable elements.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m':-moz-focusring {\\n'\u001b[39m +\n      \u001b[32m'  outline: auto;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m':-moz-ui-invalid {\\n'\u001b[39m +\n      \u001b[32m'  box-shadow: none;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Add the correct vertical alignment in Chrome and Firefox.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'progress {\\n'\u001b[39m +\n      \u001b[32m'  vertical-align: baseline;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Correct the cursor style of increment and decrement buttons in Safari.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'::-webkit-inner-spin-button,\\n'\u001b[39m +\n      \u001b[32m'::-webkit-outer-spin-button {\\n'\u001b[39m +\n      \u001b[32m'  height: auto;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Correct the odd appearance in Chrome and Safari.\\n'\u001b[39m +\n      \u001b[32m'2. Correct the outline style in Safari.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m\"[type='search'] {\\n\"\u001b[39m +\n      \u001b[32m'  -webkit-appearance: textfield; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  outline-offset: -2px; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Remove the inner padding in Chrome and Safari on macOS.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'::-webkit-search-decoration {\\n'\u001b[39m +\n      \u001b[32m'  -webkit-appearance: none;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Correct the inability to style clickable types in iOS and Safari.\\n'\u001b[39m +\n      \u001b[32m'2. Change font properties to `inherit` in Safari.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'::-webkit-file-upload-button {\\n'\u001b[39m +\n      \u001b[32m'  -webkit-appearance: button; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  font: inherit; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Add the correct display in Chrome and Safari.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'summary {\\n'\u001b[39m +\n      \u001b[32m'  display: list-item;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Removes the default spacing and border for appropriate elements.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'blockquote,\\n'\u001b[39m +\n      \u001b[32m'dl,\\n'\u001b[39m +\n      \u001b[32m'dd,\\n'\u001b[39m +\n      \u001b[32m'h1,\\n'\u001b[39m +\n      \u001b[32m'h2,\\n'\u001b[39m +\n      \u001b[32m'h3,\\n'\u001b[39m +\n      \u001b[32m'h4,\\n'\u001b[39m +\n      \u001b[32m'h5,\\n'\u001b[39m +\n      \u001b[32m'h6,\\n'\u001b[39m +\n      \u001b[32m'hr,\\n'\u001b[39m +\n      \u001b[32m'figure,\\n'\u001b[39m +\n      \u001b[32m'p,\\n'\u001b[39m +\n      \u001b[32m'pre {\\n'\u001b[39m +\n      \u001b[32m'  margin: 0;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'fieldset {\\n'\u001b[39m +\n      \u001b[32m'  margin: 0;\\n'\u001b[39m +\n      \u001b[32m'  padding: 0;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'legend {\\n'\u001b[39m +\n      \u001b[32m'  padding: 0;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'ol,\\n'\u001b[39m +\n      \u001b[32m'ul,\\n'\u001b[39m +\n      \u001b[32m'menu {\\n'\u001b[39m +\n      \u001b[32m'  list-style: none;\\n'\u001b[39m +\n      \u001b[32m'  margin: 0;\\n'\u001b[39m +\n      \u001b[32m'  padding: 0;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Reset default styling for dialogs.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'dialog {\\n'\u001b[39m +\n      \u001b[32m'  padding: 0;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Prevent resizing textareas horizontally by default.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'textarea {\\n'\u001b[39m +\n      \u001b[32m'  resize: vertical;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)\\n'\u001b[39m +\n      \u001b[32m\"2. Set the default placeholder color to the user's configured gray 400 color.\\n\"\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'input::-moz-placeholder, textarea::-moz-placeholder {\\n'\u001b[39m +\n      \u001b[32m'  opacity: 1; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  color: #9ca3af; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'input::placeholder,\\n'\u001b[39m +\n      \u001b[32m'textarea::placeholder {\\n'\u001b[39m +\n      \u001b[32m'  opacity: 1; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  color: #9ca3af; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Set the default cursor for buttons.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'button,\\n'\u001b[39m +\n      \u001b[32m'[role=\"button\"] {\\n'\u001b[39m +\n      \u001b[32m'  cursor: pointer;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m\"Make sure disabled buttons don't get the pointer cursor.\\n\"\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m':disabled {\\n'\u001b[39m +\n      \u001b[32m'  cursor: default;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)\\n'\u001b[39m +\n      \u001b[32m'2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://'\u001b[39m... 22586 more characters,\n    className: \u001b[32m''\u001b[39m\n  },\n  {\n    tag: \u001b[32m'STYLE'\u001b[39m,\n    text: \u001b[32m'*, ::before, ::after {\\n'\u001b[39m +\n      \u001b[32m'  --tw-border-spacing-x: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-border-spacing-y: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-translate-x: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-translate-y: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-rotate: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-skew-x: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-skew-y: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-scale-x: 1;\\n'\u001b[39m +\n      \u001b[32m'  --tw-scale-y: 1;\\n'\u001b[39m +\n      \u001b[32m'  --tw-pan-x:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-pan-y:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-pinch-zoom:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-scroll-snap-strictness: proximity;\\n'\u001b[39m +\n      \u001b[32m'  --tw-gradient-from-position:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-gradient-via-position:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-gradient-to-position:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ordinal:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-slashed-zero:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-numeric-figure:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-numeric-spacing:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-numeric-fraction:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-inset:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-offset-width: 0px;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-offset-color: #fff;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-color: rgb(59 130 246 / 0.5);\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-offset-shadow: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-shadow: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-shadow: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-shadow-colored: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-blur:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-brightness:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contrast:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-grayscale:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-hue-rotate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-invert:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-saturate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-sepia:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-drop-shadow:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-blur:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-brightness:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-contrast:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-grayscale:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-hue-rotate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-invert:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-opacity:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-saturate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-sepia:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-size:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-layout:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-paint:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-style:  ;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'::backdrop {\\n'\u001b[39m +\n      \u001b[32m'  --tw-border-spacing-x: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-border-spacing-y: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-translate-x: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-translate-y: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-rotate: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-skew-x: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-skew-y: 0;\\n'\u001b[39m +\n      \u001b[32m'  --tw-scale-x: 1;\\n'\u001b[39m +\n      \u001b[32m'  --tw-scale-y: 1;\\n'\u001b[39m +\n      \u001b[32m'  --tw-pan-x:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-pan-y:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-pinch-zoom:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-scroll-snap-strictness: proximity;\\n'\u001b[39m +\n      \u001b[32m'  --tw-gradient-from-position:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-gradient-via-position:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-gradient-to-position:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ordinal:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-slashed-zero:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-numeric-figure:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-numeric-spacing:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-numeric-fraction:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-inset:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-offset-width: 0px;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-offset-color: #fff;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-color: rgb(59 130 246 / 0.5);\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-offset-shadow: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-ring-shadow: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-shadow: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-shadow-colored: 0 0 #0000;\\n'\u001b[39m +\n      \u001b[32m'  --tw-blur:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-brightness:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contrast:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-grayscale:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-hue-rotate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-invert:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-saturate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-sepia:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-drop-shadow:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-blur:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-brightness:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-contrast:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-grayscale:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-hue-rotate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-invert:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-opacity:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-saturate:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-backdrop-sepia:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-size:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-layout:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-paint:  ;\\n'\u001b[39m +\n      \u001b[32m'  --tw-contain-style:  ;\\n'\u001b[39m +\n      \u001b[32m'}/*\\n'\u001b[39m +\n      \u001b[32m'! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com\\n'\u001b[39m +\n      \u001b[32m'*//*\\n'\u001b[39m +\n      \u001b[32m'1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)\\n'\u001b[39m +\n      \u001b[32m'2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'*,\\n'\u001b[39m +\n      \u001b[32m'::before,\\n'\u001b[39m +\n      \u001b[32m'::after {\\n'\u001b[39m +\n      \u001b[32m'  box-sizing: border-box; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  border-width: 0; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  border-style: solid; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  border-color: #e5e7eb; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'::before,\\n'\u001b[39m +\n      \u001b[32m'::after {\\n'\u001b[39m +\n      \u001b[32m\"  --tw-content: '';\\n\"\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Use a consistent sensible line-height in all browsers.\\n'\u001b[39m +\n      \u001b[32m'2. Prevent adjustments of font size after orientation changes in iOS.\\n'\u001b[39m +\n      \u001b[32m'3. Use a more readable tab size.\\n'\u001b[39m +\n      \u001b[32m\"4. Use the user's configured `sans` font-family by default.\\n\"\u001b[39m +\n      \u001b[32m\"5. Use the user's configured `sans` font-feature-settings by default.\\n\"\u001b[39m +\n      \u001b[32m\"6. Use the user's configured `sans` font-variation-settings by default.\\n\"\u001b[39m +\n      \u001b[32m'7. Disable tap highlights on iOS\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'html,\\n'\u001b[39m +\n      \u001b[32m':host {\\n'\u001b[39m +\n      \u001b[32m'  line-height: 1.5; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  -webkit-text-size-adjust: 100%; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  -moz-tab-size: 4; /* 3 */\\n'\u001b[39m +\n      \u001b[32m'  -o-tab-size: 4;\\n'\u001b[39m +\n      \u001b[32m'     tab-size: 4; /* 3 */\\n'\u001b[39m +\n      \u001b[32m'  font-family: ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"; /* 4 */\\n'\u001b[39m +\n      \u001b[32m'  font-feature-settings: normal; /* 5 */\\n'\u001b[39m +\n      \u001b[32m'  font-variation-settings: normal; /* 6 */\\n'\u001b[39m +\n      \u001b[32m'  -webkit-tap-highlight-color: transparent; /* 7 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Remove the margin in all browsers.\\n'\u001b[39m +\n      \u001b[32m'2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'body {\\n'\u001b[39m +\n      \u001b[32m'  margin: 0; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  line-height: inherit; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Add the correct height in Firefox.\\n'\u001b[39m +\n      \u001b[32m'2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)\\n'\u001b[39m +\n      \u001b[32m'3. Ensure horizontal rules are visible by default.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'hr {\\n'\u001b[39m +\n      \u001b[32m'  height: 0; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  color: inherit; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  border-top-width: 1px; /* 3 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Add the correct text decoration in Chrome, Edge, and Safari.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'abbr:where([title]) {\\n'\u001b[39m +\n      \u001b[32m'  -webkit-text-decoration: underline dotted;\\n'\u001b[39m +\n      \u001b[32m'          text-decoration: underline dotted;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Remove the default font size and weight for headings.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'h1,\\n'\u001b[39m +\n      \u001b[32m'h2,\\n'\u001b[39m +\n      \u001b[32m'h3,\\n'\u001b[39m +\n      \u001b[32m'h4,\\n'\u001b[39m +\n      \u001b[32m'h5,\\n'\u001b[39m +\n      \u001b[32m'h6 {\\n'\u001b[39m +\n      \u001b[32m'  font-size: inherit;\\n'\u001b[39m +\n      \u001b[32m'  font-weight: inherit;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Reset links to optimize for opt-in styling instead of opt-out.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'a {\\n'\u001b[39m +\n      \u001b[32m'  color: inherit;\\n'\u001b[39m +\n      \u001b[32m'  text-decoration: inherit;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Add the correct font weight in Edge and Safari.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'b,\\n'\u001b[39m +\n      \u001b[32m'strong {\\n'\u001b[39m +\n      \u001b[32m'  font-weight: bolder;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m\"1. Use the user's configured `mono` font-family by default.\\n\"\u001b[39m +\n      \u001b[32m\"2. Use the user's configured `mono` font-feature-settings by default.\\n\"\u001b[39m +\n      \u001b[32m\"3. Use the user's configured `mono` font-variation-settings by default.\\n\"\u001b[39m +\n      \u001b[32m'4. Correct the odd `em` font sizing in all browsers.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'code,\\n'\u001b[39m +\n      \u001b[32m'kbd,\\n'\u001b[39m +\n      \u001b[32m'samp,\\n'\u001b[39m +\n      \u001b[32m'pre {\\n'\u001b[39m +\n      \u001b[32m'  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  font-feature-settings: normal; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  font-variation-settings: normal; /* 3 */\\n'\u001b[39m +\n      \u001b[32m'  font-size: 1em; /* 4 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Add the correct font size in all browsers.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'small {\\n'\u001b[39m +\n      \u001b[32m'  font-size: 80%;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Prevent `sub` and `sup` elements from affecting the line height in all browsers.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'sub,\\n'\u001b[39m +\n      \u001b[32m'sup {\\n'\u001b[39m +\n      \u001b[32m'  font-size: 75%;\\n'\u001b[39m +\n      \u001b[32m'  line-height: 0;\\n'\u001b[39m +\n      \u001b[32m'  position: relative;\\n'\u001b[39m +\n      \u001b[32m'  vertical-align: baseline;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'sub {\\n'\u001b[39m +\n      \u001b[32m'  bottom: -0.25em;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'sup {\\n'\u001b[39m +\n      \u001b[32m'  top: -0.5em;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)\\n'\u001b[39m +\n      \u001b[32m'2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)\\n'\u001b[39m +\n      \u001b[32m'3. Remove gaps between table borders by default.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'table {\\n'\u001b[39m +\n      \u001b[32m'  text-indent: 0; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  border-color: inherit; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  border-collapse: collapse; /* 3 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Change the font styles in all browsers.\\n'\u001b[39m +\n      \u001b[32m'2. Remove the margin in Firefox and Safari.\\n'\u001b[39m +\n      \u001b[32m'3. Remove default padding in all browsers.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'button,\\n'\u001b[39m +\n      \u001b[32m'input,\\n'\u001b[39m +\n      \u001b[32m'optgroup,\\n'\u001b[39m +\n      \u001b[32m'select,\\n'\u001b[39m +\n      \u001b[32m'textarea {\\n'\u001b[39m +\n      \u001b[32m'  font-family: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  font-feature-settings: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  font-variation-settings: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  font-size: 100%; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  font-weight: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  line-height: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  letter-spacing: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  color: inherit; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  margin: 0; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  padding: 0; /* 3 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Remove the inheritance of text transform in Edge and Firefox.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'button,\\n'\u001b[39m +\n      \u001b[32m'select {\\n'\u001b[39m +\n      \u001b[32m'  text-transform: none;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Correct the inability to style clickable types in iOS and Safari.\\n'\u001b[39m +\n      \u001b[32m'2. Remove default button styles.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'button,\\n'\u001b[39m +\n      \u001b[32m\"input:where([type='button']),\\n\"\u001b[39m +\n      \u001b[32m\"input:where([type='reset']),\\n\"\u001b[39m +\n      \u001b[32m\"input:where([type='submit']) {\\n\"\u001b[39m +\n      \u001b[32m'  -webkit-appearance: button; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  background-color: transparent; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'  background-image: none; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Use the modern Firefox focus style for all focusable elements.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m':-moz-focusring {\\n'\u001b[39m +\n      \u001b[32m'  outline: auto;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m':-moz-ui-invalid {\\n'\u001b[39m +\n      \u001b[32m'  box-shadow: none;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Add the correct vertical alignment in Chrome and Firefox.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'progress {\\n'\u001b[39m +\n      \u001b[32m'  vertical-align: baseline;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Correct the cursor style of increment and decrement buttons in Safari.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'::-webkit-inner-spin-button,\\n'\u001b[39m +\n      \u001b[32m'::-webkit-outer-spin-button {\\n'\u001b[39m +\n      \u001b[32m'  height: auto;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Correct the odd appearance in Chrome and Safari.\\n'\u001b[39m +\n      \u001b[32m'2. Correct the outline style in Safari.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m\"[type='search'] {\\n\"\u001b[39m +\n      \u001b[32m'  -webkit-appearance: textfield; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  outline-offset: -2px; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Remove the inner padding in Chrome and Safari on macOS.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'::-webkit-search-decoration {\\n'\u001b[39m +\n      \u001b[32m'  -webkit-appearance: none;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Correct the inability to style clickable types in iOS and Safari.\\n'\u001b[39m +\n      \u001b[32m'2. Change font properties to `inherit` in Safari.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'::-webkit-file-upload-button {\\n'\u001b[39m +\n      \u001b[32m'  -webkit-appearance: button; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  font: inherit; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Add the correct display in Chrome and Safari.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'summary {\\n'\u001b[39m +\n      \u001b[32m'  display: list-item;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Removes the default spacing and border for appropriate elements.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'blockquote,\\n'\u001b[39m +\n      \u001b[32m'dl,\\n'\u001b[39m +\n      \u001b[32m'dd,\\n'\u001b[39m +\n      \u001b[32m'h1,\\n'\u001b[39m +\n      \u001b[32m'h2,\\n'\u001b[39m +\n      \u001b[32m'h3,\\n'\u001b[39m +\n      \u001b[32m'h4,\\n'\u001b[39m +\n      \u001b[32m'h5,\\n'\u001b[39m +\n      \u001b[32m'h6,\\n'\u001b[39m +\n      \u001b[32m'hr,\\n'\u001b[39m +\n      \u001b[32m'figure,\\n'\u001b[39m +\n      \u001b[32m'p,\\n'\u001b[39m +\n      \u001b[32m'pre {\\n'\u001b[39m +\n      \u001b[32m'  margin: 0;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'fieldset {\\n'\u001b[39m +\n      \u001b[32m'  margin: 0;\\n'\u001b[39m +\n      \u001b[32m'  padding: 0;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'legend {\\n'\u001b[39m +\n      \u001b[32m'  padding: 0;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'ol,\\n'\u001b[39m +\n      \u001b[32m'ul,\\n'\u001b[39m +\n      \u001b[32m'menu {\\n'\u001b[39m +\n      \u001b[32m'  list-style: none;\\n'\u001b[39m +\n      \u001b[32m'  margin: 0;\\n'\u001b[39m +\n      \u001b[32m'  padding: 0;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Reset default styling for dialogs.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'dialog {\\n'\u001b[39m +\n      \u001b[32m'  padding: 0;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Prevent resizing textareas horizontally by default.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'textarea {\\n'\u001b[39m +\n      \u001b[32m'  resize: vertical;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)\\n'\u001b[39m +\n      \u001b[32m\"2. Set the default placeholder color to the user's configured gray 400 color.\\n\"\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'input::-moz-placeholder, textarea::-moz-placeholder {\\n'\u001b[39m +\n      \u001b[32m'  opacity: 1; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  color: #9ca3af; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'input::placeholder,\\n'\u001b[39m +\n      \u001b[32m'textarea::placeholder {\\n'\u001b[39m +\n      \u001b[32m'  opacity: 1; /* 1 */\\n'\u001b[39m +\n      \u001b[32m'  color: #9ca3af; /* 2 */\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'Set the default cursor for buttons.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'button,\\n'\u001b[39m +\n      \u001b[32m'[role=\"button\"] {\\n'\u001b[39m +\n      \u001b[32m'  cursor: pointer;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m\"Make sure disabled buttons don't get the pointer cursor.\\n\"\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m':disabled {\\n'\u001b[39m +\n      \u001b[32m'  cursor: default;\\n'\u001b[39m +\n      \u001b[32m'}\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'/*\\n'\u001b[39m +\n      \u001b[32m'1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)\\n'\u001b[39m +\n      \u001b[32m'2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)\\n'\u001b[39m +\n      \u001b[32m'   This can trigger a poorly considered lint error in some tools but is included by design.\\n'\u001b[39m +\n      \u001b[32m'*/\\n'\u001b[39m +\n      \u001b[32m'\\n'\u001b[39m +\n      \u001b[32m'img,\\n'\u001b[39m +\n      \u001b[32m'svg,\\n'\u001b[39m +\n      \u001b[32m'video,\\n'\u001b[39m +\n      \u001b[32m'canvas,\\n'\u001b[39m +\n      \u001b[32m'audio,\\n'\u001b[39m +\n      \u001b[32m'iframe,\\n'\u001b[39m +\n      \u001b[32m'embed,\\n'\u001b[39m +\n      \u001b[32m'object {\\n'\u001b[39m +\n      \u001b[32m'  display: '\u001b[39m... 22357 more characters,\n    className: \u001b[32m''\u001b[39m\n  },\n  {\n    tag: \u001b[32m'BODY'\u001b[39m,\n    text: \u001b[32m'MOI Analytics DashboardBoutique Everyday Luxury - Marketing IntelligenceGenerate ReportsKey Performance MetricsTotal Unique Campaigns0📊Total Sessions0👥Conversion Rate0%🎯Campaign Performance TiersExcellent0Good0Average0Poor0UTM Campaign Analysis TableNo campaigns to displayUpload data files to generate reports and view campaign analysis'\u001b[39m,\n    className: \u001b[32m''\u001b[39m\n  },\n  {\n    tag: \u001b[32m'DIV'\u001b[39m,\n    text: \u001b[32m'MOI Analytics DashboardBoutique Everyday Luxury - Marketing IntelligenceGenerate ReportsKey Performance MetricsTotal Unique Campaigns0📊Total Sessions0👥Conversion Rate0%🎯Campaign Performance TiersExcellent0Good0Average0Poor0UTM Campaign Analysis TableNo campaigns to displayUpload data files to generate reports and view campaign analysis'\u001b[39m,\n    className: \u001b[32m''\u001b[39m\n  },\n  {\n    tag: \u001b[32m'DIV'\u001b[39m,\n    text: \u001b[32m'MOI Analytics DashboardBoutique Everyday Luxury - Marketing IntelligenceGenerate ReportsKey Performance MetricsTotal Unique Campaigns0📊Total Sessions0👥Conversion Rate0%🎯Campaign Performance TiersExcellent0Good0Average0Poor0UTM Campaign Analysis TableNo campaigns to displayUpload data files to generate reports and view campaign analysis'\u001b[39m,\n    className: \u001b[32m'min-h-screen bg-white'\u001b[39m\n  },\n  {\n    tag: \u001b[32m'MAIN'\u001b[39m,\n    text: \u001b[32m'Key Performance MetricsTotal Unique Campaigns0📊Total Sessions0👥Conversion Rate0%🎯Campaign Performance TiersExcellent0Good0Average0Poor0UTM Campaign Analysis TableNo campaigns to displayUpload data files to generate reports and view campaign analysis'\u001b[39m,\n    className: \u001b[32m'p-6'\u001b[39m\n  },\n  {\n    tag: \u001b[32m'DIV'\u001b[39m,\n    text: \u001b[32m'Key Performance MetricsTotal Unique Campaigns0📊Total Sessions0👥Conversion Rate0%🎯Campaign Performance TiersExcellent0Good0Average0Poor0UTM Campaign Analysis TableNo campaigns to displayUpload data files to generate reports and view campaign analysis'\u001b[39m,\n    className: \u001b[32m'space-y-8'\u001b[39m\n  },\n  {\n    tag: \u001b[32m'DIV'\u001b[39m,\n    text: \u001b[32m'Key Performance MetricsTotal Unique Campaigns0📊Total Sessions0👥Conversion Rate0%🎯'\u001b[39m,\n    className: \u001b[32m'bg-white rounded-lg border border-moi-light p-6'\u001b[39m\n  },\n  {\n    tag: \u001b[32m'DIV'\u001b[39m,\n    text: \u001b[32m'Total Unique Campaigns0📊Total Sessions0👥Conversion Rate0%🎯'\u001b[39m,\n    className: \u001b[32m'grid grid-cols-1 md:grid-cols-3 gap-6 mb-6'\u001b[39m\n  },\n  {\n    tag: \u001b[32m'DIV'\u001b[39m,\n    text: \u001b[32m'Total Sessions0👥'\u001b[39m,\n    className: \u001b[32m'bg-moi-beige rounded-lg p-4'\u001b[39m\n  },\n  {\n    tag: \u001b[32m'DIV'\u001b[39m,\n    text: \u001b[32m'Total Sessions0👥'\u001b[39m,\n    className: \u001b[32m'flex items-center justify-between'\u001b[39m\n  },\n  { tag: \u001b[32m'DIV'\u001b[39m, text: \u001b[32m'Total Sessions0'\u001b[39m, className: \u001b[32m''\u001b[39m },\n  {\n    tag: \u001b[32m'P'\u001b[39m,\n    text: \u001b[32m'Total Sessions'\u001b[39m,\n    className: \u001b[32m'font-benton text-sm text-moi-grey'\u001b[39m\n  }\n]\n"
+                        },
+                        {
+                          "text": "📊 Total errors during session duration test: 0\n"
+                        },
+                        {
+                          "text": "🛑 Stopped console monitoring\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-03T06:21:20.123Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "250cbe0b8d268d132448-ea9fc9ec2a3adadba543",
+              "file": "localStorage-debug.test.ts",
+              "line": 240,
+              "column": 3
+            },
+            {
+              "title": "05. Comprehensive Data Flow Analysis",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2277,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🔍 Starting console monitoring...\n"
+                        },
+                        {
+                          "text": "🔍 Test 05: Analyzing complete data flow from load to export...\n"
+                        },
+                        {
+                          "text": "📊 Initial localStorage keys: [ \u001b[32m'moi-cache-version'\u001b[39m ]\n"
+                        },
+                        {
+                          "text": "📊 After load localStorage keys: [ \u001b[32m'moi-cache-version'\u001b[39m ]\n"
+                        },
+                        {
+                          "text": "📊 COMPREHENSIVE ANALYSIS RESULTS:\n"
+                        },
+                        {
+                          "text": "==================================================\n"
+                        },
+                        {
+                          "text": "Expected keys status: {\n  \u001b[32m'moi-meta-data'\u001b[39m: \u001b[33mtrue\u001b[39m,\n  \u001b[32m'moi-google-data'\u001b[39m: \u001b[33mtrue\u001b[39m,\n  \u001b[32m'moi-shopify-data'\u001b[39m: \u001b[33mfalse\u001b[39m\n}\n"
+                        },
+                        {
+                          "text": "Available keys: [\n  \u001b[32m'moi-google-data'\u001b[39m,\n  \u001b[32m'moi-server-topLevel'\u001b[39m,\n  \u001b[32m'moi-server-topLevel-timestamp'\u001b[39m,\n  \u001b[32m'moi-meta-data'\u001b[39m,\n  \u001b[32m'moi-cache-version'\u001b[39m\n]\n"
+                        },
+                        {
+                          "text": "Mismatch analysis: [\n  \u001b[32m'Missing \"moi-shopify-data\" with no similar keys found'\u001b[39m,\n  \u001b[32m'Found data in \"moi-server-topLevel\" (386 chars) - this should be accessible to export system'\u001b[39m\n]\n"
+                        },
+                        {
+                          "text": "Storage changes during test: \u001b[33m5\u001b[39m\n"
+                        },
+                        {
+                          "text": "Total errors encountered: \u001b[33m0\u001b[39m\n"
+                        },
+                        {
+                          "text": "✅ Successfully identified localStorage key mismatch issue\n"
+                        },
+                        {
+                          "text": "🛑 Stopped console monitoring\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-03T06:21:22.379Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "250cbe0b8d268d132448-41d83d35d9c3c9ffbda5",
+              "file": "localStorage-debug.test.ts",
+              "line": 354,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-10-03T06:20:50.362Z",
+    "duration": 81583.36,
+    "expected": 11,
+    "skipped": 0,
+    "unexpected": 5,
+    "flaky": 0
+  }
+}

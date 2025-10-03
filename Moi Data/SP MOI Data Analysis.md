@@ -448,7 +448,7 @@ FILE CONVERTION LOGIC:
 
   | Column # | Field Name                                         | Data Source | Type       |
   |----------|----------------------------------------------------|-------------|------------|
-  | 1        | Date Range                                         | Date Range  | String     |
+  | 1        | Date 	                                          | Date Range  | String     |
   | 2        | Campaign Name                                      | Meta/Google | String     |
   | 3        | Ad Set Name                                        | Meta/Google | String     |
   | 4        | Ad                                                 | Meta/Google | String     |
@@ -636,5 +636,59 @@ FILE CONVERTION LOGIC:
   Critical Finding: Only 10 out of 68 campaigns (15%) generate any checkout conversions, indicating massive optimization potential across the
   portfolio.
 
-#
 
+# Prompt: fixing template file and making current one as default 
+
+## WORKING DIRECTORY: MOI Data
+## FEATURE FOCUS: Logic Template Settings
+
+##GOAL: Take the input file and make it part of the standard template that we have for the file conversion.
+
+##Input File: /Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/Logic Template/MOI Original Data/Default_Logic.csv
+
+##Output File: /Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/Logic Template/MOI Original Data/Default_Logic_v1.csv
+
+##REQUIREMENTS:
+ 1. Make sure that there are no errors and warnings. 
+
+##STEPS:
+1. Read the input file 
+2. run it throught he template checker
+3. work with me to fix the errors 
+4. after each fix run the checker again until we get zero error and warning. 
+5. once we get 0 errors and warning, create output file for my records
+6. use the output file as Default Template. 
+7. The same Default Template should be used for Download Current Template and Download Documentation & Examples. 
+
+### agent to use : prompt optimizer, ai-ml-data-science-engineer, ai-solution-architect
+
+--- 
+
+# Prompt: Generate output files from Input and using conversion logic  
+
+## WORKING DIRECTORY: MOI Data
+## FEATURE FOCUS: Output file generation 
+
+##GOAL: Test the current logic to make sure we are getting desired outcome. Take the input file and make it part of the standard template that we have for the file conversion.
+
+##Input Directory: /Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/MOI Original Data/Input Example
+##Input Files: Google_Ads_29th Sept.csv, Meta_Ads_29th Sept.csv, Shopify_29th Sept.csv
+
+##Output Directory: /Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/MOI Original Data/Output Example 
+
+##REQUIREMENTS:
+ 1. Make sure that there are no errors and warnings. 
+ 2. if there are any erros or warning that needs by inputs, ask me
+ 3. you MUST reuse the logic that is there in the code do not create new 
+
+##STEPS:
+ -  Send the prompt to prompt optimizer
+ -  Allow me to review the updated prompt and iterate if needed
+ -  After i go say proceed go with rest of flow.  
+ -  Read the input files 
+ -  Use the default file conversion template to covnert input files to output
+ -  note, there is a temp file that needs to be created as well  
+ -  after you complete the conversion store the files in Output Example file, 2 output files and 1 temp file
+ -  if there are errors then pause and ask questions.  
+
+### agent to use : prompt optimizer, ai-ml-data-science-engineer, ai-solution-architect

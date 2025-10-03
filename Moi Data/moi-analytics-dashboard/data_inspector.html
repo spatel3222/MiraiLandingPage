@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 MOI Data Inspector - Structured View</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 20px; background: #f5f7fa; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .status-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-left: 4px solid #ddd; }
+        .status-card.found { border-left-color: #28a745; }
+        .status-card.missing { border-left-color: #dc3545; }
+        .status-card.empty { border-left-color: #ffc107; }
+        .data-table { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; margin-bottom: 20px; }
+        .data-table h3 { margin: 0; padding: 15px; background: #f8f9fa; border-bottom: 1px solid #ddd; }
+        .table-container { overflow-x: auto; max-height: 400px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th, td { padding: 8px 12px; border: 1px solid #ddd; text-align: left; }
+        th { background: #f8f9fa; font-weight: 600; position: sticky; top: 0; z-index: 10; }
+        .btn { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .btn:hover { background: #0056b3; }
+        .btn.secondary { background: #6c757d; }
+        .alert { padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .alert.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .alert.warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .alert.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .json-preview { background: #f8f9fa; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 11px; max-height: 200px; overflow-y: auto; white-space: pre-wrap; }
+        .summary-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin: 10px 0; }
+        .stat { text-align: center; padding: 8px; background: #f8f9fa; border-radius: 4px; }
+        .stat-number { font-size: 20px; font-weight: bold; color: #007bff; }
+        .stat-label { font-size: 12px; color: #6c757d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 MOI Data Inspector - Structured View</h1>
+            <p>Clear, organized view of your uploaded files and processed data</p>
+            <button class="btn" onclick="analyzeAll()">🔍 Analyze All Data</button>
+            <button class="btn secondary" onclick="clearAll()">🧹 Clear</button>
+        </div>
+
+        <div id="status-overview"></div>
+        <div id="data-tables"></div>
+    </div>
+
+    <script>
+        function analyzeAll() {
+            clearAll();
+            showStatusOverview();
+            analyzeInputFiles();
+            analyzeProcessedData();
+            analyzeOutputFiles();
+        }
+
+        function showStatusOverview() {
+            const statusDiv = document.getElementById('status-overview');
+            const expectedKeys = [
+                { key: 'moi-shopify-data', type: 'INPUT', label: 'Shopify Export' },
+                { key: 'moi-meta-data', type: 'INPUT', label: 'Meta Ads' },
+                { key: 'moi-google-data', type: 'INPUT', label: 'Google Ads' },
+                { key: 'moi-dashboard-data', type: 'PROCESSING', label: 'Dashboard State' },
+                { key: 'moi-server-topLevel', type: 'OUTPUT', label: 'Top Level CSV' },
+                { key: 'moi-server-adset', type: 'OUTPUT', label: 'AdSet Level CSV' },
+                { key: 'moi-pivot-data', type: 'OUTPUT', label: 'Pivot Data' }
+            ];
+
+            let html = '<h2>📊 Data Status Overview</h2><div class="status-grid">';
+            
+            expectedKeys.forEach(item => {
+                const data = localStorage.getItem(item.key);
+                let status, statusClass, details;
+                
+                if (!data) {
+                    status = 'MISSING';
+                    statusClass = 'missing';
+                    details = 'No data found';
+                } else if (data.length === 0) {
+                    status = 'EMPTY';
+                    statusClass = 'empty';
+                    details = 'Data exists but empty';
+                } else {
+                    status = 'FOUND';
+                    statusClass = 'found';
+                    
+                    // Get timestamp if available
+                    const timestampKey = item.key + '-timestamp';
+                    const timestamp = localStorage.getItem(timestampKey);
+                    let timeInfo = '';
+                    if (timestamp) {
+                        const date = new Date(parseInt(timestamp));
+                        timeInfo = `<br><small>Updated: ${date.toLocaleString()}</small>`;
+                    }
+                    
+                    details = `${Math.round(data.length / 1024)}KB${timeInfo}`;
+                }
+
+                html += `
+                    <div class="status-card ${statusClass}">
+                        <strong>${item.label}</strong><br>
+                        <small>${item.type}</small><br>
+                        <span style="color: ${statusClass === 'found' ? '#28a745' : '#dc3545'}">${status}</span><br>
+                        <small>${details}</small>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            statusDiv.innerHTML = html;
+        }
+
+        function analyzeInputFiles() {
+            const dataDiv = document.getElementById('data-tables');
+            
+            // Shopify Data
+            analyzeShopifyData();
+            // Meta Data  
+            analyzeMetaData();
+            // Google Data
+            analyzeGoogleData();
+            // Pivot Data
+            analyzePivotData();
+        }
+
+        function analyzeShopifyData() {
+            const data = localStorage.getItem('moi-shopify-data');
+            const container = document.getElementById('data-tables');
+            
+            if (!data) {
+                container.innerHTML += `
+                    <div class="data-table">
+                        <h3>📊 Shopify Export Data</h3>
+                        <div class="alert error">❌ No Shopify data found in localStorage</div>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const parsed = JSON.parse(data);
+                const stats = {
+                    rows: parsed.length,
+                    columns: parsed.length > 0 ? Object.keys(parsed[0]).length : 0,
+                    size: data.length
+                };
+
+                let html = `
+                    <div class="data-table">
+                        <h3>📊 Shopify Export Data</h3>
+                        <div class="summary-stats">
+                            <div class="stat"><div class="stat-number">${stats.rows}</div><div class="stat-label">Rows</div></div>
+                            <div class="stat"><div class="stat-number">${stats.columns}</div><div class="stat-label">Columns</div></div>
+                            <div class="stat"><div class="stat-number">${(stats.size/1024).toFixed(1)}KB</div><div class="stat-label">Size</div></div>
+                        </div>
+                `;
+
+                if (parsed.length > 0) {
+                    html += '<div class="table-container"><table><thead><tr>';
+                    Object.keys(parsed[0]).forEach(key => {
+                        html += `<th>${key}</th>`;
+                    });
+                    html += '</tr></thead><tbody>';
+
+                    // Show first 10 rows
+                    parsed.slice(0, 10).forEach(row => {
+                        html += '<tr>';
+                        Object.values(row).forEach(value => {
+                            html += `<td>${String(value).substring(0, 50)}</td>`;
+                        });
+                        html += '</tr>';
+                    });
+
+                    html += '</tbody></table></div>';
+                    if (parsed.length > 10) {
+                        html += `<div class="alert warning">Showing first 10 of ${parsed.length} rows</div>`;
+                    }
+                } else {
+                    html += '<div class="alert warning">Data array is empty</div>';
+                }
+
+                html += '</div>';
+                container.innerHTML += html;
+
+            } catch (e) {
+                container.innerHTML += `
+                    <div class="data-table">
+                        <h3>📊 Shopify Export Data</h3>
+                        <div class="alert error">❌ Error parsing JSON: ${e.message}</div>
+                        <div class="json-preview">${data.substring(0, 500)}...</div>
+                    </div>
+                `;
+            }
+        }
+
+        function analyzeMetaData() {
+            const data = localStorage.getItem('moi-meta-data');
+            const container = document.getElementById('data-tables');
+            
+            if (!data) {
+                container.innerHTML += `
+                    <div class="data-table">
+                        <h3>📈 Meta Ads Data</h3>
+                        <div class="alert error">❌ No Meta Ads data found in localStorage</div>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const parsed = JSON.parse(data);
+                const stats = {
+                    rows: parsed.length,
+                    columns: parsed.length > 0 ? Object.keys(parsed[0]).length : 0,
+                    size: data.length
+                };
+
+                // Calculate total spend
+                let totalSpend = 0;
+                if (parsed.length > 0) {
+                    totalSpend = parsed.reduce((sum, row) => {
+                        const spend = row['Amount spent (INR)'] || row['amount_spent'] || row['spend'] || 0;
+                        return sum + (typeof spend === 'number' ? spend : parseFloat(spend) || 0);
+                    }, 0);
+                }
+
+                let html = `
+                    <div class="data-table">
+                        <h3>📈 Meta Ads Data</h3>
+                        <div class="summary-stats">
+                            <div class="stat"><div class="stat-number">${stats.rows}</div><div class="stat-label">Campaigns</div></div>
+                            <div class="stat"><div class="stat-number">${stats.columns}</div><div class="stat-label">Columns</div></div>
+                            <div class="stat"><div class="stat-number">₹${totalSpend.toLocaleString()}</div><div class="stat-label">Total Spend</div></div>
+                            <div class="stat"><div class="stat-number">${(stats.size/1024).toFixed(1)}KB</div><div class="stat-label">Size</div></div>
+                        </div>
+                `;
+
+                if (parsed.length > 0) {
+                    html += '<div class="table-container"><table><thead><tr>';
+                    Object.keys(parsed[0]).forEach(key => {
+                        html += `<th>${key}</th>`;
+                    });
+                    html += '</tr></thead><tbody>';
+
+                    // Show first 10 rows
+                    parsed.slice(0, 10).forEach(row => {
+                        html += '<tr>';
+                        Object.values(row).forEach(value => {
+                            html += `<td>${String(value).substring(0, 50)}</td>`;
+                        });
+                        html += '</tr>';
+                    });
+
+                    html += '</tbody></table></div>';
+                    if (parsed.length > 10) {
+                        html += `<div class="alert warning">Showing first 10 of ${parsed.length} campaigns</div>`;
+                    }
+                }
+
+                html += '</div>';
+                container.innerHTML += html;
+
+            } catch (e) {
+                container.innerHTML += `
+                    <div class="data-table">
+                        <h3>📈 Meta Ads Data</h3>
+                        <div class="alert error">❌ Error parsing JSON: ${e.message}</div>
+                        <div class="json-preview">${data.substring(0, 500)}...</div>
+                    </div>
+                `;
+            }
+        }
+
+        function analyzeGoogleData() {
+            const data = localStorage.getItem('moi-google-data');
+            const container = document.getElementById('data-tables');
+            
+            if (!data) {
+                container.innerHTML += `
+                    <div class="data-table">
+                        <h3>📉 Google Ads Data</h3>
+                        <div class="alert error">❌ No Google Ads data found in localStorage</div>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const parsed = JSON.parse(data);
+                const stats = {
+                    rows: parsed.length,
+                    columns: parsed.length > 0 ? Object.keys(parsed[0]).length : 0,
+                    size: data.length
+                };
+
+                // Calculate total cost - handle various formats
+                let totalCost = 0;
+                if (parsed.length > 0) {
+                    console.log('Google Ads data:', parsed); // Debug log
+                    totalCost = parsed.reduce((sum, row) => {
+                        // Try different possible field names for cost
+                        const cost = row['Cost'] || row['cost'] || row['spend'] || row['Amount spent'] || 0;
+                        // Handle both number and string formats, remove commas if present
+                        const cleanCost = typeof cost === 'string' ? cost.replace(/,/g, '') : cost;
+                        const numericCost = typeof cleanCost === 'number' ? cleanCost : parseFloat(cleanCost) || 0;
+                        console.log('Row cost:', cost, '-> numeric:', numericCost); // Debug log
+                        return sum + numericCost;
+                    }, 0);
+                }
+
+                let html = `
+                    <div class="data-table">
+                        <h3>📉 Google Ads Data</h3>
+                        <div class="summary-stats">
+                            <div class="stat"><div class="stat-number">${stats.rows}</div><div class="stat-label">Campaigns</div></div>
+                            <div class="stat"><div class="stat-number">${stats.columns}</div><div class="stat-label">Columns</div></div>
+                            <div class="stat"><div class="stat-number">₹${totalCost.toLocaleString()}</div><div class="stat-label">Total Cost</div></div>
+                            <div class="stat"><div class="stat-number">${(stats.size/1024).toFixed(1)}KB</div><div class="stat-label">Size</div></div>
+                        </div>
+                `;
+
+                if (parsed.length > 0) {
+                    html += '<div class="table-container"><table><thead><tr>';
+                    Object.keys(parsed[0]).forEach(key => {
+                        html += `<th>${key}</th>`;
+                    });
+                    html += '</tr></thead><tbody>';
+
+                    // Show first 10 rows
+                    parsed.slice(0, 10).forEach(row => {
+                        html += '<tr>';
+                        Object.values(row).forEach(value => {
+                            html += `<td>${String(value).substring(0, 50)}</td>`;
+                        });
+                        html += '</tr>';
+                    });
+
+                    html += '</tbody></table></div>';
+                    if (parsed.length > 10) {
+                        html += `<div class="alert warning">Showing first 10 of ${parsed.length} campaigns</div>`;
+                    }
+                }
+
+                html += '</div>';
+                container.innerHTML += html;
+
+            } catch (e) {
+                container.innerHTML += `
+                    <div class="data-table">
+                        <h3>📉 Google Ads Data</h3>
+                        <div class="alert error">❌ Error parsing JSON: ${e.message}</div>
+                        <div class="json-preview">${data.substring(0, 500)}...</div>
+                    </div>
+                `;
+            }
+        }
+
+        function analyzePivotData() {
+            const data = localStorage.getItem('moi-pivot-data');
+            const container = document.getElementById('data-tables');
+            
+            if (!data) {
+                container.innerHTML += `
+                    <div class="data-table">
+                        <h3>📊 Pivot Data (Campaign+AdSet)</h3>
+                        <div class="alert error">❌ No pivot data found</div>
+                        <div class="alert info">💡 Pivot data is generated during file processing and aggregates Shopify data by UTM Campaign + UTM Term combinations</div>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const parsed = JSON.parse(data);
+                let html = `
+                    <div class="data-table">
+                        <h3>📊 Pivot Data (Campaign+AdSet)</h3>
+                        <div class="alert success">✅ ${parsed.length} pivot records found</div>
+                `;
+
+                if (parsed.length > 0) {
+                    // Calculate totals
+                    const totalVisitors = parsed.reduce((sum, row) => sum + (row['Online store visitors'] || 0), 0);
+                    const totalSessions = parsed.reduce((sum, row) => sum + (row['Sessions'] || 0), 0);
+                    const totalCartAdditions = parsed.reduce((sum, row) => sum + (row['Sessions with cart additions'] || 0), 0);
+                    const totalCheckouts = parsed.reduce((sum, row) => sum + (row['Sessions that reached checkout'] || 0), 0);
+                    
+                    html += `
+                        <div class="summary-stats">
+                            <div class="stat-item">📈 Total Visitors: ${totalVisitors.toLocaleString()}</div>
+                            <div class="stat-item">🎯 Total Sessions: ${totalSessions.toLocaleString()}</div>
+                            <div class="stat-item">🛒 Cart Additions: ${totalCartAdditions.toLocaleString()}</div>
+                            <div class="stat-item">💳 Checkouts: ${totalCheckouts.toLocaleString()}</div>
+                        </div>
+                    `;
+
+                    // Show table with first few rows
+                    html += '<div class="table-wrapper"><table><thead><tr>';
+                    Object.keys(parsed[0]).forEach(key => {
+                        if (!key.startsWith('_')) { // Skip internal fields
+                            html += `<th>${key}</th>`;
+                        }
+                    });
+                    html += '</tr></thead><tbody>';
+
+                    // Show first 10 rows
+                    parsed.slice(0, 10).forEach(row => {
+                        html += '<tr>';
+                        Object.entries(row).forEach(([key, value]) => {
+                            if (!key.startsWith('_')) {
+                                const displayValue = typeof value === 'number' ? value.toLocaleString() : String(value).substring(0, 30);
+                                html += `<td>${displayValue}</td>`;
+                            }
+                        });
+                        html += '</tr>';
+                    });
+
+                    html += '</tbody></table></div>';
+                    if (parsed.length > 10) {
+                        html += `<div class="alert warning">Showing first 10 of ${parsed.length} pivot combinations</div>`;
+                    }
+                } else {
+                    html += '<div class="alert warning">Pivot data array is empty</div>';
+                }
+
+                html += '</div>';
+                container.innerHTML += html;
+
+            } catch (e) {
+                container.innerHTML += `
+                    <div class="data-table">
+                        <h3>📊 Pivot Data (Campaign+AdSet)</h3>
+                        <div class="alert error">❌ Error parsing JSON: ${e.message}</div>
+                        <div class="json-preview">${data.substring(0, 500)}...</div>
+                    </div>
+                `;
+            }
+        }
+
+        function analyzeProcessedData() {
+            const data = localStorage.getItem('moi-dashboard-data');
+            const container = document.getElementById('data-tables');
+            
+            if (!data) {
+                container.innerHTML += `
+                    <div class="data-table">
+                        <h3>⚙️ Dashboard Processed Data</h3>
+                        <div class="alert error">❌ No processed dashboard data found</div>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const parsed = JSON.parse(data);
+                let html = `
+                    <div class="data-table">
+                        <h3>⚙️ Dashboard Processed Data</h3>
+                        <div class="summary-stats">
+                            <div class="stat"><div class="stat-number">${parsed.campaigns?.length || 0}</div><div class="stat-label">Campaigns</div></div>
+                            <div class="stat"><div class="stat-number">${parsed.keyMetrics?.totalUniqueUsers || 0}</div><div class="stat-label">Users</div></div>
+                            <div class="stat"><div class="stat-number">${parsed.lastUpdated ? new Date(parsed.lastUpdated).toLocaleDateString() : 'Unknown'}</div><div class="stat-label">Last Updated</div></div>
+                        </div>
+                        <div class="json-preview">${JSON.stringify(parsed, null, 2).substring(0, 1000)}...</div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            } catch (e) {
+                container.innerHTML += `
+                    <div class="data-table">
+                        <h3>⚙️ Dashboard Processed Data</h3>
+                        <div class="alert error">❌ Error parsing JSON: ${e.message}</div>
+                    </div>
+                `;
+            }
+        }
+
+        function analyzeOutputFiles() {
+            // Analyze CSV output files
+            ['moi-server-topLevel', 'moi-server-adset'].forEach(key => {
+                const data = localStorage.getItem(key);
+                const container = document.getElementById('data-tables');
+                const label = key.includes('topLevel') ? 'Top Level Daily Metrics' : 'AdSet Level Matrices';
+                
+                if (!data) {
+                    container.innerHTML += `
+                        <div class="data-table">
+                            <h3>📤 ${label}</h3>
+                            <div class="alert error">❌ No output CSV found for ${key}</div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const lines = data.split('\n').filter(line => line.trim());
+                let html = `
+                    <div class="data-table">
+                        <h3>📤 ${label}</h3>
+                        <div class="summary-stats">
+                            <div class="stat"><div class="stat-number">${lines.length - 1}</div><div class="stat-label">Data Rows</div></div>
+                            <div class="stat"><div class="stat-number">${lines.length > 0 ? lines[0].split(',').length : 0}</div><div class="stat-label">Columns</div></div>
+                            <div class="stat"><div class="stat-number">${(data.length/1024).toFixed(1)}KB</div><div class="stat-label">Size</div></div>
+                        </div>
+                `;
+
+                if (lines.length > 0) {
+                    html += '<div class="json-preview">';
+                    lines.slice(0, 5).forEach(line => {
+                        html += line + '\n';
+                    });
+                    if (lines.length > 5) {
+                        html += `... (${lines.length - 5} more lines)`;
+                    }
+                    html += '</div>';
+                }
+
+                html += '</div>';
+                container.innerHTML += html;
+            });
+        }
+
+        function clearAll() {
+            document.getElementById('status-overview').innerHTML = '';
+            document.getElementById('data-tables').innerHTML = '';
+        }
+
+        // Auto-run on page load
+        window.onload = function() {
+            analyzeAll();
+        };
+    </script>
+</body>
+</html>
