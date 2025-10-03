@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pivot Data Field Inspector</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .field-name { font-weight: bold; color: #2563eb; }
+        .sample-value { color: #16a34a; }
+        .error { color: red; font-weight: bold; }
+        .warning { color: orange; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Pivot Data Field Inspector</h1>
+    <div id="output"></div>
+
+    <script>
+        // Check localStorage data
+        const pivotDataRaw = localStorage.getItem('moi-pivot-data');
+        
+        let output = `<h2>📊 Pivot Data Availability</h2>`;
+        
+        if (!pivotDataRaw) {
+            output += `<p class="error">❌ No pivot data found in localStorage</p>`;
+        } else {
+            try {
+                const pivotData = JSON.parse(pivotDataRaw);
+                
+                output += `
+                <p>✅ Pivot data found: ${pivotData.length} rows</p>
+                
+                <h2>📋 Field Names Analysis</h2>
+                `;
+                
+                if (pivotData.length > 0) {
+                    const firstRow = pivotData[0];
+                    const fieldNames = Object.keys(firstRow);
+                    
+                    output += `
+                    <table>
+                        <tr><th>Field Name</th><th>Sample Value</th><th>Type</th><th>Notes</th></tr>
+                    `;
+                    
+                    fieldNames.forEach(field => {
+                        const sampleValue = firstRow[field];
+                        const fieldType = typeof sampleValue;
+                        let notes = '';
+                        
+                        // Check for cost-related fields
+                        if (field.toLowerCase().includes('spent') || field.toLowerCase().includes('cost') || field.toLowerCase().includes('amount')) {
+                            notes = '💰 COST FIELD - Check this for Ad Spend!';
+                        }
+                        // Check for campaign/adset fields
+                        if (field.toLowerCase().includes('campaign') || field.toLowerCase().includes('utm')) {
+                            notes = '🎯 CAMPAIGN/ADSET FIELD';
+                        }
+                        
+                        output += `
+                        <tr>
+                            <td class="field-name">${field}</td>
+                            <td class="sample-value">${sampleValue}</td>
+                            <td>${fieldType}</td>
+                            <td class="${notes ? 'warning' : ''}">${notes}</td>
+                        </tr>
+                        `;
+                    });
+                    
+                    output += `</table>`;
+                    
+                    // Look for Campaign+AdSet combinations
+                    output += `
+                    <h2>🎯 Campaign + AdSet Combinations Sample</h2>
+                    <table>
+                        <tr><th>UTM Campaign</th><th>UTM Term</th><th>Amount Spent (INR)</th><th>Online Store Visitors</th></tr>
+                    `;
+                    
+                    pivotData.slice(0, 10).forEach(row => {
+                        const campaign = row['UTM Campaign'] || row['utm_campaign'] || 'N/A';
+                        const adset = row['UTM Term'] || row['utm_term'] || 'N/A';
+                        const spent = row['Amount spent (INR)'] || row['amount_spent'] || row['Cost'] || 'N/A';
+                        const users = row['Online store visitors'] || 'N/A';
+                        
+                        output += `
+                        <tr>
+                            <td>${campaign}</td>
+                            <td>${adset}</td>
+                            <td class="${spent === 'N/A' ? 'error' : 'sample-value'}">${spent}</td>
+                            <td>${users}</td>
+                        </tr>
+                        `;
+                    });
+                    
+                    output += `</table>`;
+                    
+                    // Check for missing spend data
+                    const spentField = 'Amount spent (INR)';
+                    const missingSpend = pivotData.filter(row => !row[spentField] || row[spentField] === 0 || row[spentField] === '0');
+                    
+                    output += `
+                    <h2>🚨 Spend Data Analysis</h2>
+                    <table>
+                        <tr><th>Metric</th><th>Value</th><th>Status</th></tr>
+                        <tr>
+                            <td>Total Rows</td>
+                            <td>${pivotData.length}</td>
+                            <td>ℹ️</td>
+                        </tr>
+                        <tr>
+                            <td>Rows with Missing/Zero Spend</td>
+                            <td>${missingSpend.length}</td>
+                            <td class="${missingSpend.length > 0 ? 'error' : 'sample-value'}">${missingSpend.length > 0 ? '❌ ISSUE' : '✅ OK'}</td>
+                        </tr>
+                        <tr>
+                            <td>Spend Field Name</td>
+                            <td>"${spentField}"</td>
+                            <td class="${spentField in firstRow ? 'sample-value' : 'error'}">${spentField in firstRow ? '✅ EXISTS' : '❌ MISSING'}</td>
+                        </tr>
+                    </table>
+                    `;
+                    
+                    // Show total spend calculation
+                    const totalSpent = pivotData.reduce((sum, row) => {
+                        const spent = parseFloat(row[spentField]) || 0;
+                        return sum + spent;
+                    }, 0);
+                    
+                    output += `
+                    <h2>💰 Total Spend Calculation</h2>
+                    <p><strong>Total Amount Spent (INR):</strong> ₹${totalSpent.toLocaleString()}</p>
+                    `;
+                }
+                
+            } catch (error) {
+                output += `<p class="error">❌ Error parsing pivot data: ${error.message}</p>`;
+            }
+        }
+        
+        document.getElementById('output').innerHTML = output;
+    </script>
+</body>
+</html>

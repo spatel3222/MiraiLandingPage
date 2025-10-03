@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meta Ads Data Structure Inspector</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .spend { background-color: #e8f5e8; }
+        .campaign { background-color: #e8e8f5; }
+        .adset { background-color: #f5e8e8; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Meta Ads Data Structure Inspector</h1>
+    <div id="output"></div>
+
+    <script>
+        function inspectMetaStructure() {
+            let output = '';
+            
+            // Check Meta data availability
+            const metaDataRaw = localStorage.getItem('moi-meta-data');
+            const pivotDataRaw = localStorage.getItem('moi-pivot-data');
+            
+            if (!metaDataRaw) {
+                output += `<p style="color: red;">❌ No Meta Ads data found in localStorage</p>`;
+                return output;
+            }
+            
+            if (!pivotDataRaw) {
+                output += `<p style="color: red;">❌ No Pivot data found in localStorage</p>`;
+                return output;
+            }
+            
+            let metaData, pivotData;
+            try {
+                metaData = JSON.parse(metaDataRaw);
+                pivotData = JSON.parse(pivotDataRaw);
+            } catch (error) {
+                output += `<p style="color: red;">❌ Error parsing data: ${error.message}</p>`;
+                return output;
+            }
+            
+            output += `
+            <h2>📊 Data Availability</h2>
+            <table>
+                <tr><th>Source</th><th>Rows</th><th>Status</th></tr>
+                <tr><td>Meta Ads</td><td>${metaData.length}</td><td style="color: green;">✅ Available</td></tr>
+                <tr><td>Pivot Temp</td><td>${pivotData.length}</td><td style="color: green;">✅ Available</td></tr>
+            </table>
+            `;
+            
+            // Analyze Meta data structure
+            if (metaData.length > 0) {
+                const firstMeta = metaData[0];
+                const metaFields = Object.keys(firstMeta);
+                
+                output += `
+                <h2>📋 Meta Ads Field Structure</h2>
+                <table>
+                    <tr><th>Field Name</th><th>Sample Value</th><th>Type</th></tr>
+                `;
+                
+                metaFields.forEach(field => {
+                    const value = firstMeta[field];
+                    const isSpend = field.toLowerCase().includes('spend') || field.toLowerCase().includes('cost') || field.toLowerCase().includes('amount');
+                    const isCampaign = field.toLowerCase().includes('campaign');
+                    const isAdset = field.toLowerCase().includes('adset') || field.toLowerCase().includes('ad set') || field.toLowerCase().includes('term');
+                    
+                    let className = '';
+                    if (isSpend) className = 'spend';
+                    else if (isCampaign) className = 'campaign';
+                    else if (isAdset) className = 'adset';
+                    
+                    output += `
+                    <tr class="${className}">
+                        <td>${field}</td>
+                        <td>${value}</td>
+                        <td>${typeof value}</td>
+                    </tr>
+                    `;
+                });
+                
+                output += `</table>`;
+            }
+            
+            // Test Campaign+AdSet matching
+            output += `
+            <h2>🎯 Campaign+AdSet Matching Test</h2>
+            <p>Testing how to match Pivot campaigns/adsets with Meta data...</p>
+            `;
+            
+            if (pivotData.length > 0 && metaData.length > 0) {
+                output += `<table>
+                    <tr><th>Source</th><th>Campaign Field</th><th>AdSet Field</th><th>Sample Campaign</th><th>Sample AdSet</th></tr>
+                    <tr>
+                        <td>Pivot Temp</td>
+                        <td>UTM Campaign</td>
+                        <td>UTM Term</td>
+                        <td>${pivotData[0]['UTM Campaign'] || 'N/A'}</td>
+                        <td>${pivotData[0]['UTM Term'] || 'N/A'}</td>
+                    </tr>
+                `;
+                
+                const metaFields = Object.keys(metaData[0]);
+                const campaignField = metaFields.find(f => f.toLowerCase().includes('campaign')) || 'Unknown';
+                const adsetField = metaFields.find(f => f.toLowerCase().includes('adset') || f.toLowerCase().includes('ad set')) || 'Unknown';
+                
+                output += `
+                    <tr>
+                        <td>Meta Ads</td>
+                        <td>${campaignField}</td>
+                        <td>${adsetField}</td>
+                        <td>${metaData[0][campaignField] || 'N/A'}</td>
+                        <td>${metaData[0][adsetField] || 'N/A'}</td>
+                    </tr>
+                </table>
+                `;
+                
+                // Test spend lookup for first pivot combination
+                const testPivotRow = pivotData[0];
+                const testCampaign = testPivotRow['UTM Campaign'];
+                const testAdSet = testPivotRow['UTM Term'];
+                
+                output += `
+                <h3>💰 Spend Lookup Test</h3>
+                <p><strong>Testing:</strong> Campaign "${testCampaign}" + AdSet "${testAdSet}"</p>
+                `;
+                
+                const matchingMeta = metaData.filter(row => 
+                    row[campaignField] === testCampaign && row[adsetField] === testAdSet
+                );
+                
+                output += `
+                <table>
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Matching Meta rows</td><td>${matchingMeta.length}</td></tr>
+                `;
+                
+                if (matchingMeta.length > 0) {
+                    const spendFields = Object.keys(matchingMeta[0]).filter(f => 
+                        f.toLowerCase().includes('spend') || f.toLowerCase().includes('cost') || f.toLowerCase().includes('amount')
+                    );
+                    
+                    output += `<tr><td>Available spend fields</td><td>${spendFields.join(', ')}</td></tr>`;
+                    
+                    spendFields.forEach(field => {
+                        const totalSpend = matchingMeta.reduce((sum, row) => 
+                            sum + (parseFloat(row[field]) || 0), 0
+                        );
+                        output += `<tr><td>Total ${field}</td><td>₹${totalSpend}</td></tr>`;
+                    });
+                } else {
+                    output += `<tr><td style="color: red;">No matching rows</td><td>Cannot calculate spend</td></tr>`;
+                }
+                
+                output += `</table>`;
+            }
+            
+            return output;
+        }
+        
+        document.getElementById('output').innerHTML = inspectMetaStructure();
+    </script>
+</body>
+</html>

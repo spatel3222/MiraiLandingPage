@@ -114,7 +114,7 @@ function App() {
       }
       
       // Force cache clear for this version (Public directory file access)
-      const CACHE_VERSION = 'v2.3.0-fix-adset-pivot-lookup';
+      const CACHE_VERSION = 'v2.7.0-shopify-users-meta-spend-fixes';
       const currentCacheVersion = localStorage.getItem('moi-cache-version');
       
       console.log('🔧 CACHE VERSION CHECK:');

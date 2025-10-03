@@ -155,7 +155,7 @@ const KeyMetricsPanel: React.FC<Props> = ({ data }) => {
           <div className="bg-moi-beige rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-benton text-sm text-moi-grey">Checkout Sessions</p>
+                <p className="font-benton text-sm text-moi-grey">Sessions that reached checkout</p>
                 <p className="font-benton text-2xl font-bold text-moi-charcoal">
                   {formatNumber(keyMetrics.totalCheckoutSessions)}
                 </p>
@@ -168,8 +168,8 @@ const KeyMetricsPanel: React.FC<Props> = ({ data }) => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-benton text-sm text-moi-grey">Conversion Rate</p>
-                <p className="font-benton text-2xl font-bold text-moi-charcoal">
-                  {keyMetrics.overallConversionRate}%
+                <p className="font-benton text-lg font-bold text-moi-grey italic">
+                  Coming Soon
                 </p>
               </div>
               <TrendingUp className="w-8 h-8 text-moi-red" />
@@ -180,8 +180,8 @@ const KeyMetricsPanel: React.FC<Props> = ({ data }) => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-benton text-sm text-moi-grey">Est. Revenue</p>
-                <p className="font-benton text-2xl font-bold text-moi-charcoal">
-                  {formatCurrency(keyMetrics.totalRevenue)}
+                <p className="font-benton text-lg font-bold text-moi-grey italic">
+                  Coming Soon
                 </p>
               </div>
               <DollarSign className="w-8 h-8 text-moi-red" />

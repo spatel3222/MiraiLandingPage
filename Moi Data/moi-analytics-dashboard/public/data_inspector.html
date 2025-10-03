@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enhanced Data Inspector with Timestamps</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .pass { color: green; font-weight: bold; }
+        .fail { color: red; font-weight: bold; }
+        .warning { color: orange; }
+        .info { color: blue; }
+        .timestamp { color: #666; font-size: 0.9em; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .critical { background-color: #ffe6e6; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Enhanced Data Inspector</h1>
+    <div class="timestamp">Inspector Run Time: <span id="currentTime"></span></div>
+    
+    <div id="output"></div>
+
+    <script>
+        // Set current timestamp
+        document.getElementById('currentTime').textContent = new Date().toLocaleString();
+        
+        function inspectDataPipeline() {
+            let output = '';
+            
+            // Section 1: Data Availability and Timestamps
+            output += `
+            <div class="section">
+                <h2>📊 Data Availability & Cache Timestamps</h2>
+                <table>
+                    <tr><th>Data Source</th><th>Status</th><th>Size</th><th>Last Updated</th></tr>
+            `;
+            
+            const dataSources = [
+                { key: 'moi-shopify-data', name: 'Shopify Export' },
+                { key: 'moi-meta-data', name: 'Meta Ads' },
+                { key: 'moi-google-data', name: 'Google Ads' },
+                { key: 'moi-pivot-data', name: 'Pivot Temp' },
+                { key: 'moi-dashboard-data', name: 'Dashboard Data' },
+                { key: 'moi-cache-version', name: 'Cache Version' }
+            ];
+            
+            const dataInfo = {};
+            
+            dataSources.forEach(source => {
+                const rawData = localStorage.getItem(source.key);
+                let status, size, lastUpdated;
+                
+                if (!rawData) {
+                    status = '❌ Missing';
+                    size = 'N/A';
+                    lastUpdated = 'Never';
+                } else if (source.key === 'moi-cache-version') {
+                    status = '✅ Available';
+                    size = rawData.length + ' chars';
+                    lastUpdated = 'Version: ' + rawData;
+                } else {
+                    try {
+                        const data = JSON.parse(rawData);
+                        status = '✅ Available';
+                        size = Array.isArray(data) ? data.length + ' rows' : 'Object';
+                        
+                        // Try to extract timestamp if available
+                        if (data.timestamp) {
+                            lastUpdated = new Date(data.timestamp).toLocaleString();
+                        } else if (data.lastUpdated) {
+                            lastUpdated = new Date(data.lastUpdated).toLocaleString();
+                        } else {
+                            lastUpdated = 'Unknown';
+                        }
+                        
+                        dataInfo[source.key] = data;
+                    } catch (error) {
+                        status = '⚠️ Invalid JSON';
+                        size = rawData.length + ' chars';
+                        lastUpdated = 'Parse Error';
+                    }
+                }
+                
+                output += `
+                <tr>
+                    <td>${source.name}</td>
+                    <td class="${status.includes('✅') ? 'pass' : 'fail'}">${status}</td>
+                    <td>${size}</td>
+                    <td class="timestamp">${lastUpdated}</td>
+                </tr>
+                `;
+            });
+            
+            output += `</table></div>`;
+            
+            // Section 2: Top Level Users Pipeline Debug
+            output += `
+            <div class="section critical">
+                <h2>🚨 Top Level Users Pipeline Debug</h2>
+            `;
+            
+            const shopifyData = dataInfo['moi-shopify-data'];
+            const dashboardData = dataInfo['moi-dashboard-data'];
+            
+            if (!shopifyData) {
+                output += `<p class="fail">❌ CRITICAL: No Shopify data found - cannot calculate Total Users</p>`;
+            } else {
+                output += `<h3>Step 1: Shopify Data Analysis</h3>`;
+                output += `<table>
+                    <tr><th>Metric</th><th>Value</th><th>Status</th></tr>
+                    <tr><td>Shopify Rows</td><td>${shopifyData.length || 0}</td><td class="info">ℹ️</td></tr>
+                `;
+                
+                if (shopifyData.length > 0) {
+                    const firstRow = shopifyData[0];
+                    const hasOnlineStoreVisitors = 'Online store visitors' in firstRow;
+                    const sampleValue = firstRow['Online store visitors'] || 'N/A';
+                    
+                    output += `
+                    <tr><td>'Online store visitors' field</td><td>${hasOnlineStoreVisitors ? '✅ EXISTS' : '❌ MISSING'}</td><td class="${hasOnlineStoreVisitors ? 'pass' : 'fail'}">${hasOnlineStoreVisitors ? 'Found' : 'Missing'}</td></tr>
+                    <tr><td>Sample Value</td><td>${sampleValue}</td><td class="info">ℹ️</td></tr>
+                    `;
+                    
+                    // Calculate total
+                    let totalVisitors = 0;
+                    let validRows = 0;
+                    
+                    shopifyData.forEach(row => {
+                        const visitors = parseFloat(row['Online store visitors']) || 0;
+                        if (visitors > 0) {
+                            totalVisitors += visitors;
+                            validRows++;
+                        }
+                    });
+                    
+                    output += `
+                    <tr><td>Valid Rows (visitors > 0)</td><td>${validRows}</td><td class="${validRows > 0 ? 'pass' : 'fail'}">${validRows > 0 ? '✅' : '❌'}</td></tr>
+                    <tr><td>Calculated Total Visitors</td><td class="${totalVisitors > 0 ? 'pass' : 'fail'}">${totalVisitors}</td><td class="${totalVisitors > 0 ? 'pass' : 'fail'}">${totalVisitors > 0 ? '✅ Valid' : '❌ Zero'}</td></tr>
+                    `;
+                } else {
+                    output += `<tr><td colspan="3" class="fail">❌ No Shopify data rows available</td></tr>`;
+                }
+                
+                output += `</table>`;
+            }
+            
+            // Check dashboard data
+            if (dashboardData) {
+                output += `<h3>Step 2: Dashboard Data Check</h3>`;
+                const totalUsers = dashboardData.keyMetrics?.totalUniqueUsers;
+                
+                output += `<table>
+                    <tr><th>Field</th><th>Value</th><th>Status</th></tr>
+                    <tr><td>keyMetrics.totalUniqueUsers</td><td>${totalUsers}</td><td class="${totalUsers === -999 ? 'fail' : totalUsers > 0 ? 'pass' : 'warning'}">${totalUsers === -999 ? '❌ Error' : totalUsers > 0 ? '✅ Valid' : '⚠️ Zero'}</td></tr>
+                </table>`;
+            }
+            
+            output += `</div>`;
+            
+            // Section 3: Ad Set Spend Pipeline Debug  
+            output += `
+            <div class="section critical">
+                <h2>💰 Ad Set Spend Pipeline Debug</h2>
+            `;
+            
+            const pivotData = dataInfo['moi-pivot-data'];
+            
+            if (!pivotData) {
+                output += `<p class="fail">❌ CRITICAL: No Pivot data found - cannot calculate Ad Set Spend</p>`;
+            } else {
+                output += `<h3>Step 1: Pivot Data Analysis</h3>`;
+                output += `<table>
+                    <tr><th>Metric</th><th>Value</th><th>Status</th></tr>
+                    <tr><td>Pivot Rows</td><td>${pivotData.length || 0}</td><td class="info">ℹ️</td></tr>
+                `;
+                
+                if (pivotData.length > 0) {
+                    const firstRow = pivotData[0];
+                    const hasAmountSpent = 'Amount spent (INR)' in firstRow;
+                    const sampleSpend = firstRow['Amount spent (INR)'] || 'N/A';
+                    
+                    output += `
+                    <tr><td>'Amount spent (INR)' field</td><td>${hasAmountSpent ? '✅ EXISTS' : '❌ MISSING'}</td><td class="${hasAmountSpent ? 'pass' : 'fail'}">${hasAmountSpent ? 'Found' : 'Missing'}</td></tr>
+                    <tr><td>Sample Spend Value</td><td>${sampleSpend}</td><td class="info">ℹ️</td></tr>
+                    `;
+                    
+                    // Test spend extraction for first 3 rows
+                    output += `</table><h3>Step 2: Spend Extraction Test</h3>`;
+                    output += `<table>
+                        <tr><th>Campaign</th><th>AdSet</th><th>Raw Spend</th><th>Parsed</th><th>Final</th><th>Status</th></tr>
+                    `;
+                    
+                    for (let i = 0; i < Math.min(3, pivotData.length); i++) {
+                        const row = pivotData[i];
+                        const campaign = row['UTM Campaign'] || 'N/A';
+                        const adset = row['UTM Term'] || 'N/A';
+                        const rawSpend = row['Amount spent (INR)'];
+                        const parsed = parseFloat(rawSpend);
+                        const final = parsed || -999;
+                        
+                        const status = (final > 0) ? 'pass' : (final === -999) ? 'warning' : 'fail';
+                        const statusText = (final > 0) ? '✅ Valid' : (final === -999) ? '⚠️ Fallback' : '❌ Invalid';
+                        
+                        output += `
+                        <tr>
+                            <td>${campaign}</td>
+                            <td>${adset}</td>
+                            <td>${rawSpend}</td>
+                            <td>${parsed}</td>
+                            <td class="${status}">${final}</td>
+                            <td class="${status}">${statusText}</td>
+                        </tr>
+                        `;
+                    }
+                } else {
+                    output += `<tr><td colspan="3" class="fail">❌ No Pivot data rows available</td></tr>`;
+                }
+                
+                output += `</table>`;
+            }
+            
+            output += `</div>`;
+            
+            // Section 4: Recommended Actions
+            output += `
+            <div class="section">
+                <h2>🎯 Recommended Actions</h2>
+                <ol>
+            `;
+            
+            if (!shopifyData || (shopifyData && shopifyData.length === 0)) {
+                output += `<li class="fail">❌ Upload valid Shopify Export CSV with 'Online store visitors' field</li>`;
+            }
+            
+            if (!pivotData || (pivotData && pivotData.length === 0)) {
+                output += `<li class="fail">❌ Upload valid Pivot Temp CSV with 'Amount spent (INR)' field</li>`;
+            }
+            
+            if (dashboardData?.keyMetrics?.totalUniqueUsers === -999) {
+                output += `<li class="warning">⚠️ Debug data processing pipeline for Total Users calculation</li>`;
+            }
+            
+            output += `
+                <li class="info">ℹ️ Clear cache and reload data if timestamp issues detected</li>
+                <li class="info">ℹ️ Check console logs for detailed error messages</li>
+                </ol>
+            </div>
+            `;
+            
+            return output;
+        }
+        
+        document.getElementById('output').innerHTML = inspectDataPipeline();
+    </script>
+</body>
+</html>

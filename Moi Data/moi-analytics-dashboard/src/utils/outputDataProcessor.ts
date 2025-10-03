@@ -88,7 +88,37 @@ export const processOutputFiles = (
   }
 
   // Calculate key metrics from top-level data with safety checks
-  const totalUsers = Math.floor(topLevelData.reduce((sum, row) => sum + (isNaN(row.totalUsers) ? 0 : row.totalUsers), 0));
+  let totalUsers = Math.floor(topLevelData.reduce((sum, row) => sum + (isNaN(row.totalUsers) ? 0 : row.totalUsers), 0));
+  
+  // CRITICAL FIX: If totalUsers is 0 or invalid, calculate directly from Shopify data
+  if (totalUsers <= 0) {
+    console.warn('⚠️ totalUsers from topLevelData is 0 or invalid, calculating from Shopify data...');
+    
+    // Get Shopify data from localStorage for direct calculation
+    const shopifyDataRaw = typeof localStorage !== 'undefined' ? localStorage.getItem('moi-shopify-data') : null;
+    if (shopifyDataRaw) {
+      try {
+        const shopifyData = JSON.parse(shopifyDataRaw);
+        totalUsers = Math.floor(shopifyData.reduce((sum: number, row: any) => {
+          const visitors = parseFloat(row['Online store visitors']) || 0;
+          return sum + visitors;
+        }, 0));
+        
+        console.log(`✅ Calculated totalUsers from Shopify data: ${totalUsers}`);
+        
+        if (totalUsers <= 0) {
+          console.warn('⚠️ Even Shopify data calculation resulted in 0 users, falling back to -999');
+          totalUsers = -999;
+        }
+      } catch (error) {
+        console.warn('Failed to parse Shopify data for totalUsers calculation:', error);
+        totalUsers = -999;
+      }
+    } else {
+      console.warn('⚠️ No Shopify data available for totalUsers calculation');
+      totalUsers = -999;
+    }
+  }
   const totalSessions = Math.floor(totalUsers * 1.2); // Approximate sessions
   const totalATC = Math.floor(topLevelData.reduce((sum, row) => sum + (isNaN(row.totalATC) ? 0 : row.totalATC), 0));
   const totalCheckout = Math.floor(topLevelData.reduce((sum, row) => sum + (isNaN(row.totalReachedCheckout) ? 0 : row.totalReachedCheckout), 0));
@@ -107,20 +137,92 @@ export const processOutputFiles = (
   const avgPageviews = 3.2;
 
   // Process campaign data for UTM analysis with safety checks
+  // Load pivot data for quality customer analysis
+  const pivotDataRaw = typeof localStorage !== 'undefined' ? localStorage.getItem('moi-pivot-data') : null;
+  let pivotData: any[] = [];
+  
+  if (pivotDataRaw) {
+    try {
+      pivotData = JSON.parse(pivotDataRaw);
+    } catch (error) {
+      console.warn('Failed to parse pivot data for performance tier calculation:', error);
+    }
+  }
+  
+  // Calculate proportional sessions to match total sessions
+  // IMPORTANT: Use pivot data for users to ensure consistency with Campaign Performance Tiers
+  let totalCampaignUsers = 0;
+  if (pivotData.length > 0) {
+    totalCampaignUsers = pivotData.reduce((sum, row) => {
+      const users = parseFloat(row['Online store visitors']) || 0;
+      return sum + users;
+    }, 0);
+  } else if (adsetData && adsetData.length > 0) {
+    totalCampaignUsers = adsetData.reduce((sum, row) => sum + (isNaN(row.users) ? 0 : row.users), 0);
+  }
+  
+  console.log('📊 Session Allocation Debug:', {
+    totalCampaignUsers,
+    totalSessions,
+    adsetDataLength: adsetData?.length || 0
+  });
+
   const utmCampaigns = adsetData && adsetData.length > 0 ? 
     Array.from(new Set(adsetData.map(row => row.campaignName))).map(campaignName => {
       const campaignRows = adsetData.filter(row => row.campaignName === campaignName);
-      const campaignUsers = Math.floor(campaignRows.reduce((sum, row) => sum + (isNaN(row.users) ? 0 : row.users), 0));
+      
+      // Use pivot data for more accurate user counts if available
+      let campaignUsers = 0;
+      if (pivotData.length > 0) {
+        campaignUsers = Math.floor(pivotData
+          .filter(row => row['UTM Campaign'] === campaignName)
+          .reduce((sum, row) => {
+            const users = parseFloat(row['Online store visitors']) || 0;
+            return sum + users;
+          }, 0));
+      } else {
+        campaignUsers = Math.floor(campaignRows.reduce((sum, row) => sum + (isNaN(row.users) ? 0 : row.users), 0));
+      }
+      
       const campaignCheckout = Math.floor(campaignRows.reduce((sum, row) => sum + (isNaN(row.reachedCheckout) ? 0 : row.reachedCheckout), 0));
-      const campaignSessions = Math.floor(campaignUsers * 1.1);
-      const campaignConversionRate = campaignSessions > 0 ? parseFloat(((campaignCheckout / campaignSessions) * 100).toFixed(2)) : 0;
+      
+      // Calculate proportional sessions based on actual total sessions with proper fallback
+      const campaignSessions = totalCampaignUsers > 0 ? 
+        Math.floor((campaignUsers / totalCampaignUsers) * totalSessions) : 
+        Math.floor(campaignUsers * 1.2); // More conservative fallback
+      
+      // Additional safety check: ensure individual campaign sessions don't exceed total
+      const safeCampaignSessions = Math.min(campaignSessions, totalSessions);
+      
+      // Calculate quality customer metrics from pivot data
+      const qualityCustomersAbove1Min = pivotData.length > 0 ? 
+        pivotData
+          .filter(row => row['UTM Campaign'] === campaignName)
+          .reduce((sum, row) => {
+            // Estimate users above 1 min (60% of total users)
+            const totalUsers = parseFloat(row['Online store visitors']) || 0;
+            return sum + Math.floor(totalUsers * 0.6);
+          }, 0) : 
+        Math.floor(campaignUsers * 0.6); // Fallback estimation
+      
+      // Calculate quality conversion rate (checkouts from quality customers)
+      const qualityConversionRate = qualityCustomersAbove1Min > 0 ? 
+        parseFloat(((campaignCheckout / qualityCustomersAbove1Min) * 100).toFixed(2)) : 0;
     
-      // Determine performance tier based on conversion rate
+      // Determine performance tier based on QUALITY customer conversion rate
       let performanceTier: 'excellent' | 'good' | 'average' | 'poor';
-      if (campaignConversionRate >= 1.0) performanceTier = 'excellent';
-      else if (campaignConversionRate >= 0.5) performanceTier = 'good';
-      else if (campaignConversionRate >= 0.2) performanceTier = 'average';
+      if (qualityConversionRate >= 2.0) performanceTier = 'excellent'; // Higher threshold for quality customers
+      else if (qualityConversionRate >= 1.0) performanceTier = 'good';
+      else if (qualityConversionRate >= 0.5) performanceTier = 'average';
       else performanceTier = 'poor';
+      
+      console.log(`📊 Campaign "${campaignName}" Quality Metrics:`, {
+        totalUsers: campaignUsers,
+        qualityCustomers: qualityCustomersAbove1Min,
+        checkouts: campaignCheckout,
+        qualityConversionRate: qualityConversionRate + '%',
+        performanceTier
+      });
 
       // Calculate ad spend for this campaign from adset data
       const campaignAdSpend = campaignRows.reduce((sum, row) => {
@@ -130,12 +232,14 @@ export const processOutputFiles = (
       return {
         utmCampaign: campaignName,
         visitors: campaignUsers,
-        sessions: campaignSessions,
+        sessions: safeCampaignSessions, // Use the constrained session count
         cartAdditions: Math.floor(campaignRows.reduce((sum, row) => sum + (isNaN(row.atc) ? 0 : row.atc), 0)),
         checkoutSessions: campaignCheckout,
         averageSessionDuration: avgSessionDuration,
-        pageviews: Math.floor(campaignSessions * avgPageviews),
-        conversionRate: campaignConversionRate,
+        pageviews: Math.floor(safeCampaignSessions * avgPageviews), // Use safe sessions for pageviews too
+        conversionRate: qualityConversionRate, // Use quality conversion rate
+        qualityCustomers: qualityCustomersAbove1Min, // Add quality customer count
+        qualityConversionRate: qualityConversionRate, // Explicit quality metric
         performanceTier,
         adSpend: Math.floor(campaignAdSpend)
       };

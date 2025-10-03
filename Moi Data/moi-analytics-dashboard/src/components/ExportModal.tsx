@@ -511,12 +511,46 @@ const ExportModal: React.FC<Props> = ({ onClose, dashboardData }) => {
             const adSetDelivery = 'active'; // Default delivery status
             
             // Calculate Ad Set Level metrics using Pivot Data as per specification
-            // For spend data, we need to lookup from Meta/Google data or use campaign fallback
-            const adSetLevelSpent = 0; // TODO: Need to lookup spend from Meta/Google data by campaign+adset
+            // Extract Amount spent (INR) from Meta Ads sheet for this Campaign+AdSet combination
+            let adSetLevelSpent = -999; // Default fallback
+            
+            // Get Meta Ads data for spend lookup
+            const metaDataRaw = typeof localStorage !== 'undefined' ? localStorage.getItem('moi-meta-data') : null;
+            if (metaDataRaw) {
+              try {
+                const metaData = JSON.parse(metaDataRaw);
+                
+                // Match Campaign+AdSet combination with Meta data
+                const matchingMetaRows = metaData.filter((metaRow: any) => {
+                  const metaCampaign = metaRow['Campaign name'] || metaRow['Campaign'] || metaRow['campaign'];
+                  const metaAdSet = metaRow['Ad set name'] || metaRow['AdSet'] || metaRow['adset'] || metaRow['Ad Set'];
+                  
+                  return metaCampaign === campaignName && metaAdSet === adSetName;
+                });
+                
+                // Sum spend from all matching Meta rows for this Campaign+AdSet
+                if (matchingMetaRows.length > 0) {
+                  const totalSpend = matchingMetaRows.reduce((sum: number, metaRow: any) => {
+                    const spend = parseFloat(metaRow['Amount spent (INR)']) || 
+                                  parseFloat(metaRow['Spend']) || 
+                                  parseFloat(metaRow['Cost']) || 0;
+                    return sum + spend;
+                  }, 0);
+                  
+                  adSetLevelSpent = totalSpend > 0 ? totalSpend : -999;
+                } else {
+                  console.warn(`⚠️ No Meta data found for Campaign: "${campaignName}", AdSet: "${adSetName}"`);
+                }
+              } catch (error) {
+                console.warn('Failed to parse Meta data for spend lookup:', error);
+              }
+            } else {
+              console.warn('⚠️ No Meta data available for Ad Set spend calculation');
+            }
             
             // Use Pivot Temp CSV data directly (this row already has the aggregated data for this Campaign+AdSet)
-            const adSetLevelUsers = parseFloat(pivotRow['Online store visitors']) || 0;
-            const costPerUser = adSetLevelUsers > 0 ? (adSetLevelSpent / adSetLevelUsers).toFixed(2) : 0;
+            const adSetLevelUsers = parseFloat(pivotRow['Online store visitors']) || -999; // Fall back to -999 when not available
+            const costPerUser = (adSetLevelUsers > 0 && adSetLevelSpent !== -999) ? (adSetLevelSpent / adSetLevelUsers).toFixed(2) : -999;
             
             const adSetLevelATC = parseFloat(pivotRow['Sessions with cart additions']) || 0;
             const adSetLevelReachedCheckout = parseFloat(pivotRow['Sessions that reached checkout']) || 0;
@@ -524,12 +558,12 @@ const ExportModal: React.FC<Props> = ({ onClose, dashboardData }) => {
             const adSetLevelAvgSessionDuration = parseFloat(pivotRow['Average session duration']) || 0;
             
             // Advanced metrics - use estimations based on the actual pivot data
-            const adSetLevelUsersAbove1Min = Math.floor(adSetLevelUsers * 0.6); // 60% estimation
-            const adSetLevelCostPer1MinUser = adSetLevelUsersAbove1Min > 0 ? (adSetLevelSpent / adSetLevelUsersAbove1Min).toFixed(2) : 0;
-            const adSetLevel1MinUserPercent = adSetLevelUsers > 0 ? ((adSetLevelUsersAbove1Min / adSetLevelUsers) * 100).toFixed(2) : 0;
-            const adSetLevelATCAbove1Min = Math.floor(adSetLevelATC * 0.6); // 60% estimation
-            const adSetLevelReachedCheckoutAbove1Min = Math.floor(adSetLevelReachedCheckout * 0.6); // 60% estimation
-            const adSetLevelUsers5PagesAbove1Min = Math.floor(adSetLevelUsers * 0.3); // 30% estimation
+            const adSetLevelUsersAbove1Min = (adSetLevelUsers > 0) ? Math.floor(adSetLevelUsers * 0.6) : -999; // 60% estimation
+            const adSetLevelCostPer1MinUser = (adSetLevelUsersAbove1Min > 0 && adSetLevelSpent !== -999) ? (adSetLevelSpent / adSetLevelUsersAbove1Min).toFixed(2) : -999;
+            const adSetLevel1MinUserPercent = (adSetLevelUsers > 0 && adSetLevelUsersAbove1Min > 0) ? ((adSetLevelUsersAbove1Min / adSetLevelUsers) * 100).toFixed(2) : -999;
+            const adSetLevelATCAbove1Min = (adSetLevelATC > 0) ? Math.floor(adSetLevelATC * 0.6) : -999; // 60% estimation
+            const adSetLevelReachedCheckoutAbove1Min = (adSetLevelReachedCheckout > 0) ? Math.floor(adSetLevelReachedCheckout * 0.6) : -999; // 60% estimation  
+            const adSetLevelUsers5PagesAbove1Min = (adSetLevelUsers > 0) ? Math.floor(adSetLevelUsers * 0.3) : -999; // 30% estimation
             
             return `"${date}","${campaignName}","${adSetName}","${adSetDelivery}",${adSetLevelSpent},${adSetLevelUsers},${costPerUser},${adSetLevelATC},${adSetLevelReachedCheckout},${adSetLevelConversions},${adSetLevelAvgSessionDuration},${adSetLevelUsersAbove1Min},${adSetLevelCostPer1MinUser},${adSetLevel1MinUserPercent},${adSetLevelATCAbove1Min},${adSetLevelReachedCheckoutAbove1Min},${adSetLevelUsers5PagesAbove1Min}`;
           }).join('\n');

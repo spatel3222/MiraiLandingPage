@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ad Set Spend Pipeline Test</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .pass { color: green; font-weight: bold; }
+        .fail { color: red; font-weight: bold; }
+        .warning { color: orange; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Ad Set Spend Pipeline Test</h1>
+    <div id="output"></div>
+
+    <script>
+        // Test the exact pipeline from input to output
+        function testAdSetSpendPipeline() {
+            let output = `<h2>📊 Pipeline Step-by-Step Test</h2>`;
+            
+            // Step 1: Check Pivot Data Availability
+            const pivotDataRaw = localStorage.getItem('moi-pivot-data');
+            
+            if (!pivotDataRaw) {
+                output += `<p class="fail">❌ Step 1 FAILED: No pivot data in localStorage</p>`;
+                return output;
+            }
+            
+            let pivotData;
+            try {
+                pivotData = JSON.parse(pivotDataRaw);
+                output += `<p class="pass">✅ Step 1 PASSED: Pivot data loaded (${pivotData.length} rows)</p>`;
+            } catch (error) {
+                output += `<p class="fail">❌ Step 1 FAILED: Cannot parse pivot data - ${error.message}</p>`;
+                return output;
+            }
+            
+            // Step 2: Check Required Field Availability
+            const requiredFields = ['UTM Campaign', 'UTM Term', 'Amount spent (INR)', 'Online store visitors'];
+            const firstRow = pivotData[0] || {};
+            const fieldResults = [];
+            
+            output += `<h3>🔍 Step 2: Field Availability Check</h3><table><tr><th>Required Field</th><th>Status</th><th>Sample Value</th></tr>`;
+            
+            requiredFields.forEach(field => {
+                const exists = field in firstRow;
+                const sampleValue = firstRow[field] || 'N/A';
+                const status = exists ? 'pass' : 'fail';
+                fieldResults.push({ field, exists, sampleValue });
+                
+                output += `<tr><td>${field}</td><td class="${status}">${exists ? '✅ EXISTS' : '❌ MISSING'}</td><td>${sampleValue}</td></tr>`;
+            });
+            
+            output += `</table>`;
+            
+            // Step 3: Test Spend Extraction for First 5 Campaign+AdSet Combinations
+            output += `<h3>💰 Step 3: Spend Extraction Test (First 5 rows)</h3>`;
+            output += `<table><tr><th>Campaign</th><th>AdSet</th><th>Raw Spend Value</th><th>Parsed Spend</th><th>Final Value</th><th>Status</th></tr>`;
+            
+            let passCount = 0;
+            let totalTests = Math.min(5, pivotData.length);
+            
+            for (let i = 0; i < totalTests; i++) {
+                const row = pivotData[i];
+                const campaign = row['UTM Campaign'] || 'N/A';
+                const adset = row['UTM Term'] || 'N/A';
+                const rawSpend = row['Amount spent (INR)'];
+                const parsedSpend = parseFloat(rawSpend);
+                const finalValue = parsedSpend || -999;
+                
+                const status = (finalValue !== -999 && finalValue > 0) ? 'pass' : 
+                              (finalValue === -999) ? 'warning' : 'fail';
+                
+                if (status === 'pass') passCount++;
+                
+                const statusText = (finalValue !== -999 && finalValue > 0) ? '✅ VALID' :
+                                  (finalValue === -999) ? '⚠️ FALLBACK' : '❌ INVALID';
+                
+                output += `<tr>
+                    <td>${campaign}</td>
+                    <td>${adset}</td>
+                    <td>${rawSpend}</td>
+                    <td>${parsedSpend}</td>
+                    <td class="${status}">${finalValue}</td>
+                    <td class="${status}">${statusText}</td>
+                </tr>`;
+            }
+            
+            output += `</table>`;
+            
+            // Step 4: Summary
+            output += `<h3>📈 Step 4: Pipeline Summary</h3>`;
+            output += `<table>
+                <tr><th>Metric</th><th>Value</th><th>Status</th></tr>
+                <tr><td>Total Rows</td><td>${pivotData.length}</td><td class="info">ℹ️</td></tr>
+                <tr><td>Rows Tested</td><td>${totalTests}</td><td class="info">ℹ️</td></tr>
+                <tr><td>Valid Spend Values</td><td>${passCount}/${totalTests}</td><td class="${passCount > 0 ? 'pass' : 'fail'}">${passCount > 0 ? '✅' : '❌'}</td></tr>
+            </table>`;
+            
+            // Step 5: Test Cost Per User Calculation
+            if (passCount > 0) {
+                output += `<h3>🧮 Step 5: Cost Per User Calculation Test</h3>`;
+                const testRow = pivotData.find(row => {
+                    const spend = parseFloat(row['Amount spent (INR)']) || 0;
+                    const users = parseFloat(row['Online store visitors']) || 0;
+                    return spend > 0 && users > 0;
+                });
+                
+                if (testRow) {
+                    const spend = parseFloat(testRow['Amount spent (INR)']);
+                    const users = parseFloat(testRow['Online store visitors']);
+                    const costPerUser = (users > 0 && spend !== -999) ? (spend / users).toFixed(2) : -999;
+                    
+                    output += `<table>
+                        <tr><th>Campaign</th><th>AdSet</th><th>Spend</th><th>Users</th><th>Cost/User</th></tr>
+                        <tr>
+                            <td>${testRow['UTM Campaign']}</td>
+                            <td>${testRow['UTM Term']}</td>
+                            <td>₹${spend}</td>
+                            <td>${users}</td>
+                            <td class="pass">₹${costPerUser}</td>
+                        </tr>
+                    </table>`;
+                } else {
+                    output += `<p class="warning">⚠️ No valid spend+user combinations found for testing</p>`;
+                }
+            }
+            
+            // Overall Status
+            const overallStatus = (passCount > 0) ? 'pass' : 'fail';
+            const overallMessage = (passCount > 0) ? '✅ PIPELINE WORKING' : '❌ PIPELINE BROKEN';
+            
+            output += `<h2 class="${overallStatus}">🎯 Overall Result: ${overallMessage}</h2>`;
+            
+            return output;
+        }
+        
+        document.getElementById('output').innerHTML = testAdSetSpendPipeline();
+    </script>
+</body>
+</html>
