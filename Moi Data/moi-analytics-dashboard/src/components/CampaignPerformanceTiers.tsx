@@ -13,7 +13,7 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
   // Use the performance tiers from the processed data
   const { performanceTiers, utmCampaigns } = data;
   
-  // Debug logging
+  // Debug logging  
   console.log('CampaignPerformanceTiers data:', { performanceTiers, utmCampaigns });
   
   // Provide safe fallbacks for undefined data
@@ -30,6 +30,16 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
   const good = safeUtmCampaigns.filter(c => c.performanceTier === 'good');
   const average = safeUtmCampaigns.filter(c => c.performanceTier === 'average');
   const poor = safeUtmCampaigns.filter(c => c.performanceTier === 'poor');
+  
+  // Debug poor tier campaigns specifically
+  console.log('🔴 Poor tier campaigns:', poor);
+  console.log('🔴 Poor tier session details:', poor.map(c => ({
+    name: c.utmCampaign,
+    sessions: c.sessions,
+    totalSessions: c.totalSessions,
+    visitors: c.visitors
+  })));
+  console.log('🔴 Poor tier total sessions sum:', poor.reduce((sum, c) => sum + (c.sessions || c.totalSessions || 0), 0));
 
   const getTierColor = (tier: string) => {
     switch (tier) {
@@ -80,7 +90,8 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
         <div className="space-y-2">
           <div className="text-sm">
             <p><strong>Total Sessions:</strong> {formatNumber(campaigns.reduce((sum, c) => sum + (c.sessions || c.totalSessions || 0), 0))}</p>
-            <p><strong>Avg Conversion:</strong> {(campaigns.reduce((sum, c) => sum + (c.conversionRate || c.checkoutRate || 0), 0) / campaigns.length).toFixed(2)}%</p>
+            <p><strong>Quality Customers (&gt;1min):</strong> {formatNumber(campaigns.reduce((sum, c) => sum + (c.qualityCustomers || 0), 0))}</p>
+            <p><strong>Avg Quality Conversion:</strong> {(campaigns.reduce((sum, c) => sum + (c.qualityConversionRate || c.conversionRate || c.checkoutRate || 0), 0) / campaigns.length).toFixed(2)}%</p>
             {campaigns.some(c => c.adSpend) && (
               <p><strong>Total Ad Spend:</strong> ₹{formatNumber(campaigns.reduce((sum, c) => sum + (c.adSpend || 0), 0))}</p>
             )}
@@ -134,6 +145,14 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
           <span className="font-benton text-sm font-medium">Info</span>
         </button>
       </div>
+      
+      {/* Quality Customer Note */}
+      <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+        <p className="font-benton text-sm text-blue-800">
+          <strong>Quality-Based Performance:</strong> Tiers now based on customers who spend &gt;1 minute on site, 
+          providing more accurate conversion insights from pivot temp data.
+        </p>
+      </div>
 
       {/* Performance Tiers Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -180,7 +199,7 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
           </div>
           <div>
             <p className="font-benton text-2xl font-bold text-moi-charcoal">
-              {safeUtmCampaigns.length > 0 ? (safeUtmCampaigns.reduce((sum, c) => sum + (c.conversionRate || 0), 0) / safeUtmCampaigns.length).toFixed(2) : 0}
+              {safeUtmCampaigns.length > 0 ? (safeUtmCampaigns.reduce((sum, c) => sum + (c.qualityConversionRate || c.conversionRate || 0), 0) / safeUtmCampaigns.length).toFixed(2) : 0}
             </p>
             <p className="font-benton text-sm text-moi-grey">Avg Quality Score</p>
           </div>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Session Count Debug</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .poor { background-color: #ffe6e6; }
+        .error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Session Count Debug Analysis</h1>
+    <div id="output"></div>
+
+    <script>
+        // Check localStorage data
+        const dashboardData = localStorage.getItem('moi-dashboard-data');
+        const pivotData = localStorage.getItem('moi-pivot-data');
+        const adsetData = localStorage.getItem('moi-adset-data');
+        
+        let output = `
+        <h2>📊 Data Availability Check</h2>
+        <ul>
+            <li>Dashboard Data: ${dashboardData ? '✅ Available' : '❌ Missing'}</li>
+            <li>Pivot Data: ${pivotData ? '✅ Available' : '❌ Missing'}</li>
+            <li>AdSet Data: ${adsetData ? '✅ Available' : '❌ Missing'}</li>
+        </ul>
+        `;
+        
+        if (dashboardData) {
+            try {
+                const data = JSON.parse(dashboardData);
+                
+                output += `
+                <h2>📈 Key Metrics Summary</h2>
+                <table>
+                    <tr><th>Metric</th><th>Value</th></tr>
+                    <tr><td>Total Users (Key Metrics)</td><td>${data.keyMetrics?.totalUniqueUsers || 'N/A'}</td></tr>
+                    <tr><td>Total Sessions (Key Metrics)</td><td>${data.keyMetrics?.totalSessions || 'N/A'}</td></tr>
+                    <tr><td>UTM Campaigns Count</td><td>${data.utmCampaigns?.length || 0}</td></tr>
+                </table>
+                `;
+                
+                if (data.utmCampaigns && data.utmCampaigns.length > 0) {
+                    output += `
+                    <h2>🎯 Campaign Sessions Analysis</h2>
+                    <table>
+                        <tr>
+                            <th>Campaign</th>
+                            <th>Users</th>
+                            <th>Sessions</th>
+                            <th>Quality Customers</th>
+                            <th>Performance Tier</th>
+                        </tr>
+                    `;
+                    
+                    let totalCampaignSessions = 0;
+                    
+                    data.utmCampaigns.forEach(campaign => {
+                        const sessionCount = campaign.sessions || 0;
+                        totalCampaignSessions += sessionCount;
+                        const rowClass = campaign.performanceTier === 'poor' ? 'poor' : '';
+                        
+                        output += `
+                        <tr class="${rowClass}">
+                            <td>${campaign.utmCampaign}</td>
+                            <td>${campaign.visitors || 0}</td>
+                            <td>${sessionCount}</td>
+                            <td>${campaign.qualityCustomers || 0}</td>
+                            <td>${campaign.performanceTier}</td>
+                        </tr>
+                        `;
+                    });
+                    
+                    output += `</table>`;
+                    
+                    // Performance Tier Breakdown
+                    const tiers = ['excellent', 'good', 'average', 'poor'];
+                    output += `
+                    <h2>📊 Performance Tier Session Breakdown</h2>
+                    <table>
+                        <tr><th>Tier</th><th>Campaign Count</th><th>Total Sessions</th><th>Avg Sessions/Campaign</th></tr>
+                    `;
+                    
+                    tiers.forEach(tier => {
+                        const tierCampaigns = data.utmCampaigns.filter(c => c.performanceTier === tier);
+                        const tierSessions = tierCampaigns.reduce((sum, c) => sum + (c.sessions || 0), 0);
+                        const avgSessions = tierCampaigns.length > 0 ? Math.round(tierSessions / tierCampaigns.length) : 0;
+                        
+                        const rowClass = tier === 'poor' ? 'poor' : '';
+                        output += `
+                        <tr class="${rowClass}">
+                            <td>${tier.toUpperCase()}</td>
+                            <td>${tierCampaigns.length}</td>
+                            <td>${tierSessions.toLocaleString()}</td>
+                            <td>${avgSessions.toLocaleString()}</td>
+                        </tr>
+                        `;
+                    });
+                    
+                    output += `</table>`;
+                    
+                    // Error Analysis
+                    output += `
+                    <h2 class="error">🚨 Error Analysis</h2>
+                    <table>
+                        <tr><th>Issue</th><th>Expected</th><th>Actual</th><th>Status</th></tr>
+                        <tr>
+                            <td>Total Sessions Consistency</td>
+                            <td>${data.keyMetrics?.totalSessions || 'N/A'}</td>
+                            <td>${totalCampaignSessions.toLocaleString()}</td>
+                            <td class="error">${totalCampaignSessions > (data.keyMetrics?.totalSessions || 0) ? 'INCONSISTENT' : 'OK'}</td>
+                        </tr>
+                    </table>
+                    `;
+                }
+                
+            } catch (error) {
+                output += `<p class="error">❌ Error parsing dashboard data: ${error.message}</p>`;
+            }
+        }
+        
+        document.getElementById('output').innerHTML = output;
+    </script>
+</body>
+</html>
