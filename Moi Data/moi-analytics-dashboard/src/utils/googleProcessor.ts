@@ -20,24 +20,60 @@ export interface GoogleDailyData {
 export const processGoogleAdsCSV = (file: File): Promise<GoogleAdsRecord[]> => {
   return new Promise((resolve, reject) => {
     Papa.parse(file, {
-      header: true,
+      header: false, // Don't treat first row as headers
       skipEmptyLines: true,
       complete: (results) => {
         try {
-          // Skip header rows (Google exports have multiple header rows)
           const allRows = results.data as any[];
           
-          // Find the row that starts with actual campaign data
-          const dataStartIndex = allRows.findIndex(row => 
-            row && typeof row === 'object' && row['Campaign'] && 
-            row['Campaign'] !== 'Campaign' && 
-            row['Campaign'].trim() !== '' &&
-            !row['Campaign'].includes('September')
-          );
+          // Google Ads CSV structure:
+          // Row 0: "Campaign performance" (title)
+          // Row 1: Date range (e.g., "September 29, 2025 - September 29, 2025")
+          // Row 2: Actual column headers
+          // Row 3+: Data rows
           
-          const data = dataStartIndex >= 0 ? allRows.slice(dataStartIndex) : [];
+          if (allRows.length < 4) {
+            console.warn('Google Ads CSV has less than 4 rows, might be empty');
+            resolve([]);
+            return;
+          }
+          
+          // Get headers from row 2 (index 2)
+          const headers = allRows[2];
+          
+          // Process data rows starting from row 3 (index 3)
+          const data = allRows.slice(3).map(row => {
+            const obj: any = {};
+            headers.forEach((header: string, index: number) => {
+              if (header && row[index] !== undefined) {
+                obj[header] = row[index];
+              }
+            });
+            return obj;
+          }).filter(row => 
+            // Filter out empty rows or rows without a campaign name
+            row && 
+            row['Campaign'] && 
+            row['Campaign'].trim() !== '' &&
+            row['Campaign'] !== 'Campaign' // Skip any duplicate header rows
+          ).map(record => ({
+            // Convert string values to numbers for numeric fields
+            ...record,
+            'Cost': parseFloat(record['Cost']?.toString().replace(/,/g, '') || '0'),
+            'Avg. CPM': parseFloat(record['Avg. CPM']?.toString().replace(/,/g, '') || '0')
+          }));
+          
+          console.log(`Parsed ${data.length} Google Ads campaigns`);
+          console.log('🔍 Google CSV parsing - sample converted record:', {
+            campaign: data[0]?.['Campaign'],
+            cost: data[0]?.['Cost'],
+            costType: typeof data[0]?.['Cost'],
+            cpm: data[0]?.['Avg. CPM'],
+            cpmType: typeof data[0]?.['Avg. CPM']
+          });
           resolve(data as GoogleAdsRecord[]);
         } catch (error) {
+          console.error('Error parsing Google Ads CSV:', error);
           reject(error);
         }
       },

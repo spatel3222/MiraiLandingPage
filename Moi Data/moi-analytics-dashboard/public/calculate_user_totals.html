@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculate User Totals</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        .result { background: #f5f5f5; padding: 10px; margin: 10px 0; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>Calculate User Totals</h1>
+    <button onclick="analyzeUserTotals()">Analyze User Totals</button>
+    <div id="output"></div>
+    
+    <script>
+        function analyzeUserTotals() {
+            const output = document.getElementById('output');
+            output.innerHTML = '';
+            
+            // 1. Get Shopify data and calculate total Online store visitors
+            const shopifyData = localStorage.getItem('moi-shopify-data');
+            let shopifyTotal = 0;
+            let shopifyRecords = 0;
+            
+            if (shopifyData) {
+                try {
+                    const parsed = JSON.parse(shopifyData);
+                    shopifyRecords = parsed.length;
+                    
+                    shopifyTotal = parsed.reduce((sum, record) => {
+                        const visitors = parseFloat(record['Online store visitors'] || 0);
+                        return sum + (isNaN(visitors) ? 0 : visitors);
+                    }, 0);
+                    
+                    output.innerHTML += `
+                        <div class="result success">
+                            <h3>📊 Shopify Data Analysis</h3>
+                            <p><strong>Total Records:</strong> ${shopifyRecords.toLocaleString()}</p>
+                            <p><strong>Total "Online store visitors":</strong> ${shopifyTotal.toLocaleString()}</p>
+                        </div>
+                    `;
+                    
+                    // Show sample records
+                    output.innerHTML += `
+                        <div class="result info">
+                            <h4>Sample Shopify Records:</h4>
+                            <pre>${JSON.stringify(parsed.slice(0, 3), null, 2)}</pre>
+                        </div>
+                    `;
+                    
+                } catch (e) {
+                    output.innerHTML += `<div class="result error">Error parsing Shopify data: ${e.message}</div>`;
+                }
+            } else {
+                output.innerHTML += `<div class="result error">No Shopify data found</div>`;
+            }
+            
+            // 2. Get Top Level CSV data and calculate Total Users
+            const topLevelData = localStorage.getItem('moi-server-topLevel');
+            let topLevelTotal = 0;
+            let topLevelDays = 0;
+            
+            if (topLevelData) {
+                try {
+                    const lines = topLevelData.split('\n');
+                    const headers = lines[0].split(',');
+                    const totalUsersIndex = headers.findIndex(h => h.includes('Total Users'));
+                    
+                    if (totalUsersIndex !== -1) {
+                        for (let i = 1; i < lines.length; i++) {
+                            if (lines[i].trim()) {
+                                const values = lines[i].split(',');
+                                const users = parseFloat(values[totalUsersIndex] || 0);
+                                if (!isNaN(users)) {
+                                    topLevelTotal += users;
+                                    topLevelDays++;
+                                }
+                            }
+                        }
+                        
+                        output.innerHTML += `
+                            <div class="result success">
+                                <h3>📈 Top Level Daily Analysis</h3>
+                                <p><strong>Days of data:</strong> ${topLevelDays}</p>
+                                <p><strong>Total "Total Users" (sum across days):</strong> ${topLevelTotal.toLocaleString()}</p>
+                                <p><strong>Average "Total Users" per day:</strong> ${topLevelDays > 0 ? (topLevelTotal / topLevelDays).toLocaleString() : 0}</p>
+                            </div>
+                        `;
+                        
+                        // Show sample rows
+                        output.innerHTML += `
+                            <div class="result info">
+                                <h4>Sample Top Level Data:</h4>
+                                <pre>${lines.slice(0, 4).join('\\n')}</pre>
+                            </div>
+                        `;
+                        
+                    } else {
+                        output.innerHTML += `<div class="result error">Total Users column not found in Top Level data</div>`;
+                    }
+                    
+                } catch (e) {
+                    output.innerHTML += `<div class="result error">Error parsing Top Level data: ${e.message}</div>`;
+                }
+            } else {
+                output.innerHTML += `<div class="result error">No Top Level data found</div>`;
+            }
+            
+            // 3. Compare the totals
+            if (shopifyTotal > 0 && topLevelTotal > 0) {
+                const ratio = topLevelTotal / shopifyTotal;
+                const expectedDaily = topLevelDays > 0 ? shopifyTotal / topLevelDays : 0;
+                
+                output.innerHTML += `
+                    <div class="result info">
+                        <h3>🔍 Comparison Analysis</h3>
+                        <p><strong>Shopify Total "Online store visitors":</strong> ${shopifyTotal.toLocaleString()}</p>
+                        <p><strong>Top Level Total "Total Users":</strong> ${topLevelTotal.toLocaleString()}</p>
+                        <p><strong>Ratio (TopLevel/Shopify):</strong> ${ratio.toFixed(4)}</p>
+                        <p><strong>Expected daily (if distributed evenly):</strong> ${expectedDaily.toLocaleString()}</p>
+                        <p><strong>Actual average daily:</strong> ${topLevelDays > 0 ? (topLevelTotal / topLevelDays).toLocaleString() : 0}</p>
+                        
+                        ${ratio > 0.95 && ratio < 1.05 ? 
+                            '<p class="success">✅ Totals match closely (expected for distributed data)</p>' :
+                            '<p class="error">⚠️ Significant difference detected - may indicate calculation issue</p>'
+                        }
+                    </div>
+                `;
+            }
+            
+            // 4. Check dashboard data for comparison
+            const dashboardData = localStorage.getItem('moi-dashboard-data');
+            if (dashboardData) {
+                try {
+                    const dashboard = JSON.parse(dashboardData);
+                    if (dashboard.keyMetrics && dashboard.keyMetrics.totalUniqueUsers) {
+                        output.innerHTML += `
+                            <div class="result info">
+                                <h3>🎯 Dashboard Key Metrics</h3>
+                                <p><strong>Total Unique Users:</strong> ${dashboard.keyMetrics.totalUniqueUsers.toLocaleString()}</p>
+                            </div>
+                        `;
+                    }
+                } catch (e) {
+                    output.innerHTML += `<div class="result error">Error parsing dashboard data: ${e.message}</div>`;
+                }
+            }
+        }
+        
+        // Auto-run on load
+        window.onload = analyzeUserTotals;
+    </script>
+</body>
+</html>

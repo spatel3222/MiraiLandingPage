@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Total Users Fix Verification</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .section { margin: 20px 0; padding: 15px; background: #f5f5f5; border-radius: 5px; }
+        .pass { color: green; font-weight: bold; }
+        .fail { color: red; font-weight: bold; }
+        table { border-collapse: collapse; width: 100%; margin: 10px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #4CAF50; color: white; }
+        .debug { background: #ffe; padding: 10px; margin: 10px 0; border-left: 3px solid #fa0; }
+    </style>
+</head>
+<body>
+    <h1>Total Users Metric Fix Verification</h1>
+    
+    <div class="section">
+        <h2>Test Setup</h2>
+        <p>This test verifies that the Total Users metric is correctly calculated from Shopify CSV data.</p>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        async function runTest() {
+            const results = document.getElementById('results');
+            let html = '';
+            
+            try {
+                // Get cached data from localStorage
+                const cachedData = localStorage.getItem('moi-dashboard-data');
+                const outputData = localStorage.getItem('moi-output-data');
+                const shopifyData = localStorage.getItem('moi-shopify-data');
+                
+                if (!cachedData || !outputData) {
+                    html += '<div class="section fail">❌ No cached data found. Please refresh the main app first.</div>';
+                    results.innerHTML = html;
+                    return;
+                }
+                
+                const dashboard = JSON.parse(cachedData);
+                const outputs = JSON.parse(outputData);
+                const shopify = shopifyData ? JSON.parse(shopifyData) : null;
+                
+                // Test 1: Check if ShopifyRecord interface includes Day field
+                html += '<div class="section">';
+                html += '<h3>Test 1: Shopify Data Structure</h3>';
+                if (shopify && shopify.length > 0) {
+                    const sample = shopify[0];
+                    const hasDay = 'Day' in sample;
+                    const hasDate = 'Date' in sample;
+                    const hasVisitors = 'Online store visitors' in sample;
+                    
+                    html += `<table>
+                        <tr><th>Field</th><th>Present</th><th>Sample Value</th></tr>
+                        <tr><td>Day</td><td class="${hasDay ? 'pass' : 'fail'}">${hasDay ? '✓' : '✗'}</td><td>${sample.Day || 'N/A'}</td></tr>
+                        <tr><td>Date</td><td class="${hasDate ? 'pass' : 'fail'}">${hasDate ? '✓' : '✗'}</td><td>${sample.Date || 'N/A'}</td></tr>
+                        <tr><td>Online store visitors</td><td class="${hasVisitors ? 'pass' : 'fail'}">${hasVisitors ? '✓' : '✗'}</td><td>${sample['Online store visitors'] || 'N/A'}</td></tr>
+                    </table>`;
+                    
+                    // Calculate expected total
+                    const expectedTotal = shopify.reduce((sum, row) => sum + (row['Online store visitors'] || 0), 0);
+                    html += `<div class="debug">Expected Total Users (sum of all visitors): <strong>${expectedTotal}</strong></div>`;
+                } else {
+                    html += '<p class="fail">No Shopify data in localStorage</p>';
+                }
+                html += '</div>';
+                
+                // Test 2: Check Daily Metrics
+                html += '<div class="section">';
+                html += '<h3>Test 2: Daily Metrics - Total Users</h3>';
+                if (outputs && outputs.dailyMetrics && outputs.dailyMetrics.length > 0) {
+                    const metric = outputs.dailyMetrics[0];
+                    const totalUsers = metric.totalUsers;
+                    
+                    html += '<table>';
+                    html += '<tr><th>Date</th><th>Total Users</th><th>Status</th></tr>';
+                    html += `<tr>
+                        <td>${metric.date}</td>
+                        <td>${totalUsers}</td>
+                        <td class="${totalUsers > 0 ? 'pass' : 'fail'}">${totalUsers > 0 ? '✓ Valid' : '✗ Shows -999 (fallback)'}</td>
+                    </tr>`;
+                    html += '</table>';
+                    
+                    if (totalUsers === -999 || totalUsers === -9999) {
+                        html += '<div class="debug">⚠️ Total Users is showing fallback value, date matching likely failed</div>';
+                    }
+                } else {
+                    html += '<p class="fail">No daily metrics data available</p>';
+                }
+                html += '</div>';
+                
+                // Test 3: Check Top Level Daily Output
+                html += '<div class="section">';
+                html += '<h3>Test 3: Top Level Daily Output</h3>';
+                if (outputs && outputs.topLevelDaily && outputs.topLevelDaily.length > 0) {
+                    html += '<table>';
+                    html += '<tr><th>Metric</th><th>Value</th><th>Status</th></tr>';
+                    
+                    const topLevel = outputs.topLevelDaily[0];
+                    const fields = ['Date', 'Total Users', 'Total ATC', 'Total Reached Checkout'];
+                    
+                    fields.forEach(field => {
+                        const value = topLevel[field];
+                        const isValid = value !== -999 && value !== -9999 && value !== undefined;
+                        html += `<tr>
+                            <td>${field}</td>
+                            <td>${value}</td>
+                            <td class="${isValid ? 'pass' : 'fail'}">${isValid ? '✓' : '✗'}</td>
+                        </tr>`;
+                    });
+                    html += '</table>';
+                } else {
+                    html += '<p class="fail">No top level daily data available</p>';
+                }
+                html += '</div>';
+                
+                // Test 4: Date Matching Debug
+                html += '<div class="section">';
+                html += '<h3>Test 4: Date Range Analysis</h3>';
+                if (outputs && outputs.dateRange) {
+                    const dr = outputs.dateRange;
+                    html += '<table>';
+                    html += '<tr><th>Property</th><th>Value</th></tr>';
+                    html += `<tr><td>Start Date</td><td>${dr.startDate}</td></tr>`;
+                    html += `<tr><td>End Date</td><td>${dr.endDate}</td></tr>`;
+                    html += `<tr><td>Day Count</td><td>${dr.dayCount}</td></tr>`;
+                    html += '</table>';
+                    
+                    if (dr.dayCount === 1) {
+                        html += '<div class="pass">✓ Date range correctly shows 1 day (Sept 29)</div>';
+                    } else {
+                        html += '<div class="fail">✗ Date range shows multiple days when it should be 1</div>';
+                    }
+                } else {
+                    html += '<p>No date range data available</p>';
+                }
+                html += '</div>';
+                
+                // Summary
+                html += '<div class="section">';
+                html += '<h2>Summary</h2>';
+                if (shopify) {
+                    const expectedTotal = shopify.reduce((sum, row) => sum + (row['Online store visitors'] || 0), 0);
+                    const actualTotal = outputs?.dailyMetrics?.[0]?.totalUsers || -999;
+                    
+                    if (actualTotal === expectedTotal) {
+                        html += `<div class="pass">✅ SUCCESS: Total Users correctly shows ${actualTotal} (matches expected ${expectedTotal})</div>`;
+                    } else if (actualTotal === -999 || actualTotal === -9999) {
+                        html += `<div class="fail">❌ FAILED: Total Users shows fallback value ${actualTotal} instead of ${expectedTotal}</div>`;
+                        html += '<div class="debug">Root Cause: Date field not properly mapped in ShopifyRecord interface or date matching logic failing</div>';
+                    } else {
+                        html += `<div class="fail">⚠️ PARTIAL: Total Users shows ${actualTotal} but expected ${expectedTotal}</div>`;
+                    }
+                }
+                html += '</div>';
+                
+            } catch (error) {
+                html += `<div class="section fail">Error running tests: ${error.message}</div>`;
+            }
+            
+            results.innerHTML = html;
+        }
+        
+        // Run test on page load
+        window.addEventListener('load', runTest);
+    </script>
+</body>
+</html>

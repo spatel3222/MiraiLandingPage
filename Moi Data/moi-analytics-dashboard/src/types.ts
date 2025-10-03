@@ -1,4 +1,6 @@
 export interface ShopifyRecord {
+  'Day'?: string;  // Date field from Shopify CSV (format: "2025-09-29")
+  'Date'?: string; // Alternative date field name
   'Utm campaign': string;
   'Utm term': string;
   'Landing page url': string;

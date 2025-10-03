@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Meta Date Fix</title>
+    <script type="module">
+        // Create mock Meta data that matches your CSV structure
+        const mockMetaData = [
+            {
+                'Campaign name': 'Test Campaign',
+                'Ad set name': 'Test Ad Set', 
+                'Amount spent (INR)': 57721,
+                'CPM (cost per 1,000 impressions)': 192.1,
+                'CTR (link click-through rate)': 1.36,
+                'Ad set delivery': 'Active',
+                'Reporting starts': '2025-09-28',
+                'Reporting ends': '2025-09-29'
+            }
+        ];
+
+        // Test the processMetaDataByDay function directly
+        async function testMetaProcessor() {
+            try {
+                console.log('🔥 TESTING Meta Processor Fix...');
+                console.log('📊 Mock Meta Data:', mockMetaData);
+                
+                // Import the processor function
+                const { processMetaDataByDay } = await import('/src/utils/metaProcessor.ts');
+                
+                // Test without dateRange (should use end date only)
+                console.log('🧪 Testing without dateRange parameter...');
+                const result = processMetaDataByDay(mockMetaData);
+                
+                console.log('📈 Result:', result);
+                console.log('📊 Number of days generated:', result.length);
+                console.log('💰 Total spend per day:', result.map(r => r.totalSpend));
+                console.log('📅 Dates generated:', result.map(r => r.date));
+                
+                // Verify expectations
+                const expectation = {
+                    dayCount: 1,
+                    totalSpend: 57721,
+                    onlyEndDate: true,
+                    correctDate: 'Mon, Sep 29, 25'
+                };
+                
+                console.log('✅ VERIFICATION:');
+                console.log('- Should have 1 day:', result.length === 1);
+                console.log('- Should have full spend (57721):', result[0]?.totalSpend === 57721);
+                console.log('- Should be Sept 29:', result[0]?.date === 'Mon, Sep 29, 25');
+                console.log('- Should NOT have Sept 28:', !result.some(r => r.date.includes('Sep 28')));
+                
+                if (result.length === 1 && result[0]?.totalSpend === 57721 && result[0]?.date === 'Mon, Sep 29, 25') {
+                    document.getElementById('result').innerHTML = `
+                        <div style="color: green; font-weight: bold; font-size: 20px;">
+                            ✅ META FIX WORKING CORRECTLY!
+                            <br>📅 Date: ${result[0].date}
+                            <br>💰 Spend: ${result[0].totalSpend}
+                            <br>📊 Days: ${result.length}
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('result').innerHTML = `
+                        <div style="color: red; font-weight: bold; font-size: 20px;">
+                            ❌ META FIX NOT WORKING
+                            <br>📅 Date: ${result[0]?.date || 'N/A'}
+                            <br>💰 Spend: ${result[0]?.totalSpend || 'N/A'}
+                            <br>📊 Days: ${result.length}
+                        </div>
+                    `;
+                }
+                
+            } catch (error) {
+                console.error('❌ Error testing Meta processor:', error);
+                document.getElementById('result').innerHTML = `
+                    <div style="color: red; font-weight: bold;">
+                        ❌ ERROR: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Auto-run test when page loads
+        window.addEventListener('load', testMetaProcessor);
+    </script>
+</head>
+<body>
+    <h1>🔥 Meta Date Fix Debug Test</h1>
+    <p>Testing Meta processor with mock data to verify the fix...</p>
+    <div id="result">Loading...</div>
+    
+    <h2>Expected Results:</h2>
+    <ul>
+        <li>✅ Only 1 day (not 2)</li>
+        <li>✅ Full spend of 57,721 (not 28,860.5)</li>
+        <li>✅ Date should be "Mon, Sep 29, 25" (not Sep 28)</li>
+        <li>✅ Console should show "USING END DATE ONLY"</li>
+    </ul>
+    
+    <h2>Console Logs:</h2>
+    <p>Open browser console to see detailed debug output</p>
+</body>
+</html>

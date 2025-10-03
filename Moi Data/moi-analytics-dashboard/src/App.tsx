@@ -1,3 +1,4 @@
+// FORCE REFRESH META FIX: 2025-10-03T06:23:00 
 import { useState, useEffect } from 'react';
 import { Settings, MessageCircle, Download, X, Send, FileUp, RotateCcw } from 'lucide-react';
 import KeyMetricsPanel from './components/KeyMetricsPanel';
@@ -12,7 +13,82 @@ import { processShopifyCSV } from './utils/csvProcessor';
 import { generateSampleOutputData } from './utils/outputDataProcessor';
 import { loadCachedOutputData, cacheOutputData, checkForRecentOutputFiles, loadExistingOutputFiles } from './utils/fileLoader';
 import { processAllInputFiles } from './utils/integratedDataProcessor';
+import { processMetaAdsCSV } from './utils/metaProcessor';
+import { processGoogleAdsCSV } from './utils/googleProcessor';
+import Papa from 'papaparse';
 import type { DashboardData } from './types';
+
+/**
+ * Create Shopify pivot table (Campaign + AdSet level) - same logic as integratedDataProcessor
+ */
+const createShopifyPivotFromShopifyData = (shopifyData: any[]): any[] => {
+  console.log('📊 Creating granular Campaign+AdSet level pivot...');
+  
+  const pivotMap = new Map<string, any>();
+
+  shopifyData.forEach(record => {
+    const utmCampaign = record['UTM campaign'] || record['Utm campaign'] || 'Unknown Campaign';
+    const utmTerm = record['UTM term'] || record['Utm term'] || 'Unknown AdSet';
+    const key = `${utmCampaign}|||${utmTerm}`;
+
+    if (!pivotMap.has(key)) {
+      pivotMap.set(key, {
+        'UTM Campaign': utmCampaign,
+        'UTM Term': utmTerm,
+        'Online store visitors': 0,
+        'Sessions': 0,
+        'Sessions with cart additions': 0,
+        'Sessions that reached checkout': 0,
+        'Average session duration': 0,
+        'Pageviews': 0,
+        'Date': record['Day'] || record['Date'] || new Date().toISOString().split('T')[0],
+        '_sessionDurationTotal': 0,
+        '_visitorCount': 0
+      });
+    }
+
+    const pivot = pivotMap.get(key)!;
+    
+    // Helper function to parse numbers
+    const parseNumber = (value: any): number => {
+      if (typeof value === 'number') return value;
+      if (typeof value === 'string') {
+        const cleaned = value.replace(/[,$%]/g, '');
+        const num = parseFloat(cleaned);
+        return isNaN(num) ? 0 : num;
+      }
+      return 0;
+    };
+    
+    // Aggregate numeric fields
+    pivot['Online store visitors'] += parseNumber(record['Online store visitors']);
+    pivot['Sessions'] += parseNumber(record['Sessions']);
+    pivot['Sessions with cart additions'] += parseNumber(record['Sessions with cart additions']);
+    pivot['Sessions that reached checkout'] += parseNumber(record['Sessions that reached checkout']);
+    pivot['Pageviews'] += parseNumber(record['Pageviews']);
+    
+    // For average session duration, accumulate total and count
+    const sessionDuration = parseNumber(record['Average session duration']);
+    const visitors = parseNumber(record['Online store visitors']);
+    if (visitors > 0 && sessionDuration > 0) {
+      pivot._sessionDurationTotal += sessionDuration * visitors;
+      pivot._visitorCount += visitors;
+    }
+  });
+
+  // Calculate weighted averages and clean up
+  const pivotArray = Array.from(pivotMap.values()).map(pivot => {
+    if (pivot._visitorCount > 0) {
+      pivot['Average session duration'] = pivot._sessionDurationTotal / pivot._visitorCount;
+    }
+    delete pivot._sessionDurationTotal;
+    delete pivot._visitorCount;
+    return pivot;
+  });
+
+  console.log(`📊 Created ${pivotArray.length} pivot records from ${shopifyData.length} Shopify records`);
+  return pivotArray;
+};
 
 function App() {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
@@ -26,7 +102,7 @@ function App() {
   const [reportGenerated, setReportGenerated] = useState(false);
   const [autoLoadedData, setAutoLoadedData] = useState(false);
 
-  // Load cached data or output files on mount
+  // Load cached data on mount - disabled auto file loading to prevent fetch issues
   useEffect(() => {
     const loadDataOnStartup = async () => {
       // Check if user just reset all data
@@ -37,36 +113,72 @@ function App() {
         return; // Exit early, don't load any data
       }
       
-      // Clear any potentially corrupted cache first
-      console.log('Checking for corrupted cache...');
-      
-      // Force cache clear for this version (campaign count bug fix)
-      const CACHE_VERSION = 'v1.1.0-campaign-fix';
+      // Force cache clear for this version (Public directory file access)
+      const CACHE_VERSION = 'v2.3.0-fix-adset-pivot-lookup';
       const currentCacheVersion = localStorage.getItem('moi-cache-version');
+      
+      console.log('🔧 CACHE VERSION CHECK:');
+      console.log(`  Current version in storage: "${currentCacheVersion}"`);
+      console.log(`  Required version: "${CACHE_VERSION}"`);
+      console.log(`  Version match: ${currentCacheVersion === CACHE_VERSION}`);
+      
       if (currentCacheVersion !== CACHE_VERSION) {
-        console.log('Cache version mismatch, clearing all cached data...');
-        localStorage.removeItem('moi-dashboard-data');
-        localStorage.removeItem('moi-dashboard-timestamp');
-        localStorage.removeItem('moi-output-data');
-        localStorage.removeItem('moi-output-timestamp');
+        console.log('🧹 CACHE CLEARING INITIATED - Version mismatch detected');
+        
+        // List all items to be cleared
+        const itemsToRemove = [
+          'moi-dashboard-data',
+          'moi-dashboard-timestamp', 
+          'moi-output-data',
+          'moi-output-timestamp',
+          'moi-shopify-data',
+          'moi-meta-data',
+          'moi-google-data',
+          'moi-pivot-data'
+        ];
+        
+        console.log('🗑️ Removing cached items:', itemsToRemove);
+        
+        itemsToRemove.forEach(item => {
+          const existed = localStorage.getItem(item) !== null;
+          localStorage.removeItem(item);
+          console.log(`  ✓ Removed ${item} (existed: ${existed})`);
+        });
+        
         localStorage.setItem('moi-cache-version', CACHE_VERSION);
+        console.log(`✅ CACHE CLEARED SUCCESSFULLY - New version: ${CACHE_VERSION}`);
+        console.log('📝 Note: All data will be reprocessed on next file upload');
+      } else {
+        console.log('✅ CACHE VERSION CURRENT - No clearing needed');
       }
       
-      // First, try to load cached dashboard data
+      // Only try to load cached dashboard data (no file system access)
       const cachedData = localStorage.getItem('moi-dashboard-data');
       const cachedTimestamp = localStorage.getItem('moi-dashboard-timestamp');
       
-      console.log('🔍 App.tsx data loading check:');
-      console.log('  - cachedData exists:', !!cachedData);
-      console.log('  - cachedTimestamp:', cachedTimestamp);
+      console.log('🔍 POST-CACHE-CLEAR DATA CHECK:');
+      console.log(`  - Dashboard data exists: ${!!cachedData} (${cachedData ? Math.round(cachedData.length/1024) + 'KB' : '0KB'})`);
+      console.log(`  - Dashboard timestamp: ${cachedTimestamp || 'None'}`);
+      console.log(`  - Shopify data exists: ${!!localStorage.getItem('moi-shopify-data')}`);
+      console.log(`  - Meta data exists: ${!!localStorage.getItem('moi-meta-data')}`);
+      console.log(`  - Google data exists: ${!!localStorage.getItem('moi-google-data')}`);
+      console.log(`  - Output data exists: ${!!localStorage.getItem('moi-output-data')}`);
       
       if (cachedData && cachedTimestamp) {
-        console.log('📋 Loading from cached dashboard data...');
+        console.log('📋 LOADING FROM CACHED DASHBOARD DATA...');
         try {
           const parsedData = JSON.parse(cachedData);
+          console.log('📊 Cached data structure check:');
+          console.log(`  - Has keyMetrics: ${!!parsedData.keyMetrics}`);
+          console.log(`  - Has campaigns: ${!!parsedData.campaigns}`);
+          console.log(`  - Total campaigns: ${parsedData.campaigns?.length || 0}`);
+          
           // Validate the data structure
           if (parsedData.keyMetrics && typeof parsedData.keyMetrics.totalUniqueUsers === 'number') {
-            console.log('✅ Valid cached data found - uniqueCampaigns:', parsedData.keyMetrics.uniqueCampaigns);
+            console.log('✅ VALID CACHED DATA FOUND');
+            console.log(`  - Unique campaigns: ${parsedData.keyMetrics.uniqueCampaigns}`);
+            console.log(`  - Total users: ${parsedData.keyMetrics.totalUniqueUsers}`);
+            console.log(`  - Last updated: ${cachedTimestamp}`);
             setDashboardData(parsedData);
             setLastUpdated(cachedTimestamp);
             setReportGenerated(true);
@@ -83,7 +195,7 @@ function App() {
         }
       }
       
-      // If no cached dashboard data, try to load from output files
+      // Try cached output data only (no file system fetch)
       console.log('📂 Trying to load from cached output files...');
       const outputData = loadCachedOutputData();
       if (outputData) {
@@ -98,36 +210,9 @@ function App() {
         // Cache this data for future use
         localStorage.setItem('moi-dashboard-data', JSON.stringify(outputData));
         localStorage.setItem('moi-dashboard-timestamp', timestamp);
-        
-        // Show notification after a brief delay
-        setTimeout(() => {
-          if (window.confirm('Dashboard automatically loaded with existing output file data. Would you like to see the loaded metrics?')) {
-            // User can see the loaded data is already displayed
-          }
-        }, 1000);
       } else {
-        // Try to load from existing output files (with fallback sample data)
-        console.log('🗂️ No cached data found, trying to load existing output files...');
-        loadExistingOutputFiles().then(existingData => {
-          if (existingData) {
-            console.log('📁 Loaded data from existing output files - uniqueCampaigns:', existingData.keyMetrics.uniqueCampaigns);
-            setDashboardData(existingData);
-            setReportGenerated(true);
-            setAutoLoadedData(true);
-            
-            const timestamp = new Date().toISOString();
-            setLastUpdated(timestamp);
-            
-            // Cache this data for future use
-            localStorage.setItem('moi-dashboard-data', JSON.stringify(existingData));
-            localStorage.setItem('moi-dashboard-timestamp', timestamp);
-            cacheOutputData(existingData);
-          } else {
-            console.log('No data available, dashboard will show empty state');
-          }
-        }).catch(error => {
-          console.error('Error loading existing output files:', error);
-        });
+        console.log('No cached data available, dashboard will show empty state');
+        console.log('Please use "Generate Reports" to upload and process your files');
       }
     };
     
@@ -135,33 +220,60 @@ function App() {
   }, []);
 
   const handleFileUpload = async (file: File, fileType: 'shopify' | 'meta' | 'google') => {
+    console.log('📁 FILE UPLOAD INITIATED:');
+    console.log(`  - File name: ${file.name}`);
+    console.log(`  - File type: ${fileType}`);
+    console.log(`  - File size: ${Math.round(file.size / 1024)}KB`);
+    console.log(`  - Upload timestamp: ${new Date().toLocaleString()}`);
+    
     if (fileType !== 'shopify') {
       alert('Currently only Shopify Export is supported. Meta Ads and Google Ads will be added in future updates.');
       return;
     }
 
+    console.log('🔄 STARTING FILE PROCESSING...');
     setIsLoading(true);
     try {
       const processedData = await processShopifyCSV(file);
+      console.log('✅ FILE PROCESSING COMPLETED');
+      console.log(`  - Unique campaigns: ${processedData.keyMetrics?.uniqueCampaigns || 0}`);
+      console.log(`  - Total users: ${processedData.keyMetrics?.totalUniqueUsers || 0}`);
+      console.log(`  - Total campaigns: ${processedData.campaigns?.length || 0}`);
       
       // Cache the data
       const timestamp = new Date().toISOString();
+      console.log('💾 CACHING PROCESSED DATA...');
+      console.log(`  - Timestamp: ${timestamp}`);
       localStorage.setItem('moi-dashboard-data', JSON.stringify(processedData));
       localStorage.setItem('moi-dashboard-timestamp', timestamp);
+      console.log('✅ DATA CACHED SUCCESSFULLY');
       
       setDashboardData(processedData);
       setLastUpdated(timestamp);
       setShowUploadModal(false);
+      console.log('🎯 UI STATE UPDATED - File upload complete');
     } catch (error) {
-      console.error('Error processing file:', error);
+      console.error('❌ ERROR PROCESSING FILE:', error);
+      console.log('  - Error type:', error.constructor.name);
+      console.log('  - Error message:', error.message);
       alert('Error processing file. Please check the format and try again.');
     } finally {
       setIsLoading(false);
+      console.log('🏁 FILE UPLOAD PROCESS FINISHED');
     }
   };
 
   const handleGenerateReport = async (files: { shopify: File | null; meta: File | null; google: File | null }, useConfigurableLogic: boolean = false) => {
     setIsLoading(true);
+    
+    // CRITICAL DEBUG: Log everything about the upload
+    console.log('🚀 === UPLOAD DEBUG START ===');
+    console.log('📁 Files received:', {
+      shopify: files.shopify ? `${files.shopify.name} (${files.shopify.size} bytes)` : 'null',
+      meta: files.meta ? `${files.meta.name} (${files.meta.size} bytes)` : 'null',
+      google: files.google ? `${files.google.name} (${files.google.size} bytes)` : 'null'
+    });
+    console.log('⚙️ useConfigurableLogic:', useConfigurableLogic);
     
     try {
       if (files.shopify) {
@@ -179,11 +291,115 @@ function App() {
         } else {
           // Use standard processing
           console.log('Processing with standard logic...');
-          outputData = generateSampleOutputData();
+          const result = await processAllInputFiles(files, false);
+          outputData = result.dashboardData;
           
-          // Standard processing messages
-          if (files.meta) console.log('Processing Meta Ads file:', files.meta.name);
-          if (files.google) console.log('Processing Google Ads file:', files.google.name);
+          console.log('✅ Standard processing completed using processAllInputFiles');
+          
+          const processingErrors = [];
+          
+          // NOTE: File processing now handled by processAllInputFiles() above
+          // Keeping this section for potential error handling
+          /*
+          if (files.meta) {
+            console.log('Processing Meta Ads file:', files.meta.name);
+            try {
+              const metaData = await processMetaAdsCSV(files.meta);
+              localStorage.setItem('moi-meta-data', JSON.stringify(metaData));
+              console.log('💾 Saved original Meta Ads data to localStorage:', metaData.length, 'rows');
+            } catch (error) {
+              console.error('❌ Error processing Meta Ads file:', error);
+              processingErrors.push(`Meta Ads: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            }
+          }
+          
+          if (files.google) {
+            console.log('Processing Google Ads file:', files.google.name);
+            try {
+              const googleData = await processGoogleAdsCSV(files.google);
+              localStorage.setItem('moi-google-data', JSON.stringify(googleData));
+              console.log('💾 Saved original Google Ads data to localStorage:', googleData.length, 'rows');
+            } catch (error) {
+              console.error('❌ Error processing Google Ads file:', error);
+              processingErrors.push(`Google Ads: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            }
+          }
+          
+          // CRITICAL: Process and save original Shopify file data (with compression)
+          console.log('Processing Shopify Export file:', files.shopify.name);
+          try {
+            const shopifyData = await new Promise<any[]>((resolve, reject) => {
+              Papa.parse(files.shopify, {
+                header: true,
+                skipEmptyLines: true,
+                complete: (results) => resolve(results.data as any[]),
+                error: (error) => reject(error)
+              });
+            });
+            
+            // Compress large Shopify data by only storing essential fields
+            const compressedData = shopifyData.map(row => ({
+              'Day': row['Day'] || row['Date'],
+              'UTM campaign': row['UTM campaign'] || row['Utm campaign'],
+              'UTM term': row['UTM term'] || row['Utm term'],
+              'Online store visitors': row['Online store visitors'],
+              'Sessions with cart additions': row['Sessions with cart additions'],
+              'Sessions that reached checkout': row['Sessions that reached checkout'],
+              'Sessions that completed checkout': row['Sessions that completed checkout'],
+              'Average session duration': row['Average session duration'],
+              'Pageviews': row['Pageviews']
+            }));
+            
+            localStorage.setItem('moi-shopify-data', JSON.stringify(compressedData));
+            console.log('💾 Saved compressed Shopify data to localStorage:', compressedData.length, 'rows');
+            console.log('🗜️ Compression: Original', shopifyData.length, 'rows compressed to essential fields');
+            
+            // Generate pivot data from Shopify data (standard processing)
+            console.log('📊 Generating pivot data from Shopify data...');
+            const pivotData = createShopifyPivotFromShopifyData(compressedData);
+            
+            // Store pivot data in localStorage
+            try {
+              localStorage.setItem('moi-pivot-data', JSON.stringify(pivotData));
+              console.log(`💾 Stored ${pivotData.length} pivot records in localStorage (standard processing)`);
+            } catch (error) {
+              console.warn('⚠️ Failed to store pivot data in localStorage:', error);
+            }
+          } catch (error) {
+            console.error('❌ Error processing Shopify file:', error);
+            processingErrors.push(`Shopify: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            
+            // Fallback: Try to save just a sample of the data
+            try {
+              const shopifyData = await new Promise<any[]>((resolve, reject) => {
+                Papa.parse(files.shopify, {
+                  header: true,
+                  skipEmptyLines: true,
+                  complete: (results) => resolve(results.data as any[]),
+                  error: (error) => reject(error)
+                });
+              });
+              const sampleData = shopifyData.slice(0, 1000); // First 1000 rows
+              localStorage.setItem('moi-shopify-data', JSON.stringify(sampleData));
+              console.log('⚠️ Saved sample Shopify data (first 1000 rows) due to size limits');
+              processingErrors.push('Shopify: File too large, saved first 1000 rows only');
+            } catch (fallbackError) {
+              console.error('❌ Fallback also failed:', fallbackError);
+              processingErrors.push(`Shopify fallback: ${fallbackError instanceof Error ? fallbackError.message : 'Unknown error'}`);
+            }
+          }
+          */
+          
+          // Report partial processing errors if any occurred
+          if (processingErrors.length > 0) {
+            console.warn('⚠️ Some files had processing issues:', processingErrors);
+            const warningMessage = `Upload completed with warnings:\n\n${processingErrors.map(err => `• ${err}`).join('\n')}\n\nThe dashboard will work with the data that was successfully processed. Check the console for details.`;
+            
+            // Show warning after success message
+            setTimeout(() => {
+              alert(warningMessage);
+            }, 1000);
+          }
         }
         
         // Update dashboard with processed output data
@@ -199,6 +415,19 @@ function App() {
         // Cache the output data for auto-loading
         cacheOutputData(outputData);
         
+        // CRITICAL DEBUG: Verify localStorage after processing
+        console.log('🔍 === LOCALSTORAGE VERIFICATION ===');
+        const savedKeys = ['moi-shopify-data', 'moi-meta-data', 'moi-google-data', 'moi-dashboard-data'];
+        savedKeys.forEach(key => {
+          const data = localStorage.getItem(key);
+          if (data) {
+            console.log(`✅ ${key}: ${data.length} characters`);
+          } else {
+            console.log(`❌ ${key}: NOT FOUND`);
+          }
+        });
+        console.log('🏁 === UPLOAD DEBUG END ===');
+        
         // Show success message
         setTimeout(() => {
           const processingMethod = useConfigurableLogic ? 'custom logic template' : 'standard processing';
@@ -207,7 +436,49 @@ function App() {
       }
     } catch (error) {
       console.error('Error generating reports:', error);
-      alert('Error generating reports. Please check the file formats and try again.');
+      
+      // Detailed error handling with user-friendly messages
+      let errorMessage = 'Error generating reports. ';
+      let technicalDetails = '';
+      
+      if (error instanceof Error) {
+        technicalDetails = error.message;
+        
+        // Specific error types with helpful guidance
+        if (error.message.includes('QuotaExceededError') || error.message.includes('exceeded the quota')) {
+          errorMessage += 'Your files are too large for browser storage. Please try with smaller files or contact support.';
+        } else if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+          errorMessage += 'Network connection issue. Please check your internet connection and try again.';
+        } else if (error.message.includes('CSV') || error.message.includes('parse')) {
+          errorMessage += 'File format issue. Please ensure your CSV files are properly formatted with headers.';
+        } else if (error.message.includes('Permission') || error.message.includes('Access')) {
+          errorMessage += 'File access permission issue. Please try re-selecting your files.';
+        } else if (error.message.includes('date') || error.message.includes('Date')) {
+          errorMessage += 'Date format issue. Please ensure your files contain valid date columns.';
+        } else {
+          errorMessage += 'Unexpected error occurred during processing.';
+        }
+      } else {
+        errorMessage += 'Unknown error occurred.';
+        technicalDetails = String(error);
+      }
+      
+      // Show detailed error information
+      const fullErrorMessage = `${errorMessage}\n\nTechnical Details: ${technicalDetails}\n\nTroubleshooting:\n• Check file formats (CSV with headers)\n• Ensure files are not corrupted\n• Try with smaller files\n• Check browser console for more details`;
+      
+      alert(fullErrorMessage);
+      
+      // Log detailed error for debugging
+      console.error('🚨 === DETAILED ERROR REPORT ===');
+      console.error('User-friendly message:', errorMessage);
+      console.error('Technical details:', technicalDetails);
+      console.error('Full error object:', error);
+      console.error('Files that were being processed:', {
+        shopify: files.shopify ? `${files.shopify.name} (${files.shopify.size} bytes)` : 'null',
+        meta: files.meta ? `${files.meta.name} (${files.meta.size} bytes)` : 'null',
+        google: files.google ? `${files.google.name} (${files.google.size} bytes)` : 'null'
+      });
+      console.error('🚨 === END ERROR REPORT ===');
     } finally {
       setIsLoading(false);
     }

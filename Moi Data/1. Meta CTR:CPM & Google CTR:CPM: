@@ -1,0 +1,28 @@
+1. Meta CTR/CPM & Google CTR/CPM:
+    - Do you have separate Meta Ads and Google Ads data files with these metrics?
+        use the meta ads input file and use AVERAGE: "CTR (link click-through rate)" and AVERAGE: "CPM (cost per 1,000 impressions)"
+        use the gogle ads input file AVERAGE: "CTR" and AVERAGE: "Avg. CPM" fields from that file. 
+  2. Google Spend:
+    - Is all the adSpend from Meta, or should some be attributed to Google? for google ad spend the use google ads input file and look at cost column
+    - Do you have a way to distinguish Meta vs Google spend in your data? dont we have two separate input files for meta and google? so they are sperated
+  3. ATC/Checkout with session duration above 1 min:
+    - Should I calculate these by filtering the ATC/checkout events based on session duration? yes 
+    
+
+
+
+ || Step          | From               | To                              | Storage Key         | File Purpose                           |
+  |---------------|--------------------|---------------------------------|---------------------|----------------------------------------|
+  | INPUT         | Shopify Export CSV | Raw data processing             | moi-shopify-data    | Original Shopify records               |
+  | INPUT         | Meta Ads CSV       | Raw data processing             | moi-meta-data       | Original Meta campaign data            |
+  | INPUT         | Google Ads CSV     | Raw data processing             | moi-google-data     | Original Google campaign data          |
+  | ⬇️ PROCESSING | 3 input files      | Data aggregation & calculations | moi-dashboard-data  | Processed dashboard state              |
+
+
+
+
+| Output File             | Generator Location      | Storage Key         | Download Filename                         | Generation Method |
+|-------------------------|-------------------------|---------------------|-------------------------------------------|-------------------|
+| Top Level Daily Metrics | ExportModal.tsx:198-411 | moi-server-topLevel | MOI_Top_Level_Metrics_${dateRange}.csv    | 🔄 ON-DEMAND      |
+| AdSet Level Matrices    | ExportModal.tsx:415-467 | moi-server-adset    | MOI_Adset_Level_Matrices_${dateRange}.csv | 🔄 ON-DEMAND      |
+| Pivot Temp              | ExportModal.tsx:171-196 | moi-pivot-data      | MOI_Pivot_Temp_${dateRange}.csv           | 🔄 ON-DEMAND      |

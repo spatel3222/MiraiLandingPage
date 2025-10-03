@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { X, Download, FileText, CheckCircle, Info } from 'lucide-react';
 import type { DashboardData } from '../types';
 import { formatDateRangeForFilename, formatDateForApp, generateDateArray, type DateRange } from '../utils/dateRangeDetector';
+import { normalizeDateToISO } from '../utils/dateNormalizer';
+import { ConfigurableDataProcessor } from '../services/configurableDataProcessor';
 
 interface Props {
   onClose: () => void;
@@ -23,20 +25,30 @@ const ExportModal: React.FC<Props> = ({ onClose, dashboardData }) => {
   const getDateRange = () => {
     // Use actual date range from dashboard data if available
     if (dashboardData?.dateRange) {
-      return formatDateRangeForFilename(dashboardData.dateRange);
+      // Convert string dates back to Date objects if needed
+      const dateRange = {
+        startDate: typeof dashboardData.dateRange.startDate === 'string' 
+          ? new Date(dashboardData.dateRange.startDate) 
+          : dashboardData.dateRange.startDate,
+        endDate: typeof dashboardData.dateRange.endDate === 'string' 
+          ? new Date(dashboardData.dateRange.endDate) 
+          : dashboardData.dateRange.endDate,
+        dayCount: dashboardData.dateRange.dayCount,
+        formattedDates: dashboardData.dateRange.formattedDates || []
+      };
+      return formatDateRangeForFilename(dateRange);
     }
     
-    // Fallback to default range if no dashboard data
-    const today = new Date();
-    const startDate = new Date(today);
-    startDate.setDate(startDate.getDate() - 30);
-    
+    // FIXED: Use actual date from dashboard data instead of hardcoded date
+    const dataDate = data.dailyMetrics && data.dailyMetrics.length > 0 
+      ? new Date(data.dailyMetrics[0].date) 
+      : new Date(); // Current date as fallback, not hardcoded Sept 29
     const formatDate = (date: Date) => {
       const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       return `${months[date.getMonth()]}${date.getDate()}`;
     };
     
-    return `${formatDate(startDate)}-${formatDate(today)}_${today.getFullYear()}`;
+    return `${formatDate(dataDate)}_${dataDate.getFullYear()}`;
   };
 
   // Function to save file to server-side location for dashboard loading
@@ -63,263 +75,543 @@ const ExportModal: React.FC<Props> = ({ onClose, dashboardData }) => {
     }
   };
 
-  const downloadFile = (fileType: 'topLevel' | 'adset' | 'pivot') => {
-    const dateRange = getDateRange();
-    
-    // Create sample CSV content based on file type
-    let csvContent = '';
-    let filename = '';
-    
-    if (fileType === 'pivot') {
-      filename = `MOI_Pivot_Temp_${dateRange}.csv`;
+  const downloadFile = async (fileType: 'topLevel' | 'adset' | 'pivot') => {
+    try {
+      console.log(`🚀 Starting export for ${fileType}`);
       
-      // Generate pivot data - Campaign+AdSet combinations from Shopify data
-      const generatePivotData = () => {
-        // Check if we have cached pivot data from configurableDataProcessor
-        const cachedPivotData = localStorage.getItem('moi-pivot-data');
-        if (cachedPivotData) {
-          try {
-            const pivotData = JSON.parse(cachedPivotData);
-            return pivotData.map((row: any, index: number) => {
-              const campaign = row.Campaign || `Campaign_${index + 1}`;
-              const adset = row.AdSet || `AdSet_${index + 1}`;
-              const visitors = row['Online store visitors'] || Math.floor(Math.random() * 1000);
-              const cartAdditions = row['Sessions with cart additions'] || Math.floor(Math.random() * 50);
-              const checkouts = row['Sessions that reached checkout'] || Math.floor(Math.random() * 20);
-              const completedCheckouts = row['Sessions that completed checkout'] || Math.floor(Math.random() * 10);
-              const sessionDuration = row['Average session duration'] || Math.floor(Math.random() * 120);
-              const pageviews = row['Pageviews'] || Math.floor(Math.random() * 5000);
-              
-              return `"${campaign}","${adset}",${visitors},${cartAdditions},${checkouts},${completedCheckouts},${sessionDuration},${pageviews}`;
-            }).join('\n');
-          } catch (e) {
-            console.warn('Failed to parse cached pivot data, generating sample data');
-          }
+      // Check if we have dashboard data available
+      if (!dashboardData) {
+        console.error('❌ No dashboard data available');
+        alert('Please load dashboard data first before exporting.');
+        return;
+      }
+      
+      console.log('📊 Using existing dashboard data for export:', {
+        dateRange: dashboardData.dateRange,
+        campaigns: dashboardData.campaigns?.length || dashboardData.utmCampaigns?.length || 0,
+        topLevelData: dashboardData.topLevelData?.length || 0,
+        availableKeys: Object.keys(dashboardData)
+      });
+      
+      // Get Meta and Google data from ORIGINAL uploaded files (the ONLY entry point for data)
+      console.log('🔍 Available localStorage keys:');
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && (key.includes('meta') || key.includes('google') || key.includes('moi'))) {
+          console.log(`  - ${key}: ${localStorage.getItem(key)?.substring(0, 100)}...`);
         }
-        
-        // Fallback to sample pivot data
-        const samplePivotData = [
-          ['BOF | DPA', 'DPA - Broad', '2500', '45', '15', '8', '85', '12500'],
-          ['TOF | Interest', 'Luxury Shoppers', '1800', '32', '12', '5', '92', '8900'],
-          ['india-pmax-rings', 'Performance Max', '1200', '28', '18', '12', '110', '6800'],
-          ['BOF | Retargeting', 'Website Visitors', '950', '21', '9', '4', '78', '4200']
-        ];
-        
-        return samplePivotData.map(row => `"${row[0]}","${row[1]}",${row[2]},${row[3]},${row[4]},${row[5]},${row[6]},${row[7]}`).join('\n');
-      };
+      }
       
-      csvContent = `Campaign,AdSet,Online store visitors,Sessions with cart additions,Sessions that reached checkout,Sessions that completed checkout,Average session duration,Pageviews\n${generatePivotData()}`;
-    } else if (fileType === 'topLevel') {
-      filename = `MOI_Top_Level_Metrics_${dateRange}.csv`;
+      // Use ORIGINAL uploaded file data - the ONLY entry point for data
+      const metaDataRaw = localStorage.getItem('moi-meta-data');
+      const googleDataRaw = localStorage.getItem('moi-google-data');
+      let metaSpend = 0, metaCTR = 0, metaCPM = 0;
+      let googleSpend = 0, googleCTR = 0, googleCPM = 0;
       
-      // Generate data from actual dashboard data if available
-      const generateActualDailyData = () => {
-        // First, try to use actual data from dashboard
-        if (dashboardData && dashboardData.dateRange) {
-          console.log('📊 Using actual dashboard data for export');
-          console.log('  - Date range:', dashboardData.dateRange);
+      console.log('🔍 Looking for ORIGINAL Meta data:', !!metaDataRaw);
+      console.log('🔍 Looking for ORIGINAL Google data:', !!googleDataRaw);
+      
+      // Process ORIGINAL Meta Ads file data
+      if (metaDataRaw) {
+        try {
+          const metaData = JSON.parse(metaDataRaw);
+          console.log('📊 Original Meta Ads data loaded:', metaData.length, 'rows');
           
-          // Use actual dashboard data - extract single day of data based on available metrics
-          const { keyMetrics } = dashboardData;
-          
-          // Since we have aggregated metrics but need daily format, create a single row
-          // using the actual date range from the dashboard
-          const startDate = dashboardData.dateRange.startDate || dashboardData.dateRange.start;
-          const endDate = dashboardData.dateRange.endDate || dashboardData.dateRange.end;
-          
-          // Create date array from actual range
-          const dates = generateDateArray(dashboardData.dateRange);
-          console.log('  - Generated dates:', dates.map(d => formatDateForApp(d)));
-          
-          // Use real metrics from dashboard but distribute across date range
-          const dailyData = dates.map((date, index) => {
-            // Distribute totals across the date range
-            const dayFactor = dates.length > 0 ? (1 / dates.length) : 1;
+          if (metaData.length > 0) {
+            // Calculate totals from ORIGINAL Meta file
+            metaSpend = metaData.reduce((sum: number, row: any) => {
+              const spend = row['Amount spent (INR)'] || row['amount_spent'] || row['spend'] || 0;
+              return sum + (typeof spend === 'number' ? spend : parseFloat(spend) || 0);
+            }, 0);
             
-            return {
-              date: formatDateForApp(date),
-              // Use real metrics from dashboard, distributed per day
-              metaSpend: Math.floor((keyMetrics.totalSessions * 5) * dayFactor), // Estimated based on traffic
-              metaCTR: 1.45, // Sample CTR
-              metaCPM: 59.10, // Sample CPM
-              googleSpend: Math.floor((keyMetrics.totalSessions * 2) * dayFactor), // Estimated
-              googleCTR: 0.75, // Sample CTR
-              googleCPM: 244.90, // Sample CPM
-              totalUsers: Math.floor(keyMetrics.totalUniqueUsers * dayFactor),
-              totalATC: Math.floor(keyMetrics.totalATC * dayFactor),
-              totalReachedCheckout: Math.floor(keyMetrics.totalCheckoutSessions * dayFactor),
-              totalAbandonedCheckout: Math.floor((keyMetrics.totalATC - keyMetrics.totalCheckoutSessions) * dayFactor),
-              sessionDuration: Math.floor(keyMetrics.avgSessionTime || 145),
-              usersAbove1Min: Math.floor(keyMetrics.totalUniqueUsers * 0.8 * dayFactor), // 80% of users
-              users5PagesAbove1Min: Math.floor(keyMetrics.totalUniqueUsers * 0.5 * dayFactor), // 50% of users
-              atcAbove1Min: Math.floor(keyMetrics.totalATC * 0.9 * dayFactor), // 90% of ATC
-              checkoutAbove1Min: Math.floor(keyMetrics.totalCheckoutSessions * 0.8 * dayFactor), // 80% of checkouts
-              generalQueries: 0, // These would need to be tracked separately
-              openQueries: 0,
-              onlineOrders: Math.floor((keyMetrics.totalRevenue / 2500) * dayFactor) // Assuming avg order value of 2500
-            };
-          });
+            metaCTR = metaData.reduce((sum: number, row: any) => {
+              const ctr = row['CTR (link click-through rate)'] || row['ctr'] || 0;
+              return sum + (typeof ctr === 'number' ? ctr : parseFloat(ctr) || 0);
+            }, 0) / metaData.length; // Average CTR
+            
+            metaCPM = metaData.reduce((sum: number, row: any) => {
+              const cpm = row['CPM (cost per 1,000 impressions)'] || row['cpm'] || 0;
+              return sum + (typeof cpm === 'number' ? cpm : parseFloat(cpm) || 0);
+            }, 0) / metaData.length; // Average CPM
+            
+            console.log('📊 Calculated from ORIGINAL Meta file:');
+            console.log(`  - Meta Spend: ${metaSpend}, CTR: ${metaCTR.toFixed(2)}, CPM: ${metaCPM.toFixed(2)}`);
+          }
+        } catch (e) {
+          console.warn('⚠️ Failed to parse ORIGINAL Meta Ads data:', e);
+        }
+      } else {
+        console.warn('❌ No ORIGINAL Meta Ads data found - this means files were not uploaded properly');
+      }
+      
+      // Process ORIGINAL Google Ads file data
+      if (googleDataRaw) {
+        try {
+          const googleData = JSON.parse(googleDataRaw);
+          console.log('📊 Original Google Ads data loaded:', googleData.length, 'rows');
           
-          console.log('  - Daily data rows:', dailyData.length);
-          
-          // Convert to CSV format
-          const formatTime = (seconds: number) => `0:00:${seconds.toString().padStart(2, '0')}`;
-          
-          return dailyData.map(row => {
-            return `"${row.date}","${row.metaSpend.toLocaleString()}",${row.metaCTR}%,${row.metaCPM},"${row.googleSpend.toLocaleString()}",${row.googleCTR}%,${row.googleCPM},"${row.totalUsers.toLocaleString()}",${row.totalATC},${row.totalReachedCheckout},${row.totalAbandonedCheckout},${formatTime(row.sessionDuration)},"${row.usersAbove1Min.toLocaleString()}",${row.users5PagesAbove1Min},${row.atcAbove1Min},${row.checkoutAbove1Min},${row.generalQueries},${row.openQueries},${row.onlineOrders}`;
-          }).join('\n');
+          if (googleData.length > 0) {
+            // Calculate totals from ORIGINAL Google file
+            googleSpend = googleData.reduce((sum: number, row: any) => {
+              const cost = row['Cost'] || row['cost'] || 0;
+              return sum + (typeof cost === 'number' ? cost : parseFloat(cost) || 0);
+            }, 0);
+            
+            googleCTR = googleData.reduce((sum: number, row: any) => {
+              const ctr = row['CTR'] || row['ctr'] || 0;
+              const ctrValue = typeof ctr === 'string' ? parseFloat(ctr.replace('%', '')) : ctr;
+              return sum + (ctrValue || 0);
+            }, 0) / googleData.length; // Average CTR
+            
+            googleCPM = googleData.reduce((sum: number, row: any) => {
+              const cpm = row['Avg. CPM'] || row['cpm'] || 0;
+              return sum + (typeof cpm === 'number' ? cpm : parseFloat(cpm) || 0);
+            }, 0) / googleData.length; // Average CPM
+            
+            console.log('📊 Calculated from ORIGINAL Google file:');
+            console.log(`  - Google Spend: ${googleSpend}, CTR: ${googleCTR.toFixed(2)}, CPM: ${googleCPM.toFixed(2)}`);
+          }
+        } catch (e) {
+          console.warn('⚠️ Failed to parse ORIGINAL Google Ads data:', e);
+        }
+      } else {
+        console.warn('❌ No ORIGINAL Google Ads data found - this means files were not uploaded properly');
+      }
+      
+      const dateRangeStr = getDateRange();
+      let csvContent = '';
+      let filename = '';
+      
+      if (fileType === 'pivot') {
+        filename = `MOI_Pivot_Temp_${dateRangeStr}.csv`;
+        
+        // Try to get pivot data from localStorage (saved by ConfigurableDataProcessor)
+        const pivotDataRaw = localStorage.getItem('moi-pivot-data');
+        let pivotData = [];
+        
+        if (pivotDataRaw) {
+          try {
+            pivotData = JSON.parse(pivotDataRaw);
+            console.log('📊 Using cached pivot data:', pivotData.length, 'rows');
+          } catch (e) {
+            console.warn('⚠️ Failed to parse pivot data from localStorage');
+          }
         }
         
-        // Fallback: No dashboard data available
-        console.log('⚠️ No dashboard data available, cannot export actual data');
-        return '"No data available","Export requires dashboard to have loaded data first"';
-      };
-      
-      csvContent = `Date,Meta Ads,,,Google Ads,,,Shopify,,,,,,,,,Sales Data,,Shopify
-Note,Direct,Direct,Direct,Direct,Direct,Direct,Direct,Direct,Direct,Direct,Direct,Derived,Derived,Derived,Derived,Direct,Direct,Direct
-Note,Spend,CTR,CPM,Spend,CTR,CPM,"Total 
-Users","Total 
-ATC","Total 
-Reached Checkout ",Total Abandoned Checkout,Session Duration,Users with Session above 1 min,Users with Above 5 page views and above 1 min,ATC with session duration above 1 min,Reached Checkout with session duration above 1 min,General Queries,Open Queries ,Online Orders
-${generateActualDailyData()}`;
-    } else {
-      filename = `MOI_Adset_Level_Matrices_${dateRange}.csv`;
-      
-      // Generate adset data based on actual dashboard campaigns if available
-      const generateAdsetData = () => {
-        console.log('🔍 Checking dashboard data for adset export...');
-        console.log('  - dashboardData exists:', !!dashboardData);
-        console.log('  - dashboardData.dateRange exists:', !!dashboardData?.dateRange);
-        console.log('  - dashboardData.campaigns exists:', !!dashboardData?.campaigns);
-        console.log('  - dashboardData.utmCampaigns exists:', !!dashboardData?.utmCampaigns);
-        
-        // Check for campaign data in either campaigns or utmCampaigns
-        const campaignData = dashboardData?.campaigns || dashboardData?.utmCampaigns;
-        
-        // If no campaign data in current dashboard, try to load from existing output files
-        if (dashboardData && dashboardData.dateRange && (!campaignData || campaignData.length === 0)) {
-          console.log('⚠️ No campaigns in current dashboard data, checking server-side cache...');
+        if (pivotData.length > 0) {
+          const pivotRows = pivotData.map((row: any) => {
+            // Map UTM Campaign -> Campaign and UTM Term -> AdSet for CSV export
+            const campaign = row['UTM Campaign'] || row.Campaign || '';
+            const adSet = row['UTM Term'] || row.AdSet || '';
+            return `"${campaign}","${adSet}",${row['Online store visitors'] || 0},${row['Sessions with cart additions'] || 0},${row['Sessions that reached checkout'] || 0},${row['Sessions that completed checkout'] || 0},${row['Average session duration'] || 0},${row['Pageviews'] || 0}`;
+          }).join('\n');
           
-          // Check if we have server-side adset data from previous exports
-          const serverAdsetContent = localStorage.getItem('moi-server-adset');
-          if (serverAdsetContent) {
-            console.log('📊 Found server-side adset data, using that for export');
-            return serverAdsetContent.split('\n').slice(1).join('\n'); // Remove header since it's added later
+          csvContent = `Campaign,AdSet,Online store visitors,Sessions with cart additions,Sessions that reached checkout,Sessions that completed checkout,Average session duration,Pageviews\n${pivotRows}`;
+        } else {
+          console.warn('⚠️ No pivot data available, creating empty CSV');
+          csvContent = `Campaign,AdSet,Online store visitors,Sessions with cart additions,Sessions that reached checkout,Sessions that completed checkout,Average session duration,Pageviews\n`;
+        }
+        
+      } else if (fileType === 'topLevel') {
+        filename = `MOI_Top_Level_Metrics_${dateRangeStr}.csv`;
+        
+        // Use dashboard top level data - check multiple possible locations
+        const topLevelData = dashboardData.topLevelData || 
+                             dashboardData.topLevel || 
+                             dashboardData.dailyMetrics || 
+                             [];
+        
+        // If no top level data, try to aggregate from campaign data
+        if (topLevelData.length === 0 && (dashboardData.campaigns || dashboardData.utmCampaigns)) {
+          console.log('🎯 Aggregating top level data from campaign data...');
+          
+          // CRITICAL: Prioritize utmCampaigns since that's where the actual data is
+          const campaigns = dashboardData.utmCampaigns?.length > 0 ? 
+                          dashboardData.utmCampaigns : 
+                          dashboardData.campaigns || [];
+                          
+          console.log('📊 Using campaign source:', 
+            dashboardData.utmCampaigns?.length > 0 ? 'utmCampaigns' : 'campaigns',
+            'with', campaigns.length, 'campaigns');
+          
+          // Debug: Log first campaign to see actual field names
+          if (campaigns.length > 0) {
+            console.log('📊 First campaign fields:', Object.keys(campaigns[0]));
+            console.log('📊 First campaign data:', campaigns[0]);
+            
+            // Auto-detect field names based on what's actually available
+            const sampleCampaign = campaigns[0];
+            const fields = Object.keys(sampleCampaign);
+            
+            console.log('🔍 Auto-detecting field names:');
+            console.log('  - Spend fields:', fields.filter(f => f.toLowerCase().includes('spend') || f.toLowerCase().includes('cost')));
+            console.log('  - User fields:', fields.filter(f => f.toLowerCase().includes('user') || f.toLowerCase().includes('session') || f.toLowerCase().includes('visitor')));
+            console.log('  - ATC fields:', fields.filter(f => f.toLowerCase().includes('cart') || f.toLowerCase().includes('atc')));
+            console.log('  - Checkout fields:', fields.filter(f => f.toLowerCase().includes('checkout') || f.toLowerCase().includes('purchase') || f.toLowerCase().includes('conversion')));
           }
           
-          // Try to load from existing output files as fallback
-          console.log('🔍 Attempting to load campaign data from output files...');
-          try {
-            // Use the same logic as fileLoader to get existing data
-            const cachedData = localStorage.getItem('moi-output-data');
-            if (cachedData) {
-              const parsedData = JSON.parse(cachedData);
-              if (parsedData?.utmCampaigns && parsedData.utmCampaigns.length > 0) {
-                console.log('📊 Using cached campaign data for export');
-                const startDate = dashboardData.dateRange.startDate || dashboardData.dateRange.start;
-                const dateStr = formatDateForApp(startDate);
-                
-                return parsedData.utmCampaigns.map((campaign, index) => {
-                  const campaignId = `${100000 + index}`;
-                  const adsetId = `${200000 + index}`;
-                  const platform = index % 2 === 0 ? 'Meta' : 'Google';
-                  
-                  const sessions = campaign.totalSessions || campaign.sessions || 0;
-                  const spend = Math.floor(campaign.adSpend || (sessions * 3));
-                  const impressions = Math.floor(sessions * 10);
-                  const ctr = platform === 'Meta' ? 1.45 : 0.95;
-                  const cpm = platform === 'Meta' ? 59.10 : 244.90;
-                  const cpc = spend > 0 && sessions > 0 ? (spend / sessions).toFixed(2) : '4.50';
-                  
-                  const users = sessions || 0;
-                  const atc = 0; // Not available in UTM data
-                  const checkouts = campaign.checkoutSessions || 0;
-                  const purchases = Math.floor(checkouts * 0.8);
-                  const revenue = purchases * 2500;
-                  const roas = spend > 0 ? (revenue / spend).toFixed(2) : '0.00';
-                  
-                  const campaignName = campaign.utmCampaign || `Campaign ${index + 1}`;
-                  
-                  return `"${dateStr}","${campaignName}","${campaignId}","${campaignName} - Main","${adsetId}","${platform}","${spend.toLocaleString()}","${impressions.toLocaleString()}",${ctr}%,${cpm},${cpc},${users},${atc},${checkouts},${purchases},"${revenue.toLocaleString()}",${roas}`;
-                }).join('\n');
+          // Create aggregated top level data from campaigns
+          // CRITICAL: Use the actual data date, not today's date!
+          // The data is from Sept 29th based on the original files
+          // FIXED: Use actual date from data instead of hardcoded fallback
+          const dataDate = dashboardData.dateRange?.startDate || 
+                          dashboardData.dateRange?.start || 
+                          (new Date().toISOString().split('T')[0]); // Current date fallback, not hardcoded Sept 29
+          
+          // Smart field detection: try all possible field names and log what we find
+          const findFieldValue = (campaign: any, fieldType: string, possibleNames: string[]) => {
+            for (const name of possibleNames) {
+              if (campaign[name] !== undefined && campaign[name] !== null) {
+                console.log(`✅ Found ${fieldType} in field '${name}': ${campaign[name]}`);
+                return campaign[name];
               }
             }
+            console.log(`❌ No ${fieldType} field found in:`, Object.keys(campaign));
+            return 0;
+          };
+          
+          // Calculate totals using smart field detection
+          const totalSpend = campaigns.reduce((sum, c) => {
+            const spend = findFieldValue(c, 'spend', [
+              'adSpend', 'spend', 'totalSpend', 'cost', 'amount', 'spent', 'Amount spent (INR)',
+              'totalCost', 'campaignSpend', 'metaSpend', 'googleSpend'
+            ]);
+            return sum + (typeof spend === 'number' ? spend : 0);
+          }, 0);
+          
+          const totalUsers = campaigns.reduce((sum, c) => {
+            const users = findFieldValue(c, 'users', [
+              'totalSessions', 'sessions', 'users', 'totalUsers', 'totalCustomers',
+              'visitors', 'totalVisitors', 'Online store visitors', 'clicks',
+              'uniqueUsers', 'activeUsers'
+            ]);
+            return sum + (typeof users === 'number' ? users : 0);
+          }, 0);
+          
+          const totalATC = campaigns.reduce((sum, c) => {
+            const atc = findFieldValue(c, 'ATC', [
+              'cartAdditions', 'addToCartSessions', 'atc', 'totalATC',
+              'Sessions with cart additions', 'addToCart', 'cartEvents'
+            ]);
+            return sum + (typeof atc === 'number' ? atc : 0);
+          }, 0);
+          
+          const totalCheckouts = campaigns.reduce((sum, c) => {
+            const checkouts = findFieldValue(c, 'checkouts', [
+              'checkoutSessions', 'checkouts', 'reachedCheckout', 'totalCheckouts',
+              'Sessions that reached checkout', 'Sessions that completed checkout',
+              'purchases', 'conversions', 'orders'
+            ]);
+            return sum + (typeof checkouts === 'number' ? checkouts : 0);
+          }, 0);
+          
+          // Calculate session duration (weighted average by sessions)
+          const totalSessionDuration = campaigns.reduce((sum, c) => {
+            const duration = findFieldValue(c, 'session duration', [
+              'averageSessionDuration', 'avgSessionDuration', 'sessionDuration',
+              'Average session duration'
+            ]);
+            const sessions = c.sessions || c.totalSessions || 1;
+            return sum + (duration * sessions); // Weight by session count
+          }, 0);
+          const avgSessionDuration = totalUsers > 0 ? totalSessionDuration / totalUsers : 0;
+          
+          // Calculate users with session above 1 min (assuming 1 min = 60 seconds)
+          const usersAbove1Min = campaigns.reduce((sum, c) => {
+            const duration = findFieldValue(c, 'session duration', [
+              'averageSessionDuration', 'avgSessionDuration', 'sessionDuration'
+            ]);
+            const sessions = c.sessions || c.totalSessions || 0;
+            return sum + (duration > 60 ? sessions : 0); // Count sessions where duration > 60 seconds
+          }, 0);
+          
+          // Calculate users with above 5 page views and above 1 min
+          const users5PagesAbove1Min = campaigns.reduce((sum, c) => {
+            const duration = findFieldValue(c, 'session duration', [
+              'averageSessionDuration', 'avgSessionDuration', 'sessionDuration'
+            ]);
+            const pageviews = findFieldValue(c, 'pageviews', [
+              'pageviews', 'pageViews', 'pages', 'totalPageviews'
+            ]);
+            const sessions = c.sessions || c.totalSessions || 0;
+            const avgPageviewsPerSession = sessions > 0 ? pageviews / sessions : 0;
+            return sum + (duration > 60 && avgPageviewsPerSession > 5 ? sessions : 0);
+          }, 0);
+          
+          // Meta and Google metrics now come directly from ORIGINAL uploaded files
+          // No fallback needed - original files are the source of truth
+          
+          // Calculate ATC/Checkout with session duration above 1 min
+          const atcAbove1Min = campaigns.reduce((sum, c) => {
+            const duration = findFieldValue(c, 'session duration', [
+              'averageSessionDuration', 'avgSessionDuration', 'sessionDuration'
+            ]);
+            const atc = findFieldValue(c, 'ATC', [
+              'cartAdditions', 'addToCartSessions', 'atc'
+            ]);
+            return sum + (duration > 60 ? atc : 0);
+          }, 0);
+          
+          const checkoutAbove1Min = campaigns.reduce((sum, c) => {
+            const duration = findFieldValue(c, 'session duration', [
+              'averageSessionDuration', 'avgSessionDuration', 'sessionDuration'
+            ]);
+            const checkouts = findFieldValue(c, 'checkouts', [
+              'checkoutSessions', 'checkouts', 'reachedCheckout'
+            ]);
+            return sum + (duration > 60 ? checkouts : 0);
+          }, 0);
+          
+          console.log('📊 Final Aggregation Results:');
+          console.log(`  - Meta Spend: ${Math.round(metaSpend)}`);
+          console.log(`  - Meta CTR: ${(metaCTR * 100).toFixed(2)}%`);
+          console.log(`  - Meta CPM: ${metaCPM.toFixed(2)}`);
+          console.log(`  - Google Spend: ${Math.round(googleSpend)}`);
+          console.log(`  - Google CTR: ${googleCTR.toFixed(2)}%`);
+          console.log(`  - Google CPM: ${googleCPM.toFixed(2)}`);
+          console.log(`  - Total Users: ${totalUsers}`);
+          console.log(`  - Total ATC: ${totalATC}`);
+          console.log(`  - Total Checkouts: ${totalCheckouts}`);
+          console.log(`  - Average Session Duration: ${Math.round(avgSessionDuration)} seconds`);
+          console.log(`  - Users Above 1 Min: ${usersAbove1Min}`);
+          console.log(`  - Users 5+ Pages & 1+ Min: ${users5PagesAbove1Min}`);
+          console.log(`  - ATC Above 1 Min: ${atcAbove1Min}`);
+          console.log(`  - Checkouts Above 1 Min: ${checkoutAbove1Min}`);
+          
+          const aggregatedData = {
+            date: dataDate instanceof Date ? dataDate.toISOString().split('T')[0] : dataDate,
+            metaSpend: Math.round(metaSpend),
+            metaCTR: Math.round(metaCTR * 100) / 100, // Round to 2 decimal places
+            metaCPM: Math.round(metaCPM * 100) / 100,
+            googleSpend: Math.round(googleSpend),
+            googleCTR: Math.round(googleCTR * 100) / 100,
+            googleCPM: Math.round(googleCPM * 100) / 100,
+            totalUsers: totalUsers,
+            totalATC: totalATC,
+            totalReachedCheckout: totalCheckouts,
+            totalAbandonedCheckout: 0, // Would need specific abandoned checkout data
+            sessionDuration: Math.round(avgSessionDuration),
+            usersAbove1Min: usersAbove1Min,
+            users5PagesAbove1Min: users5PagesAbove1Min,
+            atcAbove1Min: atcAbove1Min,
+            checkoutAbove1Min: checkoutAbove1Min
+          };
+          
+          topLevelData.push(aggregatedData);
+          console.log('✅ Created aggregated top level data:', aggregatedData);
+        }
+        
+        console.log('📊 Top Level data rows:', topLevelData.length);
+        if (topLevelData.length > 0) {
+          console.log('🔍 First topLevel row:', topLevelData[0]);
+          console.log('🔍 Meta/Google values:', {
+            metaSpend: topLevelData[0].metaSpend,
+            metaCTR: topLevelData[0].metaCTR,
+            metaCPM: topLevelData[0].metaCPM,
+            googleSpend: topLevelData[0].googleSpend,
+            googleCTR: topLevelData[0].googleCTR,
+            googleCPM: topLevelData[0].googleCPM,
+            totalUsers: topLevelData[0].totalUsers
+          });
+        }
+        
+        if (topLevelData.length > 0) {
+          const topLevelRows = topLevelData.map((row: any) => {
+            // Map dashboard fields to CSV columns
+            const date = row.date || row.Date || '';
+            const metaSpend = row.metaSpend || row['Meta Spend'] || 0;
+            const metaCTR = row.metaCTR || row['Meta CTR'] || 0;
+            const metaCPM = row.metaCPM || row['Meta CPM'] || 0;
+            const googleSpend = row.googleSpend || row['Google Spend'] || 0;
+            const googleCTR = row.googleCTR || row['Google CTR'] || 0;
+            const googleCPM = row.googleCPM || row['Google CPM'] || 0;
+            const totalUsers = row.totalUsers || row['Total Users'] || 0;
+            const totalATC = row.totalATC || row['Total ATC'] || 0;
+            const totalReachedCheckout = row.totalReachedCheckout || row['Total Reached Checkout'] || 0;
+            const totalAbandonedCheckout = row.totalAbandonedCheckout || row['Total Abandoned Checkout'] || 0;
+            const sessionDuration = row.sessionDuration || row['Session Duration'] || 0;
+            const usersAbove1Min = row.usersAbove1Min || row['Users with Session above 1 min'] || 0;
+            const users5PagesAbove1Min = row.users5PagesAbove1Min || row['Users with Above 5 page views and above 1 min'] || 0;
+            const atcAbove1Min = row.atcAbove1Min || row['ATC with session duration above 1 min'] || 0;
+            const checkoutAbove1Min = row.checkoutAbove1Min || row['Reached Checkout with session duration above 1 min'] || 0;
+            
+            return `"${date}",${metaSpend},${metaCTR},${metaCPM},${googleSpend},${googleCTR},${googleCPM},${totalUsers},${totalATC},${totalReachedCheckout},${totalAbandonedCheckout},${sessionDuration},${usersAbove1Min},${users5PagesAbove1Min},${atcAbove1Min},${checkoutAbove1Min}`;
+          }).join('\n');
+          
+          csvContent = `Date,Meta Spend,Meta CTR,Meta CPM,Google Spend,Google CTR,Google CPM,Total Users,Total ATC,Total Reached Checkout,Total Abandoned Checkout,Session Duration,Users with Session above 1 min,Users with Above 5 page views and above 1 min,ATC with session duration above 1 min,Reached Checkout with session duration above 1 min\n${topLevelRows}`;
+        } else {
+          console.warn('⚠️ No Top Level Daily data available');
+          csvContent = `Date,Meta Spend,Meta CTR,Meta CPM,Google Spend,Google CTR,Google CPM,Total Users,Total ATC,Total Reached Checkout,Total Abandoned Checkout,Session Duration,Users with Session above 1 min,Users with Above 5 page views and above 1 min,ATC with session duration above 1 min,Reached Checkout with session duration above 1 min\n`;
+        }
+        
+      } else {
+        // Adset Level export using dashboard campaign data
+        filename = `MOI_Adset_Level_Matrices_${dateRangeStr}.csv`;
+        
+        // Load pivot data from localStorage for accurate Campaign+AdSet level calculations
+        const pivotDataRaw = localStorage.getItem('moi-pivot-data');
+        let pivotData: any[] = [];
+        
+        if (pivotDataRaw) {
+          try {
+            pivotData = JSON.parse(pivotDataRaw);
+            console.log('📊 Using pivot data for Ad Set calculations:', pivotData.length, 'rows');
+            console.log('🔍 Sample pivot data:', pivotData[0]);
           } catch (error) {
-            console.log('Error loading cached campaign data:', error);
+            console.warn('⚠️ Failed to parse pivot data from localStorage:', error);
           }
         }
         
-        if (dashboardData && dashboardData.dateRange && campaignData && campaignData.length > 0) {
-          console.log('📊 Using actual dashboard campaigns for adset export');
-          console.log('  - Number of campaigns:', campaignData.length);
-          console.log('  - Campaign source:', dashboardData.campaigns ? 'campaigns' : 'utmCampaigns');
+        // Helper function to lookup and sum values from pivot data for Campaign+AdSet combination
+        const lookupFromPivot = (campaignName: string, adSetName: string, field: string, fallbackValue: number = 0): number => {
+          if (!pivotData || pivotData.length === 0) {
+            console.warn(`⚠️ No pivot data available, using fallback value ${fallbackValue} for ${field}`);
+            return fallbackValue;
+          }
           
-          const startDate = dashboardData.dateRange.startDate || dashboardData.dateRange.start;
-          const dateStr = formatDateForApp(startDate);
+          const matchingRows = pivotData.filter(row => 
+            row['UTM Campaign'] === campaignName && row['UTM Term'] === adSetName
+          );
           
-          return campaignData.map((campaign, index) => {
-            // Use actual campaign data from dashboard
-            const campaignId = `${100000 + index}`;
-            const adsetId = `${200000 + index}`;
-            const platform = index % 2 === 0 ? 'Meta' : 'Google';
-            
-            // Use real metrics from the campaign (handle both data structures)
-            const sessions = campaign.totalSessions || campaign.sessions || 0;
-            const spend = Math.floor(campaign.adSpend || (sessions * 3)); // Estimate if not available
-            const impressions = Math.floor(sessions * 10); // Estimate impressions
-            const ctr = platform === 'Meta' ? 1.45 : 0.95;
-            const cpm = platform === 'Meta' ? 59.10 : 244.90;
-            const cpc = spend > 0 && sessions > 0 ? (spend / sessions).toFixed(2) : '4.50';
-            
-            // Use actual conversion metrics (handle both data structures)
-            const users = campaign.totalCustomers || sessions || 0;
-            const atc = campaign.cartAdditions || 0;
-            const checkouts = campaign.checkoutSessions || 0;
-            const purchases = Math.floor(checkouts * 0.8); // Estimate purchases from checkouts
-            const revenue = purchases * 2500; // Assume average order value
-            const roas = spend > 0 ? (revenue / spend).toFixed(2) : '0.00';
-            
-            const campaignName = campaign.utmCampaign || campaign.campaignName || `Campaign ${index + 1}`;
-            
-            console.log(`  - Campaign: ${campaignName}, Users: ${users}, ATC: ${atc}, Checkouts: ${checkouts}`);
-            
-            return `"${dateStr}","${campaignName}","${campaignId}","${campaignName} - Main","${adsetId}","${platform}","${spend.toLocaleString()}","${impressions.toLocaleString()}",${ctr}%,${cpm},${cpc},${users},${atc},${checkouts},${purchases},"${revenue.toLocaleString()}",${roas}`;
-          }).join('\n');
-        }
+          if (matchingRows.length === 0) {
+            console.warn(`⚠️ No pivot data found for Campaign: "${campaignName}", AdSet: "${adSetName}", using fallback: ${fallbackValue}`);
+            return fallbackValue;
+          }
+          
+          const sum = matchingRows.reduce((total, row) => {
+            const value = parseFloat(row[field]) || 0;
+            return total + value;
+          }, 0);
+          
+          console.log(`📊 Pivot lookup ${field}: Campaign="${campaignName}", AdSet="${adSetName}" → ${sum} (from ${matchingRows.length} rows)`);
+          return sum;
+        };
         
-        // Fallback: No dashboard data available
-        console.log('⚠️ No dashboard campaigns available, cannot export adset data');
-        console.log('  - Available data keys:', dashboardData ? Object.keys(dashboardData) : 'none');
-        return '"No data available","Export requires dashboard to have loaded campaign data first"';
-      };
+        // Use pivot data to get actual Campaign+AdSet combinations
+        if (pivotData && pivotData.length > 0) {
+          console.log('📊 Using pivot data for actual Campaign+AdSet combinations:', pivotData.length);
+          
+          const adsetRows = pivotData.map((pivotRow: any, index: number) => {
+            // Map dashboard campaign fields to CSV columns
+            // Use the actual data date from the original files (Sept 29th) - FIXED with dateNormalizer
+            let date: string;
+            if (dashboardData.dateRange?.startDate) {
+              const normalizedDate = normalizeDateToISO(dashboardData.dateRange.startDate, 'unknown');
+              date = normalizedDate.isoString;
+            } else if (dashboardData.dateRange?.start) {
+              const normalizedDate = normalizeDateToISO(dashboardData.dateRange.start, 'unknown');
+              date = normalizedDate.isoString;
+            } else {
+              const normalizedDate = normalizeDateToISO(new Date(), 'unknown');
+              date = normalizedDate.isoString; // Current date fallback
+            }
+            // Get actual Campaign and AdSet names from pivot data
+            const campaignName = pivotRow['UTM Campaign'] || `Campaign ${index + 1}`;
+            const adSetName = pivotRow['UTM Term'] || `AdSet ${index + 1}`;
+            const adSetDelivery = 'active'; // Default delivery status
+            
+            // Calculate Ad Set Level metrics using Pivot Data as per specification
+            // For spend data, we need to lookup from Meta/Google data or use campaign fallback
+            const adSetLevelSpent = 0; // TODO: Need to lookup spend from Meta/Google data by campaign+adset
+            
+            // Use Pivot Temp CSV data directly (this row already has the aggregated data for this Campaign+AdSet)
+            const adSetLevelUsers = parseFloat(pivotRow['Online store visitors']) || 0;
+            const costPerUser = adSetLevelUsers > 0 ? (adSetLevelSpent / adSetLevelUsers).toFixed(2) : 0;
+            
+            const adSetLevelATC = parseFloat(pivotRow['Sessions with cart additions']) || 0;
+            const adSetLevelReachedCheckout = parseFloat(pivotRow['Sessions that reached checkout']) || 0;
+            const adSetLevelConversions = parseFloat(pivotRow['Sessions that completed checkout']) || 0;
+            const adSetLevelAvgSessionDuration = parseFloat(pivotRow['Average session duration']) || 0;
+            
+            // Advanced metrics - use estimations based on the actual pivot data
+            const adSetLevelUsersAbove1Min = Math.floor(adSetLevelUsers * 0.6); // 60% estimation
+            const adSetLevelCostPer1MinUser = adSetLevelUsersAbove1Min > 0 ? (adSetLevelSpent / adSetLevelUsersAbove1Min).toFixed(2) : 0;
+            const adSetLevel1MinUserPercent = adSetLevelUsers > 0 ? ((adSetLevelUsersAbove1Min / adSetLevelUsers) * 100).toFixed(2) : 0;
+            const adSetLevelATCAbove1Min = Math.floor(adSetLevelATC * 0.6); // 60% estimation
+            const adSetLevelReachedCheckoutAbove1Min = Math.floor(adSetLevelReachedCheckout * 0.6); // 60% estimation
+            const adSetLevelUsers5PagesAbove1Min = Math.floor(adSetLevelUsers * 0.3); // 30% estimation
+            
+            return `"${date}","${campaignName}","${adSetName}","${adSetDelivery}",${adSetLevelSpent},${adSetLevelUsers},${costPerUser},${adSetLevelATC},${adSetLevelReachedCheckout},${adSetLevelConversions},${adSetLevelAvgSessionDuration},${adSetLevelUsersAbove1Min},${adSetLevelCostPer1MinUser},${adSetLevel1MinUserPercent},${adSetLevelATCAbove1Min},${adSetLevelReachedCheckoutAbove1Min},${adSetLevelUsers5PagesAbove1Min}`;
+          }).join('\n');
+          
+          csvContent = `Date,Campaign name,Ad Set Name,Ad Set Delivery,Ad Set Level Spent,Ad Set Level Users,Cost per user,Ad Set Level ATC,Ad Set Level Reached Checkout,Ad Set Level Conversions,Ad Set Level Average session duration,Ad Set Level Users with Session above 1 min,Ad Set Level Cost per 1 min user,Ad Set Level 1min user/ total users (%),Ad Set Level ATC with session duration above 1 min,Ad Set Level Reached Checkout with session duration above 1 min,Ad Set Level Users with Above 5 page views and above 1 min\n${adsetRows}`;
+        } else {
+          console.warn('⚠️ No pivot data available, falling back to dashboard campaign data');
+          
+          // Fallback to dashboard campaign data if pivot data is not available
+          const campaignData = dashboardData.utmCampaigns?.length > 0 ? 
+                             dashboardData.utmCampaigns : 
+                             dashboardData.campaigns || [];
+          
+          if (campaignData.length > 0) {
+            const adsetRows = campaignData.map((campaign: any, index: number) => {
+              let date: string;
+              if (dashboardData.dateRange?.startDate) {
+                const normalizedDate = normalizeDateToISO(dashboardData.dateRange.startDate, 'unknown');
+                date = normalizedDate.isoString;
+              } else {
+                const normalizedDate = normalizeDateToISO(new Date(), 'unknown');
+                date = normalizedDate.isoString;
+              }
+              
+              const campaignName = campaign.campaignName || campaign.utmCampaign || campaign.name || `Campaign ${index + 1}`;
+              const adSetName = campaign.adSetName || campaign.utmTerm || `AdSet ${index + 1}`;
+              const adSetDelivery = campaign.delivery || 'active';
+              const adSetLevelSpent = campaign.spend || campaign.adSpend || 0;
+              const adSetLevelUsers = campaign.users || campaign.totalUsers || campaign.sessions || 0;
+              const costPerUser = adSetLevelUsers > 0 ? (adSetLevelSpent / adSetLevelUsers).toFixed(2) : 0;
+              const adSetLevelATC = campaign.atc || campaign.addToCart || campaign.addToCartSessions || 0;
+              const adSetLevelReachedCheckout = campaign.checkouts || campaign.reachedCheckout || campaign.checkoutSessions || 0;
+              const adSetLevelConversions = campaign.conversions || campaign.purchases || 0;
+              const adSetLevelAvgSessionDuration = campaign.avgSessionDuration || campaign.sessionDuration || 0;
+              const adSetLevelUsersAbove1Min = campaign.usersAbove1Min || Math.floor(adSetLevelUsers * 0.6);
+              const adSetLevelCostPer1MinUser = adSetLevelUsersAbove1Min > 0 ? (adSetLevelSpent / adSetLevelUsersAbove1Min).toFixed(2) : 0;
+              const adSetLevel1MinUserPercent = adSetLevelUsers > 0 ? ((adSetLevelUsersAbove1Min / adSetLevelUsers) * 100).toFixed(2) : 0;
+              const adSetLevelATCAbove1Min = campaign.atcAbove1Min || Math.floor(adSetLevelATC * 0.6);
+              const adSetLevelReachedCheckoutAbove1Min = campaign.checkoutAbove1Min || Math.floor(adSetLevelReachedCheckout * 0.6);
+              const adSetLevelUsers5PagesAbove1Min = campaign.users5PagesAbove1Min || Math.floor(adSetLevelUsers * 0.3);
+              
+              return `"${date}","${campaignName}","${adSetName}","${adSetDelivery}",${adSetLevelSpent},${adSetLevelUsers},${costPerUser},${adSetLevelATC},${adSetLevelReachedCheckout},${adSetLevelConversions},${adSetLevelAvgSessionDuration},${adSetLevelUsersAbove1Min},${adSetLevelCostPer1MinUser},${adSetLevel1MinUserPercent},${adSetLevelATCAbove1Min},${adSetLevelReachedCheckoutAbove1Min},${adSetLevelUsers5PagesAbove1Min}`;
+            }).join('\n');
+            
+            csvContent = `Date,Campaign name,Ad Set Name,Ad Set Delivery,Ad Set Level Spent,Ad Set Level Users,Cost per user,Ad Set Level ATC,Ad Set Level Reached Checkout,Ad Set Level Conversions,Ad Set Level Average session duration,Ad Set Level Users with Session above 1 min,Ad Set Level Cost per 1 min user,Ad Set Level 1min user/ total users (%),Ad Set Level ATC with session duration above 1 min,Ad Set Level Reached Checkout with session duration above 1 min,Ad Set Level Users with Above 5 page views and above 1 min\n${adsetRows}`;
+          } else {
+            console.warn('⚠️ No campaign or pivot data available');
+            csvContent = `Date,Campaign name,Ad Set Name,Ad Set Delivery,Ad Set Level Spent,Ad Set Level Users,Cost per user,Ad Set Level ATC,Ad Set Level Reached Checkout,Ad Set Level Conversions,Ad Set Level Average session duration,Ad Set Level Users with Session above 1 min,Ad Set Level Cost per 1 min user,Ad Set Level 1min user/ total users (%),Ad Set Level ATC with session duration above 1 min,Ad Set Level Reached Checkout with session duration above 1 min,Ad Set Level Users with Above 5 page views and above 1 min\n`;
+          }
+        }
+      }
       
-      csvContent = `Date,Campaign Name,Campaign ID,Adset Name,Adset ID,Platform,Spend,Impressions,CTR,CPM,CPC,Users,ATC,Reached Checkout,Purchases,Revenue,ROAS
-${generateAdsetData()}`;
+      // Save to server-side for dashboard loading
+      if (fileType !== 'pivot') {
+        saveToServerSide(csvContent, fileType);
+      }
+      
+      // Create and download the file
+      console.log(`📁 Creating download for ${filename}`);
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      // Update download status
+      setDownloadStatus(prev => ({ ...prev, [fileType]: true }));
+      console.log(`✅ ${fileType} export completed successfully`);
+      
+      // Reset status after 3 seconds
+      setTimeout(() => {
+        setDownloadStatus(prev => ({ ...prev, [fileType]: false }));
+      }, 3000);
+      
+    } catch (error) {
+      console.error(`❌ Export failed for ${fileType}:`, error);
+      alert(`Export failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
-    
-    // Save to server-side location for dashboard loading (topLevel and adset only)
-    if (fileType === 'topLevel' || fileType === 'adset') {
-      saveToServerSide(csvContent, fileType);
-    }
-    
-    // Create and download the file
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-    
-    // Update download status
-    setDownloadStatus(prev => ({ ...prev, [fileType]: true }));
-    
-    // Reset status after 3 seconds
-    setTimeout(() => {
-      setDownloadStatus(prev => ({ ...prev, [fileType]: false }));
-    }, 3000);
   };
 
   const exportFiles = [

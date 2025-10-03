@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOI Analytics - Meta Spend Debugging Tool</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: -30px -30px 30px -30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.2em;
+            font-weight: 600;
+        }
+        .header p {
+            margin: 10px 0 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        .section {
+            margin: 30px 0;
+            padding: 25px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            background: #fafbfc;
+        }
+        .section h2 {
+            margin: 0 0 20px;
+            color: #333;
+            font-size: 1.8em;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        .section h3 {
+            color: #555;
+            margin: 20px 0 15px;
+            font-size: 1.4em;
+        }
+        .controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            min-width: 140px;
+        }
+        .btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        .btn-danger {
+            background: #e74c3c;
+        }
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        .btn-success {
+            background: #27ae60;
+        }
+        .btn-success:hover {
+            background: #219a52;
+        }
+        .output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 20px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            max-height: 500px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        .alert-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+        .alert-danger {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .data-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+        .key-highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        .value-highlight {
+            background: #d4edda;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #155724;
+        }
+        .error-highlight {
+            background: #f8d7da;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #721c24;
+        }
+        .step-counter {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .hidden {
+            display: none;
+        }
+        .tab-container {
+            border-bottom: 2px solid #e1e5e9;
+            margin-bottom: 20px;
+        }
+        .tab {
+            display: inline-block;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .tab.active {
+            border-bottom-color: #667eea;
+            color: #667eea;
+            font-weight: 600;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Meta Ad Spend Debugging Tool</h1>
+            <p>Comprehensive debugging script to trace Meta spend data flow from input files to export</p>
+        </div>
+
+        <div class="alert alert-info">
+            <strong>🎯 Purpose:</strong> This tool will identify WHERE the real Meta spend values exist and HOW to properly extract them for the MOI Analytics Dashboard exports.
+        </div>
+
+        <div class="section">
+            <h2><span class="step-counter">1</span>LocalStorage Analysis</h2>
+            <p>First, let's examine what's currently stored in localStorage and identify all relevant keys.</p>
+            <div class="controls">
+                <button class="btn" onclick="analyzeLocalStorage()">🔍 Analyze LocalStorage</button>
+                <button class="btn btn-danger" onclick="clearAnalysisOutputs()">🗑️ Clear Outputs</button>
+            </div>
+            <div id="localStorage-output" class="output hidden"></div>
+        </div>
+
+        <div class="section">
+            <h2><span class="step-counter">2</span>CSV Data Parsing</h2>
+            <p>Parse and analyze the CSV data stored in localStorage to see actual Meta spend values.</p>
+            <div class="controls">
+                <button class="btn" onclick="parseStoredCSVData()">📊 Parse CSV Data</button>
+                <button class="btn" onclick="exportDebugData()">💾 Export Debug Data</button>
+            </div>
+            <div id="csv-parsing-output" class="output hidden"></div>
+        </div>
+
+        <div class="section">
+            <h2><span class="step-counter">3</span>Data Flow Tracing</h2>
+            <p>Trace the complete data flow from input files through processing to export.</p>
+            
+            <div class="tab-container">
+                <div class="tab active" onclick="showTab('input-tab', this)">Input Analysis</div>
+                <div class="tab" onclick="showTab('processing-tab', this)">Processing Chain</div>
+                <div class="tab" onclick="showTab('export-tab', this)">Export Pipeline</div>
+            </div>
+            
+            <div id="input-tab" class="tab-content active">
+                <div class="controls">
+                    <button class="btn" onclick="traceInputFiles()">🔄 Trace Input Files</button>
+                </div>
+                <div id="input-trace-output" class="output hidden"></div>
+            </div>
+            
+            <div id="processing-tab" class="tab-content">
+                <div class="controls">
+                    <button class="btn" onclick="traceProcessingChain()">⚙️ Trace Processing</button>
+                </div>
+                <div id="processing-trace-output" class="output hidden"></div>
+            </div>
+            
+            <div id="export-tab" class="tab-content">
+                <div class="controls">
+                    <button class="btn" onclick="traceExportPipeline()">📤 Trace Export</button>
+                </div>
+                <div id="export-trace-output" class="output hidden"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><span class="step-counter">4</span>Test Scenarios</h2>
+            <p>Create and run test scenarios to verify the data pipeline integrity.</p>
+            <div class="controls">
+                <button class="btn btn-success" onclick="runTestScenarios()">🧪 Run Tests</button>
+                <button class="btn" onclick="simulateExport()">🎭 Simulate Export</button>
+            </div>
+            <div id="test-output" class="output hidden"></div>
+        </div>
+
+        <div class="section">
+            <h2><span class="step-counter">5</span>Fix Recommendations</h2>
+            <p>Based on analysis, get specific recommendations to fix the Meta spend issue.</p>
+            <div class="controls">
+                <button class="btn btn-success" onclick="generateFixRecommendations()">💡 Generate Fixes</button>
+                <button class="btn" onclick="validateFixes()">✅ Validate Fixes</button>
+            </div>
+            <div id="recommendations-output" class="output hidden"></div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables to store analysis results
+        let debugData = {
+            localStorage: {},
+            csvData: {},
+            dataFlow: {},
+            testResults: {},
+            recommendations: []
+        };
+
+        // Utility functions
+        function log(message, level = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const prefix = {
+                'info': '📋',
+                'success': '✅',
+                'warning': '⚠️',
+                'error': '❌',
+                'debug': '🔍'
+            }[level] || '📋';
+            
+            return `[${timestamp}] ${prefix} ${message}`;
+        }
+
+        function updateOutput(elementId, content, append = false) {
+            const element = document.getElementById(elementId);
+            element.classList.remove('hidden');
+            
+            if (append) {
+                element.textContent += '\n' + content;
+            } else {
+                element.textContent = content;
+            }
+            
+            element.scrollTop = element.scrollHeight;
+        }
+
+        function showTab(tabId, tabElement) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content and mark tab as active
+            document.getElementById(tabId).classList.add('active');
+            tabElement.classList.add('active');
+        }
+
+        function clearAnalysisOutputs() {
+            const outputs = ['localStorage-output', 'csv-parsing-output', 'input-trace-output', 
+                           'processing-trace-output', 'export-trace-output', 'test-output', 'recommendations-output'];
+            outputs.forEach(id => {
+                const element = document.getElementById(id);
+                element.classList.add('hidden');
+                element.textContent = '';
+            });
+            
+            debugData = {
+                localStorage: {},
+                csvData: {},
+                dataFlow: {},
+                testResults: {},
+                recommendations: []
+            };
+        }
+
+        // Step 1: Analyze LocalStorage
+        function analyzeLocalStorage() {
+            updateOutput('localStorage-output', log('🚀 Starting localStorage analysis...'));
+            
+            try {
+                const relevantKeys = [];
+                const allKeys = [];
+                
+                // Get all localStorage keys
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    allKeys.push(key);
+                    
+                    if (key && (key.includes('moi') || key.includes('meta') || key.includes('google') || 
+                               key.includes('server') || key.includes('dashboard'))) {
+                        relevantKeys.push(key);
+                    }
+                }
+                
+                updateOutput('localStorage-output', log(`Found ${allKeys.length} total keys, ${relevantKeys.length} relevant keys`), true);
+                debugData.localStorage.totalKeys = allKeys.length;
+                debugData.localStorage.relevantKeys = relevantKeys;
+                
+                // Analyze each relevant key
+                relevantKeys.forEach(key => {
+                    const value = localStorage.getItem(key);
+                    const preview = value ? value.substring(0, 100) + '...' : 'null';
+                    const size = value ? (value.length / 1024).toFixed(2) : 0;
+                    
+                    updateOutput('localStorage-output', log(`📁 ${key}: ${size}KB - ${preview}`), true);
+                    
+                    debugData.localStorage[key] = {
+                        size: parseFloat(size),
+                        preview: preview,
+                        hasContent: !!value && value.length > 0
+                    };
+                });
+                
+                // Focus on the key data sources
+                updateOutput('localStorage-output', log('\n🎯 CRITICAL DATA SOURCES ANALYSIS:'), true);
+                
+                const criticalKeys = ['moi-server-topLevel', 'moi-server-adset', 'moi-dashboard-data'];
+                criticalKeys.forEach(key => {
+                    const exists = localStorage.getItem(key);
+                    if (exists) {
+                        updateOutput('localStorage-output', log(`✅ ${key} EXISTS - Size: ${(exists.length/1024).toFixed(2)}KB`), true);
+                        
+                        // If it's CSV, try to detect Meta Spend columns
+                        if (key.includes('topLevel') && exists.includes(',')) {
+                            const lines = exists.split('\n');
+                            const headers = lines[0] ? lines[0].split(',') : [];
+                            const metaSpendColumns = headers.filter(h => h.toLowerCase().includes('meta') && h.toLowerCase().includes('spend'));
+                            
+                            updateOutput('localStorage-output', log(`   📊 Headers with 'Meta Spend': ${metaSpendColumns.join(', ')}`), true);
+                            
+                            if (lines.length > 1) {
+                                const dataRow = lines[1].split(',');
+                                metaSpendColumns.forEach(col => {
+                                    const index = headers.indexOf(col);
+                                    if (index >= 0 && dataRow[index]) {
+                                        updateOutput('localStorage-output', log(`   💰 ${col} = ${dataRow[index]}`), true);
+                                    }
+                                });
+                            }
+                        }
+                    } else {
+                        updateOutput('localStorage-output', log(`❌ ${key} MISSING`), true);
+                    }
+                });
+                
+                updateOutput('localStorage-output', log('\n✅ LocalStorage analysis complete!'), true);
+                
+            } catch (error) {
+                updateOutput('localStorage-output', log(`❌ Error analyzing localStorage: ${error.message}`, 'error'), true);
+            }
+        }
+
+        // Step 2: Parse CSV Data
+        function parseStoredCSVData() {
+            updateOutput('csv-parsing-output', log('🚀 Starting CSV data parsing...'));
+            
+            try {
+                const csvKeys = ['moi-server-topLevel', 'moi-server-adset', 'moi-pivot-data'];
+                
+                csvKeys.forEach(key => {
+                    const csvContent = localStorage.getItem(key);
+                    
+                    if (!csvContent) {
+                        updateOutput('csv-parsing-output', log(`❌ No data found for ${key}`), true);
+                        return;
+                    }
+                    
+                    updateOutput('csv-parsing-output', log(`\n📊 PARSING ${key.toUpperCase()}:`), true);
+                    
+                    if (key === 'moi-pivot-data') {
+                        // JSON data
+                        try {
+                            const jsonData = JSON.parse(csvContent);
+                            updateOutput('csv-parsing-output', log(`   📋 JSON records: ${jsonData.length}`), true);
+                            updateOutput('csv-parsing-output', log(`   📋 Sample record: ${JSON.stringify(jsonData[0] || {}, null, 2)}`), true);
+                        } catch (e) {
+                            updateOutput('csv-parsing-output', log(`   ❌ Failed to parse JSON: ${e.message}`), true);
+                        }
+                    } else {
+                        // CSV data
+                        const lines = csvContent.split('\n').filter(line => line.trim());
+                        updateOutput('csv-parsing-output', log(`   📋 Total lines: ${lines.length}`), true);
+                        
+                        if (lines.length > 0) {
+                            const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+                            updateOutput('csv-parsing-output', log(`   📋 Headers (${headers.length}): ${headers.join(', ')}`), true);
+                            
+                            // Look for Meta spend specifically
+                            const metaHeaders = headers.filter(h => 
+                                h.toLowerCase().includes('meta') && 
+                                (h.toLowerCase().includes('spend') || h.toLowerCase().includes('cost'))
+                            );
+                            
+                            if (metaHeaders.length > 0) {
+                                updateOutput('csv-parsing-output', log(`   💰 Meta spend columns found: ${metaHeaders.join(', ')}`), true);
+                                
+                                // Parse data rows
+                                for (let i = 1; i < Math.min(lines.length, 4); i++) {
+                                    const values = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
+                                    updateOutput('csv-parsing-output', log(`   📋 Row ${i} data:`, 'debug'), true);
+                                    
+                                    metaHeaders.forEach(metaHeader => {
+                                        const index = headers.indexOf(metaHeader);
+                                        if (index >= 0 && values[index]) {
+                                            const value = values[index];
+                                            const numericValue = parseFloat(value.replace(/[,₹$]/g, ''));
+                                            updateOutput('csv-parsing-output', log(`     ${metaHeader}: "${value}" → ${numericValue}`, 'debug'), true);
+                                            
+                                            // Store this critical finding
+                                            if (!debugData.csvData.metaSpendValues) {
+                                                debugData.csvData.metaSpendValues = [];
+                                            }
+                                            debugData.csvData.metaSpendValues.push({
+                                                source: key,
+                                                column: metaHeader,
+                                                rawValue: value,
+                                                numericValue: numericValue,
+                                                row: i
+                                            });
+                                        }
+                                    });
+                                }
+                            } else {
+                                updateOutput('csv-parsing-output', log(`   ⚠️ No Meta spend columns found in ${key}`, 'warning'), true);
+                            }
+                        }
+                    }
+                });
+                
+                // Summary of findings
+                updateOutput('csv-parsing-output', log('\n🎯 META SPEND ANALYSIS SUMMARY:'), true);
+                if (debugData.csvData.metaSpendValues && debugData.csvData.metaSpendValues.length > 0) {
+                    debugData.csvData.metaSpendValues.forEach((finding, index) => {
+                        updateOutput('csv-parsing-output', log(`${index + 1}. ${finding.source} → ${finding.column}: ${finding.numericValue}`, 'success'), true);
+                    });
+                } else {
+                    updateOutput('csv-parsing-output', log('❌ NO META SPEND VALUES FOUND IN ANY CSV DATA!', 'error'), true);
+                }
+                
+                updateOutput('csv-parsing-output', log('\n✅ CSV parsing complete!'), true);
+                
+            } catch (error) {
+                updateOutput('csv-parsing-output', log(`❌ Error parsing CSV data: ${error.message}`, 'error'), true);
+            }
+        }
+
+        // Step 3a: Trace Input Files
+        function traceInputFiles() {
+            updateOutput('input-trace-output', log('🚀 Tracing input files...'));
+            
+            // Check for original input data
+            const inputKeys = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && (key.includes('original') || key.includes('raw') || key.includes('input') || 
+                           key.includes('meta-data') || key.includes('google-data') || key.includes('shopify'))) {
+                    inputKeys.push(key);
+                }
+            }
+            
+            updateOutput('input-trace-output', log(`Found ${inputKeys.length} potential input data keys`), true);
+            
+            inputKeys.forEach(key => {
+                const data = localStorage.getItem(key);
+                if (data) {
+                    updateOutput('input-trace-output', log(`📁 ${key}: ${(data.length/1024).toFixed(2)}KB`), true);
+                    
+                    // Try to detect Meta spend in original data
+                    if (data.includes('spend') || data.includes('cost') || data.includes('Meta')) {
+                        updateOutput('input-trace-output', log(`   💰 Contains spend/cost/Meta references`, 'success'), true);
+                        
+                        // Sample the data
+                        const lines = data.split('\n').slice(0, 3);
+                        lines.forEach((line, i) => {
+                            if (line.includes('Meta') || line.includes('spend')) {
+                                updateOutput('input-trace-output', log(`   Line ${i}: ${line.substring(0, 100)}...`, 'debug'), true);
+                            }
+                        });
+                    }
+                }
+            });
+            
+            updateOutput('input-trace-output', log('\n✅ Input files trace complete!'), true);
+        }
+
+        // Step 3b: Trace Processing Chain
+        function traceProcessingChain() {
+            updateOutput('processing-trace-output', log('🚀 Tracing processing chain...'));
+            
+            // Look for processing artifacts
+            const processingKeys = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && (key.includes('processed') || key.includes('dashboard') || 
+                           key.includes('moi-') || key.includes('output'))) {
+                    processingKeys.push(key);
+                }
+            }
+            
+            updateOutput('processing-trace-output', log(`Found ${processingKeys.length} processing-related keys`), true);
+            
+            // Trace the data transformation pipeline
+            updateOutput('processing-trace-output', log('\n🔄 DATA TRANSFORMATION PIPELINE:'), true);
+            
+            // Step 1: Original files → Server files
+            const serverTopLevel = localStorage.getItem('moi-server-topLevel');
+            if (serverTopLevel) {
+                updateOutput('processing-trace-output', log('1. ✅ Original files → moi-server-topLevel'), true);
+                
+                // Check if Meta spend exists here
+                if (serverTopLevel.includes('Meta Spend')) {
+                    const lines = serverTopLevel.split('\n');
+                    const headers = lines[0].split(',');
+                    const metaSpendIndex = headers.findIndex(h => h.includes('Meta Spend'));
+                    
+                    if (metaSpendIndex >= 0 && lines.length > 1) {
+                        const dataRow = lines[1].split(',');
+                        const metaSpendValue = dataRow[metaSpendIndex];
+                        updateOutput('processing-trace-output', log(`   💰 Meta Spend found: ${metaSpendValue}`, 'success'), true);
+                    }
+                }
+            } else {
+                updateOutput('processing-trace-output', log('1. ❌ No moi-server-topLevel found', 'error'), true);
+            }
+            
+            // Step 2: Server files → Dashboard data
+            const dashboardData = localStorage.getItem('moi-dashboard-data');
+            if (dashboardData) {
+                updateOutput('processing-trace-output', log('2. ✅ Server files → moi-dashboard-data'), true);
+                
+                try {
+                    const parsed = JSON.parse(dashboardData);
+                    updateOutput('processing-trace-output', log(`   📊 Dashboard data structure: ${Object.keys(parsed).join(', ')}`, 'debug'), true);
+                    
+                    // Look for Meta spend in dashboard data
+                    if (parsed.utmCampaigns) {
+                        const totalMetaSpend = parsed.utmCampaigns.reduce((sum, campaign) => {
+                            return sum + (campaign.adSpend || 0);
+                        }, 0);
+                        updateOutput('processing-trace-output', log(`   💰 Total Meta spend in campaigns: ${totalMetaSpend}`, 'debug'), true);
+                    }
+                } catch (e) {
+                    updateOutput('processing-trace-output', log(`   ❌ Failed to parse dashboard data: ${e.message}`, 'error'), true);
+                }
+            } else {
+                updateOutput('processing-trace-output', log('2. ❌ No moi-dashboard-data found', 'error'), true);
+            }
+            
+            // Step 3: Dashboard data → Export
+            updateOutput('processing-trace-output', log('3. 🔍 Dashboard data → Export (checking ExportModal logic)'), true);
+            updateOutput('processing-trace-output', log('   This step extracts Meta spend from moi-server-topLevel CSV'), true);
+            
+            updateOutput('processing-trace-output', log('\n✅ Processing chain trace complete!'), true);
+        }
+
+        // Step 3c: Trace Export Pipeline
+        function traceExportPipeline() {
+            updateOutput('export-trace-output', log('🚀 Tracing export pipeline...'));
+            
+            // Simulate the ExportModal.tsx logic for Meta spend extraction
+            const serverTopLevelCsv = localStorage.getItem('moi-server-topLevel');
+            
+            if (!serverTopLevelCsv) {
+                updateOutput('export-trace-output', log('❌ CRITICAL: No moi-server-topLevel found for export!', 'error'), true);
+                return;
+            }
+            
+            updateOutput('export-trace-output', log('✅ Found moi-server-topLevel data for export'), true);
+            
+            try {
+                // Parse the CSV data exactly like ExportModal does
+                const lines = serverTopLevelCsv.split('\n');
+                const headers = lines[0].split(',');
+                
+                updateOutput('export-trace-output', log(`📊 CSV headers: ${headers.join(', ')}`), true);
+                
+                if (lines.length > 1) {
+                    const dataRow = lines[1].split(',');
+                    updateOutput('export-trace-output', log(`📊 Data row: ${dataRow.join(', ')}`), true);
+                    
+                    // Extract Meta data exactly like ExportModal
+                    const metaSpendIndex = headers.findIndex(h => h.includes('Meta Spend'));
+                    const metaCTRIndex = headers.findIndex(h => h.includes('Meta CTR'));
+                    const metaCPMIndex = headers.findIndex(h => h.includes('Meta CPM'));
+                    
+                    updateOutput('export-trace-output', log('\n🎯 META DATA EXTRACTION:'), true);
+                    updateOutput('export-trace-output', log(`Meta Spend Index: ${metaSpendIndex}`, 'debug'), true);
+                    updateOutput('export-trace-output', log(`Meta CTR Index: ${metaCTRIndex}`, 'debug'), true);
+                    updateOutput('export-trace-output', log(`Meta CPM Index: ${metaCPMIndex}`, 'debug'), true);
+                    
+                    let metaSpend = 0, metaCTR = 0, metaCPM = 0;
+                    
+                    if (metaSpendIndex >= 0) {
+                        const rawValue = dataRow[metaSpendIndex];
+                        metaSpend = parseFloat(rawValue) || 0;
+                        updateOutput('export-trace-output', log(`Meta Spend: "${rawValue}" → ${metaSpend}`, metaSpend > 0 ? 'success' : 'error'), true);
+                    } else {
+                        updateOutput('export-trace-output', log('❌ Meta Spend column not found!', 'error'), true);
+                    }
+                    
+                    if (metaCTRIndex >= 0) {
+                        const rawValue = dataRow[metaCTRIndex];
+                        metaCTR = parseFloat(rawValue) || 0;
+                        updateOutput('export-trace-output', log(`Meta CTR: "${rawValue}" → ${metaCTR}`, 'debug'), true);
+                    }
+                    
+                    if (metaCPMIndex >= 0) {
+                        const rawValue = dataRow[metaCPMIndex];
+                        metaCPM = parseFloat(rawValue) || 0;
+                        updateOutput('export-trace-output', log(`Meta CPM: "${rawValue}" → ${metaCPM}`, 'debug'), true);
+                    }
+                    
+                    // Store results for recommendations
+                    debugData.dataFlow.exportExtraction = {
+                        metaSpend,
+                        metaCTR,
+                        metaCPM,
+                        foundMetaSpendColumn: metaSpendIndex >= 0,
+                        metaSpendColumnIndex: metaSpendIndex,
+                        headers: headers
+                    };
+                    
+                    updateOutput('export-trace-output', log(`\n🎯 FINAL RESULT: Meta Spend = ${metaSpend}`, metaSpend > 0 ? 'success' : 'error'), true);
+                    
+                } else {
+                    updateOutput('export-trace-output', log('❌ No data rows found in CSV!', 'error'), true);
+                }
+                
+            } catch (error) {
+                updateOutput('export-trace-output', log(`❌ Error parsing export data: ${error.message}`, 'error'), true);
+            }
+            
+            updateOutput('export-trace-output', log('\n✅ Export pipeline trace complete!'), true);
+        }
+
+        // Step 4: Run Test Scenarios
+        function runTestScenarios() {
+            updateOutput('test-output', log('🚀 Running test scenarios...'));
+            
+            const tests = [
+                {
+                    name: 'Test 1: LocalStorage Keys Exist',
+                    test: () => {
+                        const requiredKeys = ['moi-server-topLevel', 'moi-dashboard-data'];
+                        return requiredKeys.every(key => localStorage.getItem(key) !== null);
+                    }
+                },
+                {
+                    name: 'Test 2: Meta Spend Column Exists',
+                    test: () => {
+                        const csv = localStorage.getItem('moi-server-topLevel');
+                        if (!csv) return false;
+                        const headers = csv.split('\n')[0].split(',');
+                        return headers.some(h => h.includes('Meta Spend'));
+                    }
+                },
+                {
+                    name: 'Test 3: Meta Spend Has Numeric Value',
+                    test: () => {
+                        const csv = localStorage.getItem('moi-server-topLevel');
+                        if (!csv) return false;
+                        const lines = csv.split('\n');
+                        if (lines.length < 2) return false;
+                        const headers = lines[0].split(',');
+                        const dataRow = lines[1].split(',');
+                        const metaSpendIndex = headers.findIndex(h => h.includes('Meta Spend'));
+                        if (metaSpendIndex < 0) return false;
+                        const value = parseFloat(dataRow[metaSpendIndex]) || 0;
+                        return value > 0;
+                    }
+                },
+                {
+                    name: 'Test 4: Export Logic Can Extract Meta Spend',
+                    test: () => {
+                        // Simulate the exact ExportModal logic
+                        const csv = localStorage.getItem('moi-server-topLevel');
+                        if (!csv) return false;
+                        
+                        try {
+                            const lines = csv.split('\n');
+                            const headers = lines[0].split(',');
+                            const dataRow = lines[1].split(',');
+                            const metaSpendIndex = headers.findIndex(h => h.includes('Meta Spend'));
+                            const metaSpend = parseFloat(dataRow[metaSpendIndex]) || 0;
+                            return metaSpend > 0;
+                        } catch {
+                            return false;
+                        }
+                    }
+                }
+            ];
+            
+            let passedTests = 0;
+            
+            tests.forEach((test, index) => {
+                const result = test.test();
+                const status = result ? '✅ PASS' : '❌ FAIL';
+                updateOutput('test-output', log(`${status} ${test.name}`), true);
+                
+                if (result) passedTests++;
+            });
+            
+            const score = `${passedTests}/${tests.length}`;
+            const overallStatus = passedTests === tests.length ? 'success' : 'error';
+            
+            updateOutput('test-output', log(`\n🎯 TEST RESULTS: ${score} tests passed`, overallStatus), true);
+            
+            debugData.testResults = {
+                passed: passedTests,
+                total: tests.length,
+                score: score
+            };
+            
+            updateOutput('test-output', log('\n✅ Test scenarios complete!'), true);
+        }
+
+        // Simulate Export
+        function simulateExport() {
+            updateOutput('test-output', log('\n🎭 SIMULATING EXPORT PROCESS:'), true);
+            
+            // Get dashboard data
+            const dashboardDataRaw = localStorage.getItem('moi-dashboard-data');
+            if (!dashboardDataRaw) {
+                updateOutput('test-output', log('❌ No dashboard data for export simulation', 'error'), true);
+                return;
+            }
+            
+            let dashboardData;
+            try {
+                dashboardData = JSON.parse(dashboardDataRaw);
+            } catch (e) {
+                updateOutput('test-output', log(`❌ Failed to parse dashboard data: ${e.message}`, 'error'), true);
+                return;
+            }
+            
+            // Simulate ExportModal downloadFile('topLevel') logic
+            updateOutput('test-output', log('🔄 Simulating Top Level export...'), true);
+            
+            // Get Meta and Google data from server-side CSV
+            const serverTopLevelCsv = localStorage.getItem('moi-server-topLevel');
+            let metaSpend = 0;
+            
+            if (serverTopLevelCsv) {
+                const lines = serverTopLevelCsv.split('\n');
+                const headers = lines[0].split(',');
+                
+                if (lines.length > 1) {
+                    const dataRow = lines[1].split(',');
+                    const metaSpendIndex = headers.findIndex(h => h.includes('Meta Spend'));
+                    
+                    if (metaSpendIndex >= 0) {
+                        metaSpend = parseFloat(dataRow[metaSpendIndex]) || 0;
+                    }
+                }
+            }
+            
+            updateOutput('test-output', log(`📊 Extracted Meta Spend: ${metaSpend}`, metaSpend > 0 ? 'success' : 'error'), true);
+            
+            // Simulate aggregation logic
+            const campaigns = dashboardData.utmCampaigns?.length > 0 ? 
+                             dashboardData.utmCampaigns : 
+                             dashboardData.campaigns || [];
+            
+            updateOutput('test-output', log(`📊 Using ${campaigns.length} campaigns for aggregation`), true);
+            
+            if (campaigns.length > 0) {
+                const totalUsers = campaigns.reduce((sum, c) => sum + (c.visitors || c.users || 0), 0);
+                updateOutput('test-output', log(`📊 Total Users: ${totalUsers}`), true);
+                
+                // Create the final aggregated data
+                const aggregatedData = {
+                    date: '2025-09-29',
+                    metaSpend: Math.round(metaSpend),
+                    totalUsers: totalUsers
+                };
+                
+                updateOutput('test-output', log(`📊 Final export data: ${JSON.stringify(aggregatedData, null, 2)}`, 'success'), true);
+            }
+            
+            updateOutput('test-output', log('\n✅ Export simulation complete!'), true);
+        }
+
+        // Step 5: Generate Fix Recommendations
+        function generateFixRecommendations() {
+            updateOutput('recommendations-output', log('🚀 Generating fix recommendations...'));
+            
+            const recommendations = [];
+            
+            // Analyze the current state
+            const hasServerTopLevel = !!localStorage.getItem('moi-server-topLevel');
+            const hasDashboardData = !!localStorage.getItem('moi-dashboard-data');
+            
+            if (!hasServerTopLevel) {
+                recommendations.push({
+                    priority: 'CRITICAL',
+                    issue: 'Missing moi-server-topLevel data',
+                    fix: 'Ensure data processing pipeline creates and stores moi-server-topLevel CSV with Meta Spend column',
+                    code: 'localStorage.setItem("moi-server-topLevel", csvContent);'
+                });
+            }
+            
+            // Check if Meta Spend column exists
+            if (hasServerTopLevel) {
+                const csv = localStorage.getItem('moi-server-topLevel');
+                const headers = csv.split('\n')[0].split(',');
+                const hasMetaSpendColumn = headers.some(h => h.includes('Meta Spend'));
+                
+                if (!hasMetaSpendColumn) {
+                    recommendations.push({
+                        priority: 'CRITICAL',
+                        issue: 'Meta Spend column missing from CSV headers',
+                        fix: 'Update data processing to include "Meta Spend" column in topLevel CSV',
+                        code: 'const headers = ["Date", "Meta Spend", "Meta CTR", ...];'
+                    });
+                } else {
+                    // Check if the value is 0
+                    const lines = csv.split('\n');
+                    if (lines.length > 1) {
+                        const dataRow = lines[1].split(',');
+                        const metaSpendIndex = headers.findIndex(h => h.includes('Meta Spend'));
+                        const metaSpend = parseFloat(dataRow[metaSpendIndex]) || 0;
+                        
+                        if (metaSpend === 0) {
+                            recommendations.push({
+                                priority: 'HIGH',
+                                issue: 'Meta Spend value is 0 in CSV data',
+                                fix: 'Check original Meta Ads data and ensure proper aggregation',
+                                code: 'const metaSpend = metaData.reduce((sum, row) => sum + parseFloat(row.spend || 0), 0);'
+                            });
+                        }
+                    }
+                }
+            }
+            
+            // Check dashboard data integration
+            if (hasDashboardData && hasServerTopLevel) {
+                recommendations.push({
+                    priority: 'MEDIUM',
+                    issue: 'Verify ExportModal.tsx uses correct data source',
+                    fix: 'Ensure ExportModal prioritizes moi-server-topLevel over dashboard data',
+                    code: 'const serverTopLevelCsv = localStorage.getItem("moi-server-topLevel");'
+                });
+            }
+            
+            // Output recommendations
+            updateOutput('recommendations-output', log('💡 FIX RECOMMENDATIONS:'), true);
+            
+            recommendations.forEach((rec, index) => {
+                updateOutput('recommendations-output', log(`\n${index + 1}. [${rec.priority}] ${rec.issue}`), true);
+                updateOutput('recommendations-output', log(`   Solution: ${rec.fix}`), true);
+                updateOutput('recommendations-output', log(`   Code: ${rec.code}`, 'debug'), true);
+            });
+            
+            // Specific debugging steps
+            updateOutput('recommendations-output', log('\n🔧 DEBUGGING STEPS:'), true);
+            updateOutput('recommendations-output', log('1. Check if original Meta Ads data contains spend values'), true);
+            updateOutput('recommendations-output', log('2. Verify data processing pipeline aggregates Meta spend correctly'), true);
+            updateOutput('recommendations-output', log('3. Ensure moi-server-topLevel CSV has correct Meta Spend column'), true);
+            updateOutput('recommendations-output', log('4. Test ExportModal extraction logic with console.log statements'), true);
+            
+            debugData.recommendations = recommendations;
+            
+            updateOutput('recommendations-output', log('\n✅ Recommendations generated!'), true);
+        }
+
+        // Validate Fixes
+        function validateFixes() {
+            updateOutput('recommendations-output', log('\n🔍 VALIDATION CHECKLIST:'), true);
+            
+            const validations = [
+                {
+                    check: 'moi-server-topLevel exists',
+                    result: !!localStorage.getItem('moi-server-topLevel')
+                },
+                {
+                    check: 'Meta Spend column in headers',
+                    result: (() => {
+                        const csv = localStorage.getItem('moi-server-topLevel');
+                        if (!csv) return false;
+                        return csv.split('\n')[0].includes('Meta Spend');
+                    })()
+                },
+                {
+                    check: 'Meta Spend value > 0',
+                    result: (() => {
+                        const csv = localStorage.getItem('moi-server-topLevel');
+                        if (!csv) return false;
+                        const lines = csv.split('\n');
+                        if (lines.length < 2) return false;
+                        const headers = lines[0].split(',');
+                        const dataRow = lines[1].split(',');
+                        const metaSpendIndex = headers.findIndex(h => h.includes('Meta Spend'));
+                        if (metaSpendIndex < 0) return false;
+                        return parseFloat(dataRow[metaSpendIndex]) > 0;
+                    })()
+                }
+            ];
+            
+            validations.forEach(validation => {
+                const status = validation.result ? '✅' : '❌';
+                updateOutput('recommendations-output', log(`${status} ${validation.check}`), true);
+            });
+            
+            const allPassed = validations.every(v => v.result);
+            updateOutput('recommendations-output', log(`\n🎯 VALIDATION RESULT: ${allPassed ? 'ALL CHECKS PASSED' : 'ISSUES FOUND'}`, allPassed ? 'success' : 'error'), true);
+        }
+
+        // Export Debug Data
+        function exportDebugData() {
+            const debugReport = {
+                timestamp: new Date().toISOString(),
+                analysis: debugData,
+                summary: {
+                    localStorageKeys: Object.keys(debugData.localStorage).length,
+                    metaSpendValues: debugData.csvData.metaSpendValues?.length || 0,
+                    testScore: debugData.testResults.score || '0/0',
+                    recommendations: debugData.recommendations.length
+                }
+            };
+            
+            const blob = new Blob([JSON.stringify(debugReport, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `moi-debug-report-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            updateOutput('csv-parsing-output', log('📥 Debug report exported successfully!', 'success'), true);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateOutput('localStorage-output', log('🎯 MOI Analytics Meta Spend Debugging Tool ready!'));
+            updateOutput('localStorage-output', log('Click "Analyze LocalStorage" to begin comprehensive debugging...'), true);
+        });
+    </script>
+</body>
+</html>

@@ -73,15 +73,14 @@ export interface ProcessingContext {
   currentRowValues?: { [fieldName: string]: any }; // For tracking calculated field values
 }
 
-// Default template structure matching the user's comprehensive logic file
+// Default template structure - Updated from Default_Logic_v2a_final.csv - Complete 33 field template (Zero errors and warnings)
 export const DEFAULT_LOGIC_TEMPLATE: LogicTemplateRow[] = [
-  // Ad Set Level.csv fields
   {
     fields: 'Date',
     outputFileName: 'Ad Set Level.csv',
     inputFrom: 'Shopify Export',
     type: 'Date',
-    formula: 'As is from input file  column name "Date"'
+    formula: 'As is from input file column name Day'
   },
   {
     fields: 'Campaign name',
@@ -102,21 +101,21 @@ export const DEFAULT_LOGIC_TEMPLATE: LogicTemplateRow[] = [
     outputFileName: 'Ad Set Level.csv',
     inputFrom: 'Meta Ads',
     type: 'Text',
-    formula: 'As is from input file  column name "Ad Set Delivery"'
+    formula: 'As is from input file column name Ad Set Delivery'
   },
   {
     fields: 'Ad Set Level Spent',
     outputFileName: 'Ad Set Level.csv',
     inputFrom: 'Meta Ads',
     type: 'Number',
-    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv and match it to meta ads  "Amount spent (INR)"'
+    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv and match it to meta ads Amount spent (INR)'
   },
   {
     fields: 'Ad Set Level Users',
     outputFileName: 'Ad Set Level.csv',
     inputFrom: 'Shopify Export',
     type: 'Number',
-    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv SUM: All numeric field of "Online store visitors"'
+    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv SUM: All numeric field of Online store visitors'
   },
   {
     fields: 'Cost per user',
@@ -126,39 +125,39 @@ export const DEFAULT_LOGIC_TEMPLATE: LogicTemplateRow[] = [
     formula: 'Ad Set Level Users / Ad Set Level Spent'
   },
   {
-    fields: 'Ad Set Level  ATC',
+    fields: 'Ad Set Level ATC',
     outputFileName: 'Ad Set Level.csv',
     inputFrom: 'Shopify Export',
     type: 'Number',
-    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv SUM: All numeric field of "Sessions with cart additions"'
+    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv SUM: All numeric field of Sessions with cart additions'
   },
   {
-    fields: 'Ad Set Level  Reached Checkout',
+    fields: 'Ad Set Level Reached Checkout',
     outputFileName: 'Ad Set Level.csv',
     inputFrom: 'Shopify Export',
     type: 'Number',
-    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv SUM: All numeric field of "Sessions that reached checkout"'
+    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv SUM: All numeric field of Sessions that reached checkout'
   },
   {
     fields: 'Ad Set Level Conversions',
     outputFileName: 'Ad Set Level.csv',
     inputFrom: 'Shopify Export',
     type: 'Number',
-    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv SUM: All numeric field of "Sessions that completed checkout"'
+    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv SUM: All numeric field of Sessions that completed checkout'
   },
   {
-    fields: 'Ad Set Level  Average session duration',
+    fields: 'Ad Set Level Average session duration',
     outputFileName: 'Ad Set Level.csv',
     inputFrom: 'Shopify Export',
     type: 'Number',
-    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv SUM: All numeric field of "Average session duration"'
+    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv SUM: All numeric field of Average session duration'
   },
   {
-    fields: 'Ad Set Level  Users with Session above 1 min',
+    fields: 'Ad Set Level Users with Session above 1 min',
     outputFileName: 'Ad Set Level.csv',
     inputFrom: 'Shopify Export',
     type: 'Number',
-    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv SUM: All numeric field of "Online store visitors" Limit the sum and filter out the users whose session duration is above one minute.',
+    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv SUM: All numeric field of Online store visitors Limit the sum and filter out the users whose session duration is above one minute.',
     notes: 'Count users with session duration > 1 minute'
   },
   {
@@ -166,43 +165,49 @@ export const DEFAULT_LOGIC_TEMPLATE: LogicTemplateRow[] = [
     outputFileName: 'Ad Set Level.csv',
     inputFrom: 'Calculate',
     type: 'Number',
-    formula: 'Ad Set Level  Users with Session above 1 min / Ad Set Level Spent'
+    formula: 'Ad Set Level Users with Session above 1 min / Ad Set Level Spent'
   },
   {
     fields: 'Ad Set Level 1min user/ total users (%)',
     outputFileName: 'Ad Set Level.csv',
     inputFrom: 'Calculate',
     type: 'Number',
-    formula: 'Percentage of (Ad Set Level  Users with Session above 1 min / Ad Set Level Users)'
+    formula: 'Percentage of (Ad Set Level Users with Session above 1 min / Ad Set Level Users)'
   },
   {
-    fields: 'Ad Set Level  ATC with session duration above 1 min',
+    fields: 'Ad Set Level ATC with session duration above 1 min',
     outputFileName: 'Ad Set Level.csv',
     inputFrom: 'Shopify Export',
     type: 'Number',
-    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv SUM: All numeric field of "Sessions with cart additions", Limit the sum and filter out the users whose session duration is above one minute.'
+    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv SUM: All numeric field of Sessions with cart additions, Limit the sum and filter out the users whose session duration is above one minute.'
   },
   {
     fields: 'Ad Set Level Reached Checkout with session duration above 1 min',
     outputFileName: 'Ad Set Level.csv',
     inputFrom: 'Shopify Export',
     type: 'Number',
-    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv SUM: All numeric field of "Sessions that reached checkout", Limit the sum and filter out the users whose session duration is above one minute.'
+    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv SUM: All numeric field of Sessions that reached checkout, Limit the sum and filter out the users whose session duration is above one minute.'
   },
   {
     fields: 'Ad Set Level Users with Above 5 page views and above 1 min',
     outputFileName: 'Ad Set Level.csv',
     inputFrom: 'Shopify Export',
     type: 'Number',
-    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv SUM: All numeric field of "Pageviews", Limit the sum and filter out the users whose session duration is above one minute and have page views above 5'
+    formula: 'Look up the appropriate campaign name and ads set name from pivot_temp.csv SUM: All numeric field of Pageviews, Limit the sum and filter out the users whose session duration is above one minute and have page views above 5'
   },
-  // Top Level Daily.csv fields
+  {
+    fields: 'Date',
+    outputFileName: 'Top Level Daily.csv',
+    inputFrom: 'Meta Ads',
+    type: 'Date',
+    formula: 'As is from input file column name Reporting ends'
+  },
   {
     fields: 'Meta Spend',
     outputFileName: 'Top Level Daily.csv',
     inputFrom: 'Meta Ads',
     type: 'Number',
-    formula: 'SUM: All numeric field of "Amount spent (INR)"'
+    formula: 'SUM: All numeric field of Amount spent (INR)'
   },
   {
     fields: 'Meta CTR',
@@ -223,7 +228,7 @@ export const DEFAULT_LOGIC_TEMPLATE: LogicTemplateRow[] = [
     outputFileName: 'Top Level Daily.csv',
     inputFrom: 'Google Ads',
     type: 'Number',
-    formula: 'SUM: All numeric field of "Cost"'
+    formula: 'SUM: All numeric field of Cost'
   },
   {
     fields: 'Google CTR',
@@ -244,21 +249,21 @@ export const DEFAULT_LOGIC_TEMPLATE: LogicTemplateRow[] = [
     outputFileName: 'Top Level Daily.csv',
     inputFrom: 'Shopify Export',
     type: 'Number',
-    formula: 'SUM: All numeric field of "Online store visitors"'
+    formula: 'SUM: All numeric field of Online store visitors'
   },
   {
-    fields: 'Total  ATC',
+    fields: 'Total ATC',
     outputFileName: 'Top Level Daily.csv',
     inputFrom: 'Shopify Export',
     type: 'Number',
-    formula: 'SUM: All numeric field of "Sessions with cart additions"'
+    formula: 'SUM: All numeric field of Sessions with cart additions'
   },
   {
-    fields: 'Total  Reached Checkout',
+    fields: 'Total Reached Checkout',
     outputFileName: 'Top Level Daily.csv',
     inputFrom: 'Shopify Export',
     type: 'Number',
-    formula: 'SUM: All numeric field of "Sessions that reached checkout"'
+    formula: 'SUM: All numeric field of Sessions that reached checkout'
   },
   {
     fields: 'Total Abandoned Checkout',
@@ -279,7 +284,28 @@ export const DEFAULT_LOGIC_TEMPLATE: LogicTemplateRow[] = [
     outputFileName: 'Top Level Daily.csv',
     inputFrom: 'Shopify Export',
     type: 'Number',
-    formula: 'SUM: All numeric field of "Online store visitors" Limit the sum and filter out the users whose session duration is above one minute.'
+    formula: 'SUM: All numeric field of Online store visitors Limit the sum and filter out the users whose session duration is above one minute.'
+  },
+  {
+    fields: 'Users with Above 5 page views and above 1 min',
+    outputFileName: 'Top Level Daily.csv',
+    inputFrom: 'Shopify Export',
+    type: 'Number',
+    formula: 'SUM: All numeric field of Online store visitors Limit the sum and filter out the users whose session duration is above one minute and pageviews is more than 5.'
+  },
+  {
+    fields: 'ATC with session duration above 1 min',
+    outputFileName: 'Top Level Daily.csv',
+    inputFrom: 'Shopify Export',
+    type: 'Number',
+    formula: 'SUM: All numeric field of Sessions with cart additions Limit the sum and filter out the users whose session duration is above one minute.'
+  },
+  {
+    fields: 'Reached Checkout with session duration above 1 min',
+    outputFileName: 'Top Level Daily.csv',
+    inputFrom: 'Shopify Export',
+    type: 'Number',
+    formula: 'SUM: All numeric field of Sessions that reached checkout Limit the sum and filter out the users whose session duration is above one minute.'
   }
 ];
 

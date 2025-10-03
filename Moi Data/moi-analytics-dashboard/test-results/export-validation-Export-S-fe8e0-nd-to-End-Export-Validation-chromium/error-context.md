@@ -1,0 +1,60 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - heading "MOI Analytics Dashboard" [level=1] [ref=e7]
+        - paragraph [ref=e8]: Boutique Everyday Luxury - Marketing Intelligence
+      - generic [ref=e9]:
+        - button "Generate Reports" [ref=e10] [cursor=pointer]:
+          - img [ref=e11] [cursor=pointer]
+          - generic [ref=e15] [cursor=pointer]: Generate Reports
+        - button "Reset All Data (Testing)" [ref=e16] [cursor=pointer]:
+          - img [ref=e17] [cursor=pointer]
+        - button "Logic Template Settings" [ref=e20] [cursor=pointer]:
+          - img [ref=e21] [cursor=pointer]
+  - main [ref=e24]:
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - heading "Key Performance Metrics" [level=2] [ref=e27]
+        - generic [ref=e28]:
+          - generic [ref=e30]:
+            - generic [ref=e31]:
+              - paragraph [ref=e32]: Total Unique Campaigns
+              - paragraph [ref=e33]: "0"
+            - generic [ref=e35]: 📊
+          - generic [ref=e37]:
+            - generic [ref=e38]:
+              - paragraph [ref=e39]: Total Sessions
+              - paragraph [ref=e40]: "0"
+            - generic [ref=e42]: 👥
+          - generic [ref=e44]:
+            - generic [ref=e45]:
+              - paragraph [ref=e46]: Conversion Rate
+              - paragraph [ref=e47]: 0%
+            - generic [ref=e49]: 🎯
+      - generic [ref=e50]:
+        - heading "Campaign Performance Tiers" [level=2] [ref=e51]
+        - generic [ref=e52]:
+          - generic [ref=e53]:
+            - heading "Excellent" [level=3] [ref=e54]
+            - paragraph [ref=e55]: "0"
+          - generic [ref=e56]:
+            - heading "Good" [level=3] [ref=e57]
+            - paragraph [ref=e58]: "0"
+          - generic [ref=e59]:
+            - heading "Average" [level=3] [ref=e60]
+            - paragraph [ref=e61]: "0"
+          - generic [ref=e62]:
+            - heading "Poor" [level=3] [ref=e63]
+            - paragraph [ref=e64]: "0"
+      - generic [ref=e65]:
+        - heading "UTM Campaign Analysis Table" [level=2] [ref=e66]
+        - generic [ref=e67]:
+          - paragraph [ref=e68]: No campaigns to display
+          - paragraph [ref=e69]: Upload data files to generate reports and view campaign analysis
+  - button "Preview MOI Analytics Assistant" [ref=e70] [cursor=pointer]:
+    - img [ref=e71] [cursor=pointer]
+```

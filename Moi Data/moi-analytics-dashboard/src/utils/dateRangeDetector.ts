@@ -1,4 +1,5 @@
 import Papa from 'papaparse';
+import { normalizeDateToISO, normalizeDateRange, extractGoogleDateFromHeader, extractShopifyDateFromFilename, generateISODateArray } from './dateNormalizer';
 
 export interface DateRange {
   startDate: Date;
@@ -6,6 +7,8 @@ export interface DateRange {
   dayCount: number;
   formattedDates: string[]; // Array of formatted date strings
 }
+
+// REMOVED: normalizeToLocalTime - replaced with dateNormalizer.ts
 
 /**
  * Detects date range from Meta CSV file
@@ -20,8 +23,21 @@ export const detectMetaDateRange = async (file: File): Promise<DateRange | null>
         try {
           const data = results.data as any[];
           if (data.length > 0 && data[0]['Reporting starts'] && data[0]['Reporting ends']) {
-            const startDate = new Date(data[0]['Reporting starts']);
-            const endDate = new Date(data[0]['Reporting ends']);
+            const normalizedRange = normalizeDateRange(
+              data[0]['Reporting starts'],
+              data[0]['Reporting ends'],
+              'meta'
+            );
+            // Convert normalized ISO strings back to Date objects for createDateRange
+            const startDate = new Date(normalizedRange.start.isoString + 'T00:00:00');
+            const endDate = new Date(normalizedRange.end.isoString + 'T00:00:00');
+            
+            console.log('🔍 Meta date parsing (normalized):', {
+              originalStart: data[0]['Reporting starts'],
+              originalEnd: data[0]['Reporting ends'],
+              normalizedStart: startDate.toISOString(),
+              normalizedEnd: endDate.toISOString()
+            });
             
             resolve(createDateRange(startDate, endDate));
           } else {
@@ -54,15 +70,20 @@ export const detectGoogleDateRange = async (file: File): Promise<DateRange | nul
           // Pattern: "Month DD, YYYY - Month DD, YYYY"
           const dateRangeMatch = line.match(/(\w+\s+\d+,\s+\d{4})\s*-\s*(\w+\s+\d+,\s+\d{4})/);
           if (dateRangeMatch) {
-            // Parse dates and normalize to UTC midnight to avoid timezone issues
-            const startDate = new Date(dateRangeMatch[1]);
-            const endDate = new Date(dateRangeMatch[2]);
+            // USER REQUIREMENT: Extract and use only the LAST date from the range
+            const endDateStr = dateRangeMatch[2]; // "September 29, 2025"
+            const normalizedEndDate = normalizeDateToISO(endDateStr, 'google');
+            const endDate = new Date(normalizedEndDate.isoString + 'T00:00:00');
             
-            // Normalize to UTC midnight
-            startDate.setUTCHours(0, 0, 0, 0);
-            endDate.setUTCHours(0, 0, 0, 0);
+            console.log('🔍 Google date extraction (normalized):', {
+              fullRange: line.trim(),
+              extractedEndDate: endDateStr,
+              normalizedDate: endDate.toISOString(),
+              localDateString: endDate.toISOString().split('T')[0]
+            });
             
-            resolve(createDateRange(startDate, endDate));
+            // Create single-day range using only the end date
+            resolve(createDateRange(endDate, endDate));
             return;
           }
         }
@@ -85,8 +106,20 @@ export const detectShopifyDateRange = (filename: string): DateRange | null => {
     // Pattern: YYYY-MM-DD to YYYY-MM-DD
     const dateRangeMatch = filename.match(/(\d{4}-\d{2}-\d{2})\s+to\s+(\d{4}-\d{2}-\d{2})/);
     if (dateRangeMatch) {
-      const startDate = new Date(dateRangeMatch[1]);
-      const endDate = new Date(dateRangeMatch[2]);
+      const normalizedRange = normalizeDateRange(
+        dateRangeMatch[1],
+        dateRangeMatch[2],
+        'shopify'
+      );
+      const startDate = new Date(normalizedRange.start.isoString + 'T00:00:00');
+      const endDate = new Date(normalizedRange.end.isoString + 'T00:00:00');
+      
+      console.log('🔍 Shopify filename date parsing (normalized):', {
+        originalStart: dateRangeMatch[1],
+        originalEnd: dateRangeMatch[2],
+        normalizedStart: startDate.toISOString(),
+        normalizedEnd: endDate.toISOString()
+      });
       
       return createDateRange(startDate, endDate);
     }
@@ -98,8 +131,20 @@ export const detectShopifyDateRange = (filename: string): DateRange | null => {
       const startParts = start.split('-');
       const endParts = end.split('-');
       
-      const startDate = new Date(`${startParts[2]}-${startParts[0]}-${startParts[1]}`);
-      const endDate = new Date(`${endParts[2]}-${endParts[0]}-${endParts[1]}`);
+      const normalizedRange = normalizeDateRange(
+        `${startParts[2]}-${startParts[0]}-${startParts[1]}`,
+        `${endParts[2]}-${endParts[0]}-${endParts[1]}`,
+        'shopify'
+      );
+      const startDate = new Date(normalizedRange.start.isoString + 'T00:00:00');
+      const endDate = new Date(normalizedRange.end.isoString + 'T00:00:00');
+      
+      console.log('🔍 Shopify alt pattern date parsing (normalized):', {
+        originalStart: start,
+        originalEnd: end,
+        normalizedStart: normalizedRange.start.isoString,
+        normalizedEnd: normalizedRange.end.isoString
+      });
       
       return createDateRange(startDate, endDate);
     }
@@ -123,13 +168,9 @@ function createDateRange(startDate: Date, endDate: Date): DateRange {
     const currentDate = new Date(startDate);
     currentDate.setDate(startDate.getDate() + i);
     
-    // Format as "Wed, Sep 10, 25"
-    const formatted = currentDate.toLocaleDateString('en-US', { 
-      weekday: 'short', 
-      month: 'short', 
-      day: 'numeric',
-      year: '2-digit'
-    });
+    // CRITICAL FIX: Use date normalizer for consistency across entire pipeline
+    const normalized = normalizeDateToISO(currentDate, 'unknown');
+    const formatted = normalized.isoString;
     
     formattedDates.push(formatted);
   }
@@ -148,20 +189,38 @@ function createDateRange(startDate: Date, endDate: Date): DateRange {
 export const consolidateDateRanges = (ranges: (DateRange | null)[], shopifyData?: any[]): DateRange => {
   const validRanges = ranges.filter(r => r !== null) as DateRange[];
   
+  console.log('🔍 Consolidating date ranges:', validRanges.map(r => {
+    const startNormalized = normalizeDateToISO(r.startDate, 'unknown');
+    const endNormalized = normalizeDateToISO(r.endDate, 'unknown');
+    return {
+      start: startNormalized.isoString,
+      end: endNormalized.isoString,
+      dayCount: r.dayCount
+    };
+  }));
+  
   if (validRanges.length === 0) {
     // If we have Shopify data, try to determine date from the current date or data
     // For single-day data scenarios, create a single-day range
     if (shopifyData && shopifyData.length > 0) {
       // Try to find date information in the data or use a reasonable single-day default
-      const today = new Date();
-      const singleDayDate = new Date('2025-09-29'); // Default to Sept 29 for single-day scenarios
+      const normalizedToday = normalizeDateToISO(new Date().toISOString().split('T')[0], 'unknown');
+      const singleDayDate = new Date(normalizedToday.isoString + 'T00:00:00'); // Use current date as fallback
       console.log('🔍 No date range detected from files, creating single-day range for:', singleDayDate.toDateString());
       return createDateRange(singleDayDate, singleDayDate);
     }
     
-    // Last resort fallback to Sep 10-23, 2025 if no data available
-    console.log('⚠️ No date range detected and no Shopify data, using default range Sept 10-23');
-    return createDateRange(new Date('2025-09-10'), new Date('2025-09-23'));
+    // Last resort fallback - use current week if no data available
+    console.log('⚠️ No date range detected and no Shopify data, using current week as fallback');
+    // Use current date range as fallback instead of hardcoded dates
+    const today = new Date();
+    const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    const todayStr = today.toISOString().split('T')[0];
+    const normalizedFallbackStart = normalizeDateToISO(weekAgo, 'unknown');
+    const normalizedFallbackEnd = normalizeDateToISO(todayStr, 'unknown');
+    const fallbackStart = new Date(normalizedFallbackStart.isoString + 'T00:00:00'); // 7 days ago
+    const fallbackEnd = new Date(normalizedFallbackEnd.isoString + 'T00:00:00'); // Today
+    return createDateRange(fallbackStart, fallbackEnd);
   }
   
   // Find earliest start and latest end
@@ -176,6 +235,14 @@ export const consolidateDateRanges = (ranges: (DateRange | null)[], shopifyData?
       latestEnd = range.endDate;
     }
   }
+  
+  const earliestStartNormalized = normalizeDateToISO(earliestStart, 'unknown');
+  const latestEndNormalized = normalizeDateToISO(latestEnd, 'unknown');
+  console.log('🔍 Consolidation result:', {
+    earliestStart: earliestStartNormalized.isoString,
+    latestEnd: latestEndNormalized.isoString,
+    timeDifference: latestEnd.getTime() - earliestStart.getTime()
+  });
   
   return createDateRange(earliestStart, latestEnd);
 };
@@ -229,27 +296,20 @@ export const detectDateRangeFromFiles = async (files: {
 };
 
 /**
- * Formats a date for CSV output
+ * Formats a date for CSV output - USE SAME ISO FORMAT AS APP
  */
 export const formatDateForCSV = (date: Date): string => {
-  return date.toLocaleDateString('en-US', { 
-    weekday: 'short', 
-    month: 'short', 
-    day: 'numeric',
-    year: '2-digit'
-  });
+  // CRITICAL FIX: Use same ISO format as formatDateForApp for consistency
+  return date.toISOString().split('T')[0];
 };
 
 /**
- * Formats a date for app display (same as CSV for consistency)
+ * Formats a date for app display - USE DATE NORMALIZER to match Shopify CSV
  */
 export const formatDateForApp = (date: Date): string => {
-  return date.toLocaleDateString('en-US', { 
-    weekday: 'short', 
-    month: 'short', 
-    day: 'numeric',
-    year: '2-digit'
-  });
+  // CRITICAL FIX: Use date normalizer to avoid timezone shifts
+  const normalized = normalizeDateToISO(date, 'unknown');
+  return normalized.isoString;
 };
 
 /**

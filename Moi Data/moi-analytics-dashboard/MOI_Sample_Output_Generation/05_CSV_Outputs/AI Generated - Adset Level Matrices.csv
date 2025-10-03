@@ -1,9 +1,0 @@
-Date,Campaign Name,Campaign ID,Adset Name,Adset ID,Platform,Spend,Impressions,CTR,CPM,CPC,Users,ATC,Reached Checkout,Purchases,Revenue,ROAS
-"Sun, Sep 28, 25","BOF | DPA","123456","VC & ATC_60 Days - IG","789012","Meta","0","0",0,0,0,146,0,0,0,0,0.00
-"Sun, Sep 28, 25","TOF | AND","123457","TOF | Mumbai | TRLa","789013","Meta","0","0",0,0,0,369,1,1,0,0,0.00
-"Sun, Sep 28, 25","Unknown Campaign","234567","Unknown AdSet","890123","Meta","0","0",0,0,0,612,13,6,0,0,0.00
-"Sun, Sep 28, 25","TOF | ALL","345678","T1 - TRLi - FEED","901234","Meta","0","0",0,0,0,529,1,0,0,0,0.00
-"Sun, Sep 28, 25","TOF | ALL","345678","T2 - TRLi","901235","Meta","0","0",0,0,0,459,0,0,0,0,0.00
-"Sun, Sep 28, 25","BOF | DPA","123456","VC & ATC_180 Days - FBi","789014","Meta","0","0",0,0,0,263,3,2,0,0,0.00
-"Sun, Sep 28, 25","TOF | ALL","345678","T1 - FB - TRLi","901236","Meta","0","0",0,0,0,438,2,1,0,0,0.00
-"Sun, Sep 28, 25","TOF | Story/Reel","456789","T1 | TRL | IGi | RL","012345","Meta","0","0",0,0,0,537,1,1,0,0,0.00

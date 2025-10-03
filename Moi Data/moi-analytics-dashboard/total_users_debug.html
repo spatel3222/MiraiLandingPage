@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>🔍 Total Users -999 Debug Analysis</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 20px; background: #f5f7fa; margin: 0; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        h1 { color: #dc3545; border-bottom: 3px solid #dc3545; padding-bottom: 10px; }
+        h2 { color: #007bff; margin-top: 30px; }
+        
+        .timestamp-info { background: #e9ecef; padding: 15px; border-radius: 8px; margin: 20px 0; }
+        .timestamp-info h3 { margin-top: 0; color: #495057; }
+        
+        .debug-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+        
+        .critical-issue {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .potential-fix {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: #dc3545;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .pass { color: #28a745; font-weight: bold; }
+        .fail { color: #dc3545; font-weight: bold; }
+        .warning { color: #ffc107; font-weight: bold; }
+        
+        .code-block {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 12px;
+            border-left: 4px solid #007bff;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        
+        .fix-option {
+            background: white;
+            border: 2px solid #007bff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .fix-option h4 {
+            margin-top: 0;
+            color: #007bff;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+            font-size: 14px;
+        }
+        
+        button:hover { background: #0056b3; }
+        button.danger { background: #dc3545; }
+        button.success { background: #28a745; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Total Users -999 Debug Analysis</h1>
+        <p><strong>Issue:</strong> Total Users metric shows -999 instead of the sum of 'Online store visitors' from Shopify CSV</p>
+        
+        <div class="timestamp-info" id="timestamp-info">
+            <h3>📅 Data Timestamps</h3>
+            <!-- Will be populated by JavaScript -->
+        </div>
+        
+        <button onclick="runCompleteAnalysis()">🔬 Run Complete Analysis</button>
+        <button onclick="testDateMatching()">📅 Test Date Matching</button>
+        <button onclick="clearCacheAndReload()" class="danger">🧹 Clear Cache & Reload</button>
+        
+        <div id="analysis-results"></div>
+    </div>
+
+    <script>
+        function getTimestamps() {
+            const timestampDiv = document.getElementById('timestamp-info');
+            const keys = [
+                'moi-shopify-data',
+                'moi-meta-data', 
+                'moi-google-data',
+                'moi-dashboard-data',
+                'moi-output-data',
+                'moi-cache-version'
+            ];
+            
+            let html = '<table><tr><th>Data Source</th><th>Last Updated</th><th>Data Size</th><th>Cache Version</th></tr>';
+            
+            keys.forEach(key => {
+                const data = localStorage.getItem(key);
+                const timestampKey = key + '-timestamp';
+                const timestamp = localStorage.getItem(timestampKey);
+                
+                let lastUpdated = 'Unknown';
+                if (timestamp) {
+                    lastUpdated = new Date(parseInt(timestamp)).toLocaleString();
+                } else if (data) {
+                    // Try to estimate from localStorage modification
+                    lastUpdated = 'Data exists (no timestamp)';
+                }
+                
+                const dataSize = data ? `${Math.round(data.length / 1024)}KB` : 'N/A';
+                const cacheVersion = key === 'moi-cache-version' ? (data || 'N/A') : '';
+                
+                html += `<tr>
+                    <td><strong>${key.replace('moi-', '').replace('-', ' ')}</strong></td>
+                    <td>${lastUpdated}</td>
+                    <td>${dataSize}</td>
+                    <td>${cacheVersion}</td>
+                </tr>`;
+            });
+            
+            html += '</table>';
+            timestampDiv.innerHTML = html;
+        }
+        
+        function runCompleteAnalysis() {
+            const resultsDiv = document.getElementById('analysis-results');
+            let html = '';
+            
+            try {
+                // Get all data
+                const shopifyData = JSON.parse(localStorage.getItem('moi-shopify-data') || '[]');
+                const outputData = JSON.parse(localStorage.getItem('moi-output-data') || '{}');
+                const dashboardData = JSON.parse(localStorage.getItem('moi-dashboard-data') || '{}');
+                
+                html += '<div class="debug-section">';
+                html += '<h2>🔍 Root Cause Analysis</h2>';
+                
+                // Step 1: Check Shopify Data Structure
+                html += '<h3>Step 1: Shopify Data Structure</h3>';
+                if (shopifyData.length > 0) {
+                    const sample = shopifyData[0];
+                    const hasDay = 'Day' in sample;
+                    const hasDate = 'Date' in sample;
+                    const hasVisitors = 'Online store visitors' in sample;
+                    
+                    html += '<table>';
+                    html += '<tr><th>Field Check</th><th>Present</th><th>Sample Value</th><th>Type</th></tr>';
+                    html += `<tr><td>Day field</td><td class="${hasDay ? 'pass' : 'fail'}">${hasDay ? '✓' : '✗'}</td><td>${sample.Day || 'undefined'}</td><td>${typeof sample.Day}</td></tr>`;
+                    html += `<tr><td>Date field</td><td class="${hasDate ? 'pass' : 'fail'}">${hasDate ? '✓' : '✗'}</td><td>${sample.Date || 'undefined'}</td><td>${typeof sample.Date}</td></tr>`;
+                    html += `<tr><td>Online store visitors</td><td class="${hasVisitors ? 'pass' : 'fail'}">${hasVisitors ? '✓' : '✗'}</td><td>${sample['Online store visitors']}</td><td>${typeof sample['Online store visitors']}</td></tr>`;
+                    html += '</table>';
+                    
+                    if (!hasDay && !hasDate) {
+                        html += '<div class="critical-issue"><strong>CRITICAL ISSUE:</strong> No date fields found in Shopify data! This explains why date matching fails.</div>';
+                    }
+                    
+                    // Calculate expected total
+                    const expectedTotal = shopifyData.reduce((sum, row) => sum + (row['Online store visitors'] || 0), 0);
+                    html += `<div class="potential-fix"><strong>Expected Total Users:</strong> ${expectedTotal} (sum of all 'Online store visitors')</div>`;
+                } else {
+                    html += '<div class="critical-issue">No Shopify data found in localStorage!</div>';
+                }
+                
+                // Step 2: Check Date Matching Logic
+                html += '<h3>Step 2: Date Matching Analysis</h3>';
+                if (outputData.dailyMetrics && outputData.dailyMetrics.length > 0) {
+                    const metric = outputData.dailyMetrics[0];
+                    html += '<table>';
+                    html += '<tr><th>Metric</th><th>Value</th><th>Status</th></tr>';
+                    html += `<tr><td>Date</td><td>${metric.date}</td><td class="pass">✓</td></tr>`;
+                    html += `<tr><td>Total Users</td><td>${metric.totalUsers}</td><td class="${metric.totalUsers === -999 ? 'fail' : 'pass'}">${metric.totalUsers === -999 ? '✗ Fallback Value' : '✓ Valid'}</td></tr>`;
+                    html += `<tr><td>Total ATC</td><td>${metric.totalATC}</td><td class="${metric.totalATC === -999 ? 'fail' : 'pass'}">${metric.totalATC === -999 ? '✗ Fallback' : '✓ Valid'}</td></tr>`;
+                    html += '</table>';
+                    
+                    if (metric.totalUsers === -999) {
+                        html += '<div class="critical-issue"><strong>ISSUE CONFIRMED:</strong> Total Users is -999, indicating date matching failed in processShopifyDataByDay function.</div>';
+                    }
+                } else {
+                    html += '<div class="critical-issue">No daily metrics found!</div>';
+                }
+                
+                // Step 3: Check Date Range
+                html += '<h3>Step 3: Date Range Analysis</h3>';
+                if (outputData.dateRange) {
+                    const dr = outputData.dateRange;
+                    html += '<table>';
+                    html += '<tr><th>Property</th><th>Value</th><th>Expected</th><th>Status</th></tr>';
+                    html += `<tr><td>Start Date</td><td>${dr.startDate}</td><td>2025-09-29</td><td class="${dr.startDate && dr.startDate.includes('2025-09-29') ? 'pass' : 'fail'}">${dr.startDate && dr.startDate.includes('2025-09-29') ? '✓' : '✗'}</td></tr>`;
+                    html += `<tr><td>End Date</td><td>${dr.endDate}</td><td>2025-09-29</td><td class="${dr.endDate && dr.endDate.includes('2025-09-29') ? 'pass' : 'fail'}">${dr.endDate && dr.endDate.includes('2025-09-29') ? '✓' : '✗'}</td></tr>`;
+                    html += `<tr><td>Day Count</td><td>${dr.dayCount}</td><td>1</td><td class="${dr.dayCount === 1 ? 'pass' : 'fail'}">${dr.dayCount === 1 ? '✓' : '✗'}</td></tr>`;
+                    html += '</table>';
+                } else {
+                    html += '<div class="critical-issue">No date range data found!</div>';
+                }
+                
+                html += '</div>';
+                
+                // Fix Options
+                html += '<div class="debug-section">';
+                html += '<h2>🛠️ Fix Options</h2>';
+                
+                html += '<div class="fix-option">';
+                html += '<h4>Option 1: Interface Fix (Already Applied)</h4>';
+                html += '<p>Added Day and Date fields to ShopifyRecord interface in src/types.ts</p>';
+                html += '<div class="code-block">interface ShopifyRecord {\\n  \'Day\'?: string;\\n  \'Date\'?: string;\\n  // ... other fields\\n}</div>';
+                html += '<button onclick="checkInterfaceFix()">Check If Applied</button>';
+                html += '</div>';
+                
+                html += '<div class="fix-option">';
+                html += '<h4>Option 2: Force Cache Refresh</h4>';
+                html += '<p>Clear all cached data and reload with fixed code</p>';
+                html += '<button onclick="forceCacheRefresh()">Apply Fix</button>';
+                html += '</div>';
+                
+                html += '<div class="fix-option">';
+                html += '<h4>Option 3: Debug Date Matching</h4>';
+                html += '<p>Add console logging to see exactly what happens during date matching</p>';
+                html += '<button onclick="testDateMatching()">Run Test</button>';
+                html += '</div>';
+                
+                html += '<div class="fix-option">';
+                html += '<h4>Option 4: Manual Calculation Override</h4>';
+                html += '<p>Force calculate Total Users directly from Shopify data</p>';
+                html += '<button onclick="manualCalculation()">Apply Override</button>';
+                html += '</div>';
+                
+                html += '</div>';
+                
+            } catch (error) {
+                html += `<div class="critical-issue">Error during analysis: ${error.message}</div>`;
+            }
+            
+            resultsDiv.innerHTML = html;
+        }
+        
+        function testDateMatching() {
+            const shopifyData = JSON.parse(localStorage.getItem('moi-shopify-data') || '[]');
+            const outputData = JSON.parse(localStorage.getItem('moi-output-data') || '{}');
+            
+            let html = '<div class="debug-section"><h3>🧪 Date Matching Test Results</h3>';
+            
+            if (shopifyData.length > 0) {
+                // Simulate the date matching logic
+                const targetDate = '2025-09-29';
+                const matchingSessions = shopifyData.filter(record => {
+                    const recordDate = record['Day'] || record['Date'] || '';
+                    return recordDate === targetDate;
+                });
+                
+                html += '<table>';
+                html += '<tr><th>Test</th><th>Result</th><th>Details</th></tr>';
+                html += `<tr><td>Total Shopify Records</td><td>${shopifyData.length}</td><td>All records in localStorage</td></tr>`;
+                html += `<tr><td>Records with Day field</td><td>${shopifyData.filter(r => r.Day).length}</td><td>Records that have 'Day' field</td></tr>`;
+                html += `<tr><td>Records with Date field</td><td>${shopifyData.filter(r => r.Date).length}</td><td>Records that have 'Date' field</td></tr>`;
+                html += `<tr><td>Records matching 2025-09-29</td><td>${matchingSessions.length}</td><td>Records that should be processed</td></tr>`;
+                html += '</table>';
+                
+                if (matchingSessions.length === 0) {
+                    html += '<div class="critical-issue"><strong>ROOT CAUSE FOUND:</strong> No records match the target date 2025-09-29!</div>';
+                    
+                    // Show actual dates in the data
+                    const uniqueDates = [...new Set(shopifyData.map(r => r['Day'] || r['Date'] || 'missing'))];
+                    html += `<p><strong>Actual dates in data:</strong> ${uniqueDates.slice(0, 10).join(', ')}</p>`;
+                } else {
+                    const totalUsers = matchingSessions.reduce((sum, r) => sum + (r['Online store visitors'] || 0), 0);
+                    html += `<div class="potential-fix"><strong>Expected Total Users:</strong> ${totalUsers}</div>`;
+                }
+            }
+            
+            html += '</div>';
+            document.getElementById('analysis-results').innerHTML += html;
+        }
+        
+        function forceCacheRefresh() {
+            const keys = [
+                'moi-cache-version',
+                'moi-dashboard-data',
+                'moi-dashboard-timestamp',
+                'moi-output-data',
+                'moi-output-timestamp',
+                'moi-shopify-data',
+                'moi-meta-data',
+                'moi-google-data'
+            ];
+            
+            keys.forEach(key => localStorage.removeItem(key));
+            localStorage.setItem('moi-cache-version', 'v1.6.0-total-users-fix-' + Date.now());
+            
+            alert('✅ Cache cleared! Please refresh the main app and upload files again.');
+        }
+        
+        function manualCalculation() {
+            const shopifyData = JSON.parse(localStorage.getItem('moi-shopify-data') || '[]');
+            const totalUsers = shopifyData.reduce((sum, r) => sum + (r['Online store visitors'] || 0), 0);
+            
+            alert(`Manual calculation: ${totalUsers} total users from ${shopifyData.length} Shopify records`);
+        }
+        
+        function clearCacheAndReload() {
+            if (confirm('This will clear all cache and reload the page. Continue?')) {
+                localStorage.clear();
+                window.location.reload();
+            }
+        }
+        
+        // Run analysis on page load
+        window.addEventListener('load', () => {
+            getTimestamps();
+            runCompleteAnalysis();
+        });
+    </script>
+</body>
+</html>

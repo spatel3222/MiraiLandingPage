@@ -1,8 +1,10 @@
 import React, { useState, useCallback } from 'react';
-import { X, Download, Upload, AlertCircle, CheckCircle, RotateCcw, FileText, Info } from 'lucide-react';
+import { X, Download, Upload, AlertCircle, CheckCircle, RotateCcw, FileText, Info, Zap, ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
 import { LogicTemplateManager } from '../services/logicTemplateManager';
 import { LogicTemplateValidator } from '../services/logicTemplateValidator';
+import { TemplateExportBridge } from '../utils/templateExportBridge';
 import ValidationChatBot from './ValidationChatBot';
+import DataInspectorWidget from './DataInspectorWidget';
 import type * as LogicTypes from '../types/logicConfiguration';
 
 type LogicConfiguration = LogicTypes.LogicConfiguration;
@@ -27,6 +29,8 @@ const LogicTemplateSettings: React.FC<Props> = ({ onClose, onConfigurationChange
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [currentTemplateRows, setCurrentTemplateRows] = useState<LogicTemplateRow[]>([]);
   const [showChatBot, setShowChatBot] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showHelpModal, setShowHelpModal] = useState(false);
 
   const handleDownloadTemplate = useCallback(() => {
     try {
@@ -45,6 +49,16 @@ const LogicTemplateSettings: React.FC<Props> = ({ onClose, onConfigurationChange
       setTimeout(() => setSuccessMessage(null), 3000);
     } catch (error) {
       setUploadError(`Download failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }, []);
+
+  const handleExportForPython = useCallback(async () => {
+    try {
+      await TemplateExportBridge.exportConfigurationForPython();
+      setSuccessMessage('Template exported for Python converter! Check downloads folder.');
+      setTimeout(() => setSuccessMessage(null), 5000);
+    } catch (error) {
+      setUploadError(`Export failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }, []);
 
@@ -174,13 +188,21 @@ const LogicTemplateSettings: React.FC<Props> = ({ onClose, onConfigurationChange
       <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <div>
-            <h2 className="font-orpheus text-2xl font-bold text-moi-charcoal">
-              Logic Template Settings
-            </h2>
-            <p className="font-benton text-sm text-moi-grey mt-1">
-              Configure custom data transformation logic for report generation
-            </p>
+          <div className="flex items-center space-x-3">
+            <div>
+              <h2 className="font-orpheus text-2xl font-bold text-moi-charcoal">
+                Logic Template Settings
+              </h2>
+              <p className="font-benton text-sm text-moi-grey mt-1">
+                Download template → Edit locally → Upload changes
+              </p>
+            </div>
+            <button
+              onClick={() => setShowHelpModal(true)}
+              className="p-2 text-moi-grey hover:text-moi-charcoal transition-colors rounded-lg hover:bg-gray-100"
+            >
+              <HelpCircle className="w-5 h-5" />
+            </button>
           </div>
           <button
             onClick={onClose}
@@ -234,33 +256,23 @@ const LogicTemplateSettings: React.FC<Props> = ({ onClose, onConfigurationChange
             </div>
           </div>
 
-          {/* Actions */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Download Section */}
-            <div className="space-y-3">
-              <h3 className="font-benton font-semibold text-moi-charcoal">Download Templates</h3>
-              
+          {/* Data Inspector Widget */}
+          <DataInspectorWidget />
+
+          {/* Simple Template Management */}
+          <div className="space-y-4">
+            {/* Main Actions */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Download */}
               <button
                 onClick={handleDownloadTemplate}
-                className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-moi-charcoal text-white rounded-lg hover:bg-moi-grey transition-colors"
+                className="flex items-center justify-center space-x-2 px-6 py-4 bg-moi-charcoal text-white rounded-lg hover:bg-moi-grey transition-colors text-lg font-medium"
               >
-                <Download className="w-4 h-4" />
+                <Download className="w-5 h-5" />
                 <span>Download Current Template</span>
               </button>
 
-              <button
-                onClick={handleDownloadDocumentation}
-                className="w-full flex items-center justify-center space-x-2 px-4 py-3 border border-moi-light text-moi-charcoal rounded-lg hover:bg-moi-beige transition-colors"
-              >
-                <FileText className="w-4 h-4" />
-                <span>Download Documentation & Examples</span>
-              </button>
-            </div>
-
-            {/* Upload Section */}
-            <div className="space-y-3">
-              <h3 className="font-benton font-semibold text-moi-charcoal">Upload Custom Template</h3>
-              
+              {/* Upload */}
               <div className="relative">
                 <input
                   type="file"
@@ -269,20 +281,62 @@ const LogicTemplateSettings: React.FC<Props> = ({ onClose, onConfigurationChange
                   disabled={isUploading}
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
                 />
-                <div className="w-full flex items-center justify-center space-x-2 px-4 py-3 border-2 border-dashed border-moi-light text-moi-charcoal rounded-lg hover:border-moi-charcoal hover:bg-moi-beige transition-colors">
-                  <Upload className="w-4 h-4" />
-                  <span>{isUploading ? 'Uploading...' : 'Upload Modified Template (CSV)'}</span>
+                <div className="flex items-center justify-center space-x-2 px-6 py-4 border-2 border-dashed border-moi-charcoal text-moi-charcoal rounded-lg hover:bg-moi-beige transition-colors text-lg font-medium">
+                  <Upload className="w-5 h-5" />
+                  <span>{isUploading ? 'Uploading...' : 'Upload Modified Template'}</span>
                 </div>
               </div>
+            </div>
 
+            {/* Reset Option */}
+            <div className="flex justify-center">
               <button
                 onClick={handleResetToDefault}
-                className="w-full flex items-center justify-center space-x-2 px-4 py-3 border border-red-300 text-red-700 rounded-lg hover:bg-red-50 transition-colors"
+                className="flex items-center space-x-2 px-4 py-2 text-sm border border-red-300 text-red-700 rounded-lg hover:bg-red-50 transition-colors"
               >
                 <RotateCcw className="w-4 h-4" />
-                <span>Reset to Default</span>
+                <span>Reset to Default Template</span>
               </button>
             </div>
+          </div>
+
+          {/* Advanced Options */}
+          <div className="border-t border-gray-200 pt-4">
+            <button
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              className="flex items-center space-x-2 text-sm text-moi-grey hover:text-moi-charcoal transition-colors"
+            >
+              {showAdvanced ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              <span>Advanced Options</span>
+            </button>
+            
+            {showAdvanced && (
+              <div className="mt-4 space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <button
+                    onClick={handleDownloadDocumentation}
+                    className="flex items-center justify-center space-x-2 px-4 py-2 text-sm border border-moi-light text-moi-charcoal rounded-lg hover:bg-moi-beige transition-colors"
+                  >
+                    <FileText className="w-4 h-4" />
+                    <span>Download Examples</span>
+                  </button>
+
+                  <button
+                    onClick={handleExportForPython}
+                    className="flex items-center justify-center space-x-2 px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    <Zap className="w-4 h-4" />
+                    <span>Export for Python</span>
+                  </button>
+                </div>
+                
+                <div className="bg-blue-50 p-3 rounded-lg">
+                  <p className="text-xs text-blue-700">
+                    <strong>Python Integration:</strong> Export syncs dashboard templates with Python conversion scripts.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Validation Results */}
@@ -357,19 +411,6 @@ const LogicTemplateSettings: React.FC<Props> = ({ onClose, onConfigurationChange
             </div>
           )}
 
-          {/* Help Section */}
-          <div className="bg-blue-50 p-4 rounded-lg">
-            <h3 className="font-benton font-semibold text-blue-800 mb-2">How It Works</h3>
-            <div className="text-sm text-blue-700 space-y-2">
-              <p>1. <strong>Download:</strong> Get the current logic template to understand the structure</p>
-              <p>2. <strong>Modify:</strong> Edit the CSV file to customize data transformation logic</p>
-              <p>3. <strong>Upload:</strong> Upload your modified template for validation</p>
-              <p>4. <strong>Apply:</strong> Use the validated template for future report generation</p>
-              <p className="mt-3 text-blue-600">
-                <strong>Tip:</strong> Download the documentation template for examples and formula patterns.
-              </p>
-            </div>
-          </div>
         </div>
 
         {/* Validation Chat Bot */}
@@ -380,6 +421,92 @@ const LogicTemplateSettings: React.FC<Props> = ({ onClose, onConfigurationChange
             onFixApplied={handleChatBotFixApplied}
             onClose={() => setShowChatBot(false)}
           />
+        )}
+
+        {/* Help Modal */}
+        {showHelpModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60 p-4">
+            <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+              <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                <h3 className="font-orpheus text-xl font-bold text-moi-charcoal">How to Use Template Settings</h3>
+                <button
+                  onClick={() => setShowHelpModal(false)}
+                  className="p-2 text-moi-grey hover:text-moi-charcoal transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              
+              <div className="p-6 space-y-6">
+                {/* Simple Steps */}
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <h4 className="font-benton font-semibold text-blue-800 mb-3">4 Simple Steps</h4>
+                  <div className="space-y-3 text-sm text-blue-700">
+                    <div className="flex space-x-3">
+                      <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                      <div>
+                        <p className="font-medium">Download Current Template</p>
+                        <p className="text-blue-600">Gets your current template as a CSV file</p>
+                      </div>
+                    </div>
+                    <div className="flex space-x-3">
+                      <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">2</span>
+                      <div>
+                        <p className="font-medium">Edit Locally</p>
+                        <p className="text-blue-600">Open in Excel or text editor to customize fields and formulas</p>
+                      </div>
+                    </div>
+                    <div className="flex space-x-3">
+                      <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">3</span>
+                      <div>
+                        <p className="font-medium">Upload Modified Template</p>
+                        <p className="text-blue-600">Drag & drop or click to upload your changes</p>
+                      </div>
+                    </div>
+                    <div className="flex space-x-3">
+                      <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">4</span>
+                      <div>
+                        <p className="font-medium">Auto-Applied</p>
+                        <p className="text-blue-600">If no errors, your custom template becomes active immediately</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Error Handling */}
+                <div className="bg-amber-50 p-4 rounded-lg">
+                  <h4 className="font-benton font-semibold text-amber-800 mb-2">Error Handling</h4>
+                  <div className="text-sm text-amber-700 space-y-2">
+                    <p>✅ <strong>No Errors:</strong> Template automatically becomes active</p>
+                    <p>⚠️ <strong>With Warnings:</strong> Template works but shows optimization suggestions</p>
+                    <p>❌ <strong>With Errors:</strong> Shows specific fixes needed before applying</p>
+                  </div>
+                </div>
+
+                {/* Template Structure */}
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h4 className="font-benton font-semibold text-gray-800 mb-2">Template Structure</h4>
+                  <div className="text-sm text-gray-700 space-y-2">
+                    <p><strong>Fields:</strong> Name of the output field</p>
+                    <p><strong>Output File Name:</strong> Which CSV file to include this field</p>
+                    <p><strong>Input from:</strong> Data source (Meta Ads, Google Ads, Shopify Export, etc.)</p>
+                    <p><strong>Type:</strong> Data type (Date, Text, Number, Calculate)</p>
+                    <p><strong>Formula:</strong> How to calculate or extract the value</p>
+                  </div>
+                </div>
+
+                {/* Advanced Features */}
+                <div className="bg-green-50 p-4 rounded-lg">
+                  <h4 className="font-benton font-semibold text-green-800 mb-2">Advanced Features</h4>
+                  <div className="text-sm text-green-700 space-y-2">
+                    <p><strong>Reset to Default:</strong> Returns to original 33-field template</p>
+                    <p><strong>Download Examples:</strong> Get sample templates with common patterns</p>
+                    <p><strong>Python Integration:</strong> Sync templates with backend conversion scripts</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>
