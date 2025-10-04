@@ -232,6 +232,7 @@ export class ConfigurableDataProcessor {
           'Sessions that reached checkout': 0,
           'Average session duration': 0,
           'Pageviews': 0,
+          'Users count whose with Session above 1 min': 0,
           'Date': record['Date'] || new Date().toISOString().split('T')[0],
           '_sessionDurationTotal': 0,
           '_visitorCount': 0
@@ -253,6 +254,11 @@ export class ConfigurableDataProcessor {
       if (visitors > 0 && sessionDuration > 0) {
         pivot._sessionDurationTotal += sessionDuration * visitors;
         pivot._visitorCount += visitors;
+      }
+      
+      // Count users with session duration above 1 minute (60 seconds)
+      if (sessionDuration > 60 && visitors > 0) {
+        pivot['Users count whose with Session above 1 min'] += visitors;
       }
     });
 
