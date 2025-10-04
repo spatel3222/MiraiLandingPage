@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Debug</title>
+</head>
+<body>
+    <h1>Simple localStorage Debug</h1>
+    <button onclick="showStorage()">Show Storage</button>
+    <div id="output"></div>
+
+    <script>
+        function showStorage() {
+            let html = '<h2>All localStorage keys:</h2>';
+            
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const value = localStorage.getItem(key);
+                const size = Math.round(value.length / 1024);
+                
+                html += `<p><strong>${key}</strong> (${size}KB)</p>`;
+                
+                // Check for BOF data
+                if (value.includes('BOF')) {
+                    html += `<p style="color: red;">🎯 CONTAINS BOF DATA</p>`;
+                    
+                    // Look for VC patterns
+                    if (value.includes('"VC"') || value.includes("'VC'")) {
+                        html += `<p style="color: orange;">⚠️ Contains standalone VC</p>`;
+                    }
+                    if (value.includes('VC &') || value.includes('VC&')) {
+                        html += `<p style="color: green;">✅ Contains complete VC & ATC</p>`;
+                    }
+                    
+                    // Show a sample
+                    const bofIndex = value.indexOf('BOF');
+                    const sample = value.substring(Math.max(0, bofIndex - 50), bofIndex + 200);
+                    html += `<pre style="background: #f0f0f0; padding: 10px; font-size: 12px;">${sample}...</pre>`;
+                }
+                
+                html += '<hr>';
+            }
+            
+            if (localStorage.length === 0) {
+                html += '<p style="color: red;">No localStorage data found!</p>';
+            }
+            
+            document.getElementById('output').innerHTML = html;
+        }
+        
+        // Auto-run
+        window.onload = showStorage;
+    </script>
+</body>
+</html>

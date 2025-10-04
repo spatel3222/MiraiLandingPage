@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🔍 Data Flow Debugger</title>
+    <style>
+        body { 
+            font-family: monospace; 
+            padding: 20px; 
+            background: #1a1a1a; 
+            color: #00ff00;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .debug-section { 
+            background: #2a2a2a; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 8px; 
+            border-left: 4px solid #44ff44; 
+        }
+        .problem { border-left-color: #ff4444; }
+        .data-preview { 
+            background: #333; 
+            padding: 10px; 
+            border-radius: 4px; 
+            overflow-x: auto; 
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .debug-button {
+            background: #44ff44;
+            color: #1a1a1a;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .debug-button:hover { background: #66ff66; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 BOF | DPA Data Flow Debugger</h1>
+        <p><strong>Purpose:</strong> Trace where "VC" truncation is happening in the data pipeline</p>
+        
+        <button class="debug-button" onclick="debugDataFlow()">
+            🕵️ Debug Data Flow
+        </button>
+        
+        <div id="debug-results"></div>
+    </div>
+
+    <script>
+        function debugDataFlow() {
+            let output = '<h2>📊 Data Flow Analysis</h2>';
+            
+            // Check localStorage data sources
+            const dashboardData = localStorage.getItem('moi-dashboard-data');
+            const pivotData = localStorage.getItem('moi-pivot-data');
+            const metaData = localStorage.getItem('moi-meta-data');
+            const shopifyData = localStorage.getItem('moi-shopify-data');
+            
+            if (!dashboardData && !pivotData) {
+                output += `
+                    <div class="debug-section problem">
+                        <h3>❌ No Data Found</h3>
+                        <p>Please load the dashboard data first to debug the issue.</p>
+                    </div>
+                `;
+                document.getElementById('debug-results').innerHTML = output;
+                return;
+            }
+            
+            // Parse and analyze dashboard data
+            if (dashboardData) {
+                try {
+                    const data = JSON.parse(dashboardData);
+                    output += `
+                        <div class="debug-section">
+                            <h3>📈 Dashboard Data Analysis</h3>
+                            <p><strong>UTM Campaigns:</strong> ${data.utmCampaigns?.length || 0}</p>
+                            <p><strong>Regular Campaigns:</strong> ${data.campaigns?.length || 0}</p>
+                        </div>
+                    `;
+                    
+                    // Find BOF | DPA campaigns
+                    const allCampaigns = data.utmCampaigns || data.campaigns || [];
+                    const bofCampaigns = allCampaigns.filter(c => 
+                        c.utmCampaign?.includes('BOF') || c.campaignName?.includes('BOF')
+                    );
+                    
+                    if (bofCampaigns.length > 0) {
+                        output += `
+                            <div class="debug-section ${bofCampaigns.some(c => (c.utmTerm || c.adSetName || '').includes('VC') && !(c.utmTerm || c.adSetName || '').includes('&')) ? 'problem' : ''}">
+                                <h3>🎯 BOF | DPA Campaigns Found: ${bofCampaigns.length}</h3>
+                                <div class="data-preview">
+                        `;
+                        
+                        bofCampaigns.forEach((campaign, index) => {
+                            const adSetName = campaign.utmTerm || campaign.adSetName || 'Unknown';
+                            const isTruncated = adSetName.includes('VC') && !adSetName.includes('&');
+                            
+                            output += `
+                                <div style="margin: 10px 0; padding: 10px; background: ${isTruncated ? '#4a1a1a' : '#1a4a1a'}; border-radius: 4px;">
+                                    <strong>Campaign ${index + 1}:</strong> ${campaign.utmCampaign || campaign.campaignName}<br>
+                                    <strong>AdSet:</strong> <span style="color: ${isTruncated ? '#ff4444' : '#44ff44'}">${adSetName}</span> ${isTruncated ? '❌ TRUNCATED' : '✅ COMPLETE'}<br>
+                                    <strong>Sessions:</strong> ${campaign.sessions || 0}<br>
+                                    <strong>Raw Data:</strong> ${JSON.stringify(campaign).substring(0, 200)}...
+                                </div>
+                            `;
+                        });
+                        
+                        output += '</div></div>';
+                    } else {
+                        output += `
+                            <div class="debug-section">
+                                <h3>🔍 No BOF | DPA Campaigns Found in Dashboard Data</h3>
+                                <p>Checking other data sources...</p>
+                            </div>
+                        `;
+                    }
+                } catch (e) {
+                    output += `
+                        <div class="debug-section problem">
+                            <h3>❌ Dashboard Data Parse Error</h3>
+                            <p>${e.message}</p>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Check pivot data
+            if (pivotData) {
+                try {
+                    const data = JSON.parse(pivotData);
+                    const bofRows = data.filter(row => 
+                        row.Campaign?.includes('BOF') || row['UTM Campaign']?.includes('BOF')
+                    );
+                    
+                    if (bofRows.length > 0) {
+                        output += `
+                            <div class="debug-section">
+                                <h3>🔄 Pivot Data Analysis</h3>
+                                <p><strong>BOF rows found:</strong> ${bofRows.length}</p>
+                                <div class="data-preview">
+                        `;
+                        
+                        bofRows.slice(0, 10).forEach((row, index) => {
+                            const adSet = row.AdSet || row['UTM Term'] || 'Unknown';
+                            const isTruncated = adSet.includes('VC') && !adSet.includes('&');
+                            
+                            output += `
+                                <div style="margin: 5px 0; color: ${isTruncated ? '#ff4444' : '#44ff44'}">
+                                    ${index + 1}. ${row.Campaign || row['UTM Campaign']} → ${adSet} ${isTruncated ? '❌' : '✅'}
+                                </div>
+                            `;
+                        });
+                        
+                        output += '</div></div>';
+                    }
+                } catch (e) {
+                    output += `
+                        <div class="debug-section problem">
+                            <h3>❌ Pivot Data Parse Error</h3>
+                            <p>${e.message}</p>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Check meta data
+            if (metaData) {
+                try {
+                    const data = JSON.parse(metaData);
+                    const bofRows = data.filter(row => 
+                        row['Campaign name']?.includes('BOF')
+                    );
+                    
+                    if (bofRows.length > 0) {
+                        output += `
+                            <div class="debug-section">
+                                <h3>📱 Meta Ads Data Analysis</h3>
+                                <p><strong>BOF campaigns in raw Meta data:</strong> ${bofRows.length}</p>
+                                <div class="data-preview">
+                        `;
+                        
+                        bofRows.slice(0, 5).forEach((row, index) => {
+                            const adSet = row['Ad set name'] || 'Unknown';
+                            const isTruncated = adSet.includes('VC') && !adSet.includes('&');
+                            
+                            output += `
+                                <div style="margin: 5px 0; color: ${isTruncated ? '#ff4444' : '#44ff44'}">
+                                    ${index + 1}. ${row['Campaign name']} → ${adSet} ${isTruncated ? '❌ TRUNCATED IN SOURCE' : '✅ COMPLETE'}
+                                </div>
+                            `;
+                        });
+                        
+                        output += '</div></div>';
+                    }
+                } catch (e) {
+                    output += `
+                        <div class="debug-section problem">
+                            <h3>❌ Meta Data Parse Error</h3>
+                            <p>${e.message}</p>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Recommendations
+            output += `
+                <div class="debug-section">
+                    <h3>🔧 Debug Recommendations</h3>
+                    <p>1. If truncation appears in <strong>Meta Ads raw data</strong> → File upload issue</p>
+                    <p>2. If truncation appears in <strong>Pivot data only</strong> → Processing pipeline issue</p>
+                    <p>3. If truncation appears in <strong>Dashboard data only</strong> → Display logic issue</p>
+                    <p>4. Check console logs for CSV parsing warnings during file upload</p>
+                </div>
+            `;
+            
+            document.getElementById('debug-results').innerHTML = output;
+        }
+    </script>
+</body>
+</html>

@@ -35,13 +35,18 @@ export const processMetaAdsCSV = (file: File): Promise<MetaAdsRecord[]> => {
             'CTR (link click-through rate)': parseFloat(record['CTR (link click-through rate)']) || 0
           })) as MetaAdsRecord[];
           
-          console.log('🔍 Meta CSV parsing - sample converted record:', {
-            campaign: data[0]['Campaign name'],
-            spend: data[0]['Amount spent (INR)'],
-            spendType: typeof data[0]['Amount spent (INR)'],
-            cpm: data[0]['CPM (cost per 1,000 impressions)'],
-            ctr: data[0]['CTR (link click-through rate)']
-          });
+          // Meta CSV parsing - sample converted record
+          
+          // Debug BOF campaigns specifically
+          const bofCampaigns = data.filter(record => record['Campaign name']?.includes('BOF'));
+          if (bofCampaigns.length > 0) {
+            console.log('🎯 BOF campaigns found in Meta data:', bofCampaigns.length);
+            bofCampaigns.forEach((record, index) => {
+              const adSetName = record['Ad set name'];
+              const isComplete = adSetName && adSetName.includes('&');
+              console.log(`BOF ${index + 1}: ${record['Campaign name']} → "${adSetName}" ${isComplete ? '✅' : '❌ TRUNCATED'}`);
+            });
+          }
           
           resolve(data);
         } catch (error) {
@@ -70,14 +75,7 @@ export const processMetaDataByDay = (records: MetaAdsRecord[], dateRange?: DateR
     ? records.reduce((sum, record) => sum + (record['CTR (link click-through rate)'] || 0), 0) / records.length 
     : 0;
   
-  console.log('🔍 Meta calculations after parsing fix:', {
-    totalSpend,
-    totalSpendType: typeof totalSpend,
-    avgCPM,
-    avgCTR,
-    recordCount: records.length,
-    firstRecordSpend: records[0] ? records[0]['Amount spent (INR)'] : 'none'
-  });
+  // Meta calculations after parsing fix
   
   // Use provided date range or fall back to parsing from records
   let actualDateRange: DateRange;
@@ -89,21 +87,8 @@ export const processMetaDataByDay = (records: MetaAdsRecord[], dateRange?: DateR
     const startDate = records[0]['Reporting starts'];
     const endDate = records[0]['Reporting ends'];
     
-    console.log('🔍 Meta date parsing (yyyy-mm-dd format):', {
-      reportingStarts: startDate,
-      reportingEnds: endDate,
-      startDateType: typeof startDate,
-      endDateType: typeof endDate
-    });
-    
+    // Meta date parsing (yyyy-mm-dd format)
     const endDateObj = new Date(endDate);
-    
-    console.log('🔍 Meta parsed dates - USING END DATE ONLY:', {
-      ignoredStartDate: startDate,
-      usingEndDate: endDate,
-      endDateObj: endDateObj.toISOString().split('T')[0],
-      isValidEnd: !isNaN(endDateObj.getTime())
-    });
     
     // Create single-day range using only the end date (like Google Ads)
     actualDateRange = { 
@@ -117,16 +102,7 @@ export const processMetaDataByDay = (records: MetaAdsRecord[], dateRange?: DateR
   // Distribute spend across days (this is an approximation since Meta data is aggregated)
   const dailySpend = totalSpend / actualDateRange.dayCount;
   
-  console.log('🔥 CRITICAL DEBUG - Meta spend distribution:', {
-    totalSpend,
-    dayCount: actualDateRange.dayCount,
-    dailySpend,
-    shouldBe57721: totalSpend === 57721,
-    shouldBe1Day: actualDateRange.dayCount === 1,
-    startDate: actualDateRange.startDate.toISOString().split('T')[0],
-    endDate: actualDateRange.endDate.toISOString().split('T')[0],
-    datesMatch: actualDateRange.startDate.toISOString().split('T')[0] === actualDateRange.endDate.toISOString().split('T')[0]
-  });
+  // Meta spend distribution
   
   // Generate daily data using the date range
   const dates = generateDateArray(actualDateRange);

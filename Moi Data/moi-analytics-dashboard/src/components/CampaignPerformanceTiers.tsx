@@ -13,8 +13,7 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
   // Use the performance tiers from the processed data
   const { performanceTiers, utmCampaigns } = data;
   
-  // Debug logging  
-  console.log('CampaignPerformanceTiers data:', { performanceTiers, utmCampaigns });
+  // Campaign performance tiers component initialized
   
   // Provide safe fallbacks for undefined data
   const safeUtmCampaigns = utmCampaigns || [];
@@ -31,15 +30,7 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
   const average = safeUtmCampaigns.filter(c => c.performanceTier === 'average');
   const poor = safeUtmCampaigns.filter(c => c.performanceTier === 'poor');
   
-  // Debug poor tier campaigns specifically
-  console.log('🔴 Poor tier campaigns:', poor);
-  console.log('🔴 Poor tier session details:', poor.map(c => ({
-    name: c.utmCampaign,
-    sessions: c.sessions,
-    totalSessions: c.totalSessions,
-    visitors: c.visitors
-  })));
-  console.log('🔴 Poor tier total sessions sum:', poor.reduce((sum, c) => sum + (c.sessions || c.totalSessions || 0), 0));
+  // Poor tier campaign analysis available in dev mode
 
   const getTierColor = (tier: string) => {
     switch (tier) {

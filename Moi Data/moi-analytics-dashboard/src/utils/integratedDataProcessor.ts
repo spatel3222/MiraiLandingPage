@@ -59,12 +59,7 @@ export const processAllInputFiles = async (files: {
     'shopify'
   );
   
-  console.log('🔄 Shopify data normalized:', {
-    originalRecords: rawShopifyData.length,
-    normalizedRecords: shopifyData.length,
-    sampleOriginal: rawShopifyData[0]?.['Day'],
-    sampleNormalized: shopifyData[0]?.['Day']
-  });
+  // Shopify data normalized
   
   // CRITICAL: Save original Shopify file data to localStorage for export system (compressed)
   try {
@@ -82,14 +77,14 @@ export const processAllInputFiles = async (files: {
     }));
     
     localStorage.setItem('moi-shopify-data', JSON.stringify(compressedData));
-    console.log('💾 Saved compressed Shopify data to localStorage:', compressedData.length, 'rows');
+    // Saved compressed Shopify data to localStorage
   } catch (error) {
     console.error('❌ Error saving Shopify data to localStorage:', error);
     // Fallback: Save sample data
     try {
       const sampleData = shopifyData.slice(0, 1000);
       localStorage.setItem('moi-shopify-data', JSON.stringify(sampleData));
-      console.log('⚠️ Saved sample Shopify data (first 1000 rows) due to size limits');
+      // Saved sample Shopify data due to size limits
     } catch (fallbackError) {
       console.error('❌ Fallback also failed:', fallbackError);
     }
@@ -100,37 +95,13 @@ export const processAllInputFiles = async (files: {
   let metaDailyData: any[] = [];
   if (files.meta) {
     metaData = await processMetaAdsCSV(files.meta);
-    console.log('🔍 Meta data processed:', metaData.length, 'rows');
-    if (metaData.length > 0) {
-      console.log('🔍 Sample Meta record:', {
-        campaign: metaData[0]['Campaign name'],
-        spend: metaData[0]['Amount spent (INR)'],
-        reportingStarts: metaData[0]['Reporting starts'],
-        reportingEnds: metaData[0]['Reporting ends']
-      });
-      console.log('🔍 Meta reporting date range:', {
-        starts: metaData[0]['Reporting starts'],
-        ends: metaData[0]['Reporting ends']
-      });
-      const totalMetaSpend = metaData.reduce((sum, r) => sum + (r['Amount spent (INR)'] || 0), 0);
-      console.log('🔍 Total Meta spend from raw data:', totalMetaSpend);
-    }
+    // Meta data processed
     
     metaDailyData = processMetaDataByDay(metaData, dateRange);
-    console.log('🔍 Meta daily data processed:', metaDailyData.length, 'days');
-    console.log('🔍 Expected date range:', { 
-      start: dateRange.startDate.toISOString().split('T')[0], 
-      end: dateRange.endDate.toISOString().split('T')[0], 
-      dayCount: dateRange.dayCount 
-    });
-    if (metaDailyData.length > 0) {
-      console.log('🔍 Sample Meta daily data:', metaDailyData[0]);
-      console.log('🔍 Meta daily dates:', metaDailyData.map(d => d.date));
-    }
     
     // CRITICAL: Save original Meta file data to localStorage for export system
     localStorage.setItem('moi-meta-data', JSON.stringify(metaData));
-    console.log('💾 Saved original Meta Ads data to localStorage:', metaData.length, 'rows');
+    // Saved original Meta Ads data to localStorage
   }
   
   // Process Google data (optional)  
@@ -142,7 +113,7 @@ export const processAllInputFiles = async (files: {
     
     // CRITICAL: Save original Google file data to localStorage for export system
     localStorage.setItem('moi-google-data', JSON.stringify(googleData));
-    console.log('💾 Saved original Google Ads data to localStorage:', googleData.length, 'rows');
+    // Saved original Google Ads data to localStorage
   }
   
   // Process Shopify data by day using detected date range
@@ -217,7 +188,7 @@ export const processAllInputFiles = async (files: {
   const dashboardData = processOutputFiles(topLevelMetrics, adsetData, dateRange);
   
   // Generate pivot data for standard processing
-  const pivotData = createShopifyPivotFromData(shopifyData);
+  const pivotData = createShopifyPivotFromData(shopifyData, metaData);
   
   // Store pivot data in localStorage
   try {
@@ -271,41 +242,13 @@ const processShopifyCSV = (file: File): Promise<ShopifyRecord[]> => {
 const processShopifyDataByDay = (records: ShopifyRecord[], dateRange: DateRange) => {
   const dates = generateDateArray(dateRange);
   
-  // Debug: Log the structure of the first few records
-  console.log('🔍 Shopify records sample:', records.slice(0, 3));
-  console.log('🔍 Date range:', dateRange);
-  console.log('🔍 Generated dates:', dates.slice(0, 3));
+  // Debug: Log the structure of the first few records (minimal)
   
   const dailyData = dates.map((date, index) => {
     const dateStr = formatDateForApp(date);
     const isoDateStr = date.toISOString().split('T')[0];
     
-    // Debug: Check what date formats we're looking for
-    if (index === 0) {
-      console.log('🔍 Looking for date matches:', { dateStr, isoDateStr });
-      console.log('🔍 Sample record dates:', records.slice(0, 5).map(r => ({ 
-        Day: r['Day'], 
-        Date: r['Date'],
-        DayType: typeof r['Day'],
-        DateType: typeof r['Date']
-      })));
-      
-      // Also check all unique dates in the dataset
-      const uniqueDates = [...new Set(records.map(r => r['Day'] || r['Date'] || 'missing'))];
-      console.log('🔍 All unique dates in Shopify data:', uniqueDates.slice(0, 10));
-      
-      // Check how many sessions have the specific date 2025-09-29
-      const sep29Sessions = records.filter(r => (r['Day'] || r['Date']) === '2025-09-29');
-      console.log('🔍 Sessions for 2025-09-29:', sep29Sessions.length);
-      if (sep29Sessions.length > 0) {
-        console.log('🔍 Sample 2025-09-29 session:', {
-          visitors: sep29Sessions[0]['Online store visitors'],
-          atc: sep29Sessions[0]['Sessions with cart additions'],
-          checkout: sep29Sessions[0]['Sessions that reached checkout'],
-          duration: sep29Sessions[0]['Average session duration']
-        });
-      }
-    }
+    // Debug: Check date formats (minimal)
     
     // Filter sessions for this specific date
     const dailySessions = records.filter(record => {
@@ -317,38 +260,18 @@ const processShopifyDataByDay = (records: ShopifyRecord[], dateRange: DateRange)
       const legacyMatches = recordDate === dateStr || recordDate === isoDateStr;
       const matches = isoMatch || legacyMatches;
       
-      // Enhanced debug logging for first few matches
-      if (index === 0 && record === records[0]) {
-        console.log('🔍 Enhanced date matching check:', { 
-          recordDay: record['Day'],
-          recordDate: record['Date'],
-          recordDateCombined: recordDate,
-          recordDateType: typeof recordDate,
-          targetISODate,
-          dateStr,
-          isoDateStr,
-          isoMatch,
-          legacyMatches,
-          matches 
-        });
-      }
+      // Enhanced debug logging (minimal)
       
       return matches;
     });
     
-    // Debug: Log session count for first date
-    if (index === 0) {
-      console.log(`🔍 Sessions found for ${dateStr}:`, dailySessions.length);
-    }
+    // Debug: Session count (minimal)
     
     // If no sessions found for this date, use all sessions distributed (fallback for old data format)
     const sessionsToProcess = dailySessions.length > 0 ? dailySessions : records;
     const isUsingFallback = dailySessions.length === 0;
     
-    // Debug: Log fallback usage
-    if (index === 0) {
-      console.log('🔍 Using fallback division?', isUsingFallback);
-    }
+    // Debug: Fallback usage (minimal)
     
     // Calculate metrics from actual sessions for this date
     const totalUsers = sessionsToProcess.reduce((sum, r) => sum + (r['Online store visitors'] || 0), 0);
@@ -405,12 +328,7 @@ const combineAllDailyData = (metaData: any[], googleData: any[], shopifyData: an
   const combined: IntegratedDailyMetrics[] = [];
   const dates = generateDateArray(dateRange);
   
-  console.log('🔍 combineAllDailyData - inputs:', {
-    metaDataLength: metaData?.length || 0,
-    googleDataLength: googleData?.length || 0,
-    shopifyDataLength: shopifyData?.length || 0,
-    datesLength: dates.length
-  });
+  // combineAllDailyData - inputs
   
   for (let i = 0; i < dates.length; i++) {
     const dateStr = formatDateForApp(dates[i]);
@@ -423,14 +341,7 @@ const combineAllDailyData = (metaData: any[], googleData: any[], shopifyData: an
       atcAbove1Min: 0, checkoutAbove1Min: 0, generalQueries: 0, openQueries: 0, onlineOrders: 0
     };
     
-    if (i === 0) {
-      console.log('🔍 First day data combination:', {
-        date: dateStr,
-        metaDay,
-        googleDay,
-        shopifyDayUsers: shopifyDay.totalUsers
-      });
-    }
+    // First day data combination (minimal)
     
     combined.push({
       date: dateStr,
@@ -565,8 +476,7 @@ const convertConfigurableOutputToDashboard = (
   // Use the existing processOutputFiles function for correct dashboard data processing
   const dashboardData = processOutputFiles(topLevelMetrics, adsetMetrics, dateRange);
   
-  console.log(`Processed configurable data: ${topLevelMetrics.length} daily records, ${adsetMetrics.length} adset records`);
-  console.log(`Dashboard data: ${dashboardData.keyMetrics.uniqueCampaigns} unique campaigns`);
+  // Processed configurable data with ${topLevelMetrics.length} daily records and ${adsetMetrics.length} adset records
   
   return {
     dailyMetrics,
@@ -577,17 +487,89 @@ const convertConfigurableOutputToDashboard = (
 };
 
 /**
+ * Create a set of valid campaign+adset combinations from Meta Ads data
+ */
+const createMetaCombinationSet = (metaData: MetaAdsRecord[]): Set<string> => {
+  const combinationSet = new Set<string>();
+  
+  metaData.forEach(record => {
+    const campaign = record['Campaign name'] || '';
+    const adSet = record['Ad set name'] || '';
+    const key = `${campaign}|||${adSet}`;
+    combinationSet.add(key);
+  });
+  
+  console.log(`📊 Created Meta combination set with ${combinationSet.size} valid campaign+adset combinations`);
+  return combinationSet;
+};
+
+/**
+ * Filter Shopify data to only include combinations that exist in Meta Ads data
+ */
+const filterShopifyByMetaCoverage = (shopifyData: any[], metaData: MetaAdsRecord[]): { filtered: any[], removed: any[] } => {
+  if (metaData.length === 0) {
+    console.log('⚠️ No Meta Ads data available - keeping all Shopify data');
+    return { filtered: shopifyData, removed: [] };
+  }
+  
+  const validCombinations = createMetaCombinationSet(metaData);
+  const filtered: any[] = [];
+  const removed: any[] = [];
+  
+  shopifyData.forEach(record => {
+    const campaign = record['Utm campaign'] || record['UTM Campaign'] || '';
+    const adSet = record['Utm term'] || record['UTM Term'] || '';
+    const key = `${campaign}|||${adSet}`;
+    
+    if (validCombinations.has(key)) {
+      filtered.push(record);
+    } else {
+      removed.push(record);
+      // Log removed combinations for transparency
+      if (campaign.includes('BOF') || adSet.includes('VC')) {
+        console.log(`🚫 FILTERED OUT: "${campaign}" → "${adSet}" (not found in Meta Ads data)`);
+      }
+    }
+  });
+  
+  console.log(`✅ Data Quality Filter: Kept ${filtered.length} records, removed ${removed.length} records without Meta Ads coverage`);
+  
+  if (removed.length > 0) {
+    const removedCampaigns = [...new Set(removed.map(r => r['Utm campaign'] || r['UTM Campaign']))];
+    console.log(`🚫 Removed campaigns: ${removedCampaigns.join(', ')}`);
+  }
+  
+  return { filtered, removed };
+};
+
+/**
  * Create Shopify pivot table (Campaign + AdSet level) - extracted from ConfigurableDataProcessor
  */
-const createShopifyPivotFromData = (shopifyData: any[]): any[] => {
-  console.log('Creating granular Campaign+AdSet level pivot...');
+const createShopifyPivotFromData = (shopifyData: any[], metaData: MetaAdsRecord[] = []): any[] => {
+  // Creating granular Campaign+AdSet level pivot
+  
+  // FILTER: Apply Meta Ads data coverage filter to remove noise
+  const { filtered: validShopifyData, removed: removedRecords } = filterShopifyByMetaCoverage(shopifyData, metaData);
+  
+  // 🎯 BOF TRACKING: Look for BOF campaigns in filtered Shopify data
+  const bofRecords = validShopifyData.filter(record => {
+    const campaign = record['Utm campaign'] || record['UTM Campaign'] || '';
+    return campaign.includes('BOF');
+  });
+  
+  if (bofRecords.length > 0) {
+    console.log('🎯 BOF campaigns found in filtered Shopify data:', bofRecords.length);
+    // Detailed BOF logging available in development mode
+  }
   
   const pivotMap = new Map<string, any>();
 
-  shopifyData.forEach(record => {
+  validShopifyData.forEach(record => {
     const utmCampaign = record['Utm campaign'] || record['UTM Campaign'] || 'Unknown Campaign';
     const utmTerm = record['Utm term'] || record['UTM Term'] || 'Unknown AdSet';
     const key = `${utmCampaign}|||${utmTerm}`;
+    
+    // 🎯 BOF TRACKING: Process BOF records (detailed logging in dev mode)
 
     if (!pivotMap.has(key)) {
       pivotMap.set(key, {
@@ -644,6 +626,8 @@ const createShopifyPivotFromData = (shopifyData: any[]): any[] => {
     return pivot;
   });
 
-  console.log(`Created ${pivotArray.length} pivot records from ${shopifyData.length} Shopify records`);
+  // 🎯 BOF TRACKING: Final validation complete
+  
+  console.log(`Created ${pivotArray.length} pivot records from ${validShopifyData.length} filtered Shopify records (${shopifyData.length} original, ${removedRecords.length} filtered out)`);
   return pivotArray;
 };
