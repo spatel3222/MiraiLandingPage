@@ -52,7 +52,7 @@ export class ConfigurableDataProcessor {
       combinationSet.add(key);
     });
     
-    console.log(`📊 ConfigurableProcessor: Created Meta combination set with ${combinationSet.size} valid campaign+adset combinations`);
+    // console.log(`📊 ConfigurableProcessor: Created Meta combination set with ${combinationSet.size} valid campaign+adset combinations`);
     return combinationSet;
   }
 
@@ -61,7 +61,7 @@ export class ConfigurableDataProcessor {
    */
   private static filterShopifyByMetaCoverage(shopifyData: any[], metaData: MetaAdsRecord[]): { filtered: any[], removed: any[] } {
     if (metaData.length === 0) {
-      console.log('⚠️ ConfigurableProcessor: No Meta Ads data available - keeping all Shopify data');
+      // console.log('⚠️ ConfigurableProcessor: No Meta Ads data available - keeping all Shopify data');
       return { filtered: shopifyData, removed: [] };
     }
     
@@ -80,16 +80,16 @@ export class ConfigurableDataProcessor {
         removed.push(record);
         // Log removed combinations for transparency
         if (campaign.includes('BOF') || adSet.includes('VC')) {
-          console.log(`🚫 ConfigurableProcessor FILTERED OUT: "${campaign}" → "${adSet}" (not found in Meta Ads data)`);
+          // console.log(`🚫 ConfigurableProcessor FILTERED OUT: "${campaign}" → "${adSet}" (not found in Meta Ads data)`);
         }
       }
     });
     
-    console.log(`✅ ConfigurableProcessor Data Quality Filter: Kept ${filtered.length} records, removed ${removed.length} records without Meta Ads coverage`);
+    // console.log(`✅ ConfigurableProcessor Data Quality Filter: Kept ${filtered.length} records, removed ${removed.length} records without Meta Ads coverage`);
     
     if (removed.length > 0) {
       const removedCampaigns = [...new Set(removed.map(r => r['Utm campaign'] || r['UTM Campaign']))];
-      console.log(`🚫 ConfigurableProcessor Removed campaigns: ${removedCampaigns.join(', ')}`);
+      // console.log(`🚫 ConfigurableProcessor Removed campaigns: ${removedCampaigns.join(', ')}`);
     }
     
     return { filtered, removed };
@@ -166,7 +166,7 @@ export class ConfigurableDataProcessor {
       // Store pivot data in localStorage for Export Reports access
       try {
         localStorage.setItem('moi-pivot-data', JSON.stringify(pivotData));
-        console.log(`Stored ${pivotData.length} pivot records in localStorage`);
+        // console.log(`Stored ${pivotData.length} pivot records in localStorage`);
       } catch (error) {
         console.warn('Failed to store pivot data in localStorage:', error);
       }
@@ -210,7 +210,7 @@ export class ConfigurableDataProcessor {
     });
     
     if (bofRecords.length > 0) {
-      console.log('🎯 ConfigurableProcessor: BOF campaigns found:', bofRecords.length);
+      // console.log('🎯 ConfigurableProcessor: BOF campaigns found:', bofRecords.length);
     }
     
     const pivotMap = new Map<string, any>();
@@ -268,7 +268,7 @@ export class ConfigurableDataProcessor {
 
     // 🎯 BOF TRACKING: Final validation complete
     
-    console.log(`ConfigurableProcessor: Created pivot with ${pivotArray.length} Campaign+AdSet combinations from ${validShopifyData.length} filtered Shopify records (${shopifyData.length} original, ${removedRecords.length} filtered out)`);
+    // console.log(`ConfigurableProcessor: Created pivot with ${pivotArray.length} Campaign+AdSet combinations from ${validShopifyData.length} filtered Shopify records (${shopifyData.length} original, ${removedRecords.length} filtered out)`);
     return pivotArray;
   }
 
@@ -417,7 +417,7 @@ export class ConfigurableDataProcessor {
     if (filteredMatch) {
       const fieldName = filteredMatch[1];
       const filterDescription = filteredMatch[2];
-      return this.executeFilteredAggregation(fieldName, filterDescription, configRow.inputFrom, context);
+      return this.executeFilteredAggregation(fieldName, filterDescription, configRow.inputFrom, context, pivotRow);
     }
 
     // Simple calculations (e.g., "users / Spent")
@@ -666,20 +666,50 @@ export class ConfigurableDataProcessor {
     fieldName: string, 
     filterDescription: string, 
     inputSource: string, 
-    context: ProcessingContext
+    context: ProcessingContext,
+    pivotRow: any | null = null
   ): number {
-    // For now, implement basic filtered aggregation
-    // This can be enhanced to parse filter conditions more sophisticatedly
+    // Implement actual filtering based on session duration
     
     if (filterDescription.includes('session duration is above one minute')) {
-      // Simulate filtering by session duration > 1 minute
-      // In a real implementation, this would filter the actual data
-      const baseValue = this.aggregateField(fieldName, 'sum', inputSource, context);
+      // For individual rows (Ad Set Level processing)
+      if (pivotRow) {
+        // Check this specific row's session duration
+        const sessionDuration = this.parseNumber(pivotRow['Average session duration'] || pivotRow['Session Duration'] || 0);
+        if (sessionDuration > 60) {
+          // If session duration > 60 seconds, return the field value
+          return this.parseNumber(pivotRow[fieldName] || 0);
+        } else {
+          // If session duration <= 60 seconds, return 0
+          return 0;
+        }
+      }
       
-      // Apply a factor for filtering (this is a simplified implementation)
-      // In practice, you'd filter the actual data based on session duration
-      // Return actual filtered value from data, not estimated
-      return baseValue; // Use actual value, no artificial multiplier
+      // For aggregation (Top Level Daily)
+      let data: any[] = [];
+      
+      switch (inputSource) {
+        case 'Shopify Export':
+          data = context.pivotData;
+          break;
+        default:
+          return 0;
+      }
+      
+      // Filter rows where session duration > 60 seconds
+      const filteredValues = data
+        .filter(row => {
+          // Get session duration from "Average session duration" field
+          const sessionDuration = this.parseNumber(row['Average session duration'] || row['Session Duration'] || 0);
+          return sessionDuration > 60; // Filter for > 1 minute (60 seconds)
+        })
+        .map(row => this.parseNumber(row[fieldName]))
+        .filter(value => !isNaN(value) && value >= 0);
+      
+      // Return sum of filtered values
+      return filteredValues.length > 0 
+        ? filteredValues.reduce((sum, val) => sum + val, 0)
+        : 0;
     }
     
     // Default to regular aggregation if filter not recognized
@@ -751,9 +781,22 @@ export class ConfigurableDataProcessor {
       this.downloadCSV(dailyCsv, `${filename}_Top_Level_Daily.csv`);
     }
 
-    // Export Pivot data
+    // Export Pivot data with consistent column names
     if (output.pivotData.length > 0) {
-      const pivotCsv = Papa.unparse(output.pivotData, {
+      // Rename columns to match processing expectations (UTM Campaign, UTM Term)
+      const renamedPivotData = output.pivotData.map(row => ({
+        'UTM Campaign': row['UTM Campaign'] || '',
+        'UTM Term': row['UTM Term'] || '',
+        'Date': row['Date'] || '',
+        'Online store visitors': row['Online store visitors'] || 0,
+        'Sessions': row['Sessions'] || 0,
+        'Sessions with cart additions': row['Sessions with cart additions'] || 0,
+        'Sessions that reached checkout': row['Sessions that reached checkout'] || 0,
+        'Average session duration': row['Average session duration'] || 0,
+        'Pageviews': row['Pageviews'] || 0
+      }));
+
+      const pivotCsv = Papa.unparse(renamedPivotData, {
         header: true,
         delimiter: ',',
         quotes: true

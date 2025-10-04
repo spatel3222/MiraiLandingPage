@@ -1,0 +1,54 @@
+Date,Campaign name,Ad Set Name,Ad Set Delivery,Ad Set Level Spent,Ad Set Level Users,Cost per user,Ad Set Level ATC,Ad Set Level Reached Checkout,Ad Set Level Conversions,Ad Set Level Average session duration,Ad Set Level Users with Session above 1 min,Ad Set Level Cost per 1 min user,Ad Set Level 1min user/ total users (%),Ad Set Level ATC with session duration above 1 min,Ad Set Level Reached Checkout with session duration above 1 min,Ad Set Level Users with Above 5 page views and above 1 min
+"2025-09-29","BOF | DPA","VC & ATC_60 Days - IG","active",950.77,146,6.51,0,0,0,63.1875,0,-999,-999,0,0,0
+"2025-09-29","TOF | AND","TOF | Mumbai | TRLa","active",1204.83,369,3.27,1,1,0,81.20731707317073,0,-999,-999,0,0,0
+"2025-09-29","TOF | ALL","T1 - TRLi - FEED","active",3753.37,529,7.10,1,0,0,96.48463356973996,0,-999,-999,0,0,0
+"2025-09-29","TOF | ALL","T2 -  TRLi","active",2861.8,459,6.23,0,0,0,79.60545722713864,0,-999,-999,0,0,0
+"2025-09-29","BOF | DPA","VC & ATC_180 Days - FBi","active",1005.32,263,3.82,3,2,0,128.07456140350877,0,-999,-999,0,0,0
+"2025-09-29","TOF | ALL","T1 - FB - TRLi","active",1531.85,438,3.50,2,1,0,85.6875,0,-999,-999,0,0,0
+"2025-09-29","TOF | Story/Reel","T1 | TRL | IGi | RL","active",3103.23,537,5.78,1,1,0,127.53448275862068,0,-999,-999,0,0,0
+"2025-09-29","BOF | DPA","VC & ATC_1 Day - FB","active",451.64,77,5.87,0,0,0,146.11111111111111,0,-999,-999,0,0,0
+"2025-09-29","BOF | DPA","VC & ATC_14 Days - FB","active",748.57,199,3.76,1,0,0,145.10416666666666,0,-999,-999,0,0,0
+"2025-09-29","BOF | DPA","VC & ATC_60 Days - IGi","active",751.2,178,4.22,0,0,0,67.23333333333333,0,-999,-999,0,0,0
+"2025-09-29","BOF | DPA","VC & ATC_1 Day - IG","active",1034.25,130,7.96,1,1,0,120.63157894736842,0,-999,-999,0,0,0
+"2025-09-29","MOF","MOF | DABA | ENGDi","active",1376.64,171,8.05,0,0,0,88.25,0,-999,-999,0,0,0
+"2025-09-29","TOF | CUSTOM | AUTO","T2 - INT JWLi","active",898.27,198,4.54,0,0,0,30.06,0,-999,-999,0,0,0
+"2025-09-29","TOF | ALL","IND - TRLi","active",2000.4,497,4.02,2,1,0,74.32589285714286,0,-999,-999,0,0,0
+"2025-09-29","TOF | 80k","LUXE | IGi","active",565.81,84,6.74,0,0,0,107.5,0,-999,-999,0,0,0
+"2025-09-29","BOF | DPA","VC & ATC_60 Days - FB","active",457.98,138,3.32,2,1,0,171.82051282051282,0,-999,-999,0,0,0
+"2025-09-29","TOF | Story/Reel","TRL | IGi | ST","active",1390.99,116,11.99,0,0,0,145.08823529411765,0,-999,-999,0,0,0
+"2025-09-29","TOF | AND","TOF | Delhi | TRLa","active",1237.5,466,2.66,0,0,0,94.8625,0,-999,-999,0,0,0
+"2025-09-29","TOF | New Arrivals","T1 - TRLi - FEED SV","active",494.15,30,16.47,0,0,0,333.6666666666667,0,-999,-999,0,0,0
+"2025-09-29","TOF | CUSTOM | AUTO","T1 - INT JWLi","active",1541.48,267,5.77,1,1,0,131.88235294117646,0,-999,-999,0,0,0
+"2025-09-29","TOF | India Modern","TOF | Bangalore | TIFFi","active",492.43,82,6.01,1,0,0,102,0,-999,-999,0,0,0
+"2025-09-29","TOF | CUSTOM | AUTO","TRL | IGi","active",526.23,26,20.24,0,0,0,18.714285714285715,0,-999,-999,0,0,0
+"2025-09-29","TOF | Chennai Store","LUXEi - IG","active",304.96,32,9.53,0,0,0,22,0,-999,-999,0,0,0
+"2025-09-29","MOF","MOF | New Arrivals","active",512.57,12,42.71,0,0,0,116.33333333333333,0,-999,-999,0,0,0
+"2025-09-29","TOF | Chennai Store","TRLi - IG","active",539.17,36,14.98,0,0,0,36.5,0,-999,-999,0,0,0
+"2025-09-29","TOF | India Modern","TOF | Delhi | TIFFi","active",748.38,120,6.24,2,0,0,12.3125,0,-999,-999,0,0,0
+"2025-09-29","TOF | India Modern","TOF | Mumbai | TIFFi","active",741.82,137,5.41,0,0,0,77.68181818181819,0,-999,-999,0,0,0
+"2025-09-29","TOF | Chennai Store","INT JWLi - IG","active",506.03,64,7.91,0,0,0,77.28571428571429,0,-999,-999,0,0,0
+"2025-09-29","BOF | DPA","VC & ATC_180 Days - IGi","active",490.46,84,5.84,0,0,0,36.43859649122807,0,-999,-999,0,0,0
+"2025-09-29","BOF | DPA","VC & ATC_14 Days - IG","active",995.46,169,5.89,2,1,0,105.68181818181819,0,-999,-999,0,0,0
+"2025-09-29","TOF | Chennai Store","OCCi - IG","active",509.47,29,17.57,0,0,0,19,0,-999,-999,0,0,0
+"2025-09-29","TOF | New Arrivals","T1 - TRLi - RL SV","active",529.93,87,6.09,0,0,0,77.4,0,-999,-999,0,0,0
+"2025-09-29","TOF | AND","TOF | Bangalore | TRLa","active",592.52,142,4.17,0,0,0,113.6,0,-999,-999,0,0,0
+"2025-09-29","BOF | DPA","VC & ATC_1 Day - IGi","active",866.71,81,10.70,1,1,0,167.05882352941177,0,-999,-999,0,0,0
+"2025-09-29","MOF","MOF | DABA | IGi","active",1282.82,55,23.32,0,0,0,169.95652173913044,0,-999,-999,0,0,0
+"2025-09-29","MOF","MOF | New Arrivals | RL SV","active",499.03,22,22.68,0,0,0,60.4,0,-999,-999,0,0,0
+"2025-09-29","TOF | All That Grace","ARL | IGi","active",1238.08,42,29.48,1,0,0,376.9375,0,-999,-999,0,0,0
+"2025-09-29","BOF | DPA","VC & ATC_14 Days - IGi","active",772.18,143,5.40,0,0,0,76.75,0,-999,-999,0,0,0
+"2025-09-29","TOF | 80k","OCC – IGi","active",496.22,79,6.28,0,0,0,26.547619047619047,0,-999,-999,0,0,0
+"2025-09-29","TOF | Chennai Store","COM - LUXEi - IG","active",141.43,10,14.14,0,0,0,0,0,-999,-999,0,0,0
+"2025-09-29","TOF | New Arrivals","T1 - INT JWLi - FEED DABA","active",416.48,19,21.92,0,0,0,144.83333333333334,0,-999,-999,0,0,0
+"2025-09-29","TOF | Ahmedabad Store","LUXEi - IG","active",85.46,7,12.21,0,0,0,0,0,-999,-999,0,0,0
+"2025-09-29","MOF","MOF | MUMi","active",504.68,11,45.88,0,0,0,16.333333333333332,0,-999,-999,0,0,0
+"2025-09-29","TOF | Ahmedabad Store","TRLi - IG","active",73.94,9,8.22,0,0,0,289,0,-999,-999,0,0,0
+"2025-09-29","The behno New York x Moi collaboration","The behno New York x Moi collaboration - Reach","active",105.47,14,7.53,0,0,0,5,0,-999,-999,0,0,0
+"2025-09-29","TOF | 80k","T1 - LUXEi","active",957.25,70,13.68,0,0,0,210.07142857142858,0,-999,-999,0,0,0
+"2025-09-29","TOF | New Arrivals","T1 - INT JWLi - ST SV","active",155.59,11,14.14,0,0,0,49.5,0,-999,-999,0,0,0
+"2025-09-29","TOF | New Arrivals","T1 - TRLi - ST SI","active",455.13,15,30.34,1,0,0,73.2,0,-999,-999,0,0,0
+"2025-09-29","TOF | Chennai Store","COM - TRLi - IG","active",60.54,14,4.32,0,0,0,0,0,-999,-999,0,0,0
+"2025-09-29","TOF | Ahmedabad Store","INT JWLi - IG","active",29.19,1,29.19,0,0,0,0,0,-999,-999,0,0,0
+"2025-09-29","TOF | New Arrivals","T1 - INT JWLi - FEED SI","active",380.9,14,27.21,0,0,0,21.5,0,-999,-999,0,0,0
+"2025-09-29","MOF","MOF | BLRi","active",224.07,3,74.69,0,0,0,250,0,-999,-999,0,0,0
+"2025-09-29","MOF","MOF | DELi","active",432.28,5,86.46,0,0,0,242.66666666666666,0,-999,-999,0,0,0

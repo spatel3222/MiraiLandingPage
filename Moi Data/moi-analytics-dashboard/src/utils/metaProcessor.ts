@@ -10,6 +10,7 @@ export interface MetaAdsRecord {
   'Ad set delivery': string;
   'Reporting starts': string;
   'Reporting ends': string;
+  'Ad Set Level Users'?: number; // Optional in case some CSVs don't have this field
 }
 
 export interface MetaDailyData {
@@ -32,7 +33,8 @@ export const processMetaAdsCSV = (file: File): Promise<MetaAdsRecord[]> => {
             ...record,
             'Amount spent (INR)': parseFloat(record['Amount spent (INR)']) || 0,
             'CPM (cost per 1,000 impressions)': parseFloat(record['CPM (cost per 1,000 impressions)']) || 0,
-            'CTR (link click-through rate)': parseFloat(record['CTR (link click-through rate)']) || 0
+            'CTR (link click-through rate)': parseFloat(record['CTR (link click-through rate)']) || 0,
+            'Ad Set Level Users': parseFloat(record['Ad Set Level Users']) || 0
           })) as MetaAdsRecord[];
           
           // Meta CSV parsing - sample converted record
