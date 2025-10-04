@@ -16,7 +16,7 @@ const PerformanceTierModal: React.FC<Props> = ({ onClose }) => {
       borderColor: 'border-green-300',
       textColor: 'text-green-800',
       criteria: '500+ Quality Users',
-      logic: 'Campaigns attracting 500 or more quality users (visitors who spend >1 minute on site) demonstrate exceptional ability to engage the right audience with compelling content.',
+      logic: 'Campaigns attracting 500 or more quality users (visitors who spend &gt;1 minute on site) demonstrate exceptional ability to engage the right audience with compelling content. This represents the top performance tier.',
       reasons: [
         'Highly effective audience targeting',
         'Compelling ad creative that attracts engaged users',
@@ -124,14 +124,32 @@ const PerformanceTierModal: React.FC<Props> = ({ onClose }) => {
 
         {/* Content */}
         <div className="p-6">
-          {/* Overview */}
-          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <h3 className="font-benton font-semibold text-blue-900 mb-2">Quality User-Based Tier System</h3>
-            <p className="font-benton text-sm text-blue-800">
-              Campaigns are automatically categorized into performance tiers based on the number of quality users they attract. 
+          {/* Overview - Enhanced */}
+          <div className="mb-6 p-5 bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-300 rounded-xl">
+            <h3 className="font-orpheus text-lg font-bold text-blue-900 mb-3">Quality User-Based Tier System</h3>
+            <p className="font-benton text-sm text-blue-800 mb-3 leading-relaxed">
+              Campaigns are automatically categorized into performance tiers based on the number of <strong>quality users</strong> they attract. 
               Quality users are visitors who spend more than 1 minute on the site, indicating genuine engagement and interest. 
               This metric provides more meaningful insights into campaign effectiveness than raw traffic volume.
             </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+              <div className="bg-green-100 rounded p-2 text-center border border-green-200">
+                <div className="font-bold text-green-800">Excellent</div>
+                <div className="text-green-700">500+ Users</div>
+              </div>
+              <div className="bg-yellow-100 rounded p-2 text-center border border-yellow-200">
+                <div className="font-bold text-yellow-800">Good</div>
+                <div className="text-yellow-700">200-499 Users</div>
+              </div>
+              <div className="bg-orange-100 rounded p-2 text-center border border-orange-200">
+                <div className="font-bold text-orange-800">Average</div>
+                <div className="text-orange-700">50-199 Users</div>
+              </div>
+              <div className="bg-red-100 rounded p-2 text-center border border-red-200">
+                <div className="font-bold text-red-800">Poor</div>
+                <div className="text-red-700">&lt;50 Users</div>
+              </div>
+            </div>
           </div>
 
           {/* Tier Details */}
@@ -218,7 +236,7 @@ const PerformanceTierModal: React.FC<Props> = ({ onClose }) => {
                   <li>• Improve targeting to attract engaged users</li>
                   <li>• Optimize landing page for engagement</li>
                   <li>• Test creatives that encourage exploration</li>
-                  <li>• Consider pausing campaigns with <50 quality users</li>
+                  <li>• Consider pausing campaigns with &lt;50 quality users</li>
                 </ul>
               </div>
             </div>
@@ -239,4 +257,5 @@ const PerformanceTierModal: React.FC<Props> = ({ onClose }) => {
   );
 };
 
+// Fixed JSX escaping issue
 export default PerformanceTierModal;

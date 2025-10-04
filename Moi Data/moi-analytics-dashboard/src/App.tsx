@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Settings, MessageCircle, Download, X, Send, FileUp, RotateCcw } from 'lucide-react';
 import KeyMetricsPanel from './components/KeyMetricsPanel';
-import CampaignPerformanceTiers from './components/CampaignPerformanceTiers';
+import SimplifiedCampaignPerformance from './components/SimplifiedCampaignPerformance';
 import UploadModal from './components/UploadModal';
 import MultiFileUploadModal from './components/MultiFileUploadModal';
 import ExportModal from './components/ExportModal';
@@ -21,7 +21,7 @@ import type { DashboardData } from './types';
  * Create Shopify pivot table (Campaign + AdSet level) - same logic as integratedDataProcessor
  */
 const createShopifyPivotFromShopifyData = (shopifyData: any[]): any[] => {
-  console.log('📊 Creating granular Campaign+AdSet level pivot...');
+  // console.log('📊 Creating granular Campaign+AdSet level pivot...');
   
   const pivotMap = new Map<string, any>();
 
@@ -85,7 +85,7 @@ const createShopifyPivotFromShopifyData = (shopifyData: any[]): any[] => {
     return pivot;
   });
 
-  console.log(`📊 Created ${pivotArray.length} pivot records from ${shopifyData.length} Shopify records`);
+  // console.log(`📊 Created ${pivotArray.length} pivot records from ${shopifyData.length} Shopify records`);
   return pivotArray;
 };
 
@@ -107,7 +107,7 @@ function App() {
       // Check if user just reset all data
       const wasReset = localStorage.getItem('moi-reset-flag');
       if (wasReset) {
-        console.log('Reset flag detected, skipping automatic data loading...');
+        // console.log('Reset flag detected, skipping automatic data loading...');
         localStorage.removeItem('moi-reset-flag');
         return; // Exit early, don't load any data
       }
@@ -682,7 +682,7 @@ Reached Checkout ",Total Abandoned Checkout,Session Duration,Users with Session 
             <KeyMetricsPanel data={dashboardData} />
             
             {/* Campaign Performance Tiers */}
-            <CampaignPerformanceTiers data={dashboardData} />
+            <SimplifiedCampaignPerformance />
           </div>
         ) : (
           <div className="space-y-8">
@@ -792,7 +792,7 @@ Reached Checkout ",Total Abandoned Checkout,Session Duration,Users with Session 
           onClose={() => setShowLogicSettings(false)}
           onConfigurationChange={(config) => {
             // Logic configuration changed - could trigger data reprocessing
-            console.log('Logic configuration updated:', config);
+            // console.log('Logic configuration updated:', config);
           }}
         />
       )}

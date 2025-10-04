@@ -64,30 +64,46 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
     title: string; 
     count: number;
   }> = ({ tier, campaigns, title, count }) => (
-    <div className={`rounded-lg border-2 p-4 relative ${getTierColor(tier)}`}>
-      {/* Subtle background icon */}
-      <div className="absolute top-2 right-2 opacity-10 pointer-events-none">
-        <div className="w-8 h-8">
+    <div className={`rounded-xl border-2 p-5 relative ${getTierColor(tier)} transition-all duration-200 hover:shadow-lg`}>
+      {/* Enhanced background icon */}
+      <div className="absolute top-3 right-3 opacity-15 pointer-events-none">
+        <div className="w-10 h-10">
           {getTierIcon(tier)}
         </div>
       </div>
       
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="font-benton text-lg font-semibold">{title}</h3>
-        <span className="font-benton text-2xl font-bold">{count}</span>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center space-x-2">
+          {getTierIcon(tier)}
+          <h3 className="font-orpheus text-lg font-bold">{title}</h3>
+        </div>
+        <span className="font-benton text-3xl font-bold">{count}</span>
       </div>
       
       {campaigns.length > 0 && (
         <div className="space-y-3">
-          {/* Primary Metric - Quality Users */}
-          <div className="bg-white bg-opacity-50 rounded-lg p-3 border border-white border-opacity-30">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Quality Users</span>
-              <span className="text-lg font-bold">
+          {/* Primary Metric - Quality Users - Enhanced */}
+          <div className="bg-white bg-opacity-70 rounded-lg p-4 border-2 border-white border-opacity-50 shadow-sm">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <span className="text-sm font-bold text-gray-800">Quality Users</span>
+              </div>
+              <span className="text-xl font-black">
                 {formatNumber(campaigns.reduce((sum, c) => sum + (c.qualityCustomers || 0), 0))}
               </span>
             </div>
-            <p className="text-xs opacity-75 mt-1">Visitors with >1min session time</p>
+            <p className="text-xs text-gray-600 font-medium">Visitors with &gt;1min session time</p>
+            <div className="mt-2 bg-blue-100 rounded-full h-1.5">
+              <div 
+                className="bg-blue-500 h-1.5 rounded-full transition-all duration-500" 
+                style={{
+                  width: tier === 'excellent' ? '100%' : 
+                         tier === 'good' ? '75%' : 
+                         tier === 'average' ? '50%' : '25%'
+                }}
+              ></div>
+            </div>
           </div>
           
           {/* Secondary Metrics */}
@@ -163,20 +179,43 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
         </button>
       </div>
       
-      {/* Quality User Focus Note */}
-      <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
-        <div className="flex items-start space-x-3">
-          <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-            <TrendingUp className="w-4 h-4 text-blue-600" />
+      {/* Quality User Focus Note - Enhanced */}
+      <div className="mb-6 p-6 bg-gradient-to-r from-green-50 via-blue-50 to-purple-50 border-2 border-blue-300 rounded-xl shadow-sm">
+        <div className="flex items-start space-x-4">
+          <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+            <TrendingUp className="w-6 h-6 text-white" />
           </div>
-          <div>
-            <p className="font-benton text-sm font-medium text-blue-900 mb-1">
-              Quality User-Based Performance Tiers
+          <div className="flex-1">
+            <div className="flex items-center space-x-3 mb-2">
+              <h3 className="font-orpheus text-xl font-bold text-gray-900">
+                Quality User-Based Performance Tiers
+              </h3>
+              <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                NEW METRIC
+              </span>
+            </div>
+            <p className="font-benton text-sm text-gray-700 mb-3 leading-relaxed">
+              Campaign performance is now measured by the number of <strong>quality users</strong> (visitors who spend &gt;1 minute on site), 
+              providing more meaningful insights into user engagement and campaign effectiveness than raw traffic volume.
             </p>
-            <p className="font-benton text-sm text-blue-800">
-              Campaign performance is now measured by the number of quality users (visitors who spend >1 minute on site), 
-              providing more meaningful insights into user engagement and campaign effectiveness.
-            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+              <div className="bg-white bg-opacity-60 rounded-lg p-2 text-center">
+                <div className="font-semibold text-green-700">Excellent</div>
+                <div className="text-green-600">500+ Users</div>
+              </div>
+              <div className="bg-white bg-opacity-60 rounded-lg p-2 text-center">
+                <div className="font-semibold text-yellow-700">Good</div>
+                <div className="text-yellow-600">200-499 Users</div>
+              </div>
+              <div className="bg-white bg-opacity-60 rounded-lg p-2 text-center">
+                <div className="font-semibold text-orange-700">Average</div>
+                <div className="text-orange-600">50-199 Users</div>
+              </div>
+              <div className="bg-white bg-opacity-60 rounded-lg p-2 text-center">
+                <div className="font-semibold text-red-700">Poor</div>
+                <div className="text-red-600">&lt;50 Users</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -209,36 +248,51 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
         />
       </div>
 
-      {/* Quality-Focused Summary Stats */}
-      <div className="mt-6 pt-4 border-t border-moi-light">
+      {/* Enhanced Quality-Focused Summary Stats */}
+      <div className="mt-8 pt-6 border-t-2 border-moi-light">
+        <h3 className="font-orpheus text-lg font-bold text-moi-charcoal mb-4 text-center">
+          Quality User Performance Overview
+        </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-4">
-            <p className="font-benton text-2xl font-bold text-green-700">
+          <div className="bg-gradient-to-br from-green-50 to-emerald-100 rounded-xl p-5 border border-green-200 shadow-sm hover:shadow-md transition-shadow">
+            <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
+              <span className="text-white text-sm font-bold">Σ</span>
+            </div>
+            <p className="font-benton text-3xl font-black text-green-700 mb-1">
               {formatNumber(safeUtmCampaigns.reduce((sum, c) => sum + (c.qualityCustomers || 0), 0))}
             </p>
-            <p className="font-benton text-sm text-green-600 font-medium">Total Quality Users</p>
-            <p className="font-benton text-xs text-green-500">Across all campaigns</p>
+            <p className="font-benton text-sm text-green-700 font-bold">Total Quality Users</p>
+            <p className="font-benton text-xs text-green-600">Across all campaigns</p>
           </div>
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4">
-            <p className="font-benton text-2xl font-bold text-blue-700">
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl p-5 border border-blue-200 shadow-sm hover:shadow-md transition-shadow">
+            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2">
+              <span className="text-white text-sm font-bold">%</span>
+            </div>
+            <p className="font-benton text-3xl font-black text-blue-700 mb-1">
               {safeUtmCampaigns.length > 0 ? Math.round(((excellent.length + good.length) / safeUtmCampaigns.length) * 100) : 0}%
             </p>
-            <p className="font-benton text-sm text-blue-600 font-medium">High Performing</p>
-            <p className="font-benton text-xs text-blue-500">Excellent + Good tiers</p>
+            <p className="font-benton text-sm text-blue-700 font-bold">High Performing</p>
+            <p className="font-benton text-xs text-blue-600">Excellent + Good tiers</p>
           </div>
-          <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-lg p-4">
-            <p className="font-benton text-2xl font-bold text-purple-700">
+          <div className="bg-gradient-to-br from-purple-50 to-violet-100 rounded-xl p-5 border border-purple-200 shadow-sm hover:shadow-md transition-shadow">
+            <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2">
+              <span className="text-white text-sm font-bold">⭐</span>
+            </div>
+            <p className="font-benton text-3xl font-black text-purple-700 mb-1">
               {formatNumber(excellent.concat(good).reduce((sum, c) => sum + (c.qualityCustomers || 0), 0))}
             </p>
-            <p className="font-benton text-sm text-purple-600 font-medium">Top Tier Quality Users</p>
-            <p className="font-benton text-xs text-purple-500">From best campaigns</p>
+            <p className="font-benton text-sm text-purple-700 font-bold">Top Tier Quality Users</p>
+            <p className="font-benton text-xs text-purple-600">From best campaigns</p>
           </div>
-          <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-lg p-4">
-            <p className="font-benton text-2xl font-bold text-orange-700">
+          <div className="bg-gradient-to-br from-orange-50 to-red-100 rounded-xl p-5 border border-orange-200 shadow-sm hover:shadow-md transition-shadow">
+            <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-2">
+              <span className="text-white text-sm font-bold">⚠</span>
+            </div>
+            <p className="font-benton text-3xl font-black text-orange-700 mb-1">
               {poor.length}
             </p>
-            <p className="font-benton text-sm text-orange-600 font-medium">Need Optimization</p>
-            <p className="font-benton text-xs text-orange-500">Poor tier campaigns</p>
+            <p className="font-benton text-sm text-orange-700 font-bold">Need Optimization</p>
+            <p className="font-benton text-xs text-orange-600">Poor tier campaigns</p>
           </div>
         </div>
       </div>
