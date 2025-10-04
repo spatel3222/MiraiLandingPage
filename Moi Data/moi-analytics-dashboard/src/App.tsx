@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { Settings, MessageCircle, Download, X, Send, FileUp, RotateCcw } from 'lucide-react';
 import KeyMetricsPanel from './components/KeyMetricsPanel';
 import CampaignPerformanceTiers from './components/CampaignPerformanceTiers';
-import UTMCampaignTable from './components/UTMCampaignTable';
 import UploadModal from './components/UploadModal';
 import MultiFileUploadModal from './components/MultiFileUploadModal';
 import ExportModal from './components/ExportModal';
@@ -684,9 +683,6 @@ Reached Checkout ",Total Abandoned Checkout,Session Duration,Users with Session 
             
             {/* Campaign Performance Tiers */}
             <CampaignPerformanceTiers data={dashboardData} />
-            
-            {/* UTM Campaign Table */}
-            <UTMCampaignTable data={dashboardData} />
           </div>
         ) : (
           <div className="space-y-8">
@@ -760,16 +756,6 @@ Reached Checkout ",Total Abandoned Checkout,Session Duration,Users with Session 
                 </div>
               </div>
 
-              {/* Table Empty State */}
-              <div className="bg-white rounded-lg border border-moi-light p-6">
-                <h2 className="font-orpheus text-2xl font-bold text-moi-charcoal mb-6">
-                  UTM Campaign Analysis Table
-                </h2>
-                <div className="text-center py-12 text-moi-grey">
-                  <p className="font-benton text-lg mb-2">No campaigns to display</p>
-                  <p className="font-benton text-sm">Upload data files to generate reports and view campaign analysis</p>
-                </div>
-              </div>
             </div>
         )}
       </main>

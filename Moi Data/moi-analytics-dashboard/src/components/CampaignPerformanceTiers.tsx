@@ -78,13 +78,33 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
       </div>
       
       {campaigns.length > 0 && (
-        <div className="space-y-2">
-          <div className="text-sm">
-            <p><strong>Total Sessions:</strong> {formatNumber(campaigns.reduce((sum, c) => sum + (c.sessions || c.totalSessions || 0), 0))}</p>
-            <p><strong>Quality Customers (&gt;1min):</strong> {formatNumber(campaigns.reduce((sum, c) => sum + (c.qualityCustomers || 0), 0))}</p>
-            <p><strong>Avg Quality Conversion:</strong> {(campaigns.reduce((sum, c) => sum + (c.qualityConversionRate || c.conversionRate || c.checkoutRate || 0), 0) / campaigns.length).toFixed(2)}%</p>
+        <div className="space-y-3">
+          {/* Primary Metric - Quality Users */}
+          <div className="bg-white bg-opacity-50 rounded-lg p-3 border border-white border-opacity-30">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Quality Users</span>
+              <span className="text-lg font-bold">
+                {formatNumber(campaigns.reduce((sum, c) => sum + (c.qualityCustomers || 0), 0))}
+              </span>
+            </div>
+            <p className="text-xs opacity-75 mt-1">Visitors with >1min session time</p>
+          </div>
+          
+          {/* Secondary Metrics */}
+          <div className="text-sm space-y-1">
+            <div className="flex justify-between">
+              <span>Total Sessions:</span>
+              <span className="font-medium">{formatNumber(campaigns.reduce((sum, c) => sum + (c.sessions || c.totalSessions || 0), 0))}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Avg Conversion:</span>
+              <span className="font-medium">{(campaigns.reduce((sum, c) => sum + (c.qualityConversionRate || c.conversionRate || c.checkoutRate || 0), 0) / campaigns.length).toFixed(2)}%</span>
+            </div>
             {campaigns.some(c => c.adSpend) && (
-              <p><strong>Total Ad Spend:</strong> ₹{formatNumber(campaigns.reduce((sum, c) => sum + (c.adSpend || 0), 0))}</p>
+              <div className="flex justify-between">
+                <span>Ad Spend:</span>
+                <span className="font-medium">₹{formatNumber(campaigns.reduce((sum, c) => sum + (c.adSpend || 0), 0))}</span>
+              </div>
             )}
           </div>
           
@@ -92,10 +112,13 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
             <div className="text-xs space-y-1">
               {campaigns.map((campaign, idx) => (
                 <div key={idx} className="truncate">
-                  • {campaign.utmCampaign} ({(campaign.conversionRate || campaign.checkoutRate || 0).toFixed(2)}%)
-                  {campaign.adSpend && (
-                    <span className="text-gray-600 ml-1">(₹{formatNumber(campaign.adSpend)})</span>
-                  )}
+                  • {campaign.utmCampaign}
+                  <div className="text-gray-600 ml-2 text-xs">
+                    {formatNumber(campaign.qualityCustomers || 0)} quality users
+                    {campaign.adSpend && (
+                      <span className="ml-1">• ₹{formatNumber(campaign.adSpend)}</span>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
@@ -104,10 +127,13 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
               <div className="space-y-1 mb-1">
                 {campaigns.slice(0, 2).map((campaign, idx) => (
                   <div key={idx} className="truncate">
-                    • {campaign.utmCampaign} ({(campaign.conversionRate || campaign.checkoutRate || 0).toFixed(2)}%)
-                    {campaign.adSpend && (
-                      <span className="text-gray-600 ml-1">(₹{formatNumber(campaign.adSpend)})</span>
-                    )}
+                    • {campaign.utmCampaign}
+                    <div className="text-gray-600 ml-2 text-xs">
+                      {formatNumber(campaign.qualityCustomers || 0)} quality users
+                      {campaign.adSpend && (
+                        <span className="ml-1">• ₹{formatNumber(campaign.adSpend)}</span>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -137,12 +163,22 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
         </button>
       </div>
       
-      {/* Quality Customer Note */}
-      <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-        <p className="font-benton text-sm text-blue-800">
-          <strong>Quality-Based Performance:</strong> Tiers now based on customers who spend &gt;1 minute on site, 
-          providing more accurate conversion insights from pivot temp data.
-        </p>
+      {/* Quality User Focus Note */}
+      <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
+        <div className="flex items-start space-x-3">
+          <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+            <TrendingUp className="w-4 h-4 text-blue-600" />
+          </div>
+          <div>
+            <p className="font-benton text-sm font-medium text-blue-900 mb-1">
+              Quality User-Based Performance Tiers
+            </p>
+            <p className="font-benton text-sm text-blue-800">
+              Campaign performance is now measured by the number of quality users (visitors who spend >1 minute on site), 
+              providing more meaningful insights into user engagement and campaign effectiveness.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Performance Tiers Grid */}
@@ -173,32 +209,36 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
         />
       </div>
 
-      {/* Summary Stats */}
+      {/* Quality-Focused Summary Stats */}
       <div className="mt-6 pt-4 border-t border-moi-light">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div>
-            <p className="font-benton text-2xl font-bold text-moi-charcoal">
+          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-4">
+            <p className="font-benton text-2xl font-bold text-green-700">
+              {formatNumber(safeUtmCampaigns.reduce((sum, c) => sum + (c.qualityCustomers || 0), 0))}
+            </p>
+            <p className="font-benton text-sm text-green-600 font-medium">Total Quality Users</p>
+            <p className="font-benton text-xs text-green-500">Across all campaigns</p>
+          </div>
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4">
+            <p className="font-benton text-2xl font-bold text-blue-700">
               {safeUtmCampaigns.length > 0 ? Math.round(((excellent.length + good.length) / safeUtmCampaigns.length) * 100) : 0}%
             </p>
-            <p className="font-benton text-sm text-moi-grey">High Quality Campaigns</p>
+            <p className="font-benton text-sm text-blue-600 font-medium">High Performing</p>
+            <p className="font-benton text-xs text-blue-500">Excellent + Good tiers</p>
           </div>
-          <div>
-            <p className="font-benton text-2xl font-bold text-moi-charcoal">
-              {formatNumber(excellent.concat(good).reduce((sum, c) => sum + c.sessions, 0))}
+          <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-lg p-4">
+            <p className="font-benton text-2xl font-bold text-purple-700">
+              {formatNumber(excellent.concat(good).reduce((sum, c) => sum + (c.qualityCustomers || 0), 0))}
             </p>
-            <p className="font-benton text-sm text-moi-grey">Quality Traffic</p>
+            <p className="font-benton text-sm text-purple-600 font-medium">Top Tier Quality Users</p>
+            <p className="font-benton text-xs text-purple-500">From best campaigns</p>
           </div>
-          <div>
-            <p className="font-benton text-2xl font-bold text-moi-charcoal">
-              {safeUtmCampaigns.length > 0 ? (safeUtmCampaigns.reduce((sum, c) => sum + (c.qualityConversionRate || c.conversionRate || 0), 0) / safeUtmCampaigns.length).toFixed(2) : 0}
-            </p>
-            <p className="font-benton text-sm text-moi-grey">Avg Quality Score</p>
-          </div>
-          <div>
-            <p className="font-benton text-2xl font-bold text-moi-charcoal">
+          <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-lg p-4">
+            <p className="font-benton text-2xl font-bold text-orange-700">
               {poor.length}
             </p>
-            <p className="font-benton text-sm text-moi-grey">Need Optimization</p>
+            <p className="font-benton text-sm text-orange-600 font-medium">Need Optimization</p>
+            <p className="font-benton text-xs text-orange-500">Poor tier campaigns</p>
           </div>
         </div>
       </div>
