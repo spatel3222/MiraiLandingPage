@@ -39,7 +39,7 @@ const KeyMetricsPanel: React.FC<Props> = ({ data }) => {
         <h3 className="font-benton text-lg font-semibold text-moi-grey mb-4">
           Campaign Information
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="bg-moi-beige rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -75,15 +75,7 @@ const KeyMetricsPanel: React.FC<Props> = ({ data }) => {
               <TrendingUp className="w-8 h-8 text-moi-red" />
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Row 2: User Behavior */}
-      <div className="mb-8">
-        <h3 className="font-benton text-lg font-semibold text-moi-grey mb-4">
-          User Behavior
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          
           <div className="bg-moi-beige rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -95,46 +87,11 @@ const KeyMetricsPanel: React.FC<Props> = ({ data }) => {
               <Users className="w-8 h-8 text-moi-red" />
             </div>
           </div>
-          
-          <div className="bg-moi-beige rounded-lg p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-benton text-sm text-moi-grey">Total Sessions</p>
-                <p className="font-benton text-2xl font-bold text-moi-charcoal">
-                  {formatNumber(keyMetrics.totalSessions)}
-                </p>
-              </div>
-              <MousePointer className="w-8 h-8 text-moi-red" />
-            </div>
-          </div>
-          
-          <div className="bg-moi-beige rounded-lg p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-benton text-sm text-moi-grey">Avg Session Time</p>
-                <p className="font-benton text-2xl font-bold text-moi-charcoal">
-                  {formatTime(keyMetrics.avgSessionTime)}
-                </p>
-              </div>
-              <Clock className="w-8 h-8 text-moi-red" />
-            </div>
-          </div>
-          
-          <div className="bg-moi-beige rounded-lg p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-benton text-sm text-moi-grey">Pageviews per Session</p>
-                <p className="font-benton text-2xl font-bold text-moi-charcoal">
-                  {keyMetrics.avgPageviewsPerSession}
-                </p>
-              </div>
-              <Eye className="w-8 h-8 text-moi-red" />
-            </div>
-          </div>
         </div>
       </div>
 
-      {/* Row 3: Funnel Data (BOF) */}
+
+      {/* Row 2: Funnel Data (BOF) */}
       <div>
         <h3 className="font-benton text-lg font-semibold text-moi-grey mb-4">
           Funnel Performance (Bottom of Funnel)

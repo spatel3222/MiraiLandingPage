@@ -53,6 +53,8 @@ const CampaignPerformanceTiers: React.FC<Props> = ({ data }) => {
   };
 
   const formatNumber = (num: number): string => {
+    if (num === -999) return 'N/A'; // No data available for this metric
+    if (num === null || num === undefined || isNaN(num) || !isFinite(num)) return 'N/A';
     if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
     if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
     return num.toLocaleString();

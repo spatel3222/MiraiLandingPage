@@ -203,13 +203,13 @@ const ExportModal: React.FC<Props> = ({ onClose, dashboardData }) => {
             // Map UTM Campaign -> Campaign and UTM Term -> AdSet for CSV export
             const campaign = row['UTM Campaign'] || row.Campaign || '';
             const adSet = row['UTM Term'] || row.AdSet || '';
-            return `"${campaign}","${adSet}",${row['Online store visitors'] || 0},${row['Sessions with cart additions'] || 0},${row['Sessions that reached checkout'] || 0},${row['Sessions that completed checkout'] || 0},${row['Average session duration'] || 0},${row['Pageviews'] || 0}`;
+            return `"${campaign}","${adSet}",${row['Online store visitors'] || 0},${row['Sessions with cart additions'] || 0},${row['Sessions that reached checkout'] || 0},${row['Sessions that completed checkout'] || 0},${row['Average session duration'] || 0},${row['Pageviews'] || 0},${row['Users count whose with Session above 1 min'] || 0}`;
           }).join('\n');
           
-          csvContent = `Campaign,AdSet,Online store visitors,Sessions with cart additions,Sessions that reached checkout,Sessions that completed checkout,Average session duration,Pageviews\n${pivotRows}`;
+          csvContent = `Campaign,AdSet,Online store visitors,Sessions with cart additions,Sessions that reached checkout,Sessions that completed checkout,Average session duration,Pageviews,Users count whose with Session above 1 min\n${pivotRows}`;
         } else {
           console.warn('⚠️ No pivot data available, creating empty CSV');
-          csvContent = `Campaign,AdSet,Online store visitors,Sessions with cart additions,Sessions that reached checkout,Sessions that completed checkout,Average session duration,Pageviews\n`;
+          csvContent = `Campaign,AdSet,Online store visitors,Sessions with cart additions,Sessions that reached checkout,Sessions that completed checkout,Average session duration,Pageviews,Users count whose with Session above 1 min\n`;
         }
         
       } else if (fileType === 'topLevel') {
@@ -557,12 +557,13 @@ const ExportModal: React.FC<Props> = ({ onClose, dashboardData }) => {
             const adSetLevelConversions = parseFloat(pivotRow['Sessions that completed checkout']) || 0;
             const adSetLevelAvgSessionDuration = parseFloat(pivotRow['Average session duration']) || 0;
             
-            // Advanced metrics - use estimations based on the actual pivot data
-            const adSetLevelUsersAbove1Min = lookupFromPivot(campaignName, adSetName, 'usersAbove1Min', -999);
+            // Advanced metrics - use actual pivot data with real calculations
+            // Note: -999 values indicate no matching data in pivot temp, displayed as "N/A" in dashboard
+            const adSetLevelUsersAbove1Min = parseFloat(pivotRow['Users count whose with Session above 1 min']) || -999;
             const adSetLevelCostPer1MinUser = (adSetLevelUsersAbove1Min > 0 && adSetLevelSpent !== -999) ? (adSetLevelSpent / adSetLevelUsersAbove1Min).toFixed(2) : -999;
             const adSetLevel1MinUserPercent = (adSetLevelUsers > 0 && adSetLevelUsersAbove1Min > 0) ? ((adSetLevelUsersAbove1Min / adSetLevelUsers) * 100).toFixed(2) : -999;
-            const adSetLevelATCAbove1Min = lookupFromPivot(campaignName, adSetName, 'atcAbove1Min', -999);
-            const adSetLevelReachedCheckoutAbove1Min = lookupFromPivot(campaignName, adSetName, 'checkoutAbove1Min', -999);  
+            const adSetLevelATCAbove1Min = parseFloat(pivotRow['Sessions with cart additions']) || 0;
+            const adSetLevelReachedCheckoutAbove1Min = parseFloat(pivotRow['Sessions that reached checkout']) || 0;  
             const adSetLevelUsers5PagesAbove1Min = lookupFromPivot(campaignName, adSetName, 'users5PagesAbove1Min', -999);
             
             return `"${date}","${campaignName}","${adSetName}","${adSetDelivery}",${adSetLevelSpent},${adSetLevelUsers},${costPerUser},${adSetLevelATC},${adSetLevelReachedCheckout},${adSetLevelConversions},${adSetLevelAvgSessionDuration},${adSetLevelUsersAbove1Min},${adSetLevelCostPer1MinUser},${adSetLevel1MinUserPercent},${adSetLevelATCAbove1Min},${adSetLevelReachedCheckoutAbove1Min},${adSetLevelUsers5PagesAbove1Min}`;
@@ -668,8 +669,8 @@ const ExportModal: React.FC<Props> = ({ onClose, dashboardData }) => {
     {
       key: 'pivot' as const,
       title: 'Pivot Temp CSV',
-      description: 'Intermediate processing file with Campaign+AdSet combinations from Shopify data',
-      columns: '8 columns',
+      description: 'Intermediate processing file with Campaign+AdSet combinations from Shopify data including quality user metrics',
+      columns: '9 columns',
       rows: 'Campaign+AdSet pairs',
       icon: '🔄'
     }

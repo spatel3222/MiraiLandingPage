@@ -27,6 +27,7 @@ const SimplifiedCampaignPerformance: React.FC = () => {
       setError(null);
       
       // Try to read from exported file first, fall back to internal CSV
+      // UPDATED: 2025-10-04T18:15:00 - Now using updated CSV with correct quality users data
       let response;
       try {
         response = await fetch('/MOI_Adset_Level_Matrices_Sep29-Sep29_2025.csv');
@@ -52,7 +53,7 @@ const SimplifiedCampaignPerformance: React.FC = () => {
         const columns = row.split(',').map(col => col.replace(/^"|"$/g, ''));
         const campaignName = columns[1] || 'Unknown Campaign';
         const totalUsers = parseFloat(columns[5]) || 0;
-        const qualityUsers = parseFloat(columns[11]) || 0;
+        const qualityUsers = isNaN(parseFloat(columns[11])) ? 0 : parseFloat(columns[11]);
         const adSpend = parseFloat(columns[4]) || 0;
         const addToCart = parseFloat(columns[7]) || 0;
         const checkoutSessions = parseFloat(columns[8]) || 0;
@@ -63,7 +64,15 @@ const SimplifiedCampaignPerformance: React.FC = () => {
         if (campaignMap.has(campaignName)) {
           const existing = campaignMap.get(campaignName)!;
           existing.totalUsers += totalUsers;
-          existing.qualityUsers += qualityUsers;
+          // Handle -999 values: only add valid values, ignore -999
+          if (qualityUsers !== -999) {
+            if (existing.qualityUsers === -999) {
+              existing.qualityUsers = qualityUsers; // First valid value replaces -999
+            } else {
+              existing.qualityUsers += qualityUsers;
+            }
+          }
+          // If both existing and new are -999, keep -999
           existing.adSpend += adSpend;
           existing.addToCart += addToCart;
           existing.checkoutSessions += checkoutSessions;
@@ -94,7 +103,8 @@ const SimplifiedCampaignPerformance: React.FC = () => {
   };
 
   const formatNumber = (num: number): string => {
-    if (num === null || num === undefined || isNaN(num) || !isFinite(num)) return '-999';
+    if (num === -999) return 'N/A'; // No data available for this metric
+    if (num === null || num === undefined || isNaN(num) || !isFinite(num)) return 'N/A';
     if (num === 0) return '0';
     const safeNum = Math.floor(Number(num));
     if (safeNum >= 1000000) return `${(safeNum / 1000000).toFixed(1)}M`;
@@ -103,7 +113,8 @@ const SimplifiedCampaignPerformance: React.FC = () => {
   };
 
   const formatCurrency = (num: number): string => {
-    if (num === null || num === undefined || isNaN(num) || !isFinite(num)) return '₹-999';
+    if (num === -999) return 'N/A'; // No data available for this metric
+    if (num === null || num === undefined || isNaN(num) || !isFinite(num)) return 'N/A';
     if (num === 0) return '₹0';
     return `₹${formatNumber(num)}`;
   };
@@ -111,11 +122,11 @@ const SimplifiedCampaignPerformance: React.FC = () => {
   const calculateTotalMetrics = () => {
     return campaignData.reduce(
       (totals, campaign) => ({
-        totalUsers: totals.totalUsers + campaign.totalUsers,
-        qualityUsers: totals.qualityUsers + campaign.qualityUsers,
-        adSpend: totals.adSpend + campaign.adSpend,
-        addToCart: totals.addToCart + campaign.addToCart,
-        checkoutSessions: totals.checkoutSessions + campaign.checkoutSessions,
+        totalUsers: totals.totalUsers + (campaign.totalUsers === -999 ? 0 : campaign.totalUsers),
+        qualityUsers: totals.qualityUsers + (campaign.qualityUsers === -999 ? 0 : campaign.qualityUsers),
+        adSpend: totals.adSpend + (campaign.adSpend === -999 ? 0 : campaign.adSpend),
+        addToCart: totals.addToCart + (campaign.addToCart === -999 ? 0 : campaign.addToCart),
+        checkoutSessions: totals.checkoutSessions + (campaign.checkoutSessions === -999 ? 0 : campaign.checkoutSessions),
         campaignCount: totals.campaignCount + 1
       }),
       { totalUsers: 0, qualityUsers: 0, adSpend: 0, addToCart: 0, checkoutSessions: 0, campaignCount: 0 }
@@ -210,64 +221,57 @@ const SimplifiedCampaignPerformance: React.FC = () => {
         </h3>
         
         {campaignData.length === 0 ? (
-          <div className="text-center py-8 text-moi-grey">
+          <div className="text-center py-4 text-moi-grey">
             No campaign data available
           </div>
         ) : (
-          <div className="grid gap-4">
+          <div className="grid gap-2">
             {campaignData.map((campaign, index) => (
-              <div key={index} className="bg-moi-beige rounded-lg p-4 border border-moi-light">
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h4 className="font-benton text-lg font-bold text-moi-charcoal">
+              <div key={index} className="bg-moi-beige rounded-lg p-3 border border-moi-light">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex-1">
+                    <h4 className="font-benton text-base font-bold text-moi-charcoal">
                       {campaign.campaignName}
                     </h4>
-                    <p className="font-benton text-sm text-moi-grey">
-                      Rank #{index + 1} by Quality Users
+                    <p className="font-benton text-xs text-moi-grey">
+                      Rank #{index + 1}
                     </p>
                   </div>
                   <div className="text-right">
-                    <div className="font-benton text-2xl font-bold text-moi-charcoal">
+                    <div className="font-benton text-xl font-bold text-moi-charcoal">
                       {formatNumber(campaign.qualityUsers)}
                     </div>
-                    <div className="font-benton text-sm text-moi-grey">Quality Users</div>
+                    <div className="font-benton text-xs text-moi-grey">Quality Users</div>
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
-                  <div className="flex items-center space-x-2">
-                    <Users className="w-4 h-4 text-moi-red" />
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                  <div className="flex items-center space-x-1">
+                    <Users className="w-3 h-3 text-moi-red flex-shrink-0" />
                     <div>
                       <div className="font-benton font-medium text-moi-charcoal">{formatNumber(campaign.totalUsers)}</div>
                       <div className="font-benton text-moi-grey">Total Users</div>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <DollarSign className="w-4 h-4 text-moi-red" />
+                  <div className="flex items-center space-x-1">
+                    <DollarSign className="w-3 h-3 text-moi-red flex-shrink-0" />
                     <div>
                       <div className="font-benton font-medium text-moi-charcoal">{formatCurrency(campaign.adSpend)}</div>
                       <div className="font-benton text-moi-grey">Ad Spend</div>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <ShoppingCart className="w-4 h-4 text-moi-red" />
+                  <div className="flex items-center space-x-1">
+                    <ShoppingCart className="w-3 h-3 text-moi-red flex-shrink-0" />
                     <div>
                       <div className="font-benton font-medium text-moi-charcoal">{formatNumber(campaign.addToCart)}</div>
-                      <div className="font-benton text-moi-grey">Add to Cart</div>
+                      <div className="font-benton text-moi-grey">ATC</div>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Target className="w-4 h-4 text-moi-red" />
-                    <div>
-                      <div className="font-benton font-medium text-moi-charcoal">{formatNumber(campaign.checkoutSessions)}</div>
-                      <div className="font-benton text-moi-grey">Checkouts</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <TrendingUp className="w-4 h-4 text-moi-red" />
+                  <div className="flex items-center space-x-1">
+                    <TrendingUp className="w-3 h-3 text-moi-red flex-shrink-0" />
                     <div>
                       <div className="font-benton font-medium text-moi-charcoal">
-                        {campaign.totalUsers > 0 ? ((campaign.qualityUsers / campaign.totalUsers) * 100).toFixed(1) : '-999'}%
+                        {campaign.totalUsers > 0 && campaign.qualityUsers !== -999 ? ((campaign.qualityUsers / campaign.totalUsers) * 100).toFixed(1) : 'N/A'}%
                       </div>
                       <div className="font-benton text-moi-grey">Quality Rate</div>
                     </div>

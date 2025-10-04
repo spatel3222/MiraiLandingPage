@@ -1,4 +1,4 @@
-// FORCE REFRESH META FIX: 2025-10-03T06:23:00 
+// UPDATED OUTPUT FILES: 2025-10-04T18:09:00 - Using latest Ad Set Level and Top Level CSV with correct pivot field mappings 
 import { useState, useEffect } from 'react';
 import { Settings, MessageCircle, Download, X, Send, FileUp, RotateCcw } from 'lucide-react';
 import KeyMetricsPanel from './components/KeyMetricsPanel';
