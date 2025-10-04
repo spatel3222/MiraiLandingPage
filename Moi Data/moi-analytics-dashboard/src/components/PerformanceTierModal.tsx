@@ -15,19 +15,19 @@ const PerformanceTierModal: React.FC<Props> = ({ onClose }) => {
       bgColor: 'bg-green-100',
       borderColor: 'border-green-300',
       textColor: 'text-green-800',
-      criteria: 'Conversion Rate ≥ 1.0%',
-      logic: 'Campaigns achieving 1% or higher conversion rate demonstrate exceptional performance with strong user engagement and effective targeting.',
+      criteria: '500+ Quality Users',
+      logic: 'Campaigns attracting 500 or more quality users (visitors who spend >1 minute on site) demonstrate exceptional ability to engage the right audience with compelling content.',
       reasons: [
-        'Highly targeted audience segments',
-        'Compelling ad creative and messaging',
-        'Optimized landing page experience',
-        'Strong product-market fit',
-        'Effective funnel optimization'
+        'Highly effective audience targeting',
+        'Compelling ad creative that attracts engaged users',
+        'Strong landing page experience encouraging exploration',
+        'Excellent product-market fit',
+        'Optimal campaign timing and placement'
       ],
       examples: [
-        { name: 'india-pmax-rings', conversionRate: '2.08%', reason: 'High-intent product searches with optimized Performance Max campaign' },
-        { name: 'Retargeting | Purchase Intent', conversionRate: '1.45%', reason: 'Targeting users who previously showed purchase behavior' },
-        { name: 'TOF | Lookalike Premium', conversionRate: '1.23%', reason: 'Quality lookalike audience based on high-value customers' }
+        { name: 'india-pmax-rings', qualityUsers: '750', reason: 'High-intent product searches with optimized Performance Max campaign attracting engaged shoppers' },
+        { name: 'Retargeting | Purchase Intent', qualityUsers: '650', reason: 'Targeting users who previously showed purchase behavior, resulting in high engagement' },
+        { name: 'TOF | Lookalike Premium', qualityUsers: '580', reason: 'Quality lookalike audience based on high-value customers spending significant time on site' }
       ]
     },
     {
@@ -38,19 +38,19 @@ const PerformanceTierModal: React.FC<Props> = ({ onClose }) => {
       bgColor: 'bg-yellow-100',
       borderColor: 'border-yellow-300',
       textColor: 'text-yellow-800',
-      criteria: 'Conversion Rate 0.5% - 0.99%',
-      logic: 'Solid performing campaigns with above-average conversion rates. These campaigns show good potential but have room for optimization.',
+      criteria: '200-499 Quality Users',
+      logic: 'Solid performing campaigns attracting 200-499 quality users. These campaigns show good engagement potential with room for scaling and optimization.',
       reasons: [
-        'Good targeting with minor refinements needed',
+        'Good targeting with opportunity for refinement',
         'Decent ad creative performance',
-        'Acceptable user experience',
-        'Room for landing page improvements',
-        'Moderate competition in target market'
+        'Acceptable user engagement levels',
+        'Room for experience improvements',
+        'Moderate market competition'
       ],
       examples: [
-        { name: 'BOF | Interest Stacking', conversionRate: '0.78%', reason: 'Multiple interests targeting with good engagement' },
-        { name: 'MOF | Engagement Custom', conversionRate: '0.65%', reason: 'Retargeting engaged users from previous campaigns' },
-        { name: 'Search | Brand Terms', conversionRate: '0.52%', reason: 'Brand awareness driving qualified traffic' }
+        { name: 'BOF | Interest Stacking', qualityUsers: '420', reason: 'Multiple interests targeting creating engaged user sessions' },
+        { name: 'MOF | Engagement Custom', qualityUsers: '315', reason: 'Retargeting engaged users from previous campaigns with good session depth' },
+        { name: 'Search | Brand Terms', qualityUsers: '280', reason: 'Brand awareness driving qualified, engaged traffic' }
       ]
     },
     {
@@ -61,19 +61,19 @@ const PerformanceTierModal: React.FC<Props> = ({ onClose }) => {
       bgColor: 'bg-orange-100',
       borderColor: 'border-orange-300',
       textColor: 'text-orange-800',
-      criteria: 'Conversion Rate 0.2% - 0.49%',
-      logic: 'Campaigns performing at market average. These need attention and optimization to improve effectiveness and ROI.',
+      criteria: '50-199 Quality Users',
+      logic: 'Campaigns attracting 50-199 quality users perform at market average. These need attention to improve user engagement and session quality.',
       reasons: [
-        'Broad targeting needs refinement',
-        'Ad creative requires optimization',
-        'Landing page experience issues',
-        'Pricing or offer competitiveness',
-        'Seasonal or timing factors'
+        'Broad targeting reducing engagement quality',
+        'Ad creative needs optimization for engagement',
+        'Landing page experience causing quick exits',
+        'Pricing or offer not compelling enough',
+        'Timing or placement issues affecting engagement'
       ],
       examples: [
-        { name: 'TOF | Broad Interest', conversionRate: '0.34%', reason: 'Wide audience targeting diluting conversion quality' },
-        { name: 'Display | Awareness', conversionRate: '0.28%', reason: 'Brand awareness focus with lower intent audience' },
-        { name: 'Social | Engagement', conversionRate: '0.21%', reason: 'Social traffic requires funnel optimization' }
+        { name: 'TOF | Broad Interest', qualityUsers: '145', reason: 'Wide audience targeting diluting user engagement quality' },
+        { name: 'Display | Awareness', qualityUsers: '95', reason: 'Brand awareness focus with users not deeply engaged' },
+        { name: 'Social | Engagement', qualityUsers: '78', reason: 'Social traffic requiring engagement optimization' }
       ]
     },
     {
@@ -84,19 +84,19 @@ const PerformanceTierModal: React.FC<Props> = ({ onClose }) => {
       bgColor: 'bg-red-100',
       borderColor: 'border-red-300',
       textColor: 'text-red-800',
-      criteria: 'Conversion Rate < 0.2%',
-      logic: 'Under-performing campaigns that require immediate attention, optimization, or potential pause to prevent budget waste.',
+      criteria: '<50 Quality Users',
+      logic: 'Campaigns attracting fewer than 50 quality users indicate poor audience targeting or engagement. These require immediate attention or potential pause.',
       reasons: [
         'Poor audience targeting or relevance',
-        'Weak ad creative or messaging',
-        'Landing page conversion issues',
+        'Weak ad creative failing to engage users',
+        'Landing page causing immediate bounce',
         'High competition or market saturation',
-        'Technical tracking or attribution problems'
+        'Technical tracking or user experience problems'
       ],
       examples: [
-        { name: 'BOF | DPA Broad', conversionRate: '0.13%', reason: 'Dynamic product ads with too broad targeting parameters' },
-        { name: 'TOF | Cold Traffic', conversionRate: '0.08%', reason: 'Untargeted cold audience with low purchase intent' },
-        { name: 'Display | Generic', conversionRate: '0.05%', reason: 'Generic display targeting without specific user criteria' }
+        { name: 'BOF | DPA Broad', qualityUsers: '32', reason: 'Dynamic product ads with too broad targeting causing poor engagement' },
+        { name: 'TOF | Cold Traffic', qualityUsers: '18', reason: 'Untargeted cold audience with low engagement and quick exits' },
+        { name: 'Display | Generic', qualityUsers: '12', reason: 'Generic display targeting without engagement focus' }
       ]
     }
   ];
@@ -108,10 +108,10 @@ const PerformanceTierModal: React.FC<Props> = ({ onClose }) => {
         <div className="flex items-center justify-between p-6 border-b border-moi-light">
           <div>
             <h2 className="font-orpheus text-2xl font-bold text-moi-charcoal">
-              Campaign Performance Tier Logic
+              Quality User-Based Performance Tiers
             </h2>
             <p className="font-benton text-sm text-moi-grey mt-1">
-              Understanding how campaigns are categorized based on conversion performance
+              Understanding how campaigns are categorized based on quality user engagement
             </p>
           </div>
           <button
@@ -126,10 +126,11 @@ const PerformanceTierModal: React.FC<Props> = ({ onClose }) => {
         <div className="p-6">
           {/* Overview */}
           <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <h3 className="font-benton font-semibold text-blue-900 mb-2">Performance Tier System</h3>
+            <h3 className="font-benton font-semibold text-blue-900 mb-2">Quality User-Based Tier System</h3>
             <p className="font-benton text-sm text-blue-800">
-              Campaigns are automatically categorized into performance tiers based on their conversion rates. 
-              This helps identify which campaigns are driving results and which need optimization or budget reallocation.
+              Campaigns are automatically categorized into performance tiers based on the number of quality users they attract. 
+              Quality users are visitors who spend more than 1 minute on the site, indicating genuine engagement and interest. 
+              This metric provides more meaningful insights into campaign effectiveness than raw traffic volume.
             </p>
           </div>
 
@@ -184,7 +185,7 @@ const PerformanceTierModal: React.FC<Props> = ({ onClose }) => {
                             {example.name}
                           </h5>
                           <span className={`px-2 py-1 rounded text-xs font-bold ${tier.textColor}`}>
-                            {example.conversionRate}
+                            {example.qualityUsers} users
                           </span>
                         </div>
                         <p className="font-benton text-xs text-moi-grey">
@@ -200,22 +201,24 @@ const PerformanceTierModal: React.FC<Props> = ({ onClose }) => {
 
           {/* Action Items */}
           <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-            <h3 className="font-benton font-semibold text-moi-charcoal mb-3">Recommended Actions by Tier:</h3>
+            <h3 className="font-benton font-semibold text-moi-charcoal mb-3">Recommended Actions by Quality User Tier:</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-benton text-sm">
               <div>
-                <h4 className="font-medium text-green-700 mb-1">Excellent & Good Campaigns:</h4>
+                <h4 className="font-medium text-green-700 mb-1">Excellent & Good Campaigns (High Quality User Count):</h4>
                 <ul className="text-moi-grey space-y-1">
-                  <li>• Scale budget allocation</li>
-                  <li>• Expand to similar audiences</li>
-                  <li>• Test additional creatives</li>
+                  <li>• Scale budget to attract more quality users</li>
+                  <li>• Expand to similar engaged audiences</li>
+                  <li>• Test additional creatives that drive engagement</li>
+                  <li>• Optimize for session depth and time spent</li>
                 </ul>
               </div>
               <div>
-                <h4 className="font-medium text-red-700 mb-1">Average & Poor Campaigns:</h4>
+                <h4 className="font-medium text-red-700 mb-1">Average & Poor Campaigns (Low Quality User Count):</h4>
                 <ul className="text-moi-grey space-y-1">
-                  <li>• Optimize targeting and creatives</li>
-                  <li>• Review landing page experience</li>
-                  <li>• Consider pausing worst performers</li>
+                  <li>• Improve targeting to attract engaged users</li>
+                  <li>• Optimize landing page for engagement</li>
+                  <li>• Test creatives that encourage exploration</li>
+                  <li>• Consider pausing campaigns with <50 quality users</li>
                 </ul>
               </div>
             </div>
