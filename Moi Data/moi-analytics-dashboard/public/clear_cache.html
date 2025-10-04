@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🧹 Clear MOI Dashboard Cache</title>
+    <style>
+        body { 
+            font-family: monospace; 
+            padding: 40px; 
+            background: #1a1a1a; 
+            color: #00ff00;
+            text-align: center;
+        }
+        .container { max-width: 600px; margin: 0 auto; }
+        .cache-item { 
+            background: #2a2a2a; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 8px; 
+            border-left: 4px solid #ff4444; 
+        }
+        .clear-button {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px 10px;
+        }
+        .clear-button:hover { background: #ff6666; }
+        .success { color: #44ff44; font-weight: bold; }
+        .warning { color: #ffaa44; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧹 MOI Dashboard Cache Management</h1>
+        <p><strong>Purpose:</strong> Clear all artificial estimations and force fresh data processing</p>
+        
+        <div id="cache-status"></div>
+        
+        <button class="clear-button" onclick="clearAllCache()">
+            🗑️ Clear All Cache
+        </button>
+        
+        <button class="clear-button" onclick="clearDataOnly()">
+            🔄 Clear Data Only
+        </button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function showCacheStatus() {
+            const cacheKeys = [
+                'moi-dashboard-data',
+                'moi-output-data', 
+                'moi-shopify-data',
+                'moi-meta-data',
+                'moi-google-data',
+                'moi-pivot-data',
+                'moi-dashboard-timestamp',
+                'moi-output-timestamp'
+            ];
+            
+            let output = '<h2>📊 Current Cache Status</h2>';
+            let totalSize = 0;
+            
+            cacheKeys.forEach(key => {
+                const data = localStorage.getItem(key);
+                if (data) {
+                    const sizeKB = Math.round(data.length / 1024);
+                    totalSize += sizeKB;
+                    output += `
+                        <div class="cache-item">
+                            <strong>${key}:</strong> ${sizeKB}KB
+                        </div>
+                    `;
+                } else {
+                    output += `
+                        <div class="cache-item" style="border-left-color: #888;">
+                            <strong>${key}:</strong> <span style="color: #888;">Empty</span>
+                        </div>
+                    `;
+                }
+            });
+            
+            output += `<p class="warning">Total Cache Size: ${totalSize}KB</p>`;
+            document.getElementById('cache-status').innerHTML = output;
+        }
+        
+        function clearAllCache() {
+            const beforeCount = localStorage.length;
+            localStorage.clear();
+            const afterCount = localStorage.length;
+            
+            document.getElementById('result').innerHTML = `
+                <div class="success">
+                    ✅ All localStorage cleared!<br>
+                    Removed ${beforeCount} items<br>
+                    <strong>All artificial estimations eliminated</strong><br>
+                    <em>Refresh the dashboard to process fresh data</em>
+                </div>
+            `;
+            
+            showCacheStatus();
+        }
+        
+        function clearDataOnly() {
+            const dataKeys = [
+                'moi-dashboard-data',
+                'moi-output-data', 
+                'moi-shopify-data',
+                'moi-meta-data',
+                'moi-google-data',
+                'moi-pivot-data',
+                'moi-dashboard-timestamp',
+                'moi-output-timestamp'
+            ];
+            
+            let clearedCount = 0;
+            dataKeys.forEach(key => {
+                if (localStorage.getItem(key)) {
+                    localStorage.removeItem(key);
+                    clearedCount++;
+                }
+            });
+            
+            document.getElementById('result').innerHTML = `
+                <div class="success">
+                    ✅ Data cache cleared!<br>
+                    Removed ${clearedCount} data items<br>
+                    <strong>Artificial multipliers eliminated</strong><br>
+                    <em>Upload files again to get clean data</em>
+                </div>
+            `;
+            
+            showCacheStatus();
+        }
+        
+        // Show status on load
+        window.addEventListener('load', showCacheStatus);
+    </script>
+</body>
+</html>

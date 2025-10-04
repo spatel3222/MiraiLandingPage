@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🔍 Poor Tier Sessions Calculator</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #1a1a1a; color: #00ff00; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .calculation-block { 
+            background: #2a2a2a; 
+            padding: 20px; 
+            margin: 15px 0; 
+            border-radius: 8px; 
+            border-left: 4px solid #ff4444; 
+        }
+        .campaign-row { 
+            display: grid; 
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr; 
+            gap: 10px; 
+            padding: 8px 0; 
+            border-bottom: 1px solid #444; 
+        }
+        .header-row { 
+            font-weight: bold; 
+            color: #ffff00; 
+            border-bottom: 2px solid #ffff00; 
+        }
+        .negative { color: #ff4444; font-weight: bold; }
+        .positive { color: #44ff44; font-weight: bold; }
+        .zero { color: #888888; }
+        .math-step { 
+            background: #3a3a3a; 
+            padding: 10px; 
+            margin: 5px 0; 
+            border-radius: 4px; 
+        }
+        .proof { 
+            background: #4a1a1a; 
+            padding: 15px; 
+            border: 2px solid #ff4444; 
+            border-radius: 8px; 
+            margin: 20px 0; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Poor Tier Sessions Calculation Debug</h1>
+        <p><strong>Investigating:</strong> How -995,910 sessions are calculated for Poor performing campaigns</p>
+        
+        <div id="calculation-results"></div>
+    </div>
+
+    <script>
+        function debugPoorSessions() {
+            const dashboardDataRaw = localStorage.getItem('moi-dashboard-data');
+            const pivotDataRaw = localStorage.getItem('moi-pivot-data');
+            
+            if (!dashboardDataRaw) {
+                document.getElementById('calculation-results').innerHTML = `
+                    <div class="calculation-block">
+                        <h2>❌ No Dashboard Data Found</h2>
+                        <p>Please load the dashboard first (Generate Reports) to see the calculation.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const dashboardData = JSON.parse(dashboardDataRaw);
+            const campaigns = dashboardData.campaigns || [];
+            
+            let output = `
+                <div class="calculation-block">
+                    <h2>📊 Dashboard Data Summary</h2>
+                    <p><strong>Total Campaigns:</strong> ${campaigns.length}</p>
+                    <p><strong>Data Source:</strong> ${dashboardData.lastUpdated || 'Unknown'}</p>
+                </div>
+            `;
+
+            // Categorize campaigns by performance tier
+            const poorCampaigns = campaigns.filter(c => {
+                const rate = c.conversionRate || c.checkoutRate || 0;
+                return rate < 0.2;
+            });
+
+            output += `
+                <div class="calculation-block">
+                    <h2>🎯 Poor Performing Campaigns (< 0.2% conversion)</h2>
+                    <p><strong>Poor Campaign Count:</strong> ${poorCampaigns.length}</p>
+                    <div class="campaign-row header-row">
+                        <div>Campaign + AdSet</div>
+                        <div>Sessions</div>
+                        <div>Total Sessions</div>
+                        <div>Conversion %</div>
+                        <div>Contributing</div>
+                    </div>
+            `;
+
+            let totalPoorSessions = 0;
+            let negativeContributions = 0;
+            let sentinelCount = 0;
+
+            poorCampaigns.forEach((campaign, index) => {
+                const sessions = campaign.sessions || 0;
+                const totalSessions = campaign.totalSessions || 0;
+                const conversionRate = campaign.conversionRate || campaign.checkoutRate || 0;
+                
+                // This is the exact calculation from CampaignPerformanceTiers.tsx:92
+                const contributingValue = sessions || totalSessions || 0;
+                
+                totalPoorSessions += contributingValue;
+                
+                if (contributingValue < 0) negativeContributions++;
+                if (contributingValue === -999) sentinelCount++;
+
+                const campaignName = `${campaign.utmCampaign || 'Unknown'} / ${campaign.utmTerm || 'Unknown'}`;
+                const valueClass = contributingValue < 0 ? 'negative' : 
+                                 contributingValue === 0 ? 'zero' : 'positive';
+
+                output += `
+                    <div class="campaign-row">
+                        <div>${campaignName.substring(0, 40)}...</div>
+                        <div class="${valueClass}">${sessions.toLocaleString()}</div>
+                        <div class="${valueClass}">${totalSessions.toLocaleString()}</div>
+                        <div>${conversionRate.toFixed(3)}%</div>
+                        <div class="${valueClass}">${contributingValue.toLocaleString()}</div>
+                    </div>
+                `;
+            });
+
+            output += `</div>`;
+
+            // Mathematical proof
+            output += `
+                <div class="proof">
+                    <h2>🧮 Mathematical Proof</h2>
+                    
+                    <div class="math-step">
+                        <strong>Step 1:</strong> CampaignPerformanceTiers.tsx line 92 calculation:
+                        <code>campaigns.reduce((sum, c) => sum + (c.sessions || c.totalSessions || 0), 0)</code>
+                    </div>
+                    
+                    <div class="math-step">
+                        <strong>Step 2:</strong> Poor campaigns contributing to total:
+                        <ul>
+                            <li>Poor campaigns: ${poorCampaigns.length}</li>
+                            <li>Negative contributions: ${negativeContributions}</li>
+                            <li>Sentinel values (-999): ${sentinelCount}</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="math-step">
+                        <strong>Step 3:</strong> Total calculation result:
+                        <span class="negative">${totalPoorSessions.toLocaleString()}</span>
+                    </div>
+                    
+                    <div class="math-step">
+                        <strong>Step 4:</strong> Reverse engineering the -995,910:
+                        <ul>
+                            <li>If result = -995,910</li>
+                            <li>And most values are -999 (sentinel)</li>
+                            <li>Then: -995,910 ÷ -999 = ${Math.round(-995910 / -999)} rows</li>
+                            <li>This means ~${Math.round(-995910 / -999)} campaigns have -999 sessions</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            // Show sample data that's causing the issue
+            if (sentinelCount > 0) {
+                output += `
+                    <div class="calculation-block">
+                        <h2>🚨 Root Cause: Sentinel Value Problem</h2>
+                        <p><strong>Problem:</strong> ${sentinelCount} campaigns have -999 sessions (sentinel value for "no data")</p>
+                        <p><strong>Impact:</strong> These are being summed as actual negative numbers instead of being treated as "missing data"</p>
+                        <p><strong>Fix needed:</strong> Filter out -999 values before summing, or convert them to 0</p>
+                        
+                        <h3>Sample -999 campaigns:</h3>
+                        <div class="campaign-row header-row">
+                            <div>Campaign</div>
+                            <div>Sessions</div>
+                            <div>Total Sessions</div>
+                            <div>Why -999?</div>
+                        </div>
+                `;
+
+                poorCampaigns
+                    .filter(c => (c.sessions || c.totalSessions || 0) === -999)
+                    .slice(0, 5)
+                    .forEach(campaign => {
+                        output += `
+                            <div class="campaign-row">
+                                <div>${campaign.utmCampaign || 'Unknown'}</div>
+                                <div class="negative">${campaign.sessions || 'undefined'}</div>
+                                <div class="negative">${campaign.totalSessions || 'undefined'}</div>
+                                <div>Missing data placeholder</div>
+                            </div>
+                        `;
+                    });
+
+                output += `</div>`;
+            }
+
+            // Solution
+            output += `
+                <div class="calculation-block">
+                    <h2>✅ Solution</h2>
+                    <p><strong>Current code (broken):</strong></p>
+                    <code>campaigns.reduce((sum, c) => sum + (c.sessions || c.totalSessions || 0), 0)</code>
+                    
+                    <p><strong>Fixed code:</strong></p>
+                    <code>campaigns.reduce((sum, c) => {
+    const sessions = c.sessions || c.totalSessions || 0;
+    return sum + (sessions === -999 ? 0 : Math.max(0, sessions));
+}, 0)</code>
+                    
+                    <p><strong>What this fixes:</strong></p>
+                    <ul>
+                        <li>Treats -999 as 0 (no data available)</li>
+                        <li>Prevents negative session counts</li>
+                        <li>Eliminates the -995,910 mathematical error</li>
+                    </ul>
+                </div>
+            `;
+
+            document.getElementById('calculation-results').innerHTML = output;
+        }
+
+        // Run debug on load
+        window.addEventListener('load', debugPoorSessions);
+    </script>
+</body>
+</html>

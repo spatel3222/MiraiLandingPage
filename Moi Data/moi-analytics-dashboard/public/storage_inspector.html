@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🔍 Storage Inspector</title>
+    <style>
+        body { 
+            font-family: monospace; 
+            padding: 20px; 
+            background: #1a1a1a; 
+            color: #00ff00;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .storage-item { 
+            background: #2a2a2a; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 8px; 
+            border-left: 4px solid #44ff44; 
+        }
+        .data-preview { 
+            background: #333; 
+            padding: 10px; 
+            border-radius: 4px; 
+            overflow-x: auto; 
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+        .inspect-button {
+            background: #44ff44;
+            color: #1a1a1a;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .inspect-button:hover { background: #66ff66; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Complete Storage Inspector</h1>
+        <p><strong>Purpose:</strong> See ALL localStorage keys and their content</p>
+        
+        <button class="inspect-button" onclick="inspectAllStorage()">
+            📊 Inspect All Storage
+        </button>
+        
+        <div id="storage-results"></div>
+    </div>
+
+    <script>
+        function inspectAllStorage() {
+            let output = '<h2>📊 Complete localStorage Inventory</h2>';
+            
+            const allKeys = Object.keys(localStorage);
+            
+            if (allKeys.length === 0) {
+                output += `
+                    <div class="storage-item" style="border-left-color: #ff4444;">
+                        <h3>❌ No localStorage Data Found</h3>
+                        <p>localStorage is completely empty. Please upload and process files first.</p>
+                    </div>
+                `;
+            } else {
+                output += `<p><strong>Total localStorage keys:</strong> ${allKeys.length}</p>`;
+                
+                allKeys.forEach(key => {
+                    const value = localStorage.getItem(key);
+                    const sizeKB = Math.round(value.length / 1024);
+                    
+                    let preview = '';
+                    let isJSON = false;
+                    
+                    try {
+                        const parsed = JSON.parse(value);
+                        isJSON = true;
+                        
+                        if (Array.isArray(parsed)) {
+                            preview = `Array with ${parsed.length} items`;
+                            if (parsed.length > 0) {
+                                preview += `\nFirst item: ${JSON.stringify(parsed[0]).substring(0, 200)}...`;
+                            }
+                        } else if (typeof parsed === 'object') {
+                            const keys = Object.keys(parsed);
+                            preview = `Object with keys: ${keys.join(', ')}`;
+                            preview += `\nPreview: ${JSON.stringify(parsed).substring(0, 300)}...`;
+                        } else {
+                            preview = `Value: ${JSON.stringify(parsed)}`;
+                        }
+                    } catch (e) {
+                        preview = `String: ${value.substring(0, 200)}...`;
+                    }
+                    
+                    // Check for BOF data
+                    const containsBOF = value.toLowerCase().includes('bof');
+                    const containsVC = value.toLowerCase().includes('"vc"') || value.toLowerCase().includes("'vc'");
+                    
+                    output += `
+                        <div class="storage-item" style="border-left-color: ${containsBOF ? '#ffaa44' : '#44ff44'}">
+                            <h3>${key} ${containsBOF ? '🎯 (Contains BOF)' : ''} ${containsVC ? '⚠️ (Contains VC)' : ''}</h3>
+                            <p><strong>Size:</strong> ${sizeKB}KB | <strong>Type:</strong> ${isJSON ? 'JSON' : 'String'}</p>
+                            <div class="data-preview">${preview}</div>
+                        </div>
+                    `;
+                });
+                
+                // Look for BOF data specifically
+                const bofKeys = allKeys.filter(key => {
+                    const value = localStorage.getItem(key);
+                    return value.toLowerCase().includes('bof');
+                });
+                
+                if (bofKeys.length > 0) {
+                    output += `
+                        <div class="storage-item" style="border-left-color: #ffaa44;">
+                            <h3>🎯 BOF Data Found In: ${bofKeys.join(', ')}</h3>
+                            <p>These keys contain BOF campaign data that we need to analyze for the VC truncation issue.</p>
+                        </div>
+                    `;
+                    
+                    // Analyze BOF data in detail
+                    bofKeys.forEach(key => {
+                        try {
+                            const value = localStorage.getItem(key);
+                            const data = JSON.parse(value);
+                            
+                            let bofItems = [];
+                            
+                            if (Array.isArray(data)) {
+                                bofItems = data.filter(item => 
+                                    JSON.stringify(item).toLowerCase().includes('bof')
+                                );
+                            } else if (typeof data === 'object') {
+                                // Look for BOF in nested objects
+                                const checkObject = (obj, path = '') => {
+                                    for (const [k, v] of Object.entries(obj)) {
+                                        const currentPath = path ? `${path}.${k}` : k;
+                                        if (JSON.stringify(v).toLowerCase().includes('bof')) {
+                                            if (Array.isArray(v)) {
+                                                const bofItemsInArray = v.filter(item => 
+                                                    JSON.stringify(item).toLowerCase().includes('bof')
+                                                );
+                                                bofItems.push(...bofItemsInArray.map(item => ({ path: currentPath, data: item })));
+                                            } else {
+                                                bofItems.push({ path: currentPath, data: v });
+                                            }
+                                        }
+                                    }
+                                };
+                                checkObject(data);
+                            }
+                            
+                            if (bofItems.length > 0) {
+                                output += `
+                                    <div class="storage-item" style="border-left-color: #ff4444;">
+                                        <h3>🔍 BOF Analysis in ${key}</h3>
+                                        <p><strong>BOF items found:</strong> ${bofItems.length}</p>
+                                        <div class="data-preview">
+                                `;
+                                
+                                bofItems.slice(0, 5).forEach((item, index) => {
+                                    const itemStr = JSON.stringify(item);
+                                    const hasVC = itemStr.includes('"VC"') || itemStr.includes("'VC'");
+                                    const hasVCAnd = itemStr.includes('VC &') || itemStr.includes('VC&');
+                                    
+                                    output += `
+                                        <div style="margin: 10px 0; padding: 10px; background: ${hasVC && !hasVCAnd ? '#4a1a1a' : '#1a4a1a'}; border-radius: 4px;">
+                                            <strong>Item ${index + 1}:</strong> ${hasVC && !hasVCAnd ? '❌ TRUNCATED VC' : '✅ COMPLETE'}<br>
+                                            ${itemStr.substring(0, 300)}...
+                                        </div>
+                                    `;
+                                });
+                                
+                                output += '</div></div>';
+                            }
+                        } catch (e) {
+                            output += `
+                                <div class="storage-item" style="border-left-color: #ff4444;">
+                                    <h3>❌ Error parsing ${key}</h3>
+                                    <p>${e.message}</p>
+                                </div>
+                            `;
+                        }
+                    });
+                }
+            }
+            
+            document.getElementById('storage-results').innerHTML = output;
+        }
+        
+        // Auto-run on load
+        window.addEventListener('load', inspectAllStorage);
+    </script>
+</body>
+</html>

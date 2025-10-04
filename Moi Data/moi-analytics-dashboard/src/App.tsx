@@ -10,7 +10,7 @@ import ExportModal from './components/ExportModal';
 import ChatBot from './components/ChatBot';
 import LogicTemplateSettings from './components/LogicTemplateSettings';
 import { processShopifyCSV } from './utils/csvProcessor';
-import { generateSampleOutputData } from './utils/outputDataProcessor';
+import { generateSampleOutputData, loadDashboardFromOutputFiles } from './utils/outputDataProcessor';
 import { loadCachedOutputData, cacheOutputData, checkForRecentOutputFiles, loadExistingOutputFiles } from './utils/fileLoader';
 import { processAllInputFiles } from './utils/integratedDataProcessor';
 import { processMetaAdsCSV } from './utils/metaProcessor';
@@ -520,6 +520,40 @@ function App() {
     }
   };
 
+  const handleTestPhase1 = async () => {
+    console.log('🧪 Testing Phase 1: CSV-based data loading...');
+    setIsLoading(true);
+    
+    try {
+      const phase1Data = await loadDashboardFromOutputFiles();
+      
+      console.log('✅ Phase 1 test completed successfully');
+      console.log('📊 Phase 1 results:', {
+        campaigns: phase1Data.campaigns?.length || 0,
+        totalUsers: phase1Data.keyMetrics?.totalUniqueUsers || 0,
+        uniqueCampaigns: phase1Data.keyMetrics?.uniqueCampaigns || 0
+      });
+      
+      // Update dashboard with Phase 1 data
+      const timestamp = new Date().toISOString();
+      localStorage.setItem('moi-dashboard-data', JSON.stringify(phase1Data));
+      localStorage.setItem('moi-dashboard-timestamp', timestamp);
+      
+      setDashboardData(phase1Data);
+      setLastUpdated(timestamp);
+      setReportGenerated(true);
+      
+      // Show success message
+      alert(`✅ Phase 1 Test Successful!\n\nLoaded from CSV output files:\n• ${phase1Data.campaigns?.length || 0} campaign combinations\n• ${phase1Data.keyMetrics?.totalUniqueUsers || 0} total users\n• ${phase1Data.keyMetrics?.uniqueCampaigns || 0} unique campaigns\n\nDashboard now shows Phase 1 data architecture.`);
+      
+    } catch (error) {
+      console.error('❌ Phase 1 test failed:', error);
+      alert(`❌ Phase 1 Test Failed\n\nError: ${error instanceof Error ? error.message : 'Unknown error'}\n\nCheck browser console for details. This may be expected if CSV files are not accessible.`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleDataSync = () => {
     // Download both generated CSV files with date range in filename
     const downloadCSV = (filename: string, sourcePath: string) => {
@@ -620,6 +654,7 @@ Reached Checkout ",Total Abandoned Checkout,Session Duration,Users with Session 
                 <span>Export Reports</span>
               </button>
             )}
+            
             
             <button
               onClick={handleResetAllData}

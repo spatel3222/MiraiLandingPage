@@ -58,7 +58,7 @@ export const loadExistingOutputFiles = async (): Promise<DashboardData | null> =
           adsetName: "DPA - Broad",
           adsetId: "789012",
           platform: "Meta",
-          spend: 2500,
+          spend: 0,
           impressions: 42300,
           ctr: 1.45,
           cpm: 59.10,
@@ -105,7 +105,7 @@ export const loadExistingOutputFiles = async (): Promise<DashboardData | null> =
           atc: 1,
           reachedCheckout: 1,
           purchases: 1,
-          revenue: 2500,
+          revenue: 0,
           roas: 2.08
         }
       ];

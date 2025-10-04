@@ -558,12 +558,12 @@ const ExportModal: React.FC<Props> = ({ onClose, dashboardData }) => {
             const adSetLevelAvgSessionDuration = parseFloat(pivotRow['Average session duration']) || 0;
             
             // Advanced metrics - use estimations based on the actual pivot data
-            const adSetLevelUsersAbove1Min = (adSetLevelUsers > 0) ? Math.floor(adSetLevelUsers * 0.6) : -999; // 60% estimation
+            const adSetLevelUsersAbove1Min = lookupFromPivot(campaignName, adSetName, 'usersAbove1Min', -999);
             const adSetLevelCostPer1MinUser = (adSetLevelUsersAbove1Min > 0 && adSetLevelSpent !== -999) ? (adSetLevelSpent / adSetLevelUsersAbove1Min).toFixed(2) : -999;
             const adSetLevel1MinUserPercent = (adSetLevelUsers > 0 && adSetLevelUsersAbove1Min > 0) ? ((adSetLevelUsersAbove1Min / adSetLevelUsers) * 100).toFixed(2) : -999;
-            const adSetLevelATCAbove1Min = (adSetLevelATC > 0) ? Math.floor(adSetLevelATC * 0.6) : -999; // 60% estimation
-            const adSetLevelReachedCheckoutAbove1Min = (adSetLevelReachedCheckout > 0) ? Math.floor(adSetLevelReachedCheckout * 0.6) : -999; // 60% estimation  
-            const adSetLevelUsers5PagesAbove1Min = (adSetLevelUsers > 0) ? Math.floor(adSetLevelUsers * 0.3) : -999; // 30% estimation
+            const adSetLevelATCAbove1Min = lookupFromPivot(campaignName, adSetName, 'atcAbove1Min', -999);
+            const adSetLevelReachedCheckoutAbove1Min = lookupFromPivot(campaignName, adSetName, 'checkoutAbove1Min', -999);  
+            const adSetLevelUsers5PagesAbove1Min = lookupFromPivot(campaignName, adSetName, 'users5PagesAbove1Min', -999);
             
             return `"${date}","${campaignName}","${adSetName}","${adSetDelivery}",${adSetLevelSpent},${adSetLevelUsers},${costPerUser},${adSetLevelATC},${adSetLevelReachedCheckout},${adSetLevelConversions},${adSetLevelAvgSessionDuration},${adSetLevelUsersAbove1Min},${adSetLevelCostPer1MinUser},${adSetLevel1MinUserPercent},${adSetLevelATCAbove1Min},${adSetLevelReachedCheckoutAbove1Min},${adSetLevelUsers5PagesAbove1Min}`;
           }).join('\n');
@@ -598,12 +598,12 @@ const ExportModal: React.FC<Props> = ({ onClose, dashboardData }) => {
               const adSetLevelReachedCheckout = campaign.checkouts || campaign.reachedCheckout || campaign.checkoutSessions || 0;
               const adSetLevelConversions = campaign.conversions || campaign.purchases || 0;
               const adSetLevelAvgSessionDuration = campaign.avgSessionDuration || campaign.sessionDuration || 0;
-              const adSetLevelUsersAbove1Min = campaign.usersAbove1Min || Math.floor(adSetLevelUsers * 0.6);
+              const adSetLevelUsersAbove1Min = campaign.usersAbove1Min || -999;
               const adSetLevelCostPer1MinUser = adSetLevelUsersAbove1Min > 0 ? (adSetLevelSpent / adSetLevelUsersAbove1Min).toFixed(2) : 0;
               const adSetLevel1MinUserPercent = adSetLevelUsers > 0 ? ((adSetLevelUsersAbove1Min / adSetLevelUsers) * 100).toFixed(2) : 0;
-              const adSetLevelATCAbove1Min = campaign.atcAbove1Min || Math.floor(adSetLevelATC * 0.6);
-              const adSetLevelReachedCheckoutAbove1Min = campaign.checkoutAbove1Min || Math.floor(adSetLevelReachedCheckout * 0.6);
-              const adSetLevelUsers5PagesAbove1Min = campaign.users5PagesAbove1Min || Math.floor(adSetLevelUsers * 0.3);
+              const adSetLevelATCAbove1Min = campaign.atcAbove1Min || -999;
+              const adSetLevelReachedCheckoutAbove1Min = campaign.checkoutAbove1Min || -999;
+              const adSetLevelUsers5PagesAbove1Min = campaign.users5PagesAbove1Min || -999;
               
               return `"${date}","${campaignName}","${adSetName}","${adSetDelivery}",${adSetLevelSpent},${adSetLevelUsers},${costPerUser},${adSetLevelATC},${adSetLevelReachedCheckout},${adSetLevelConversions},${adSetLevelAvgSessionDuration},${adSetLevelUsersAbove1Min},${adSetLevelCostPer1MinUser},${adSetLevel1MinUserPercent},${adSetLevelATCAbove1Min},${adSetLevelReachedCheckoutAbove1Min},${adSetLevelUsers5PagesAbove1Min}`;
             }).join('\n');
