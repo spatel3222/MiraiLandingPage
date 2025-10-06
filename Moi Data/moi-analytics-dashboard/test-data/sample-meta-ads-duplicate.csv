@@ -1,0 +1,5 @@
+Date,Campaign Name,Ad Set Name,Impressions,Amount Spent (USD),Link Clicks,Reach,CTR,CPC,CPM
+2024-10-01,Test Campaign 1,Test AdSet 1,1000,25.50,45,800,4.5,0.57,25.50
+2024-10-01,Test Campaign 2,Test AdSet 2,1500,42.75,68,1200,4.53,0.63,28.50
+2024-10-03,Test Campaign 1,Test AdSet 1,1100,28.00,50,850,4.55,0.56,25.45
+2024-10-03,Test Campaign 4,Test AdSet 4,950,22.30,40,750,4.21,0.56,23.47

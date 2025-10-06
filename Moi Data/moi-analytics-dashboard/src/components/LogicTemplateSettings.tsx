@@ -4,7 +4,7 @@ import { LogicTemplateManager } from '../services/logicTemplateManager';
 import { LogicTemplateValidator } from '../services/logicTemplateValidator';
 import { TemplateExportBridge } from '../utils/templateExportBridge';
 import ValidationChatBot from './ValidationChatBot';
-import DataInspectorWidget from './DataInspectorWidget';
+import { supabaseConfig } from '../services/supabaseClient';
 import type * as LogicTypes from '../types/logicConfiguration';
 
 type LogicConfiguration = LogicTypes.LogicConfiguration;
@@ -256,8 +256,18 @@ const LogicTemplateSettings: React.FC<Props> = ({ onClose, onConfigurationChange
             </div>
           </div>
 
-          {/* Data Inspector Widget */}
-          <DataInspectorWidget />
+          {/* Supabase Connection Status */}
+          <div className="bg-gray-50 rounded-lg p-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Database</span>
+              <div className="flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full ${supabaseConfig.isConfigured ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                <span className="text-xs text-gray-600">
+                  {supabaseConfig.isConfigured ? 'Connected' : 'Not configured'}
+                </span>
+              </div>
+            </div>
+          </div>
 
           {/* Simple Template Management */}
           <div className="space-y-4">

@@ -1,0 +1,552 @@
+import React, { useState } from 'react';
+import { X, Download, FileText, CheckCircle, Info } from 'lucide-react';
+import type { DashboardData } from '../types';
+import { formatDateRangeForFilename, formatDateForApp, generateDateArray, type DateRange } from '../utils/dateRangeDetector';
+import { normalizeDateToISO } from '../utils/dateNormalizer';
+import { ConfigurableDataProcessor } from '../services/configurableDataProcessor';
+import { getCumulativeDataArrays, getDailyBreakdownData } from '../utils/cumulativeDataManager';
+
+interface Props {
+  onClose: () => void;
+  dashboardData: DashboardData | null;
+}
+
+const ExportModal: React.FC<Props> = ({ onClose, dashboardData }) => {
+  const [downloadStatus, setDownloadStatus] = useState<{
+    topLevel: boolean;
+    adset: boolean;
+    pivot: boolean;
+  }>({
+    topLevel: false,
+    adset: false,
+    pivot: false
+  });
+  const [showExportInfo, setShowExportInfo] = useState<boolean>(false);
+
+  const getDateRange = () => {
+    // UPDATED: Use daily breakdown data for consistent filename and export data
+    const dailyBreakdownData = getDailyBreakdownData();
+    if (dailyBreakdownData.totalDays > 0) {
+      const formatDate = (dateStr: string) => {
+        const date = new Date(dateStr);
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return `${months[date.getMonth()]}${date.getDate()}`;
+      };
+      
+      // Create filename showing daily breakdown range (e.g., "Sep29-Oct2_2025")
+      return `${formatDate(dailyBreakdownData.dateRange.earliest)}-${formatDate(dailyBreakdownData.dateRange.latest)}_${new Date().getFullYear()}`;
+    }
+
+    // Use actual date range from dashboard data if available
+    if (dashboardData?.dateRange) {
+      // Convert string dates back to Date objects if needed
+      const dateRange = {
+        startDate: typeof dashboardData.dateRange.startDate === 'string' 
+          ? new Date(dashboardData.dateRange.startDate) 
+          : dashboardData.dateRange.startDate,
+        endDate: typeof dashboardData.dateRange.endDate === 'string' 
+          ? new Date(dashboardData.dateRange.endDate) 
+          : dashboardData.dateRange.endDate,
+        dayCount: dashboardData.dateRange.dayCount,
+        formattedDates: dashboardData.dateRange.formattedDates || []
+      };
+      return formatDateRangeForFilename(dateRange);
+    }
+    
+    // Fallback to current date
+    const currentDate = new Date();
+    const formatDate = (date: Date) => {
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      return `${months[date.getMonth()]}${date.getDate()}`;
+    };
+    
+    return `${formatDate(currentDate)}_${currentDate.getFullYear()}`;
+  };
+
+  // Function to save file to server-side location for dashboard loading
+  const saveToServerSide = (csvContent: string, fileType: 'topLevel' | 'adset') => {
+    try {
+      const serverFilenames = {
+        topLevel: 'AI Generated - Top Level Daily Metrics_Complete.csv',
+        adset: 'AI Generated - Adset Level Matrices.csv'
+      };
+      
+      // Store the content in localStorage as fallback for dashboard loading
+      // This allows the dashboard's loadExistingOutputFiles to find the data
+      localStorage.setItem(`moi-server-${fileType}`, csvContent);
+      localStorage.setItem(`moi-server-${fileType}-timestamp`, new Date().toISOString());
+      
+      // Also clear any existing cached dashboard data to force refresh from new exports
+      localStorage.removeItem('moi-output-data');
+      localStorage.removeItem('moi-output-timestamp');
+      
+    } catch (error) {
+    }
+  };
+
+  const downloadFile = async (fileType: 'topLevel' | 'adset' | 'pivot') => {
+    try {
+      
+      // Check if we have dashboard data available
+      if (!dashboardData) {
+        alert('Please load dashboard data first before exporting.');
+        return;
+      }
+      
+      // Get Meta and Google data from ORIGINAL uploaded files (the ONLY entry point for data)
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && (key.includes('meta') || key.includes('google') || key.includes('moi'))) {
+        }
+      }
+      
+      // UPDATED: Use daily breakdown data for exports (separate rows per date)
+      const dailyBreakdownData = getDailyBreakdownData();
+      
+      // Debug: Check if daily breakdown data actually contains data
+      if (dailyBreakdownData.totalDays === 0) {
+        
+        // Check if cumulative data exists at all
+        const cumulativeData = getCumulativeDataArrays();
+        
+        // If cumulative data exists but daily breakdown doesn't, there's a bug in getDailyBreakdownData
+        if (cumulativeData.totalDays > 0) {
+        }
+      } else {
+        // Debug first few rows
+        if (dailyBreakdownData.topLevelData.length > 0) {
+        }
+        if (dailyBreakdownData.adsetData.length > 0) {
+        }
+      }
+      
+      // Use cumulative data - contains all dates (Sept 29 + Oct 2, etc.)
+      const metaDataRaw = localStorage.getItem('moi-meta-data');
+      const googleDataRaw = localStorage.getItem('moi-google-data');
+      let metaSpend = 0, metaCTR = 0, metaCPM = 0;
+      let googleSpend = 0, googleCTR = 0, googleCPM = 0;
+      
+      
+      // Process ORIGINAL Meta Ads file data
+      if (metaDataRaw) {
+        try {
+          const metaData = JSON.parse(metaDataRaw);
+          
+          if (metaData.length > 0) {
+            // Calculate totals from ORIGINAL Meta file
+            metaSpend = metaData.reduce((sum: number, row: any) => {
+              const spend = row['Amount spent (INR)'] || row['amount_spent'] || row['spend'] || 0;
+              return sum + (typeof spend === 'number' ? spend : parseFloat(spend) || 0);
+            }, 0);
+            
+            metaCTR = metaData.reduce((sum: number, row: any) => {
+              const ctr = row['CTR (link click-through rate)'] || row['ctr'] || 0;
+              return sum + (typeof ctr === 'number' ? ctr : parseFloat(ctr) || 0);
+            }, 0) / metaData.length; // Average CTR
+            
+            metaCPM = metaData.reduce((sum: number, row: any) => {
+              const cpm = row['CPM (cost per 1,000 impressions)'] || row['cpm'] || 0;
+              return sum + (typeof cpm === 'number' ? cpm : parseFloat(cpm) || 0);
+            }, 0) / metaData.length; // Average CPM
+            
+          }
+        } catch (e) {
+        }
+      } else {
+      }
+      
+      // Process ORIGINAL Google Ads file data
+      if (googleDataRaw) {
+        try {
+          const googleData = JSON.parse(googleDataRaw);
+          
+          if (googleData.length > 0) {
+            // Calculate totals from ORIGINAL Google file
+            googleSpend = googleData.reduce((sum: number, row: any) => {
+              const cost = row['Cost'] || row['cost'] || 0;
+              return sum + (typeof cost === 'number' ? cost : parseFloat(cost) || 0);
+            }, 0);
+            
+            googleCTR = googleData.reduce((sum: number, row: any) => {
+              const ctr = row['CTR'] || row['ctr'] || 0;
+              const ctrValue = typeof ctr === 'string' ? parseFloat(ctr.replace('%', '')) : ctr;
+              return sum + (ctrValue || 0);
+            }, 0) / googleData.length; // Average CTR
+            
+            googleCPM = googleData.reduce((sum: number, row: any) => {
+              const cpm = row['Avg. CPM'] || row['cpm'] || 0;
+              return sum + (typeof cpm === 'number' ? cpm : parseFloat(cpm) || 0);
+            }, 0) / googleData.length; // Average CPM
+            
+          }
+        } catch (e) {
+        }
+      } else {
+      }
+      
+      const dateRangeStr = getDateRange();
+      let csvContent = '';
+      let filename = '';
+      
+      if (fileType === 'pivot') {
+        filename = `MOI_Pivot_Temp_${dateRangeStr}.csv`;
+        
+        // Try to get pivot data from localStorage (saved by ConfigurableDataProcessor)
+        const pivotDataRaw = localStorage.getItem('moi-pivot-data');
+        let pivotData = [];
+        
+        if (pivotDataRaw) {
+          try {
+            pivotData = JSON.parse(pivotDataRaw);
+          } catch (e) {
+          }
+        }
+        
+        if (pivotData.length > 0) {
+          const pivotRows = pivotData.map((row: any) => {
+            // Map UTM Campaign -> Campaign and UTM Term -> AdSet for CSV export
+            const campaign = row['UTM Campaign'] || row.Campaign || '';
+            const adSet = row['UTM Term'] || row.AdSet || '';
+            return `"${campaign}","${adSet}",${row['Online store visitors'] || 0},${row['Sessions with cart additions'] || 0},${row['Sessions that reached checkout'] || 0},${row['Sessions that completed checkout'] || 0},${row['Average session duration'] || 0},${row['Pageviews'] || 0},${row['Users count whose with Session above 1 min'] || 0}`;
+          }).join('\n');
+          
+          csvContent = `Campaign,AdSet,Online store visitors,Sessions with cart additions,Sessions that reached checkout,Sessions that completed checkout,Average session duration,Pageviews,Users count whose with Session above 1 min\n${pivotRows}`;
+        } else {
+          csvContent = `Campaign,AdSet,Online store visitors,Sessions with cart additions,Sessions that reached checkout,Sessions that completed checkout,Average session duration,Pageviews,Users count whose with Session above 1 min\n`;
+        }
+        
+      } else if (fileType === 'topLevel') {
+        filename = `MOI_Top_Level_Metrics_${dateRangeStr}.csv`;
+        
+        // UPDATED: Use daily breakdown data directly (no aggregation)
+        const topLevelData = dailyBreakdownData.topLevelData;
+        
+        // REMOVED: Dashboard fallback that was causing date aggregation
+        // Now only using daily breakdown data to ensure separate rows per date
+        
+        if (topLevelData.length > 0) {
+          const topLevelRows = topLevelData.map((row: any) => {
+            // Map dashboard fields to CSV columns
+            const date = row.date || row.Date || '';
+            const metaSpend = row.metaSpend || row['Meta Spend'] || 0;
+            const metaCTR = row.metaCTR || row['Meta CTR'] || 0;
+            const metaCPM = row.metaCPM || row['Meta CPM'] || 0;
+            const googleSpend = row.googleSpend || row['Google Spend'] || 0;
+            const googleCTR = row.googleCTR || row['Google CTR'] || 0;
+            const googleCPM = row.googleCPM || row['Google CPM'] || 0;
+            const totalUsers = row.totalUsers || row['Total Users'] || 0;
+            const totalATC = row.totalATC || row['Total ATC'] || 0;
+            const totalReachedCheckout = row.totalReachedCheckout || row['Total Reached Checkout'] || 0;
+            const totalAbandonedCheckout = row.totalAbandonedCheckout || row['Total Abandoned Checkout'] || 0;
+            const sessionDuration = row.sessionDuration || row['Session Duration'] || 0;
+            const usersAbove1Min = row.usersAbove1Min || row['Users with Session above 1 min'] || 0;
+            const users5PagesAbove1Min = row.users5PagesAbove1Min || row['Users with Above 5 page views and above 1 min'] || 0;
+            const atcAbove1Min = row.atcAbove1Min || row['ATC with session duration above 1 min'] || 0;
+            const checkoutAbove1Min = row.checkoutAbove1Min || row['Reached Checkout with session duration above 1 min'] || 0;
+            
+            return `"${date}",${metaSpend},${metaCTR},${metaCPM},${googleSpend},${googleCTR},${googleCPM},${totalUsers},${totalATC},${totalReachedCheckout},${totalAbandonedCheckout},${sessionDuration},${usersAbove1Min},${users5PagesAbove1Min},${atcAbove1Min},${checkoutAbove1Min}`;
+          }).join('\n');
+          
+          csvContent = `Date,Meta Spend,Meta CTR,Meta CPM,Google Spend,Google CTR,Google CPM,Total Users,Total ATC,Total Reached Checkout,Total Abandoned Checkout,Session Duration,Users with Session above 1 min,Users with Above 5 page views and above 1 min,ATC with session duration above 1 min,Reached Checkout with session duration above 1 min\n${topLevelRows}`;
+        } else {
+          csvContent = `Date,Meta Spend,Meta CTR,Meta CPM,Google Spend,Google CTR,Google CPM,Total Users,Total ATC,Total Reached Checkout,Total Abandoned Checkout,Session Duration,Users with Session above 1 min,Users with Above 5 page views and above 1 min,ATC with session duration above 1 min,Reached Checkout with session duration above 1 min\n`;
+        }
+        
+      } else {
+        // Adset Level export using dashboard campaign data
+        filename = `MOI_Adset_Level_Matrices_${dateRangeStr}.csv`;
+        
+        // Load pivot data from localStorage for accurate Campaign+AdSet level calculations
+        const pivotDataRaw = localStorage.getItem('moi-pivot-data');
+        let pivotData: any[] = [];
+        
+        if (pivotDataRaw) {
+          try {
+            pivotData = JSON.parse(pivotDataRaw);
+          } catch (error) {
+          }
+        }
+        
+        // Helper function to lookup and sum values from pivot data for Campaign+AdSet combination
+        const lookupFromPivot = (campaignName: string, adSetName: string, field: string, fallbackValue: number = 0): number => {
+          if (!pivotData || pivotData.length === 0) {
+            return fallbackValue;
+          }
+          
+          const matchingRows = pivotData.filter(row => 
+            row['UTM Campaign'] === campaignName && row['UTM Term'] === adSetName
+          );
+          
+          if (matchingRows.length === 0) {
+            return fallbackValue;
+          }
+          
+          const sum = matchingRows.reduce((total, row) => {
+            const value = parseFloat(row[field]) || 0;
+            return total + value;
+          }, 0);
+          
+          return sum;
+        };
+        
+        // UPDATED: Use daily breakdown data for adset export (separate by date)
+        const adsetBreakdownData = dailyBreakdownData.adsetData;
+        
+        if (adsetBreakdownData && adsetBreakdownData.length > 0) {
+            totalRows: adsetBreakdownData.length,
+            totalDays: dailyBreakdownData.totalDays,
+            dateRange: dailyBreakdownData.dateRange
+          });
+          
+          const adsetRows = adsetBreakdownData.map((adsetRow: any, index: number) => {
+            // Map daily breakdown campaign fields to CSV columns
+            // Use the actual date from the adset data (already has date field)
+            const date = adsetRow.date || new Date().toISOString().split('T')[0];
+            
+            // Get Campaign and AdSet names from breakdown data
+            const campaignName = adsetRow.campaignName || adsetRow['UTM Campaign'] || `Campaign ${index + 1}`;
+            const adSetName = adsetRow.adSetName || adsetRow['UTM Term'] || `AdSet ${index + 1}`;
+            const adSetDelivery = 'active'; // Default delivery status
+            
+            // Calculate Ad Set Level metrics using Pivot Data as per specification
+            // Extract Amount spent (INR) from Meta Ads sheet for this Campaign+AdSet combination
+            let adSetLevelSpent = -999; // Default fallback
+            
+            // Get Meta Ads data for spend lookup
+            const metaDataRaw = typeof localStorage !== 'undefined' ? localStorage.getItem('moi-meta-data') : null;
+            if (metaDataRaw) {
+              try {
+                const metaData = JSON.parse(metaDataRaw);
+                
+                // Match Campaign+AdSet combination with Meta data
+                const matchingMetaRows = metaData.filter((metaRow: any) => {
+                  const metaCampaign = metaRow['Campaign name'] || metaRow['Campaign'] || metaRow['campaign'];
+                  const metaAdSet = metaRow['Ad set name'] || metaRow['AdSet'] || metaRow['adset'] || metaRow['Ad Set'];
+                  
+                  return metaCampaign === campaignName && metaAdSet === adSetName;
+                });
+                
+                // Sum spend from all matching Meta rows for this Campaign+AdSet
+                if (matchingMetaRows.length > 0) {
+                  const totalSpend = matchingMetaRows.reduce((sum: number, metaRow: any) => {
+                    const spend = parseFloat(metaRow['Amount spent (INR)']) || 
+                                  parseFloat(metaRow['Spend']) || 
+                                  parseFloat(metaRow['Cost']) || 0;
+                    return sum + spend;
+                  }, 0);
+                  
+                  adSetLevelSpent = totalSpend > 0 ? totalSpend : -999;
+                } else {
+                }
+              } catch (error) {
+              }
+            } else {
+            }
+            
+            // Use AdSet breakdown data directly (already processed per date)
+            const adSetLevelUsers = adsetRow.totalUsers || adsetRow['Online store visitors'] || -999;
+            const costPerUser = (adSetLevelUsers > 0 && adSetLevelSpent !== -999) ? (adSetLevelSpent / adSetLevelUsers).toFixed(2) : -999;
+            
+            const adSetLevelATC = adsetRow.totalATC || adsetRow['Sessions with cart additions'] || 0;
+            const adSetLevelReachedCheckout = adsetRow.totalReachedCheckout || adsetRow['Sessions that reached checkout'] || 0;
+            const adSetLevelConversions = adsetRow.totalConversions || adsetRow['Sessions that completed checkout'] || 0;
+            const adSetLevelAvgSessionDuration = adsetRow.avgSessionDuration || adsetRow['Average session duration'] || 0;
+            
+            // Advanced metrics - use breakdown data with real calculations
+            // Note: -999 values indicate no matching data, displayed as "N/A" in dashboard
+            const adSetLevelUsersAbove1Min = adsetRow.usersAbove1Min || adsetRow['Users count whose with Session above 1 min'] || -999;
+            const adSetLevelCostPer1MinUser = (adSetLevelUsersAbove1Min > 0 && adSetLevelSpent !== -999) ? (adSetLevelSpent / adSetLevelUsersAbove1Min).toFixed(2) : -999;
+            const adSetLevel1MinUserPercent = (adSetLevelUsers > 0 && adSetLevelUsersAbove1Min > 0) ? ((adSetLevelUsersAbove1Min / adSetLevelUsers) * 100).toFixed(2) : -999;
+            const adSetLevelATCAbove1Min = adsetRow.atcAbove1Min || adsetRow['Sessions with cart additions'] || 0;
+            const adSetLevelReachedCheckoutAbove1Min = adsetRow.checkoutAbove1Min || adsetRow['Sessions that reached checkout'] || 0;  
+            const adSetLevelUsers5PagesAbove1Min = adsetRow.users5PagesAbove1Min || -999;
+            
+            return `"${date}","${campaignName}","${adSetName}","${adSetDelivery}",${adSetLevelSpent},${adSetLevelUsers},${costPerUser},${adSetLevelATC},${adSetLevelReachedCheckout},${adSetLevelConversions},${adSetLevelAvgSessionDuration},${adSetLevelUsersAbove1Min},${adSetLevelCostPer1MinUser},${adSetLevel1MinUserPercent},${adSetLevelATCAbove1Min},${adSetLevelReachedCheckoutAbove1Min},${adSetLevelUsers5PagesAbove1Min}`;
+          }).join('\n');
+          
+          csvContent = `Date,Campaign name,Ad Set Name,Ad Set Delivery,Ad Set Level Spent,Ad Set Level Users,Cost per user,Ad Set Level ATC,Ad Set Level Reached Checkout,Ad Set Level Conversions,Ad Set Level Average session duration,Ad Set Level Users with Session above 1 min,Ad Set Level Cost per 1 min user,Ad Set Level 1min user/ total users (%),Ad Set Level ATC with session duration above 1 min,Ad Set Level Reached Checkout with session duration above 1 min,Ad Set Level Users with Above 5 page views and above 1 min\n${adsetRows}`;
+        } else {
+          csvContent = `Date,Campaign name,Ad Set Name,Ad Set Delivery,Ad Set Level Spent,Ad Set Level Users,Cost per user,Ad Set Level ATC,Ad Set Level Reached Checkout,Ad Set Level Conversions,Ad Set Level Average session duration,Ad Set Level Users with Session above 1 min,Ad Set Level Cost per 1 min user,Ad Set Level 1min user/ total users (%),Ad Set Level ATC with session duration above 1 min,Ad Set Level Reached Checkout with session duration above 1 min,Ad Set Level Users with Above 5 page views and above 1 min\n`;
+        }
+      }
+      
+      // Save to server-side for dashboard loading
+      if (fileType !== 'pivot') {
+        saveToServerSide(csvContent, fileType);
+      }
+      
+      // Create and download the file
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      // Update download status
+      setDownloadStatus(prev => ({ ...prev, [fileType]: true }));
+      
+      // Reset status after 3 seconds
+      setTimeout(() => {
+        setDownloadStatus(prev => ({ ...prev, [fileType]: false }));
+      }, 3000);
+      
+    } catch (error) {
+      alert(`Export failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  };
+
+  const exportFiles = [
+    {
+      key: 'topLevel' as const,
+      title: 'Top Level Daily Metrics',
+      description: 'Comprehensive daily metrics including Meta Ads, Google Ads, and Shopify data',
+      columns: '19 columns',
+      rows: dashboardData?.dateRange ? `${dashboardData.dateRange.dayCount} days of data` : '14 days of data',
+      icon: '📊'
+    },
+    {
+      key: 'adset' as const,
+      title: 'Adset Level Matrices',
+      description: 'Detailed campaign and adset performance metrics across all platforms',
+      columns: '17 columns',
+      rows: 'All active campaigns',
+      icon: '📈'
+    },
+    {
+      key: 'pivot' as const,
+      title: 'Pivot Temp CSV',
+      description: 'Intermediate processing file with Campaign+AdSet combinations from Shopify data including quality user metrics',
+      columns: '9 columns',
+      rows: 'Campaign+AdSet pairs',
+      icon: '🔄'
+    }
+  ];
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg max-w-2xl w-full">
+        {/* Header */}
+        <div className="flex items-center justify-between p-6 border-b border-moi-light">
+          <div>
+            <div className="flex items-center space-x-2">
+              <h2 className="font-orpheus text-2xl font-bold text-moi-charcoal">
+                Export Reports
+              </h2>
+              <button
+                onClick={() => setShowExportInfo(!showExportInfo)}
+                className="p-1 text-moi-grey hover:text-moi-charcoal transition-colors"
+                title="Export Information"
+              >
+                <Info className="w-5 h-5" />
+              </button>
+            </div>
+            <p className="font-benton text-sm text-moi-grey mt-1">
+              Select which report to download
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 text-moi-grey hover:text-moi-charcoal transition-colors"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="p-6">
+          <div className="space-y-4">
+            {exportFiles.map((file) => (
+              <div
+                key={file.key}
+                className="border border-moi-light rounded-lg p-4 hover:border-moi-red transition-colors"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <span className="text-2xl">{file.icon}</span>
+                      <h3 className="font-benton font-semibold text-moi-charcoal">
+                        {file.title}
+                      </h3>
+                    </div>
+                    <p className="font-benton text-sm text-moi-grey mb-2">
+                      {file.description}
+                    </p>
+                    <div className="flex items-center space-x-4 text-xs font-benton text-moi-grey">
+                      <span className="flex items-center space-x-1">
+                        <FileText className="w-3 h-3" />
+                        <span>{file.columns}</span>
+                      </span>
+                      <span>•</span>
+                      <span>{file.rows}</span>
+                    </div>
+                  </div>
+                  
+                  <button
+                    onClick={() => downloadFile(file.key)}
+                    className={`ml-4 px-4 py-2 rounded-lg font-benton text-sm flex items-center space-x-2 transition-all ${
+                      downloadStatus[file.key]
+                        ? 'bg-green-100 text-green-700 border border-green-300'
+                        : 'bg-moi-charcoal text-white hover:bg-moi-grey'
+                    }`}
+                  >
+                    {downloadStatus[file.key] ? (
+                      <>
+                        <CheckCircle className="w-4 h-4" />
+                        <span>Downloaded!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Download className="w-4 h-4" />
+                        <span>Download</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Export Information Tooltip */}
+          {showExportInfo && (
+            <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg relative">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="font-benton font-medium text-blue-900">
+                  Export Information
+                </h4>
+                <button
+                  onClick={() => setShowExportInfo(false)}
+                  className="text-blue-600 hover:text-blue-800 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <ul className="font-benton text-sm text-blue-800 space-y-1">
+                <li>• Files are exported in CSV format</li>
+                <li>• Date range is automatically included in filename</li>
+                <li>• Compatible with Excel, Google Sheets, and other spreadsheet applications</li>
+                <li>• Data includes all processed metrics from uploaded files</li>
+                <li>• Pivot Temp CSV contains intermediate Campaign+AdSet combinations for logic processing</li>
+              </ul>
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="flex items-center justify-end p-6 border-t border-moi-light bg-gray-50">
+          <button
+            onClick={onClose}
+            className="px-6 py-2 font-benton text-moi-grey hover:text-moi-charcoal transition-colors"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ExportModal;

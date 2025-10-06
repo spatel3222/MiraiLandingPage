@@ -19,6 +19,7 @@
     "test:install": "playwright install"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.58.0",
     "@types/papaparse": "^5.3.16",
     "chart.js": "^4.5.0",
     "lucide-react": "^0.544.0",
