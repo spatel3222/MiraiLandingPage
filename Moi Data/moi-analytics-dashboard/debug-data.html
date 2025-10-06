@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOI Data Debug Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .data-block {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #007bff;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .status.found { background-color: #d4edda; color: #155724; }
+        .status.missing { background-color: #f8d7da; color: #721c24; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        .clear-btn { background: #dc3545; }
+        .clear-btn:hover { background: #c82333; }
+    </style>
+</head>
+<body>
+    <h1>🔍 MOI Analytics Data Debug Tool</h1>
+    
+    <div class="section">
+        <h2>Cumulative Data Storage</h2>
+        <div id="cumulative-status"></div>
+        <div id="cumulative-data"></div>
+        <button onclick="refreshCumulativeData()">🔄 Refresh</button>
+        <button onclick="clearCumulativeData()" class="clear-btn">🗑️ Clear Cumulative Data</button>
+    </div>
+    
+    <div class="section">
+        <h2>Raw Input Data (localStorage)</h2>
+        <div id="input-status"></div>
+        <div id="input-data"></div>
+        <button onclick="refreshInputData()">🔄 Refresh</button>
+        <button onclick="clearInputData()" class="clear-btn">🗑️ Clear Input Data</button>
+    </div>
+    
+    <div class="section">
+        <h2>Export Data Test</h2>
+        <div id="export-status"></div>
+        <div id="export-data"></div>
+        <button onclick="testExportData()">🧪 Test Export Functions</button>
+    </div>
+    
+    <div class="section">
+        <h2>Debug Actions</h2>
+        <button onclick="injectTestData()">📝 Inject Test Sept 29 Data</button>
+        <button onclick="showAllLocalStorage()">👁️ Show All localStorage</button>
+        <button onclick="clearAllData()" class="clear-btn">💥 Clear Everything</button>
+    </div>
+
+    <script>
+        // Import cumulative data manager functions (simulate)
+        const CUMULATIVE_STORAGE_KEY = 'moi-cumulative-data';
+        
+        function refreshCumulativeData() {
+            const statusDiv = document.getElementById('cumulative-status');
+            const dataDiv = document.getElementById('cumulative-data');
+            
+            try {
+                const stored = localStorage.getItem(CUMULATIVE_STORAGE_KEY);
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    const dates = Object.keys(data.dailyEntries || {});
+                    
+                    statusDiv.innerHTML = `<div class="status found">✅ Found cumulative data with ${dates.length} days: ${dates.join(', ')}</div>`;
+                    dataDiv.innerHTML = `<div class="data-block">${JSON.stringify(data, null, 2)}</div>`;
+                } else {
+                    statusDiv.innerHTML = `<div class="status missing">❌ No cumulative data found</div>`;
+                    dataDiv.innerHTML = '';
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<div class="status missing">❌ Error reading cumulative data: ${error.message}</div>`;
+                dataDiv.innerHTML = '';
+            }
+        }
+        
+        function refreshInputData() {
+            const statusDiv = document.getElementById('input-status');
+            const dataDiv = document.getElementById('input-data');
+            
+            const inputKeys = ['moi-meta-data', 'moi-google-data', 'moi-shopify-data'];
+            let foundData = [];
+            let allData = {};
+            
+            inputKeys.forEach(key => {
+                const data = localStorage.getItem(key);
+                if (data) {
+                    try {
+                        const parsed = JSON.parse(data);
+                        foundData.push(`${key}: ${parsed.length} rows`);
+                        allData[key] = parsed;
+                    } catch (e) {
+                        foundData.push(`${key}: Invalid JSON`);
+                    }
+                }
+            });
+            
+            if (foundData.length > 0) {
+                statusDiv.innerHTML = `<div class="status found">✅ Found input data: ${foundData.join(', ')}</div>`;
+                dataDiv.innerHTML = `<div class="data-block">${JSON.stringify(allData, null, 2)}</div>`;
+            } else {
+                statusDiv.innerHTML = `<div class="status missing">❌ No input data found</div>`;
+                dataDiv.innerHTML = '';
+            }
+        }
+        
+        function testExportData() {
+            const statusDiv = document.getElementById('export-status');
+            const dataDiv = document.getElementById('export-data');
+            
+            // Simulate getDailyBreakdownData function
+            try {
+                const stored = localStorage.getItem(CUMULATIVE_STORAGE_KEY);
+                if (!stored) {
+                    statusDiv.innerHTML = `<div class="status missing">❌ No cumulative data for export</div>`;
+                    return;
+                }
+                
+                const store = JSON.parse(stored);
+                const dates = Object.keys(store.dailyEntries || {}).sort();
+                
+                if (dates.length === 0) {
+                    statusDiv.innerHTML = `<div class="status missing">❌ No daily entries found</div>`;
+                    return;
+                }
+                
+                let allTopLevelData = [];
+                let allAdsetData = [];
+                
+                dates.forEach(date => {
+                    const entry = store.dailyEntries[date];
+                    if (entry) {
+                        const topLevelWithDate = (entry.topLevelData || []).map(row => ({
+                            ...row,
+                            date: row.date || date
+                        }));
+                        const adsetWithDate = (entry.adsetData || []).map(row => ({
+                            ...row,
+                            date: row.date || date
+                        }));
+                        
+                        allTopLevelData.push(...topLevelWithDate);
+                        allAdsetData.push(...adsetWithDate);
+                    }
+                });
+                
+                const result = {
+                    topLevelData: allTopLevelData,
+                    adsetData: allAdsetData,
+                    dateRange: { 
+                        earliest: dates[0], 
+                        latest: dates[dates.length - 1] 
+                    },
+                    totalDays: dates.length
+                };
+                
+                statusDiv.innerHTML = `<div class="status found">✅ Export data ready: ${result.totalDays} days, ${result.topLevelData.length} top-level rows, ${result.adsetData.length} adset rows</div>`;
+                dataDiv.innerHTML = `<div class="data-block">${JSON.stringify(result, null, 2)}</div>`;
+                
+            } catch (error) {
+                statusDiv.innerHTML = `<div class="status missing">❌ Error testing export: ${error.message}</div>`;
+            }
+        }
+        
+        function injectTestData() {
+            const testData = {
+                dailyEntries: {
+                    "2024-09-29": {
+                        date: "2024-09-29",
+                        topLevelData: [{
+                            date: "2024-09-29",
+                            metaSpend: 3000,
+                            metaCTR: 1.35,
+                            metaCPM: 61.23,
+                            googleSpend: 1200,
+                            googleCTR: 2.04,
+                            googleCPM: 244.90,
+                            totalUsers: 623,
+                            totalATC: 6,
+                            totalReachedCheckout: 2,
+                            totalAbandonedCheckout: 1,
+                            sessionDuration: 95.5,
+                            usersAbove1Min: 312,
+                            users5PagesAbove1Min: 87,
+                            atcAbove1Min: 4,
+                            checkoutAbove1Min: 2,
+                            generalQueries: 15,
+                            openQueries: 3,
+                            onlineOrders: 1
+                        }],
+                        adsetData: [{
+                            date: "2024-09-29",
+                            campaignName: "BOF | DPA",
+                            campaignId: "123456",
+                            adsetName: "DPA - Broad",
+                            adsetId: "789012",
+                            platform: "Meta",
+                            spend: 1800,
+                            impressions: 42300,
+                            ctr: 1.45,
+                            cpm: 59.10,
+                            cpc: 4.08,
+                            users: 523,
+                            atc: 3,
+                            reachedCheckout: 1,
+                            purchases: 0,
+                            revenue: 0,
+                            roas: 0.00
+                        }],
+                        uploadTimestamp: new Date().toISOString()
+                    }
+                },
+                lastUpdated: new Date().toISOString(),
+                version: '1.0.0'
+            };
+            
+            localStorage.setItem(CUMULATIVE_STORAGE_KEY, JSON.stringify(testData));
+            alert('✅ Test Sept 29 data injected!');
+            refreshCumulativeData();
+            testExportData();
+        }
+        
+        function showAllLocalStorage() {
+            const allData = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('moi-')) {
+                    try {
+                        allData[key] = JSON.parse(localStorage.getItem(key));
+                    } catch (e) {
+                        allData[key] = localStorage.getItem(key);
+                    }
+                }
+            }
+            
+            const newWindow = window.open('', '_blank');
+            newWindow.document.write(`
+                <html>
+                    <head><title>All MOI localStorage Data</title></head>
+                    <body style="font-family: monospace; padding: 20px;">
+                        <h1>All MOI localStorage Data</h1>
+                        <pre>${JSON.stringify(allData, null, 2)}</pre>
+                    </body>
+                </html>
+            `);
+        }
+        
+        function clearCumulativeData() {
+            if (confirm('Clear cumulative data?')) {
+                localStorage.removeItem(CUMULATIVE_STORAGE_KEY);
+                refreshCumulativeData();
+                testExportData();
+            }
+        }
+        
+        function clearInputData() {
+            if (confirm('Clear input data?')) {
+                ['moi-meta-data', 'moi-google-data', 'moi-shopify-data'].forEach(key => {
+                    localStorage.removeItem(key);
+                });
+                refreshInputData();
+            }
+        }
+        
+        function clearAllData() {
+            if (confirm('Clear ALL MOI data? This cannot be undone!')) {
+                for (let i = localStorage.length - 1; i >= 0; i--) {
+                    const key = localStorage.key(i);
+                    if (key.startsWith('moi-')) {
+                        localStorage.removeItem(key);
+                    }
+                }
+                refreshCumulativeData();
+                refreshInputData();
+                testExportData();
+            }
+        }
+        
+        // Auto-refresh on load
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshCumulativeData();
+            refreshInputData();
+            testExportData();
+        });
+    </script>
+</body>
+</html>

@@ -8,6 +8,9 @@ import MultiFileUploadModal from './components/MultiFileUploadModal';
 import ExportModal from './components/ExportModal';
 import ChatBot from './components/ChatBot';
 import LogicTemplateSettings from './components/LogicTemplateSettings';
+import { SupabaseConnectionTest } from './components/SupabaseConnectionTest';
+import { FileUploadInterface } from './components/FileUploadInterface';
+import { DateRangeSelector } from './components/DateRangeSelector';
 import { processShopifyCSV } from './utils/csvProcessor';
 import { generateSampleOutputData, loadDashboardFromOutputFiles } from './utils/outputDataProcessor';
 import { loadCachedOutputData, cacheOutputData, checkForRecentOutputFiles, loadExistingOutputFiles } from './utils/fileLoader';
@@ -100,6 +103,10 @@ function App() {
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [reportGenerated, setReportGenerated] = useState(false);
   const [autoLoadedData, setAutoLoadedData] = useState(false);
+  
+  // Phase 4: Date Range Selection for Multi-Day Aggregation
+  const [selectedDateRange, setSelectedDateRange] = useState<{startDate: string, endDate: string} | null>(null);
+  const [availableDateRanges, setAvailableDateRanges] = useState<{startDate: string, endDate: string}[]>([]);
 
   // Load cached data on mount - disabled auto file loading to prevent fetch issues
   useEffect(() => {
@@ -676,6 +683,35 @@ Reached Checkout ",Total Abandoned Checkout,Session Duration,Users with Session 
 
       {/* Main Content */}
       <main className="p-6">
+        {/* Phase 2: File Upload with Validation */}
+        <FileUploadInterface
+          onImportComplete={(result) => {
+            console.log('Import completed:', result);
+            if (result.success) {
+              // Update available date ranges based on imported data
+              if (result.dateRange) {
+                setAvailableDateRanges(prev => [...prev, result.dateRange]);
+              }
+              // Refresh connection test to show updated data
+              window.location.reload();
+            }
+          }}
+        />
+
+        {/* Phase 4: Date Range Selector for Multi-Day Aggregation */}
+        <div className="mt-6">
+          <DateRangeSelector
+            onDateRangeChange={(dateRange) => {
+              setSelectedDateRange(dateRange);
+              console.log('Date range selected:', dateRange);
+            }}
+            availableDateRanges={availableDateRanges}
+            selectedRange={selectedDateRange}
+          />
+        </div>
+
+
+        
         {dashboardData ? (
           <div className="space-y-8">
             {/* Key Metrics Panel */}

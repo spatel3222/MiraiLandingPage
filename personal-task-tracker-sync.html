@@ -619,6 +619,158 @@
             background: #10B981;
             border-color: #10B981;
         }
+
+        /* Custom filter styles */
+        .custom-filter-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            border: 2px solid #E5E7EB;
+            color: #6B7280;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .dark .custom-filter-pill {
+            background: #374151;
+            border-color: #4B5563;
+            color: #D1D5DB;
+        }
+
+        .custom-filter-pill:hover {
+            border-color: #F59E0B;
+            background: #FFFBEB;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+        }
+
+        .dark .custom-filter-pill:hover {
+            background: #451A03;
+            border-color: #F59E0B;
+        }
+
+        .custom-filter-pill.active {
+            background: #F59E0B;
+            border-color: #F59E0B;
+            color: white;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+        }
+
+        .custom-filter-pill .delete-btn {
+            margin-left: 0.25rem;
+            padding: 0.125rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .custom-filter-pill:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .custom-filter-pill .delete-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Editable category styles */
+        .filter-pill {
+            position: relative;
+        }
+
+        .filter-pill .edit-controls {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            display: flex;
+            gap: 2px;
+        }
+
+        .filter-pill:hover .edit-controls {
+            opacity: 1;
+        }
+
+        .edit-btn, .delete-btn {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .edit-btn {
+            background: #F97316;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background: #EA580C;
+            transform: scale(1.1);
+        }
+
+        .delete-category-btn {
+            background: #EF4444;
+            color: white;
+        }
+
+        .delete-category-btn:hover {
+            background: #DC2626;
+            transform: scale(1.1);
+        }
+
+        /* Icon picker styles */
+        .icon-option {
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .icon-option:hover {
+            border-color: #F97316;
+            transform: scale(1.1);
+        }
+
+        .icon-option.selected {
+            border-color: #F97316;
+            background: #FED7AA;
+        }
+
+        .dark .icon-option.selected {
+            background: #9A3412;
+        }
+
+        /* Inline editing styles */
+        .filter-pill .inline-edit {
+            background: transparent;
+            border: none;
+            color: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            outline: none;
+            min-width: 80px;
+            padding: 0;
+        }
+
+        .filter-pill.editing {
+            background: #FED7AA;
+            border-color: #F97316;
+        }
+
+        .dark .filter-pill.editing {
+            background: #9A3412;
+        }
         
         /* Mobile filter button */
         .mobile-filter-btn {
@@ -2429,18 +2581,113 @@
         <!-- Category Filters -->
         <div id="category-filter-container" class="category-filters mb-4">
             <span class="text-sm font-medium text-gray-600 dark:text-gray-300 mr-2">Filter:</span>
-            <button class="filter-pill active" data-category="all" aria-pressed="true">
-                All Tasks <span id="count-all" class="ml-1"></span>
+            <div id="dynamic-category-filters" class="inline-flex flex-wrap gap-2">
+                <!-- Dynamic category buttons will be inserted here -->
+            </div>
+            <button id="add-category-btn" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full transition-colors ml-2">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Add Category
             </button>
-            <button class="filter-pill" data-category="day-job" aria-pressed="false">
-                💼 Day Job <span id="count-day-job" class="ml-1"></span>
-            </button>
-            <button class="filter-pill" data-category="side-gig" aria-pressed="false">
-                🚀 Side Gig <span id="count-side-gig" class="ml-1"></span>
-            </button>
-            <button class="filter-pill" data-category="home" aria-pressed="false">
-                🏠 Home <span id="count-home" class="ml-1"></span>
-            </button>
+        </div>
+
+        <!-- Custom Filters Section -->
+        <div id="custom-filter-container" class="mb-4">
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="text-sm font-medium text-gray-600 dark:text-gray-300">Custom Filters:</span>
+                <div id="custom-filters-list" class="flex flex-wrap gap-2">
+                    <!-- Custom filter buttons will be dynamically added here -->
+                </div>
+                <button id="add-custom-filter-btn" class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full transition-colors">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    Add Filter
+                </button>
+            </div>
+        </div>
+
+        <!-- Custom Filter Modal -->
+        <div id="custom-filter-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
+                <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Create Custom Filter</h3>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Filter Name</label>
+                        <input type="text" id="filter-name-input" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="e.g., Urgent Tasks">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Filter Type</label>
+                        <select id="filter-type-select" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            <option value="keyword">Contains Keyword</option>
+                            <option value="priority">Priority Level</option>
+                            <option value="date">Date Range</option>
+                            <option value="tag">Has Tag</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Dynamic filter options will appear here -->
+                    <div id="filter-options-container"></div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Icon (optional)</label>
+                        <input type="text" id="filter-icon-input" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="🔥" maxlength="2">
+                    </div>
+                </div>
+                
+                <div class="flex justify-end gap-2 mt-6">
+                    <button id="cancel-filter-btn" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors">Cancel</button>
+                    <button id="save-filter-btn" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors">Save Filter</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Management Modal -->
+        <div id="category-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
+                <h3 id="category-modal-title" class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Create Category</h3>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Category Name</label>
+                        <input type="text" id="category-name-input" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="e.g., Work Projects">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Icon</label>
+                        <div class="grid grid-cols-8 gap-2 mb-2">
+                            <button type="button" class="icon-option p-2 text-lg hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-icon="💼">💼</button>
+                            <button type="button" class="icon-option p-2 text-lg hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-icon="🚀">🚀</button>
+                            <button type="button" class="icon-option p-2 text-lg hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-icon="🏠">🏠</button>
+                            <button type="button" class="icon-option p-2 text-lg hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-icon="📁">📁</button>
+                            <button type="button" class="icon-option p-2 text-lg hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-icon="⭐">⭐</button>
+                            <button type="button" class="icon-option p-2 text-lg hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-icon="🎯">🎯</button>
+                            <button type="button" class="icon-option p-2 text-lg hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-icon="💡">💡</button>
+                            <button type="button" class="icon-option p-2 text-lg hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-icon="🔧">🔧</button>
+                            <button type="button" class="icon-option p-2 text-lg hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-icon="🌟">🌟</button>
+                            <button type="button" class="icon-option p-2 text-lg hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-icon="🎨">🎨</button>
+                            <button type="button" class="icon-option p-2 text-lg hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-icon="📚">📚</button>
+                            <button type="button" class="icon-option p-2 text-lg hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-icon="💊">💊</button>
+                            <button type="button" class="icon-option p-2 text-lg hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-icon="🏃">🏃</button>
+                            <button type="button" class="icon-option p-2 text-lg hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-icon="🎵">🎵</button>
+                            <button type="button" class="icon-option p-2 text-lg hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-icon="🍕">🍕</button>
+                            <button type="button" class="icon-option p-2 text-lg hover:bg-gray-100 dark:hover:bg-gray-700 rounded" data-icon="✈️">✈️</button>
+                        </div>
+                        <input type="text" id="category-icon-input" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center" placeholder="Or type custom emoji" maxlength="2">
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-center mt-6">
+                    <button id="delete-category-btn" class="px-4 py-2 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-200 transition-colors hidden">Delete</button>
+                    <div class="flex gap-2 ml-auto">
+                        <button id="cancel-category-btn" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors">Cancel</button>
+                        <button id="save-category-btn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors">Save</button>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <!-- Mobile Filter Button (hidden on desktop) -->
@@ -2667,9 +2914,7 @@
                                 <div>
                                     <label class="block text-sm font-semibold text-gray-700 mb-3">Category</label>
                                     <select id="task-category" class="form-select w-full">
-                                        <option value="day-job">💼 Day Job</option>
-                                        <option value="side-gig">🚀 Side Gig</option>
-                                        <option value="home">🏠 Home</option>
+                                        <!-- Categories will be dynamically populated -->
                                     </select>
                                 </div>
                                 
@@ -3794,21 +4039,7 @@
                                         <span class="text">All</span>
                                         <span class="count">0</span>
                                     </button>
-                                    <button class="category-filter-btn" data-category="day-job">
-                                        <span class="emoji">💼</span>
-                                        <span class="text">Day Job</span>
-                                        <span class="count">0</span>
-                                    </button>
-                                    <button class="category-filter-btn" data-category="side-gig">
-                                        <span class="emoji">🚀</span>
-                                        <span class="text">Side Gig</span>
-                                        <span class="count">0</span>
-                                    </button>
-                                    <button class="category-filter-btn" data-category="home">
-                                        <span class="emoji">🏠</span>
-                                        <span class="text">Home</span>
-                                        <span class="count">0</span>
-                                    </button>
+                                    <!-- Dynamic category buttons will be rendered here by CategoryUIManager -->
                                 </div>
                                 
                                 <!-- Sort Dropdown -->
@@ -5994,11 +6225,587 @@
             }
         });
 
+        // Category Manager Class - Handles dynamic category creation/editing
+        class CategoryManager {
+            constructor() {
+                this.categories = this.loadCategories();
+                this.colors = [
+                    '#3B82F6', // Blue (Day Job default)
+                    '#8B5CF6', // Purple (Side Gig default) 
+                    '#10B981', // Green (Home default)
+                    '#F59E0B', // Amber
+                    '#EF4444', // Red
+                    '#6366F1', // Indigo
+                    '#EC4899', // Pink
+                    '#14B8A6', // Teal
+                    '#F97316', // Orange
+                    '#84CC16'  // Lime
+                ];
+                this.maxCategories = 10;
+                this.initDefaultCategories();
+            }
+
+            initDefaultCategories() {
+                // Initialize with default categories if empty
+                if (this.categories.length === 0) {
+                    this.categories = [
+                        { id: 'day-job', name: 'Day Job', icon: '💼', color: '#3B82F6' },
+                        { id: 'side-gig', name: 'Side Gig', icon: '🚀', color: '#8B5CF6' },
+                        { id: 'home', name: 'Home', icon: '🏠', color: '#10B981' }
+                    ];
+                    this.saveCategories();
+                }
+            }
+
+            createCategory(name, icon = '📁', color = null) {
+                if (this.categories.length >= this.maxCategories) {
+                    throw new Error(`Maximum ${this.maxCategories} categories allowed`);
+                }
+                
+                if (this.categories.find(cat => cat.name.toLowerCase() === name.toLowerCase())) {
+                    throw new Error('Category name already exists');
+                }
+
+                const id = this.generateCategoryId(name);
+                const categoryColor = color || this.getNextAvailableColor();
+                
+                const newCategory = {
+                    id,
+                    name,
+                    icon,
+                    color: categoryColor,
+                    isDefault: false,
+                    createdAt: new Date().toISOString()
+                };
+
+                this.categories.push(newCategory);
+                this.saveCategories();
+                return newCategory;
+            }
+
+            updateCategory(id, updates) {
+                const categoryIndex = this.categories.findIndex(cat => cat.id === id);
+                if (categoryIndex === -1) {
+                    throw new Error('Category not found');
+                }
+
+                // Check for duplicate names (excluding current category)
+                if (updates.name) {
+                    const existingCategory = this.categories.find(cat => 
+                        cat.id !== id && cat.name.toLowerCase() === updates.name.toLowerCase()
+                    );
+                    if (existingCategory) {
+                        throw new Error('Category name already exists');
+                    }
+                }
+
+                const oldCategory = this.categories[categoryIndex];
+                this.categories[categoryIndex] = { ...oldCategory, ...updates };
+                this.saveCategories();
+
+                // Update tasks if category name/id changed
+                if (updates.name && oldCategory.name !== updates.name) {
+                    this.updateTasksCategory(oldCategory.id, this.categories[categoryIndex].id);
+                }
+
+                return this.categories[categoryIndex];
+            }
+
+            deleteCategory(id) {
+                const categoryIndex = this.categories.findIndex(cat => cat.id === id);
+                if (categoryIndex === -1) {
+                    throw new Error('Category not found');
+                }
+
+                const category = this.categories[categoryIndex];
+                
+                // Move tasks to "Uncategorized" or first available category
+                this.migrateTasksFromCategory(id);
+                
+                // Remove category
+                this.categories.splice(categoryIndex, 1);
+                this.saveCategories();
+                
+                return category;
+            }
+
+            migrateTasksFromCategory(oldCategoryId) {
+                // Find all task cards with this category
+                const taskCards = document.querySelectorAll(`[data-category="${oldCategoryId}"]`);
+                const targetCategory = this.categories.find(cat => cat.id !== oldCategoryId)?.id || 'uncategorized';
+                
+                taskCards.forEach(card => {
+                    card.dataset.category = targetCategory;
+                    // Update the category display in the task card if it exists
+                    const categoryElement = card.querySelector('.task-category');
+                    if (categoryElement) {
+                        const newCategory = this.categories.find(cat => cat.id === targetCategory);
+                        if (newCategory) {
+                            categoryElement.textContent = `${newCategory.icon} ${newCategory.name}`;
+                        }
+                    }
+                });
+
+                // Also update tasks in localStorage if they exist
+                try {
+                    const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+                    const updatedTasks = tasks.map(task => ({
+                        ...task,
+                        category: task.category === oldCategoryId ? targetCategory : task.category
+                    }));
+                    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+                } catch (e) {
+                    console.error('Error updating tasks in storage:', e);
+                }
+            }
+
+            updateTasksCategory(oldId, newId) {
+                // Update data-category attribute on task cards
+                const taskCards = document.querySelectorAll(`[data-category="${oldId}"]`);
+                taskCards.forEach(card => {
+                    card.dataset.category = newId;
+                });
+
+                // Update tasks in localStorage
+                try {
+                    const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+                    const updatedTasks = tasks.map(task => ({
+                        ...task,
+                        category: task.category === oldId ? newId : task.category
+                    }));
+                    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+                } catch (e) {
+                    console.error('Error updating tasks in storage:', e);
+                }
+            }
+
+            generateCategoryId(name) {
+                return name.toLowerCase()
+                    .replace(/[^a-z0-9]/g, '-')
+                    .replace(/-+/g, '-')
+                    .replace(/^-|-$/g, '') + '-' + Date.now();
+            }
+
+            getNextAvailableColor() {
+                const usedColors = this.categories.map(cat => cat.color);
+                return this.colors.find(color => !usedColors.includes(color)) || this.colors[0];
+            }
+
+            getCategories() {
+                return [...this.categories];
+            }
+
+            getCategoryById(id) {
+                return this.categories.find(cat => cat.id === id);
+            }
+
+            loadCategories() {
+                try {
+                    const saved = localStorage.getItem('taskCategories');
+                    let categories = saved ? JSON.parse(saved) : [];
+                    
+                    // Migration: Remove isDefault flag from existing categories to allow editing
+                    categories = categories.map(cat => {
+                        const { isDefault, ...cleanCategory } = cat;
+                        return cleanCategory;
+                    });
+                    
+                    return categories;
+                } catch (e) {
+                    console.error('Error loading categories:', e);
+                    return [];
+                }
+            }
+
+            saveCategories() {
+                try {
+                    localStorage.setItem('taskCategories', JSON.stringify(this.categories));
+                } catch (e) {
+                    console.error('Error saving categories:', e);
+                }
+            }
+        }
+
+        // Category UI Manager - Handles dynamic category rendering and editing
+        class CategoryUIManager {
+            constructor(categoryManager, categoryFilter) {
+                this.categoryManager = categoryManager;
+                this.categoryFilter = categoryFilter;
+                this.editingCategoryId = null;
+                this.currentEditMode = null; // 'create' or 'edit'
+                this.init();
+            }
+
+            init() {
+                this.renderCategories();
+                this.initEventListeners();
+            }
+
+            initEventListeners() {
+                // Add category button
+                document.getElementById('add-category-btn')?.addEventListener('click', () => {
+                    this.showCategoryModal('create');
+                });
+
+                // Modal events
+                const modal = document.getElementById('category-modal');
+                const cancelBtn = document.getElementById('cancel-category-btn');
+                const saveBtn = document.getElementById('save-category-btn');
+                const deleteBtn = document.getElementById('delete-category-btn');
+
+                cancelBtn?.addEventListener('click', () => this.hideCategoryModal());
+                saveBtn?.addEventListener('click', () => this.saveCategoryModal());
+                deleteBtn?.addEventListener('click', () => this.deleteCurrentCategory());
+
+                // Icon picker events
+                document.querySelectorAll('.icon-option').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.icon-option').forEach(b => b.classList.remove('selected'));
+                        btn.classList.add('selected');
+                        document.getElementById('category-icon-input').value = btn.dataset.icon;
+                    });
+                });
+
+                // Custom icon input
+                document.getElementById('category-icon-input')?.addEventListener('input', () => {
+                    document.querySelectorAll('.icon-option').forEach(b => b.classList.remove('selected'));
+                });
+
+                // Close modal on outside click
+                modal?.addEventListener('click', (e) => {
+                    if (e.target === modal) this.hideCategoryModal();
+                });
+
+                // Close modal on escape
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && !modal?.classList.contains('hidden')) {
+                        this.hideCategoryModal();
+                    }
+                });
+            }
+
+            renderCategories() {
+                // Find the container that has the "All" button
+                const allButton = document.querySelector('.category-filter-btn[data-category="all"]');
+                const container = allButton ? allButton.parentElement : null;
+                if (!container) return;
+
+                // Remove existing dynamic category buttons but keep the "All" button
+                const existingCategories = container.querySelectorAll('.category-filter-btn:not([data-category="all"]), #add-category-btn');
+                existingCategories.forEach(btn => btn.remove());
+
+                const categories = this.categoryManager.getCategories();
+                
+                // Add dynamic categories after the "All" button
+                categories.forEach(category => {
+                    const isActive = this.categoryFilter.activeFilter === category.id;
+                    const categoryBtn = document.createElement('button');
+                    categoryBtn.className = `category-filter-btn ${isActive ? 'active' : ''}`;
+                    categoryBtn.dataset.category = category.id;
+                    categoryBtn.setAttribute('aria-pressed', isActive);
+                    categoryBtn.style.cssText = `border-color: ${category.color}; ${isActive ? `background: ${category.color}; color: white;` : ''}`;
+                    
+                    categoryBtn.innerHTML = `
+                        <span class="emoji">${category.icon}</span>
+                        <span class="text">${category.name}</span>
+                        <span class="count">0</span>
+                        <div class="edit-controls">
+                            <button class="edit-btn" data-category-id="${category.id}" title="Edit">✏</button>
+                            <button class="delete-category-btn" data-category-id="${category.id}" title="Delete">×</button>
+                        </div>
+                    `;
+                    
+                    container.appendChild(categoryBtn);
+                });
+
+                // Add "+" button for creating new categories
+                const addBtn = document.createElement('button');
+                addBtn.id = 'add-category-btn';
+                addBtn.className = 'category-filter-btn add-category';
+                addBtn.title = 'Add Category';
+                addBtn.innerHTML = `
+                    <span class="emoji">+</span>
+                    <span class="text">Add Category</span>
+                    <span class="count"></span>
+                `;
+                container.appendChild(addBtn);
+
+                // Add event listeners to new buttons
+                container.querySelectorAll('.category-filter-btn[data-category]:not([data-category="all"])').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        if (!e.target.closest('.edit-controls')) {
+                            this.categoryFilter.setFilter(btn.dataset.category);
+                        }
+                    });
+                });
+
+                // Edit button listeners
+                container.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.editCategory(btn.dataset.categoryId);
+                    });
+                });
+
+                // Delete button listeners
+                container.querySelectorAll('.delete-category-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.deleteCategory(btn.dataset.categoryId);
+                    });
+                });
+
+                // Update counts
+                this.updateCategoryCounts();
+                
+                // Update task creation dropdown
+                this.updateTaskCategoryDropdown();
+                
+                // Update main filter section
+                this.updateMainFilterSection();
+            }
+
+            updateTaskCategoryDropdown() {
+                const dropdown = document.getElementById('task-category');
+                if (!dropdown) {
+                    console.log('⚠️ Task category dropdown not found');
+                    return;
+                }
+
+                const categories = this.categoryManager.getCategories();
+                console.log('📝 Updating task category dropdown with categories:', categories);
+                
+                // Clear existing options
+                dropdown.innerHTML = '';
+                
+                // Add categories as options
+                categories.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.id;
+                    option.textContent = `${category.icon} ${category.name}`;
+                    dropdown.appendChild(option);
+                });
+                
+                console.log('✅ Task category dropdown updated with', categories.length, 'categories');
+            }
+
+            updateMainFilterSection() {
+                const container = document.getElementById('dynamic-category-filters');
+                if (!container) {
+                    console.log('⚠️ Main filter section not found');
+                    return;
+                }
+
+                const categories = this.categoryManager.getCategories();
+                console.log('🔍 Updating main filter section with categories:', categories);
+                
+                // Clear existing content
+                container.innerHTML = '';
+                
+                // Add "All" filter button
+                const allButton = document.createElement('button');
+                allButton.className = `filter-pill ${this.categoryFilter.activeFilter === 'all' ? 'active' : ''} bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-full text-sm font-medium transition-colors`;
+                allButton.dataset.category = 'all';
+                allButton.innerHTML = `📋 All <span class="ml-1 bg-gray-200 dark:bg-gray-600 px-1.5 py-0.5 rounded text-xs">0</span>`;
+                allButton.addEventListener('click', () => this.categoryFilter.setFilter('all'));
+                container.appendChild(allButton);
+                
+                // Add dynamic categories
+                categories.forEach(category => {
+                    const isActive = this.categoryFilter.activeFilter === category.id;
+                    const categoryBtn = document.createElement('button');
+                    categoryBtn.className = `filter-pill ${isActive ? 'active' : ''} relative group`;
+                    categoryBtn.dataset.category = category.id;
+                    categoryBtn.style.cssText = `
+                        background: ${isActive ? category.color : 'transparent'};
+                        color: ${isActive ? 'white' : category.color};
+                        border: 2px solid ${category.color};
+                    `;
+                    
+                    categoryBtn.innerHTML = `
+                        <span class="flex items-center px-3 py-1.5 rounded-full text-sm font-medium transition-colors">
+                            ${category.icon} ${category.name}
+                            <span class="ml-1 ${isActive ? 'bg-white bg-opacity-20' : 'bg-gray-200 dark:bg-gray-600'} px-1.5 py-0.5 rounded text-xs">0</span>
+                        </span>
+                        <div class="edit-controls absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+                            <button class="edit-btn w-5 h-5 bg-orange-500 hover:bg-orange-600 text-white rounded-full flex items-center justify-center text-xs transition-all hover:scale-110" data-category-id="${category.id}" title="Edit">✏</button>
+                            <button class="delete-category-btn w-5 h-5 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center text-xs transition-all hover:scale-110" data-category-id="${category.id}" title="Delete">×</button>
+                        </div>
+                    `;
+                    
+                    // Add click handler for filtering (but not for edit controls)
+                    categoryBtn.addEventListener('click', (e) => {
+                        if (!e.target.closest('.edit-controls')) {
+                            this.categoryFilter.setFilter(category.id);
+                        }
+                    });
+                    
+                    container.appendChild(categoryBtn);
+                });
+                
+                // Add edit and delete event listeners
+                container.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.editCategory(btn.dataset.categoryId);
+                    });
+                });
+                
+                container.querySelectorAll('.delete-category-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.deleteCategory(btn.dataset.categoryId);
+                    });
+                });
+                
+                console.log('✅ Main filter section updated with', categories.length, 'categories');
+            }
+
+            showCategoryModal(mode, categoryId = null) {
+                this.currentEditMode = mode;
+                this.editingCategoryId = categoryId;
+
+                const modal = document.getElementById('category-modal');
+                const title = document.getElementById('category-modal-title');
+                const deleteBtn = document.getElementById('delete-category-btn');
+                const nameInput = document.getElementById('category-name-input');
+                const iconInput = document.getElementById('category-icon-input');
+
+                if (mode === 'create') {
+                    title.textContent = 'Create Category';
+                    deleteBtn.classList.add('hidden');
+                    nameInput.value = '';
+                    iconInput.value = '';
+                    document.querySelectorAll('.icon-option').forEach(b => b.classList.remove('selected'));
+                } else if (mode === 'edit' && categoryId) {
+                    const category = this.categoryManager.getCategoryById(categoryId);
+                    if (category) {
+                        title.textContent = 'Edit Category';
+                        deleteBtn.classList.remove('hidden');
+                        nameInput.value = category.name;
+                        iconInput.value = category.icon;
+                        
+                        // Select the matching icon option
+                        document.querySelectorAll('.icon-option').forEach(b => {
+                            b.classList.toggle('selected', b.dataset.icon === category.icon);
+                        });
+                    }
+                }
+
+                modal?.classList.remove('hidden');
+                nameInput?.focus();
+            }
+
+            hideCategoryModal() {
+                const modal = document.getElementById('category-modal');
+                modal?.classList.add('hidden');
+                this.currentEditMode = null;
+                this.editingCategoryId = null;
+            }
+
+            saveCategoryModal() {
+                const nameInput = document.getElementById('category-name-input');
+                const iconInput = document.getElementById('category-icon-input');
+                
+                const name = nameInput?.value.trim();
+                const icon = iconInput?.value.trim() || '📁';
+
+                if (!name) {
+                    alert('Please enter a category name');
+                    return;
+                }
+
+                try {
+                    if (this.currentEditMode === 'create') {
+                        this.categoryManager.createCategory(name, icon);
+                    } else if (this.currentEditMode === 'edit' && this.editingCategoryId) {
+                        this.categoryManager.updateCategory(this.editingCategoryId, { name, icon });
+                    }
+                    
+                    this.renderCategories();
+                    this.hideCategoryModal();
+                } catch (error) {
+                    alert(error.message);
+                }
+            }
+
+            editCategory(categoryId) {
+                this.showCategoryModal('edit', categoryId);
+            }
+
+            deleteCategory(categoryId) {
+                const category = this.categoryManager.getCategoryById(categoryId);
+                if (!category) return;
+
+                if (confirm(`Are you sure you want to delete "${category.name}"? All tasks in this category will be moved to other categories.`)) {
+                    try {
+                        this.categoryManager.deleteCategory(categoryId);
+                        
+                        // If we were filtering by this category, switch to 'all'
+                        if (this.categoryFilter.activeFilter === categoryId) {
+                            this.categoryFilter.setFilter('all');
+                        }
+                        
+                        this.renderCategories();
+                    } catch (error) {
+                        alert(error.message);
+                    }
+                }
+            }
+
+            deleteCurrentCategory() {
+                if (this.editingCategoryId) {
+                    this.hideCategoryModal();
+                    this.deleteCategory(this.editingCategoryId);
+                }
+            }
+
+            updateCategoryCounts() {
+                // This will be called by the existing CategoryFilter.updateFilterCounts method
+                const counts = {
+                    'all': 0
+                };
+
+                // Initialize counts for all categories
+                this.categoryManager.getCategories().forEach(category => {
+                    counts[category.id] = 0;
+                });
+
+                // Count tasks
+                const taskCards = document.querySelectorAll('.task-card:not(.filtered):not(.custom-filtered)');
+                taskCards.forEach(card => {
+                    const category = card.dataset.category || 'all';
+                    counts['all']++;
+                    if (counts[category] !== undefined) {
+                        counts[category]++;
+                    }
+                });
+
+                // Update count displays
+                Object.entries(counts).forEach(([category, count]) => {
+                    const countEl = document.getElementById(`count-${category}`);
+                    if (countEl) {
+                        countEl.textContent = count > 0 ? `(${count})` : '';
+                    }
+                });
+            }
+        }
+
         // Category Filter Class
         class CategoryFilter {
-            constructor() {
+            constructor(categoryManager = null, uiManager = null) {
                 this.activeFilter = 'all';
+                this.categoryManager = categoryManager;
+                this.uiManager = uiManager;
                 this.init();
+            }
+
+            setCategoryManager(categoryManager) {
+                this.categoryManager = categoryManager;
+            }
+
+            setUIManager(uiManager) {
+                this.uiManager = uiManager;
             }
             
             init() {
@@ -6036,6 +6843,13 @@
                 if (activeBtn) {
                     activeBtn.classList.add('active');
                     activeBtn.setAttribute('aria-pressed', 'true');
+                }
+                
+                // Clear custom filters when category filter is applied
+                if (window.customFilter && this.activeFilter !== 'all') {
+                    window.customFilter.activeCustomFilter = null;
+                    window.customFilter.renderCustomFilters();
+                    window.customFilter.saveActiveFilter();
                 }
                 
                 // Apply filter to tasks
@@ -6119,18 +6933,398 @@
                 }
             }
         }
+
+        // Custom Filter Class
+        class CustomFilter {
+            constructor() {
+                this.customFilters = this.loadCustomFilters();
+                this.activeCustomFilter = null;
+                this.init();
+            }
+
+            init() {
+                this.renderCustomFilters();
+                this.initEventListeners();
+            }
+
+            initEventListeners() {
+                // Add custom filter button
+                const addBtn = document.getElementById('add-custom-filter-btn');
+                addBtn?.addEventListener('click', () => this.showCreateModal());
+
+                // Modal event listeners
+                const modal = document.getElementById('custom-filter-modal');
+                const cancelBtn = document.getElementById('cancel-filter-btn');
+                const saveBtn = document.getElementById('save-filter-btn');
+                const filterTypeSelect = document.getElementById('filter-type-select');
+
+                cancelBtn?.addEventListener('click', () => this.hideCreateModal());
+                saveBtn?.addEventListener('click', () => this.saveCustomFilter());
+                filterTypeSelect?.addEventListener('change', () => this.updateFilterOptions());
+
+                // Close modal on outside click
+                modal?.addEventListener('click', (e) => {
+                    if (e.target === modal) this.hideCreateModal();
+                });
+
+                // Close modal on escape
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && !modal?.classList.contains('hidden')) {
+                        this.hideCreateModal();
+                    }
+                });
+            }
+
+            showCreateModal() {
+                const modal = document.getElementById('custom-filter-modal');
+                modal?.classList.remove('hidden');
+                document.getElementById('filter-name-input')?.focus();
+                this.updateFilterOptions();
+            }
+
+            hideCreateModal() {
+                const modal = document.getElementById('custom-filter-modal');
+                modal?.classList.add('hidden');
+                this.resetModalForm();
+            }
+
+            resetModalForm() {
+                document.getElementById('filter-name-input').value = '';
+                document.getElementById('filter-icon-input').value = '';
+                document.getElementById('filter-type-select').value = 'keyword';
+                this.updateFilterOptions();
+            }
+
+            updateFilterOptions() {
+                const filterType = document.getElementById('filter-type-select').value;
+                const container = document.getElementById('filter-options-container');
+                
+                let optionsHTML = '';
+                
+                switch (filterType) {
+                    case 'keyword':
+                        optionsHTML = `
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Keyword</label>
+                                <input type="text" id="filter-keyword-input" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="e.g., urgent, meeting, important">
+                            </div>
+                        `;
+                        break;
+                    case 'priority':
+                        optionsHTML = `
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Priority Level</label>
+                                <select id="filter-priority-select" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    <option value="high">High Priority</option>
+                                    <option value="medium">Medium Priority</option>
+                                    <option value="low">Low Priority</option>
+                                </select>
+                            </div>
+                        `;
+                        break;
+                    case 'date':
+                        optionsHTML = `
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Date Range</label>
+                                <select id="filter-date-range-select" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    <option value="today">Today</option>
+                                    <option value="tomorrow">Tomorrow</option>
+                                    <option value="this-week">This Week</option>
+                                    <option value="next-week">Next Week</option>
+                                    <option value="overdue">Overdue</option>
+                                </select>
+                            </div>
+                        `;
+                        break;
+                    case 'tag':
+                        optionsHTML = `
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tag</label>
+                                <input type="text" id="filter-tag-input" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="e.g., #urgent, #work, #personal">
+                            </div>
+                        `;
+                        break;
+                }
+                
+                container.innerHTML = optionsHTML;
+            }
+
+            saveCustomFilter() {
+                const name = document.getElementById('filter-name-input').value.trim();
+                const icon = document.getElementById('filter-icon-input').value.trim();
+                const type = document.getElementById('filter-type-select').value;
+                
+                if (!name) {
+                    alert('Please enter a filter name');
+                    return;
+                }
+                
+                let criteria = {};
+                
+                switch (type) {
+                    case 'keyword':
+                        const keyword = document.getElementById('filter-keyword-input')?.value.trim();
+                        if (!keyword) {
+                            alert('Please enter a keyword');
+                            return;
+                        }
+                        criteria = { keyword };
+                        break;
+                    case 'priority':
+                        criteria = { priority: document.getElementById('filter-priority-select')?.value };
+                        break;
+                    case 'date':
+                        criteria = { dateRange: document.getElementById('filter-date-range-select')?.value };
+                        break;
+                    case 'tag':
+                        const tag = document.getElementById('filter-tag-input')?.value.trim();
+                        if (!tag) {
+                            alert('Please enter a tag');
+                            return;
+                        }
+                        criteria = { tag };
+                        break;
+                }
+                
+                const customFilter = {
+                    id: Date.now().toString(),
+                    name,
+                    icon: icon || '🔍',
+                    type,
+                    criteria
+                };
+                
+                this.customFilters.push(customFilter);
+                this.saveCustomFilters();
+                this.renderCustomFilters();
+                this.hideCreateModal();
+            }
+
+            renderCustomFilters() {
+                const container = document.getElementById('custom-filters-list');
+                if (!container) return;
+                
+                container.innerHTML = this.customFilters.map(filter => `
+                    <button class="custom-filter-pill ${this.activeCustomFilter === filter.id ? 'active' : ''}" 
+                            data-filter-id="${filter.id}">
+                        <span>${filter.icon}</span>
+                        <span>${filter.name}</span>
+                        <button class="delete-btn" data-filter-id="${filter.id}" onclick="event.stopPropagation()">
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                    </button>
+                `).join('');
+                
+                // Add event listeners to filter buttons
+                container.querySelectorAll('.custom-filter-pill').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        if (!e.target.closest('.delete-btn')) {
+                            this.applyCustomFilter(btn.dataset.filterId);
+                        }
+                    });
+                });
+                
+                // Add event listeners to delete buttons
+                container.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.deleteCustomFilter(btn.dataset.filterId);
+                    });
+                });
+            }
+
+            applyCustomFilter(filterId) {
+                // Clear category filter
+                if (window.categoryFilter) {
+                    window.categoryFilter.setFilter('all');
+                }
+                
+                if (this.activeCustomFilter === filterId) {
+                    // Toggle off
+                    this.activeCustomFilter = null;
+                } else {
+                    this.activeCustomFilter = filterId;
+                }
+                
+                this.filterTasks();
+                this.renderCustomFilters();
+                this.saveActiveFilter();
+            }
+
+            filterTasks() {
+                const taskCards = document.querySelectorAll('.task-card');
+                
+                if (!this.activeCustomFilter) {
+                    // No custom filter active, show all tasks
+                    taskCards.forEach(card => {
+                        card.classList.remove('custom-filtered');
+                        if (!card.classList.contains('filtered')) {
+                            card.style.display = '';
+                        }
+                    });
+                    return;
+                }
+                
+                const filter = this.customFilters.find(f => f.id === this.activeCustomFilter);
+                if (!filter) return;
+                
+                taskCards.forEach(card => {
+                    let matches = false;
+                    const taskTitle = card.querySelector('.task-title')?.textContent?.toLowerCase() || '';
+                    const taskDescription = card.querySelector('.task-description')?.textContent?.toLowerCase() || '';
+                    const taskContent = taskTitle + ' ' + taskDescription;
+                    
+                    switch (filter.type) {
+                        case 'keyword':
+                            matches = taskContent.includes(filter.criteria.keyword.toLowerCase());
+                            break;
+                        case 'priority':
+                            const priorityClass = `priority-${filter.criteria.priority}`;
+                            matches = card.classList.contains(priorityClass);
+                            break;
+                        case 'date':
+                            matches = this.matchesDateRange(card, filter.criteria.dateRange);
+                            break;
+                        case 'tag':
+                            matches = taskContent.includes(filter.criteria.tag.toLowerCase());
+                            break;
+                    }
+                    
+                    if (matches) {
+                        card.classList.remove('custom-filtered');
+                        card.style.display = '';
+                    } else {
+                        card.classList.add('custom-filtered');
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Update task counts
+                if (window.updateTaskCounts) {
+                    updateTaskCounts();
+                }
+            }
+
+            matchesDateRange(card, dateRange) {
+                const now = new Date();
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                const tomorrow = new Date(today);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                
+                // This is a basic implementation - you might want to enhance based on your task date structure
+                const taskTitle = card.querySelector('.task-title')?.textContent || '';
+                const taskDescription = card.querySelector('.task-description')?.textContent || '';
+                const taskContent = (taskTitle + ' ' + taskDescription).toLowerCase();
+                
+                switch (dateRange) {
+                    case 'today':
+                        return taskContent.includes('today') || taskContent.includes(today.toLocaleDateString());
+                    case 'tomorrow':
+                        return taskContent.includes('tomorrow') || taskContent.includes(tomorrow.toLocaleDateString());
+                    case 'this-week':
+                        return taskContent.includes('this week') || taskContent.includes('week');
+                    case 'next-week':
+                        return taskContent.includes('next week');
+                    case 'overdue':
+                        return taskContent.includes('overdue') || taskContent.includes('late');
+                    default:
+                        return false;
+                }
+            }
+
+            deleteCustomFilter(filterId) {
+                if (confirm('Are you sure you want to delete this custom filter?')) {
+                    this.customFilters = this.customFilters.filter(f => f.id !== filterId);
+                    
+                    if (this.activeCustomFilter === filterId) {
+                        this.activeCustomFilter = null;
+                        this.filterTasks();
+                    }
+                    
+                    this.saveCustomFilters();
+                    this.renderCustomFilters();
+                    this.saveActiveFilter();
+                }
+            }
+
+            loadCustomFilters() {
+                try {
+                    const saved = localStorage.getItem('customFilters');
+                    return saved ? JSON.parse(saved) : [];
+                } catch (e) {
+                    console.error('Error loading custom filters:', e);
+                    return [];
+                }
+            }
+
+            saveCustomFilters() {
+                try {
+                    localStorage.setItem('customFilters', JSON.stringify(this.customFilters));
+                } catch (e) {
+                    console.error('Error saving custom filters:', e);
+                }
+            }
+
+            saveActiveFilter() {
+                try {
+                    localStorage.setItem('activeCustomFilter', this.activeCustomFilter || '');
+                } catch (e) {
+                    console.error('Error saving active filter:', e);
+                }
+            }
+
+            loadActiveFilter() {
+                try {
+                    const saved = localStorage.getItem('activeCustomFilter');
+                    if (saved && this.customFilters.find(f => f.id === saved)) {
+                        this.activeCustomFilter = saved;
+                        this.filterTasks();
+                        this.renderCustomFilters();
+                    }
+                } catch (e) {
+                    console.error('Error loading active filter:', e);
+                }
+            }
+        }
         
-        // Global category filter instance
+        // Global category system instances
+        let categoryManager;
         let categoryFilter;
+        let categoryUIManager;
+        let customFilter;
         
         // Initialize app
         document.addEventListener('DOMContentLoaded', async () => {
             renderAllTasks();
             initializeDragAndDrop();
             
-            // Initialize category filtering
+            // Initialize category system
+            categoryManager = new CategoryManager();
             categoryFilter = new CategoryFilter();
+            categoryUIManager = new CategoryUIManager(categoryManager, categoryFilter);
+            
+            // Wire up components
+            categoryFilter.setCategoryManager(categoryManager);
+            categoryFilter.setUIManager(categoryUIManager);
+            
+            // Ensure dropdown and filter section are populated immediately
+            categoryUIManager.updateTaskCategoryDropdown();
+            categoryUIManager.updateMainFilterSection();
+            
+            // Load saved filter
             categoryFilter.loadSavedFilter();
+            
+            // Initialize custom filtering
+            customFilter = new CustomFilter();
+            customFilter.loadActiveFilter();
+            
+            // Make all components globally accessible
+            window.categoryManager = categoryManager;
+            window.categoryFilter = categoryFilter;
+            window.categoryUIManager = categoryUIManager;
+            window.customFilter = customFilter;
             
             // Automatic dark mode disabled
             // autoDarkMode = new AutoDarkMode();
