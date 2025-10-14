@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FitGenius - Virtual Shoe Fitting</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Walmart Brand Colors */
+        :root {
+            --walmart-blue: #0071DC;
+            --walmart-yellow: #FFC220;
+            --walmart-dark-blue: #041E42;
+            --walmart-light-blue: #E6F1FC;
+            --walmart-gray: #74767A;
+            --walmart-light-gray: #F5F5F5;
+            --success-green: #10B981;
+            --error-red: #EF4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, var(--walmart-light-blue) 0%, white 100%);
+            color: var(--walmart-dark-blue);
+            overflow-x: hidden;
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: relative;
+            z-index: 100;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--walmart-blue), var(--walmart-dark-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .title-text h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--walmart-dark-blue);
+        }
+
+        .title-text p {
+            font-size: 12px;
+            color: var(--walmart-gray);
+        }
+
+        .ai-badge {
+            background: var(--walmart-yellow);
+            color: var(--walmart-dark-blue);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* Main Container */
+        .main-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            padding-bottom: 100px;
+        }
+
+        /* Camera View */
+        .camera-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto 24px;
+            aspect-ratio: 4/3;
+            background: var(--walmart-dark-blue);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .camera-view {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: linear-gradient(45deg, #0071DC20 25%, transparent 25%, transparent 75%, #0071DC20 75%, #0071DC20),
+                        linear-gradient(45deg, #0071DC20 25%, transparent 25%, transparent 75%, #0071DC20 75%, #0071DC20);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+
+        /* AR Overlay */
+        .ar-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 60%;
+            border: 3px dashed var(--walmart-yellow);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse-border 2s infinite;
+        }
+
+        @keyframes pulse-border {
+            0%, 100% { 
+                border-color: var(--walmart-yellow);
+                opacity: 1;
+            }
+            50% { 
+                border-color: var(--walmart-blue);
+                opacity: 0.7;
+            }
+        }
+
+        .foot-outline {
+            width: 120px;
+            height: 200px;
+            border: 2px solid white;
+            border-radius: 60px 60px 20px 20px;
+            opacity: 0.5;
+        }
+
+        .scanning-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--walmart-yellow), transparent);
+            animation: scan 2s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        /* Measurement Points */
+        .measurement-point {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--walmart-yellow);
+            border: 2px solid white;
+            border-radius: 50%;
+            animation: pulse-point 1.5s infinite;
+        }
+
+        @keyframes pulse-point {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .point-1 { top: 20%; left: 30%; }
+        .point-2 { top: 40%; left: 25%; }
+        .point-3 { top: 60%; left: 35%; }
+        .point-4 { top: 20%; right: 30%; }
+        .point-5 { top: 40%; right: 25%; }
+        .point-6 { top: 60%; right: 35%; }
+
+        /* Scan Button */
+        .scan-button {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            color: var(--walmart-blue);
+            padding: 12px 32px;
+            border-radius: 24px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .scan-button:active {
+            transform: translateX(-50%) scale(0.95);
+        }
+
+        .scan-button.scanning {
+            background: var(--walmart-yellow);
+            color: var(--walmart-dark-blue);
+        }
+
+        /* Measurements Display */
+        .measurements-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .measurements-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--walmart-dark-blue);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .measurement-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--walmart-light-gray);
+        }
+
+        .measurement-row:last-child {
+            border-bottom: none;
+        }
+
+        .measurement-label {
+            font-size: 14px;
+            color: var(--walmart-gray);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .measurement-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--walmart-blue);
+        }
+
+        .measurement-loading {
+            width: 60px;
+            height: 8px;
+            background: var(--walmart-light-gray);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--walmart-blue), var(--walmart-yellow));
+            width: 30%;
+            animation: loading 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(400%); }
+        }
+
+        /* Confidence Score */
+        .confidence-card {
+            background: linear-gradient(135deg, var(--walmart-blue), var(--walmart-dark-blue));
+            color: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .confidence-title {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .confidence-score {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .confidence-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: var(--walmart-yellow);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .confidence-message {
+            font-size: 12px;
+            margin-top: 8px;
+            opacity: 0.9;
+        }
+
+        /* Size Recommendation */
+        .size-recommendation {
+            background: var(--walmart-light-blue);
+            border: 2px solid var(--walmart-blue);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .size-title {
+            font-size: 14px;
+            color: var(--walmart-gray);
+            margin-bottom: 8px;
+        }
+
+        .recommended-size {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--walmart-blue);
+            margin-bottom: 8px;
+        }
+
+        .size-alternatives {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .alt-size {
+            padding: 8px 16px;
+            background: white;
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--walmart-dark-blue);
+        }
+
+        /* Comfort Predictions */
+        .comfort-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .comfort-item {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .comfort-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .comfort-activity {
+            font-size: 12px;
+            color: var(--walmart-gray);
+            margin-bottom: 4px;
+        }
+
+        .comfort-score {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--success-green);
+        }
+
+        /* Bottom Actions */
+        .bottom-actions {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 16px;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--walmart-blue);
+            color: white;
+        }
+
+        .btn-primary:active {
+            background: var(--walmart-dark-blue);
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--walmart-blue);
+            border: 2px solid var(--walmart-blue);
+        }
+
+        .btn-secondary:active {
+            background: var(--walmart-light-blue);
+            transform: scale(0.98);
+        }
+
+        /* Instructions */
+        .instructions {
+            background: var(--walmart-yellow);
+            color: var(--walmart-dark-blue);
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            text-align: center;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-title">
+            <div class="logo-icon">
+                <i data-lucide="scan" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div class="title-text">
+                <h1>FitGenius</h1>
+                <p>AI-Powered Shoe Fitting</p>
+            </div>
+            <span class="ai-badge">AI</span>
+        </div>
+        <i data-lucide="settings" style="width: 24px; height: 24px; color: var(--walmart-gray); cursor: pointer;"></i>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Instructions -->
+        <div class="instructions">
+            📱 Place your foot in the frame and tap "Start Scanning"
+        </div>
+
+        <!-- Camera View -->
+        <div class="camera-container">
+            <div class="camera-view">
+                <div class="ar-overlay">
+                    <div class="foot-outline"></div>
+                </div>
+                <div class="scanning-line"></div>
+                <div class="measurement-point point-1"></div>
+                <div class="measurement-point point-2"></div>
+                <div class="measurement-point point-3"></div>
+                <div class="measurement-point point-4"></div>
+                <div class="measurement-point point-5"></div>
+                <div class="measurement-point point-6"></div>
+            </div>
+            <button class="scan-button" id="scanBtn" onclick="startScanning()">
+                <i data-lucide="scan" style="width: 16px; height: 16px;"></i>
+                <span>Start Scanning</span>
+            </button>
+        </div>
+
+        <!-- Confidence Score -->
+        <div class="confidence-card">
+            <div class="confidence-title">AI Confidence Score</div>
+            <div class="confidence-score" id="confidenceScore">98%</div>
+            <div class="confidence-bar">
+                <div class="confidence-fill" style="width: 98%;"></div>
+            </div>
+            <div class="confidence-message">Excellent scan quality - Ready for accurate sizing!</div>
+        </div>
+
+        <!-- Measurements Display -->
+        <div class="measurements-card">
+            <div class="measurements-title">
+                <i data-lucide="ruler" style="width: 18px; height: 18px;"></i>
+                Your Measurements
+            </div>
+            <div class="measurement-row">
+                <div class="measurement-label">
+                    <i data-lucide="move-horizontal" style="width: 14px; height: 14px;"></i>
+                    Length
+                </div>
+                <div class="measurement-value" id="lengthValue">
+                    <div class="measurement-loading">
+                        <div class="loading-bar"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="measurement-row">
+                <div class="measurement-label">
+                    <i data-lucide="move-vertical" style="width: 14px; height: 14px;"></i>
+                    Width
+                </div>
+                <div class="measurement-value" id="widthValue">
+                    <div class="measurement-loading">
+                        <div class="loading-bar"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="measurement-row">
+                <div class="measurement-label">
+                    <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
+                    Arch Type
+                </div>
+                <div class="measurement-value" id="archValue">
+                    <div class="measurement-loading">
+                        <div class="loading-bar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Size Recommendation -->
+        <div class="size-recommendation">
+            <div class="size-title">Perfect Size for You</div>
+            <div class="recommended-size" id="recommendedSize">--</div>
+            <div class="size-alternatives">
+                <div class="alt-size">EU 43</div>
+                <div class="alt-size">UK 8.5</div>
+                <div class="alt-size">CM 27.5</div>
+            </div>
+        </div>
+
+        <!-- Comfort Predictions -->
+        <div class="comfort-grid">
+            <div class="comfort-item">
+                <div class="comfort-icon">🏃</div>
+                <div class="comfort-activity">Running</div>
+                <div class="comfort-score">95%</div>
+            </div>
+            <div class="comfort-item">
+                <div class="comfort-icon">🚶</div>
+                <div class="comfort-activity">Walking</div>
+                <div class="comfort-score">98%</div>
+            </div>
+            <div class="comfort-item">
+                <div class="comfort-icon">🏢</div>
+                <div class="comfort-activity">All Day</div>
+                <div class="comfort-score">92%</div>
+            </div>
+            <div class="comfort-item">
+                <div class="comfort-icon">🏀</div>
+                <div class="comfort-activity">Sports</div>
+                <div class="comfort-score">88%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Actions -->
+    <div class="bottom-actions">
+        <button class="action-btn btn-secondary">
+            <i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i>
+            Rescan
+        </button>
+        <button class="action-btn btn-primary" onclick="findShoes()">
+            <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+            Find My Shoes
+        </button>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        let isScanning = false;
+
+        function startScanning() {
+            const btn = document.getElementById('scanBtn');
+            
+            if (!isScanning) {
+                isScanning = true;
+                btn.classList.add('scanning');
+                btn.innerHTML = `
+                    <i data-lucide="loader" style="width: 16px; height: 16px; animation: spin 1s linear infinite;"></i>
+                    <span>Scanning...</span>
+                `;
+                
+                // Simulate scanning process
+                setTimeout(() => {
+                    // Update measurements
+                    document.getElementById('lengthValue').innerHTML = '10.5"';
+                    document.getElementById('widthValue').innerHTML = '4.2"';
+                    document.getElementById('archValue').innerHTML = 'Medium';
+                    document.getElementById('recommendedSize').innerHTML = 'US 9.5';
+                    
+                    // Update confidence score with animation
+                    const scoreElement = document.getElementById('confidenceScore');
+                    let score = 0;
+                    const interval = setInterval(() => {
+                        score += 2;
+                        if (score >= 98) {
+                            score = 98;
+                            clearInterval(interval);
+                            
+                            // Reset button
+                            btn.classList.remove('scanning');
+                            btn.innerHTML = `
+                                <i data-lucide="check-circle" style="width: 16px; height: 16px;"></i>
+                                <span>Scan Complete</span>
+                            `;
+                            lucide.createIcons();
+                            
+                            setTimeout(() => {
+                                btn.innerHTML = `
+                                    <i data-lucide="scan" style="width: 16px; height: 16px;"></i>
+                                    <span>Start Scanning</span>
+                                `;
+                                lucide.createIcons();
+                                isScanning = false;
+                            }, 2000);
+                        }
+                        scoreElement.textContent = score + '%';
+                    }, 30);
+                    
+                }, 3000);
+                
+                lucide.createIcons();
+            }
+        }
+
+        function findShoes() {
+            alert('Navigating to shoe recommendations based on your perfect fit measurements...');
+        }
+
+        // Add spin animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

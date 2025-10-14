@@ -1,3 +1,5 @@
+# MOI Data Analysis 
+
 1. Meta CTR/CPM & Google CTR/CPM:
     - Do you have separate Meta Ads and Google Ads data files with these metrics?
         use the meta ads input file and use AVERAGE: "CTR (link click-through rate)" and AVERAGE: "CPM (cost per 1,000 impressions)"
@@ -26,3 +28,571 @@
 | Top Level Daily Metrics | ExportModal.tsx:198-411 | moi-server-topLevel | MOI_Top_Level_Metrics_${dateRange}.csv    | 🔄 ON-DEMAND      |
 | AdSet Level Matrices    | ExportModal.tsx:415-467 | moi-server-adset    | MOI_Adset_Level_Matrices_${dateRange}.csv | 🔄 ON-DEMAND      |
 | Pivot Temp              | ExportModal.tsx:171-196 | moi-pivot-data      | MOI_Pivot_Temp_${dateRange}.csv           | 🔄 ON-DEMAND      |
+
+
+
+  | Metric                   | Input Source   | Formula                                          | 
+  |--------------------------|----------------|--------------------------------------------------|
+  | Meta Spend               | Meta Ads CSV   | Sum of 'Amount spent (INR)'                      |
+  | Meta CTR                 | Meta Ads CSV   | Average of CTR values                            |
+  | Meta CPM                 | Meta Ads CSV   | Average of CPM values                            |
+  | Google Spend             | Google Ads CSV | Sum of 'Cost'                                    |
+  | Google CTR               | Google Ads CSV | Average of CTR values                            |
+  | Google CPM               | Google Ads CSV | Average of CPM values                            |
+  | Total Users           | Shopify CSV    | Sum('Online store visitors')                     |
+  | Total ATC                | Shopify CSV    | Sum('Sessions with cart additions')    | Distributed daily     | Check calculation          |
+  | Total Reached Checkout   | Shopify CSV    | Sum('Sessions that reached checkout') | Distributed daily     | Check calculation          |
+  | Total Abandoned Checkout | Shopify CSV      | Math.floor(Math.random() * 3)                    |
+  | Session Duration         | Shopify CSV    | Average of 'Average session duration'            |
+  | Users Above 1min         | Shopify CSV      | totalUsers with session duration greater than 1 min                    |
+  | Users 5 Pages Above 1min | Shopify CSV      | totalUsers that viewed more than 5 pages                   |
+  | ATC with session duration above 1 min | Shopify CSV |     Sum of ATC whose session duration above 1 min  |
+  | Reached Checkout with session duration above 1 min | Shopify CSV | Sum of Reached Checout  whose session duration above 1 min |
+
+
+
+
+
+
+| Metric                | Input Source    | Formula                                                    | Data Quality | Major Issues             |
+  |-----------------------|-----------------|------------------------------------------------------------|--------------|--------------------------|
+  | Date                  | Date Range      | dateRange.startDate                                        | ✅ Real       | Sept 29, 2025            |
+  | Campaign Name         | Meta/Google CSV | Meta: 'Campaign name'Google: 'Campaign'                    | ✅ Real       | Direct from files        |
+  | Campaign ID           | Generated       | meta_${index + 100000}google_${index + 300000}             | ⚠️ Synthetic | Consistent but fake      |
+  | Ad Set Name           | Meta CSV/Google | Meta: 'Ad set name'Google: Campaign name                   | ✅ Real       | Google has no adsets     |
+  | Ad Set ID             | Generated       | meta_adset_${index + 200000}google_adset_${index + 400000} | ⚠️ Synthetic | Consistent but fake      |
+  | Platform              | Hardcoded       | "Meta" or "Google"                                         | ✅ Real       | Accurate labels          |
+  | Ad Set Level Spent    | Meta/Google CSV | Meta: 'Amount spent (INR)'Google: 'Cost'                   | ✅ Real       | ~₹74,769 total           |
+  | Impressions           | Calculated      | Math.floor(spend / cpm * 1000)                             | ⚠️ Derived   | Only as good as CPM      |
+  | CTR                   | Meta/Google CSV | Meta: 'CTR (link click-through rate)'Google: 'CTR'         | ✅ Real       | From original files      |
+  | CPM                   | Meta/Google CSV | Meta: 'CPM (cost per 1,000 impressions)'Google: 'Avg. CPM' | ✅ Real       | From original files      |
+  | CPC                   | Missing         | Always 0                                                   | ❌ Missing    | No clicks data           |
+  | 🚨 Ad Set Level Users | RANDOM!         | Math.random() * 1000 (Meta)Math.random() * 500 (Google)    | ❌ FAKE       | COMPLETELY RANDOM!       |
+  | Cost per User         | Calculated      | spend ÷ fakeUsers                                          | ❌ Invalid    | Based on fake users      |
+  | 🚨 Ad Set Level ATC   | RANDOM!         | Math.random() * 10 (Meta)Math.random() * 8 (Google)        | ❌ FAKE       | COMPLETELY RANDOM!       |
+  | 🚨 Reached Checkout   | RANDOM!         | Math.random() * 5 (Meta)Math.random() * 4 (Google)         | ❌ FAKE       | COMPLETELY RANDOM!       |
+  | 🚨 Conversions        | RANDOM!         | Math.random() * 3 (Meta)Math.random() * 2 (Google)         | ❌ FAKE       | COMPLETELY RANDOM!       |
+  | Session Duration      | Missing         | Always 0                                                   | ❌ Missing    | No session data from ads |
+  | Users Above 1 Min     | Missing         | Always 0                                                   | ❌ Missing    | No engagement data       |
+  | Revenue               | Missing         | Always 0                                                   | ❌ Missing    | No purchase values       |
+  | ROAS                  | Calculated      | 0 ÷ spend = 0                                              | ❌ Invalid    | No revenue to calculate  |
+
+
+
+OUTPUT FILE 1: Top Level Daily Metrics
+
+  | Metric                    | Input Source        | Formula/Processing                                     | File Location                      |
+  |---------------------------|---------------------|--------------------------------------------------------|------------------------------------|
+  | Date                      | Date Range Detector | Actual dates from input files or current date fallback | dateRangeDetector.ts:197           |
+  | Meta Spend                | Meta Ads CSV        | Sum of 'Amount spent (INR)' parsed as numbers          | metaProcessor.ts:65                |
+  | Meta CTR                  | Meta Ads CSV        | Average of 'CTR (link click-through rate)'             | metaProcessor.ts:69-71             |
+  | Meta CPM                  | Meta Ads CSV        | Average of 'CPM (cost per 1,000 impressions)'          | metaProcessor.ts:66-68             |
+  | Google Spend              | Google Ads CSV      | Sum of 'Cost' with comma removal and parseFloat        | googleProcessor.ts:99-102          |
+  | Google CTR                | Google Ads CSV      | Average of 'CTR' values (percentage conversion)        | googleProcessor.ts:111-116         |
+  | Google CPM                | Google Ads CSV      | Average of 'Avg. CPM' values                           | googleProcessor.ts:104-109         |
+  | Total Users               | Shopify CSV         | Sum of 'Online store visitors' by date                 | integratedDataProcessor.ts:337     |
+  | Total ATC                 | Shopify CSV         | Sum of 'Sessions with cart additions' by date          | integratedDataProcessor.ts:338     |
+  | Total Reached Checkout    | Shopify CSV         | Sum of 'Sessions that reached checkout' by date        | integratedDataProcessor.ts:339     |
+  | Session Duration          | Shopify CSV         | Weighted average of 'Average session duration'         | integratedDataProcessor.ts:342-345 |
+  | Users Above 1 Min         | Shopify CSV         | Count of sessions with duration > 60 seconds           | integratedDataProcessor.ts:348-349 |
+  | Users 5 Pages Above 1 Min | Shopify CSV         | Count of sessions with >5 pageviews AND >60s duration  | integratedDataProcessor.ts:352-355 |
+  | ATC Above 1 Min           | Shopify CSV         | Sum of ATC sessions with duration > 60s                | integratedDataProcessor.ts:358-360 |
+  | Checkout Above 1 Min      | Shopify CSV         | Sum of checkout sessions with duration > 60s           | integratedDataProcessor.ts:363-365 |
+  | General Queries           | No Source           | -9999 (No data available)                              | integratedDataProcessor.ts:378     |
+  | Open Queries              | No Source           | -9999 (No data available)                              | integratedDataProcessor.ts:379     |
+  | Online Orders             | No Source           | -9999 (No data available)                              | integratedDataProcessor.ts:380     |
+
+  OUTPUT FILE 2: Adset Level Matrices
+
+  | Metric           | Input Source    | Formula/Processing                               | File Location                      | Status          |
+  |------------------|-----------------|--------------------------------------------------|------------------------------------|-----------------|
+  | Date             | Date Range      | First date from detected range                   | integratedDataProcessor.ts:435     | ✅ REAL DATA     |
+  | Campaign Name    | Meta/Google CSV | 'Campaign name' or 'Campaign' field              | integratedDataProcessor.ts:441,467 | ✅ REAL DATA     |
+  | Campaign ID      | Generated       | Timestamp + small random for uniqueness          | integratedDataProcessor.ts:442,468 | ✅ DETERMINISTIC |
+  | Adset Name       | Meta/Google CSV | 'Ad set name' or campaign name fallback          | integratedDataProcessor.ts:443,469 | ✅ REAL DATA     |
+  | Platform         | Source          | "Meta" or "Google" based on source file          | integratedDataProcessor.ts:445,471 | ✅ REAL DATA     |
+  | Spend            | Meta/Google CSV | 'Amount spent (INR)' or 'Cost' parsed as numbers | integratedDataProcessor.ts:446,472 | ✅ REAL DATA     |
+  | Impressions      | Calculated      | Spend / CPM * 1000 (derived from real data)      | integratedDataProcessor.ts:447,473 | ✅ CALCULATED    |
+  | CTR              | Meta/Google CSV | Direct from 'CTR' fields                         | integratedDataProcessor.ts:448,474 | ✅ REAL DATA     |
+  | CPM              | Meta/Google CSV | Direct from 'CPM' fields                         | integratedDataProcessor.ts:449,475 | ✅ REAL DATA     |
+  | CPC              | No Source       | 0 (No clicks data available)                     | integratedDataProcessor.ts:450,476 | ⚠️ NO DATA      |
+  | Users            | No Source       | -9999 (No user-level data from ads platforms)    | integratedDataProcessor.ts:451,477 | ⚠️ NO DATA      |
+  | ATC              | No Source       | -9999 (No conversion data from ads platforms)    | integratedDataProcessor.ts:452,478 | ⚠️ NO DATA      |
+  | Reached Checkout | No Source       | -9999 (No conversion data from ads platforms)    | integratedDataProcessor.ts:453,479 | ⚠️ NO DATA      |
+  | Purchases        | No Source       | -9999 (No purchase data from ads platforms)      | integratedDataProcessor.ts:454,480 | ⚠️ NO DATA      |
+  | Revenue          | No Source       | 0 (No revenue data available)                    | integratedDataProcessor.ts:455,481 | ⚠️ NO DATA      |
+  | ROAS             | No Source       | 0 (Cannot calculate without revenue)             | integratedDataProcessor.ts:456,482 | ⚠️ NO DATA      |
+
+  OUTPUT FILE 3: Campaign Level Data (UTM-based)
+
+  | Metric                     | Input Source | Formula/Processing                                              | File Location                      | Status       |
+  |----------------------------|--------------|-----------------------------------------------------------------|------------------------------------|--------------|
+  | UTM Campaign               | Shopify CSV  | 'UTM campaign' or 'Utm campaign' field                          | integratedDataProcessor.ts:571     | ✅ REAL DATA
+  |
+  | UTM Term                   | Shopify CSV  | 'UTM term' or 'Utm term' field                                  | integratedDataProcessor.ts:572     | ✅ REAL DATA
+  |
+  | Date                       | Shopify CSV  | 'Date' or 'Day' field from records                              | integratedDataProcessor.ts:585     | ✅ REAL DATA
+  |
+  | Online Store Visitors      | Shopify CSV  | Sum of 'Online store visitors' by campaign                      | integratedDataProcessor.ts:605     | ✅ REAL DATA
+  |
+  | Sessions                   | Shopify CSV  | Sum of 'Sessions' by campaign                                   | integratedDataProcessor.ts:606     | ✅ REAL DATA
+  |
+  | Sessions w/ Cart Additions | Shopify CSV  | Sum of 'Sessions with cart additions' by campaign               | integratedDataProcessor.ts:607     | ✅ REAL DATA
+  |
+  | Sessions Reached Checkout  | Shopify CSV  | Sum of 'Sessions that reached checkout' by campaign             | integratedDataProcessor.ts:608     | ✅ REAL DATA
+  |
+  | Pageviews                  | Shopify CSV  | Sum of 'Pageviews' by campaign                                  | integratedDataProcessor.ts:609     | ✅ REAL DATA
+  |
+  | Average Session Duration   | Shopify CSV  | Weighted average by visitors per campaign                       | integratedDataProcessor.ts:612-617 | ✅ REAL DATA
+  |
+  | Conversion Rate            | Calculated   | (Checkout Sessions / Total Sessions) * 100                      | csvProcessor.ts:102-104            | ✅ CALCULATED
+  |
+  | Cart Addition Rate         | Calculated   | (Cart Sessions / Total Sessions) * 100                          | csvProcessor.ts:104                | ✅ CALCULATED
+  |
+  | Quality Score              | Calculated   | Weighted algorithm based on checkout, cart, engagement, loyalty | csvProcessor.ts:110-136            | ✅ CALCULATED
+  |
+  | Performance Tier           | Calculated   | excellent/good/average/poor based on quality score              | csvProcessor.ts:139-144            | ✅ CALCULATED
+  |
+  | Estimated Revenue          | Fallback     | -9999 (No AOV data available)                                   | csvProcessor.ts:164-167            | ⚠️ NO DATA   |
+
+
+
+
+ 🔴 INPUT FILES (3)
+  ├── Meta Ads CSV (Sept 29)
+  ├── Google Ads CSV (Sept 29)
+  └── Shopify CSV (Oct 2)
+       ↓
+  🔵 PARSER & STORAGE
+  ├── metaProcessor.ts → localStorage['moi-meta-data']
+  ├── googleProcessor.ts → localStorage['moi-google-data']
+  └── csvProcessor.ts → localStorage['moi-shopify-data'] (compressed)
+       ↓
+  🟡 DATA INTEGRATION (integratedDataProcessor.ts)
+  ├── Meta Coverage Filtering → filterShopifyByMetaCoverage()
+  │   ├── Creates campaign+adset combinations from Meta data
+  │   ├── Filters Shopify data to match Meta combinations
+  │   └── ⚠️ ISSUE: Sept 29 ≠ Oct 2 → ALL Shopify data filtered out
+  ├── Pivot Creation → createShopifyPivotFromData()
+  │   ├── Aggregates by UTM Campaign + UTM Term
+  │   ├── Sums: Online store visitors, Sessions, Cart additions, etc.
+  │   └── localStorage['moi-pivot-data']
+  └── Dashboard Data Generation → processOutputFiles()
+       ↓
+  🟢 OUTPUT DATA PROCESSING
+  ├── Top Level Daily Metrics
+  │   ├── Aggregates campaign data
+  │   ├── Combines Meta spend + Google spend
+  │   └── Uses Shopify user metrics
+  ├── Ad Set Level Matrices
+  │   ├── Uses pivot data for campaign+adset combinations
+  │   ├── Lookup Meta spend by campaign+adset
+  │   └── Maps to UTM Term = Ad Set Name
+  └── Pivot Temp CSV
+      ├── Direct export of pivot data
+      └── Campaign+AdSet combinations with metrics
+       ↓
+  🔴 EXPORT PARSER (ExportModal.tsx)
+  ├── Reads localStorage data
+  ├── Maps fields to CSV columns
+  ├── Applies date formatting
+  └── Generates downloadable files
+       ↓
+  🎯 OUTPUT FILES (3)
+  ├── MOI_Top_Level_Metrics_[date].csv
+  ├── MOI_Adset_Level_Matrices_[date].csv
+  └── MOI_Pivot_Temp_[date].csv
+
+
+
+
+📊 MOI DASHBOARD DATA FLOW WITH SUPABASE INTEGRATION
+  ═══════════════════════════════════════════════════════
+
+  🔴 INPUT FILES (3)
+  ├── Meta Ads CSV (Sept 29)
+  ├── Google Ads CSV (Sept 29)
+  └── Shopify CSV (Oct 2)
+       ↓
+  🔵 FILE VALIDATION & PARSING
+  ├── fileValidationService.ts → Validates file format & headers
+  ├── metaProcessor.ts → Parse Meta CSV
+  ├── googleProcessor.ts → Parse Google CSV (with metadata handling)
+  └── csvProcessor.ts → Parse Shopify CSV
+       ↓
+  🟢 SUPABASE CLOUD STORAGE
+  ├── dataImportService.ts → Primary import orchestrator
+  │   ├── Creates import_sessions record
+  │   ├── Checks for duplicates via checkForDuplicates()
+  │   ├── Batch imports to campaign_data table
+  │   └── Records metadata to raw_data_meta table
+  ├── Database Tables:
+  │   ├── projects → Project management
+  │   ├── import_sessions → Track import sessions
+  │   ├── raw_data_meta → File metadata & hashes
+  │   └── campaign_data → Unified campaign metrics
+  └── Duplicate Detection:
+      ├── Query existing data by date range
+      ├── Present duplicate modal if conflicts found
+      └── User resolution: keep_existing/replace/skip
+       ↓
+  🟡 HYBRID DATA FLOW (Supabase + LocalStorage)
+  ├── Primary Path (Supabase):
+  │   ├── Query campaign_data from Supabase
+  │   ├── Real-time data sync across sessions
+  │   └── Multi-user collaboration support
+  ├── Fallback Path (LocalStorage):
+  │   ├── localStorage['moi-meta-data']
+  │   ├── localStorage['moi-google-data']
+  │   └── localStorage['moi-shopify-data'] (compressed)
+  └── Data Coverage Service:
+      ├── dataCoverageService.ts → Track data completeness
+      └── Validate date range alignment
+       ↓
+  🟠 DATA INTEGRATION & PROCESSING
+  ├── integratedDataProcessor.ts
+  │   ├── filterShopifyByMetaCoverage() → Campaign+AdSet filtering
+  │   ├── createShopifyPivotFromData() → UTM-based aggregation
+  │   └── processOutputFiles() → Dashboard data generation
+  ├── configurableDataProcessor.ts
+  │   ├── Logic template management
+  │   └── Formula validation & application
+  └── cumulativeDataManager.ts
+      ├── Daily data accumulation
+      └── Historical trend tracking
+       ↓
+  🔷 DASHBOARD VISUALIZATION
+  ├── KeyMetricsPanel.tsx → Key performance indicators
+  ├── CampaignPerformanceTiers.tsx → Campaign ranking
+  ├── DailySpendQualityCorrelation.tsx → Spend/quality analysis
+  ├── UTMCampaignTable.tsx → Campaign breakdown
+  └── DataCoverageDashboard.tsx → Data completeness tracking
+       ↓
+  🟣 OUTPUT DATA PROCESSING
+  ├── outputDataProcessor.ts
+  │   ├── generateTopLevelMetrics() → Daily aggregates
+  │   ├── generateAdSetLevelMatrices() → Ad set breakdown
+  │   └── generatePivotTemp() → Pivot exports
+  └── ExportModal.tsx
+      ├── Read from Supabase or localStorage
+      ├── Apply date formatting & field mapping
+      └── Generate CSV downloads
+       ↓
+  🎯 OUTPUT FILES (3)
+  ├── MOI_Top_Level_Metrics_[date].csv
+  ├── MOI_Adset_Level_Matrices_[date].csv
+  └── MOI_Pivot_Temp_[date].csv
+
+
+
+
+
+      ❓ Questions Before Implementation
+
+      1. Date Range Selection: Do you want users to select which days to include in exports, or always export all available data? >> For now just all available date. 
+      2. Campaign Continuity: Will the same campaigns run across multiple days (e.g., "Campaign_X" on Sept 29 AND Oct 2)? Yes, it will run across multiple days and months. 
+      3. Deduplication: If the same campaign+date combination is imported twice, should we: 
+        - Replace the old data?
+        - Skip the duplicate?
+        - Sum the metrics? >> You will have to check the date. If the same data is detected then give me a popup to replace or some. Can we really detect the duplicates? 
+      4. Storage Limits: localStorage has a ~5-10MB limit. With multiple days, do you need:
+        - Automatic old data cleanup?
+        - Migration to IndexedDB? >>> No allow the memory to increase up to 150 MB 
+      5. Visual Indicators: Should the dashboard show: >> For now give me some visual indicators as we will be in the debug mode. We can remove the UI as needed. 
+        - Date ranges included?
+        - Individual day breakdowns?
+        - Only aggregated totals?
+
+
+
+
+1.2 session multiplier (sessions = visitors × 1.2) → Now uses actual session data from CSV
+  2. 2500 average order value → Now uses actual revenue data from CSV
+  3. 0.6 quality customer estimation (60%) → Now uses actual usersAbove1Min from data
+  4. 0.3 estimation (30%) for 5+ pageviews → Now uses actual users5PagesAbove1Min data
+  5. 0.7 multiplier (70%) in configurableDataProcessor → Now uses actual values
+  6. 3.2 pageview multiplier → Now uses actual pageview data
+  7. All hardcoded sample values (2500 spend/revenue) → Set to 0
+
+
+
+claude_logic : for Top Level Metric the Total User metric is -999, the formula Sum of 'Online store visitors' by date  from Shopify Export csv is correct. The Online store visitor needed to be sum and reported as Total Users. root cause to find out why I am getting -999. give me options to fix. make sure this is end to end. you can use data_inspector.html to test it.
+
+for data_inspector.html can you add timestamp when each data set was updated? 
+
+
+claude_logic : for Ad Set Total User metric
+problem is:
+* Output file : Ad Set Level 
+* field :  Ad Set Level Users with Session above 1 min is 0  
+* the forluma in your logic is Campaign+AdSet combinations directly from the Pivot Temp data itself find sum of cost of Amount spent (INR) for given ad set for given campaign for meta ads sheet
+
+ALWAYS:
+ - do not add random or synthatic data 
+ - always make sure you do not break any previous features that were working well. So MUST think through all the edge cases and full code before changing anything. 
+ - check from input to output, break things down into steps and check the pipeline makes sense. 
+ - do not edit any code, just review and give me analysis.
+ - when you write code, always use playwrite to monitor the console log and reload the page. 
+
+ > claude_logic: i have uploaded sept 29 input files and see that ad set and pivot are getting exported but ad set is empty. root cause analyze and find out why.
+   break the problem into 1/2 and work your way forward. Step as i know
+   1. Input  ingestion
+   2. convert into temp pivot
+   3. create top level, ad set level data
+   4. check the parser to covnert to csv 
+
+Date matching for input files 
+
+1. google ads - second row - September 29, 2025 - September 29, 2025
+2. Meta ads- Reporting ends column
+3. Shopify Export - Day 
+
+
+Ad Set Level Users --> Shopify Export  Online store visitors
+ 
+
+Root cause to find out why I am getting -999. give me options to fix. make sure this is end to end. you can use data_inspector.html to test it.
+
+
+
+
+
+i want a debug html file that i can launch from setting with collapable rows that list key steps of the pipeline and allow me to inspect the data 
+  flow. ask me questions use prompt optimizer - do not chance current fucntion - this is just to read from current data we are not modifying it.
+
+
+
+##  MOI Marketing Effectiveness by Julius
+
+
+## Information to follow  
+ - there may not downstream metric such as check out, AOV, so the good customer lead would be based on customers that spend more than 1 min per session and about 5 page views.
+ - We will add daily data for Meta Ads, google Ads, and Shopify. 
+ - You will have to map the Day or Hour in shopify, to Reporting end in Meta ads, and header in google ads.
+ - Normalize day in each dataset to a pure date (no time) with the same dtype.
+ - The campaigns will run for more than one day, hence aggregate data if needed 
+ - customer that started shopping will visit us several times before they convert.
+ - load Google carefully by:
+        - Detecting the header row that contains Campaign or Day.
+        - Cleaning out preface rows and unnamed columns.
+        - Normalizing day and utm_campaign.
+ - the convertion time is greater than 1 days - could be weeks
+ - Since you will get daily data the funnel will start building as the customers makes it way through check out steps. 
+ - The customer gets information about our brand and visits our website. while our conversion funnel is long we want to see if campaigns are generating good customer leads. if we are then we want recommendation to invest more in campaign/ adset one over the other.
+
+## Goal : understand data from different soruces and create one output to measure impact of marketing campaigns and make recommendation. 
+
+## Input
+ - I am giving you data from three sources 1. Google Ads 2. Meta ads and 3. Shopify where our website is hosted. 
+ - data will be daily or for several days at same time. 
+ - you will need to update your aggregated output as per below. 
+ - UTM Campaign name and sub-set Ad Set is a way to link the meta ads to shopify. 
+ - Treat Shopify as the source of truth for visitors and session duration/pageviews.
+ - Define good leads in Shopify: Average session duration >= 60 seconds and Pageviews >= 5.
+ - Aggregate Shopify by date and utm_campaign (normalize names).
+ -Join Meta and Google spend by campaign/ad set where available; if Google daily files are missing, we’ll use only the available and otherwise keep Google spend as 0 for those dates.
+
+I would prefer to have some insights from the data and then recommendation and clear data driven reason to invest more or less in specific campaign.
+
+## Time scale 
+- Daily 
+
+## Output
+
+1. sheet with below paramters
+    ### Format 
+     - When you generate the output sheet make sure you include all campaigns and ad set combination not just a compact leaderboard.
+     - File name MOI_Date_<start_date>_<end_date>
+     - Plus a few recommendations on budget shifts.
+     - remove total spend = 0
+     - color code each row for each field based on how impactful the ad spend is based on Good Leads generated 
+        * Green: Users with Session above 1 min = High and Cost per 1 min user = Low
+        * Light Green: Cost per 1 min user = Low & Users with Session above 1 min = Average
+        * Purple: Cost per 1 min user = High & Users with Session above 1 min = High
+        * Red: Cost per 1 min user = High & but not in above 3
+    ### Fields 
+     - campaign_name   
+     - ad_set_name meta_spend_inr  
+     - visitors    
+     - good_lead_count
+     - good_lead_rate (%) 
+     - cost_per_good_lead (INR)
+     - cost_per_visitor (INR)
+     - Date? 
+     - color code 
+     - recommendaiton 
+     - level of condifenece (for recommendation)
+2. Visualization
+     1. xy scatter to show correlation scatter plot of cost of campaign + Ad Set vs Good lead (remove total spend = 0)
+     2. add trend line. 
+     3. in the scatter mark campaign+AdSet that is above the trend line. Identify and list  campaign + Ad Set that has higher (Good Lead) / (Spend)
+        
+     
+3. Insights
+     0 . identify relation betwen campaign+AdSet VS Good leads and Visitor 
+     1. Give me insights based on your analysis which campaign + AdSet to hold, increase investment, or reduce investment
+     2. Assess how spend relates to engaged “good leads” and visitors at the campaign + ad set level using the scatter and the computed unit metrics:
+        we are trying to find from xy
+        a. Linear relationship: Campaign + ad sets with roughly proportional increases in good leads as spend rises (points aligning in a steady upward trend on the scatter). These tend to appear as consistent performers with similar cost per good lead across days and are often labeled Green or stable Light Green in the table.
+        b. Negative relationship: Campaign + ad sets where additional spend does not translate to more good leads or where good leads per rupee erode as spend increases. These show flatter or downward responsiveness and are more likely to fall under Purple or Red due to rising cost per good lead.
+        c. Exponential relationship: Campaign + ad sets that show accelerating gains in good leads as spend increases (curving upward in the scatter). These are the prime scale candidates and usually surface as Green with improving cost per good lead as spend rises.
+    
+
+    you MUST Fit simple models per campaign + ad set to explicitly classify each relationship type (linear/negative/exponential) and append a relationship_label column.
+
+
+## Julius Prompt v2 
+
+    ## Information to follow  
+     - there may not downstream metric such as check out, AOV, so the good customer lead would be based on customers that spend more than 1 min per session and about 5 page views.
+     - We will add daily data for Meta Ads, google Ads, and Shopify. 
+     - You will have to map the Day or Hour in shopify, to Reporting end in Meta ads, and header in google ads.
+     - Normalize day in each dataset to a pure date (no time) with the same dtype.
+     - The campaigns will run for more than one day, hence aggregate data if needed 
+     - customer that started shopping will visit us several times before they convert.
+     - load Google carefully by:
+            - Detecting the header row that contains Campaign or Day.
+            - Cleaning out preface rows and unnamed columns.
+            - Normalizing day and utm_campaign.
+     - the convertion time is greater than 1 days - could be weeks
+     - Since you will get daily data the funnel will start building as the customers makes it way through check out steps. 
+     - The customer gets information about our brand and visits our website. while our conversion funnel is long we want to see if campaigns are generating good customer leads. if we are then we want recommendation to invest more in campaign/ adset one over the other.
+
+    PHASE 1: Data Ingestion & Normalization
+
+      Objective: Clean and standardize all data sources
+
+      - Google Ads: Detect header row with "Campaign"/"Day", remove preface rows
+      - Date Mapping: Shopify Day/Hour → Meta "Reporting end" → Google "Day" (YYYY-MM-DD format)
+      - Campaign Standardization: Normalize utm_campaign → names across sources
+      - Output: Aggretate data pivot by date, campaign, adset to get sum of visitors and other metric
+
+
+      PHASE 2: Good Lead Definition & Aggregation
+
+      Objective: Calculate performance metrics from Shopify (source of truth)
+
+      - Good Lead Definition: Sessions ≥60 seconds AND pageviews ≥5
+      - Aggregation: Group by date + campaign, calculate:
+        - good_lead_count, visitors, good_lead_rate (%)
+      - Output: Aggregated Shopify dataset with performance metrics
+
+      PHASE 3: Multi-Source Integration & Cost Metrics
+
+      Objective: Join spend data and calculate efficiency
+
+      - Integration: Left join Shopify with Meta/Google spend (fill missing with 0)
+      - Calculations:
+        - cost_per_good_lead = total_spend / good_lead_count
+        - cost_per_visitor = total_spend / visitors
+      - Classification: Use percentiles for High/Average/Low tiers
+      - Output: Integrated dataset with all cost-efficiency metrics
+
+      PHASE 4: Analysis & Recommendations
+
+      Objective: Generate insights and actionable recommendations
+
+      Color Coding:
+      - 🟢 Green: High good_leads + Low cost_per_good_lead
+      - 🟢 Light Green: Low cost_per_good_lead + Average good_leads
+      - 🟣 Purple: High cost_per_good_lead + High good_leads
+      - 🔴 Red: All other combinations
+
+      Outputs:
+      1. Excel: MOI_Date_<start>_<end>.xlsx with all metrics, color codes, recommendations
+      2. Scatter Plot: Spend vs Good Leads with trend line, highlighting above-trend performers
+      3. Investment Strategy:
+        - Exponential relationship → Scale Up
+        - Linear relationship → Maintain
+        - Negative relationship → Reduce/Stop
+
+
+
+## Julius itself recommended prompt - v3
+    
+    Data:
+
+    Files will include:
+    Meta_Ads_<date>.csv with columns at least: Campaign name, Ad set name, Day (or Reporting starts), Amount spent (INR)
+    Google_Ads_<date>.csv (exported campaign-level) with Campaign, Cost, plus any date if available
+    Shopify_<date>.csv with Day, UTM campaign, UTM term, Online store visitors, Sessions that completed checkout, Pageviews, Average session duration. Some Shopify would Day+Hours which you need to convert to Day 
+    Expect 5–10 calendar days per run.
+    
+    Task:
+    Load all attached Meta, Google, and Shopify CSVs for the given window. Auto-harmonize headers:
+
+    For Meta files missing Day, derive Day from Reporting starts (daily granularity).
+    For Google campaign reports with banner rows or Unnamed columns, detect the header row and clean it; keep Campaign and Cost; if no date per row, assume the file’s date for Day.
+    Shopify: rename UTM campaign to Campaign name and UTM term to Ad set name; keep Day, Online store visitors, Sessions that completed checkout, Pageviews, Average session duration.
+
+    Build unified daily dataset:
+    Join Meta spend to Shopify engagement on Campaign name + Ad set name + Day (left join from Meta).
+    For Google, join by Campaign name + Day only (no ad set).
+    Create metrics:
+    visitors: Online store visitors (or sum if multiple rows)
+    good_lead: count of sessions with Average session duration >= 60 seconds AND Pageviews >= 5 (aggregate per Campaign/Ad set/Day)
+    CPC_like = Amount spent (INR) / visitors
+    CPCheckout = Amount spent (INR) / Sessions that completed checkout, when > 0
+    cost_per_good_lead = Amount spent (INR) / good_lead, when > 0
+    good_lead_rate = good_lead / visitors
+    Color code per Campaign/Ad set/Day:
+    Green: good_lead above median AND cost_per_good_lead below median
+    Light Green: cost_per_good_lead below median but good_lead below median
+    Purple: good_lead above median but cost_per_good_lead above median
+    Red: everything else
+    Recommendation and confidence:
+    Green: Increase investment (High)
+    Light Green: Cautious scale (Medium)
+    Purple: Optimize cost; keep running (Medium)
+    Red: Reduce investment or pause (Low)
+    Relationship labeling (explicit):
+
+    For each Campaign + Ad set, fit simple models on daily points:
+    visitors vs spend and checkouts vs spend
+    Compare: linear y ~ x vs exponential by fitting log1p(y) ~ x
+    Rules per target (visitors and checkouts separately):
+    negative if linear slope < 0 and R²_linear ≥ 0.3
+    exponential if R²_exp > R²_linear with R²_exp ≥ 0.3 and slope ≥ 0
+    linear if slope ≥ 0 and R²_linear ≥ 0.3
+    else unclear or insufficient_data
+    Append relationship_label_visitors and relationship_label_checkouts to the unified dataset.
+    Outputs to produce:
+
+    Show head of the unified table with key columns:
+    Campaign name, Ad set name, Day, Amount spent (INR), visitors, good_lead, checkouts, CPC_like, CPCheckout, cost_per_good_lead, good_lead_rate, color_code, recommendation, confidence, relationship_label_visitors, relationship_label_checkouts
+    Visuals:
+    Scatter: Amount spent (INR) vs good_lead colored by color_code (filter out zero good_lead)
+    Scatter: Amount spent (INR) vs visitors
+    Scatter: Amount spent (INR) vs checkouts
+    Save two CSVs:
+    unified_meta_google_shopify.csv (full dataset with metrics and color codes)
+    unified_with_relationships.csv (same plus relationship labels)
+    Brief 5–7 line summary with top recommendations:
+    Which color to scale, what to pause, and any notable relationship patterns.
+    Assumptions and handling:
+
+    If exact meta-to-shopify name matching is imperfect, use direct string match; do not attempt fuzzy matching unless name overlap is zero.
+    If Google has no daily column, assign Day by file date. If multiple Google files exist for the window, assign each file’s date accordingly.
+    If some metrics are missing for a row, leave derived metrics as rather than forcing zeros (except visitors/checkouts which can be zero if truly absent).
+    Use INR as-is; do not currency-convert.
+    If there are fewer than 3 points per Campaign+Ad set, set relationship labels to insufficient_data.
+    Deliverables:
+
+    Display the head of the unified table and the plots.
+    Provide download links/filenames for the two saved CSVs.
+    Provide the short summary and recommendations.
+
+    Validate date MUST do 
+    - check the consolidated meta and google ad summary and visitor with raw files to make sure we are not over or double counting. 
+    - give me a visual of your validate and 2 sentence confirming the numbers. 
+
+
+
+ 
+  
+
+
+
+
+
+

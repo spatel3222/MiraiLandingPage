@@ -4,9 +4,10 @@ import type { DashboardData } from '../types';
 
 interface Props {
   data: DashboardData;
+  dateRangeSelector?: React.ReactNode;
 }
 
-const KeyMetricsPanel: React.FC<Props> = ({ data }) => {
+const KeyMetricsPanel: React.FC<Props> = ({ data, dateRangeSelector }) => {
   const { keyMetrics } = data;
 
   const formatNumber = (num: number | null | undefined): string => {
@@ -30,9 +31,16 @@ const KeyMetricsPanel: React.FC<Props> = ({ data }) => {
 
   return (
     <div className="bg-white rounded-lg border border-moi-light p-6">
-      <h2 className="font-orpheus text-2xl font-bold text-moi-charcoal mb-6">
-        Key Performance Metrics
-      </h2>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="font-orpheus text-2xl font-bold text-moi-charcoal">
+          Key Performance Metrics
+        </h2>
+        {dateRangeSelector && (
+          <div className="ml-4">
+            {dateRangeSelector}
+          </div>
+        )}
+      </div>
       
       {/* Row 1: Campaign Information */}
       <div className="mb-8">
@@ -43,7 +51,7 @@ const KeyMetricsPanel: React.FC<Props> = ({ data }) => {
           <div className="bg-moi-beige rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-benton text-sm text-moi-grey">Total Unique Campaigns</p>
+                <p className="font-benton text-sm text-moi-grey">Meta/Google Campaigns</p>
                 <p className="font-benton text-2xl font-bold text-moi-charcoal">
                   {keyMetrics.uniqueCampaigns}
                 </p>

@@ -33,6 +33,31 @@ const clientKey = isValidKey ? supabaseAnonKey : 'placeholder-key';
 
 export const supabase = createClient(clientUrl, clientKey);
 
+// Log Supabase connection status
+if (isValidUrl && isValidKey) {
+  console.log('✅ Supabase client initialized successfully');
+  console.log(`   - URL: ${supabaseUrl}`);
+  console.log(`   - Key: ${supabaseAnonKey.substring(0, 20)}...`);
+  
+  // Test connection by checking if we can access the database
+  (async () => {
+    try {
+      const { error } = await supabase.from('projects').select('count').limit(1).single();
+      if (!error) {
+        console.log('✅ Supabase connection test successful');
+      } else if (error.code === 'PGRST116') {
+        console.log('⚠️ Supabase connected but table "projects" not found - tables may need to be created');
+      } else {
+        console.warn('⚠️ Supabase connection test failed:', error.message);
+      }
+    } catch (e) {
+      console.warn('⚠️ Failed to test Supabase connection:', e);
+    }
+  })();
+} else {
+  console.warn('⚠️ Supabase client using placeholder values - real credentials needed');
+}
+
 // Export configuration status for components to check
 export const supabaseConfig = {
   isConfigured: isValidUrl && isValidKey,
@@ -41,6 +66,50 @@ export const supabaseConfig = {
   url: supabaseUrl,
   keyPreview: supabaseAnonKey ? `${supabaseAnonKey.substring(0, 20)}...` : 'Not set'
 };
+
+// Helper function to check table existence
+export async function checkTableExists(tableName: string): Promise<boolean> {
+  try {
+    const { error } = await supabase
+      .from(tableName)
+      .select('*')
+      .limit(1);
+    
+    if (!error) {
+      console.log(`✅ Table "${tableName}" exists`);
+      return true;
+    } else if (error.code === 'PGRST116' || error.code === '42P01') {
+      console.warn(`⚠️ Table "${tableName}" does not exist`);
+      return false;
+    } else {
+      console.warn(`⚠️ Error checking table "${tableName}":`, error.message);
+      return false;
+    }
+  } catch (e) {
+    console.error(`❌ Failed to check table "${tableName}":`, e);
+    return false;
+  }
+}
+
+// Check all required tables on startup
+if (isValidUrl && isValidKey) {
+  (async () => {
+    console.log('\n🔍 Checking Supabase tables...');
+    const requiredTables = [
+      'projects',
+      'import_sessions', 
+      'campaign_data',
+      'raw_data_meta',
+      'raw_data_google',
+      'raw_data_shopify'
+    ];
+    
+    for (const table of requiredTables) {
+      await checkTableExists(table);
+    }
+    console.log('✅ Supabase table check complete\n');
+  })();
+}
 
 export type Database = {
   public: {

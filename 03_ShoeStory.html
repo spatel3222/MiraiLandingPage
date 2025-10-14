@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ShoeStory - Your Shoe Journey</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Walmart Brand Colors */
+        :root {
+            --walmart-blue: #0071DC;
+            --walmart-yellow: #FFC220;
+            --walmart-dark-blue: #041E42;
+            --walmart-light-blue: #E6F1FC;
+            --walmart-gray: #74767A;
+            --walmart-light-gray: #F5F5F5;
+            --success-green: #10B981;
+            --error-red: #EF4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: var(--walmart-light-gray);
+            color: var(--walmart-dark-blue);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-title h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--walmart-dark-blue);
+        }
+
+        .ai-badge {
+            background: var(--walmart-yellow);
+            color: var(--walmart-dark-blue);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Journey Progress */
+        .journey-progress {
+            background: var(--walmart-light-blue);
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin: 0 16px 16px;
+        }
+
+        .progress-title {
+            font-size: 12px;
+            color: var(--walmart-gray);
+            margin-bottom: 8px;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--walmart-light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .step-circle.completed {
+            background: var(--walmart-blue);
+            border-color: var(--walmart-blue);
+            color: white;
+        }
+
+        .step-circle.active {
+            border-color: var(--walmart-yellow);
+            background: var(--walmart-yellow);
+            color: var(--walmart-dark-blue);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .step-line {
+            position: absolute;
+            top: 16px;
+            left: 50%;
+            width: 100%;
+            height: 3px;
+            background: var(--walmart-light-gray);
+            z-index: 1;
+        }
+
+        .step-line.completed {
+            background: var(--walmart-blue);
+        }
+
+        .step-label {
+            font-size: 10px;
+            color: var(--walmart-gray);
+            margin-top: 4px;
+            text-align: center;
+        }
+
+        /* Category Pills */
+        .category-pills {
+            display: flex;
+            gap: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .category-pills::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-pill {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid var(--walmart-light-gray);
+            border-radius: 20px;
+            font-size: 13px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .category-pill.active {
+            background: var(--walmart-blue);
+            color: white;
+            border-color: var(--walmart-blue);
+        }
+
+        .category-pill:active {
+            transform: scale(0.95);
+        }
+
+        /* Story Cards */
+        .stories-container {
+            padding: 0 16px 100px;
+        }
+
+        .story-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .story-header {
+            position: relative;
+            height: 200px;
+            background: linear-gradient(135deg, var(--walmart-blue), var(--walmart-dark-blue));
+            overflow: hidden;
+        }
+
+        .story-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+        }
+
+        .story-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--walmart-yellow);
+            color: var(--walmart-dark-blue);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .story-content {
+            padding: 16px;
+        }
+
+        .story-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--walmart-dark-blue);
+            margin-bottom: 8px;
+        }
+
+        .story-narrative {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--walmart-gray);
+            margin-bottom: 12px;
+        }
+
+        .story-highlight {
+            color: var(--walmart-blue);
+            font-weight: 600;
+        }
+
+        .story-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .feature-tag {
+            background: var(--walmart-light-blue);
+            color: var(--walmart-dark-blue);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        /* Social Proof */
+        .social-proof {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px;
+            background: var(--walmart-light-gray);
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .social-avatars {
+            display: flex;
+            margin-left: -8px;
+        }
+
+        .avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--walmart-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            border: 2px solid white;
+            margin-left: -8px;
+        }
+
+        .avatar:first-child {
+            margin-left: 0;
+        }
+
+        .social-text {
+            flex: 1;
+            font-size: 12px;
+            color: var(--walmart-gray);
+        }
+
+        .social-count {
+            font-weight: 700;
+            color: var(--walmart-dark-blue);
+        }
+
+        /* Story Actions */
+        .story-actions {
+            display: flex;
+            gap: 8px;
+            padding-top: 12px;
+            border-top: 1px solid var(--walmart-light-gray);
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--walmart-blue);
+            color: white;
+        }
+
+        .btn-primary:active {
+            background: var(--walmart-dark-blue);
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--walmart-blue);
+            border: 1px solid var(--walmart-blue);
+        }
+
+        .btn-secondary:active {
+            background: var(--walmart-light-blue);
+            transform: scale(0.98);
+        }
+
+        /* Community Section */
+        .community-section {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin: 0 16px 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .community-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--walmart-dark-blue);
+        }
+
+        .community-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--walmart-light-gray);
+        }
+
+        .community-item:last-child {
+            border-bottom: none;
+        }
+
+        .community-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--walmart-light-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--walmart-blue);
+        }
+
+        .community-content {
+            flex: 1;
+        }
+
+        .community-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--walmart-dark-blue);
+        }
+
+        .community-message {
+            font-size: 12px;
+            color: var(--walmart-gray);
+            margin-top: 2px;
+        }
+
+        .community-time {
+            font-size: 10px;
+            color: var(--walmart-gray);
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--walmart-blue);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 90;
+        }
+
+        .fab:active {
+            transform: scale(0.95);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--walmart-gray);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-text {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="header-title">
+                <i data-lucide="book-open" style="width: 20px; height: 20px;"></i>
+                <h1>ShoeStory</h1>
+                <span class="ai-badge">AI</span>
+            </div>
+            <div class="header-actions">
+                <i data-lucide="search" style="width: 20px; height: 20px; cursor: pointer;"></i>
+                <i data-lucide="user" style="width: 20px; height: 20px; cursor: pointer;"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Journey Progress -->
+    <div class="journey-progress">
+        <div class="progress-title">Your Shoe Journey</div>
+        <div class="progress-steps">
+            <div class="progress-step">
+                <div class="step-circle completed">✓</div>
+                <div class="step-label">Style</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-line completed"></div>
+                <div class="step-circle completed">✓</div>
+                <div class="step-label">Fit</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-line"></div>
+                <div class="step-circle active">3</div>
+                <div class="step-label">Story</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-line"></div>
+                <div class="step-circle">4</div>
+                <div class="step-label">Purchase</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Pills -->
+    <div class="category-pills">
+        <div class="category-pill active">🎯 For You</div>
+        <div class="category-pill">🏃 Running Stories</div>
+        <div class="category-pill">💼 Professional</div>
+        <div class="category-pill">🏔️ Adventure</div>
+        <div class="category-pill">🎾 Sports</div>
+        <div class="category-pill">🌟 Trending</div>
+        <div class="category-pill">♻️ Sustainable</div>
+    </div>
+
+    <!-- Stories Container -->
+    <div class="stories-container">
+        <!-- Story Card 1 -->
+        <div class="story-card">
+            <div class="story-header">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Cdefs%3E%3ClinearGradient id='g1'%3E%3Cstop stop-color='%230071DC'/%3E%3Cstop offset='1' stop-color='%23041E42'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g1)'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='24' font-family='sans-serif'%3EMarathon Ready%3C/text%3E%3C/svg%3E" alt="Marathon Story" class="story-image">
+                <span class="story-badge">Perfect Match</span>
+            </div>
+            <div class="story-content">
+                <h3 class="story-title">Your Marathon Journey Begins</h3>
+                <p class="story-narrative">
+                    Based on your <span class="story-highlight">morning running routine</span> and upcoming marathon goals, these shoes are engineered for your success. With <span class="story-highlight">10.5" foot length</span> and medium arch support needs, they'll carry you through every mile of training.
+                </p>
+                <div class="story-features">
+                    <span class="feature-tag">26.2 Mile Tested</span>
+                    <span class="feature-tag">Energy Return</span>
+                    <span class="feature-tag">Breathable Mesh</span>
+                    <span class="feature-tag">4mm Drop</span>
+                </div>
+                
+                <div class="social-proof">
+                    <div class="social-avatars">
+                        <div class="avatar">JR</div>
+                        <div class="avatar">ML</div>
+                        <div class="avatar">SK</div>
+                        <div class="avatar">+5</div>
+                    </div>
+                    <div class="social-text">
+                        <span class="social-count">342 runners</span> completed marathons in these
+                    </div>
+                </div>
+
+                <div class="story-actions">
+                    <button class="action-btn btn-primary">
+                        <i data-lucide="shopping-cart" style="width: 14px; height: 14px;"></i>
+                        Add to Cart - $89.99
+                    </button>
+                    <button class="action-btn btn-secondary">
+                        <i data-lucide="bookmark" style="width: 14px; height: 14px;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story Card 2 -->
+        <div class="story-card">
+            <div class="story-header">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Cdefs%3E%3ClinearGradient id='g2'%3E%3Cstop stop-color='%23FFC220'/%3E%3Cstop offset='1' stop-color='%230071DC'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g2)'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='24' font-family='sans-serif'%3EDaily Comfort%3C/text%3E%3C/svg%3E" alt="Daily Comfort" class="story-image">
+                <span class="story-badge">98% Comfort Score</span>
+            </div>
+            <div class="story-content">
+                <h3 class="story-title">Your All-Day Companion</h3>
+                <p class="story-narrative">
+                    Picture this: It's <span class="story-highlight">Monday morning</span>, and you're heading into a full day of meetings. These shoes understand your need for style that doesn't sacrifice comfort. From your <span class="story-highlight">morning commute</span> to evening networking, they've got you covered.
+                </p>
+                <div class="story-features">
+                    <span class="feature-tag">Memory Foam</span>
+                    <span class="feature-tag">Professional Look</span>
+                    <span class="feature-tag">Slip-Resistant</span>
+                    <span class="feature-tag">Odor Control</span>
+                </div>
+                
+                <div class="social-proof">
+                    <div class="social-avatars">
+                        <div class="avatar">TC</div>
+                        <div class="avatar">AB</div>
+                        <div class="avatar">RK</div>
+                    </div>
+                    <div class="social-text">
+                        <span class="social-count">89%</span> report no foot fatigue after 8+ hours
+                    </div>
+                </div>
+
+                <div class="story-actions">
+                    <button class="action-btn btn-primary">
+                        <i data-lucide="shopping-cart" style="width: 14px; height: 14px;"></i>
+                        Add to Cart - $124.99
+                    </button>
+                    <button class="action-btn btn-secondary">
+                        <i data-lucide="bookmark" style="width: 14px; height: 14px;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Community Section -->
+        <div class="community-section">
+            <h4 class="community-title">Community Stories</h4>
+            
+            <div class="community-item">
+                <div class="community-avatar">MJ</div>
+                <div class="community-content">
+                    <div class="community-name">Maria J.</div>
+                    <div class="community-message">"Completed my first 5K in these! The AI fit was spot on."</div>
+                </div>
+                <div class="community-time">2h ago</div>
+            </div>
+
+            <div class="community-item">
+                <div class="community-avatar">DL</div>
+                <div class="community-content">
+                    <div class="community-name">David L.</div>
+                    <div class="community-message">"Perfect for my retail job - standing all day is no problem now"</div>
+                </div>
+                <div class="community-time">5h ago</div>
+            </div>
+
+            <div class="community-item">
+                <div class="community-avatar">ST</div>
+                <div class="community-content">
+                    <div class="community-name">Sarah T.</div>
+                    <div class="community-message">"The style matching actually works! Goes with everything"</div>
+                </div>
+                <div class="community-time">1d ago</div>
+            </div>
+        </div>
+
+        <!-- Story Card 3 -->
+        <div class="story-card">
+            <div class="story-header">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Cdefs%3E%3ClinearGradient id='g3'%3E%3Cstop stop-color='%2310B981'/%3E%3Cstop offset='1' stop-color='%230071DC'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g3)'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='24' font-family='sans-serif'%3EWeekend Adventures%3C/text%3E%3C/svg%3E" alt="Weekend Adventures" class="story-image">
+                <span class="story-badge">Eco-Friendly</span>
+            </div>
+            <div class="story-content">
+                <h3 class="story-title">Weekend Explorer Edition</h3>
+                <p class="story-narrative">
+                    Your weekends are for <span class="story-highlight">discovering new trails</span> and urban adventures. These sustainable shoes are made from <span class="story-highlight">recycled ocean plastic</span>, perfect for your eco-conscious lifestyle while maintaining the performance you need.
+                </p>
+                <div class="story-features">
+                    <span class="feature-tag">Trail Ready</span>
+                    <span class="feature-tag">Water Resistant</span>
+                    <span class="feature-tag">70% Recycled</span>
+                    <span class="feature-tag">Carbon Neutral</span>
+                </div>
+                
+                <div class="social-proof">
+                    <div class="social-avatars">
+                        <div class="avatar">EG</div>
+                        <div class="avatar">NP</div>
+                        <div class="avatar">+12</div>
+                    </div>
+                    <div class="social-text">
+                        <span class="social-count">1,247 lbs</span> of ocean plastic removed
+                    </div>
+                </div>
+
+                <div class="story-actions">
+                    <button class="action-btn btn-primary">
+                        <i data-lucide="shopping-cart" style="width: 14px; height: 14px;"></i>
+                        Add to Cart - $95.99
+                    </button>
+                    <button class="action-btn btn-secondary">
+                        <i data-lucide="bookmark" style="width: 14px; height: 14px;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="fab">
+        <i data-lucide="sparkles" style="width: 24px; height: 24px;"></i>
+    </button>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Category pill interactions
+        document.querySelectorAll('.category-pill').forEach(pill => {
+            pill.addEventListener('click', function() {
+                document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Simulate loading new stories
+                const container = document.querySelector('.stories-container');
+                container.style.opacity = '0.5';
+                setTimeout(() => {
+                    container.style.opacity = '1';
+                }, 300);
+            });
+        });
+
+        // Story card interactions
+        document.querySelectorAll('.btn-secondary').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                if (icon) {
+                    icon.setAttribute('data-lucide', 'bookmark');
+                    icon.style.fill = 'currentColor';
+                    lucide.createIcons();
+                }
+            });
+        });
+
+        // FAB action
+        document.querySelector('.fab').addEventListener('click', function() {
+            alert('AI Story Generator: Tell me about your lifestyle and I\'ll create personalized shoe stories for you!');
+        });
+
+        // Simulate real-time updates
+        setInterval(() => {
+            const times = document.querySelectorAll('.community-time');
+            times.forEach(time => {
+                const current = time.textContent;
+                if (current === '2h ago') time.textContent = '3h ago';
+                else if (current === '5h ago') time.textContent = '6h ago';
+            });
+        }, 60000);
+    </script>
+</body>
+</html>

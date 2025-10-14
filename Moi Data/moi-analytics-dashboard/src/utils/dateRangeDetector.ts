@@ -353,3 +353,131 @@ export const formatDateRangeForFilename = (dateRange: DateRange): string => {
   
   return `${formatDate(dateRange.startDate)}-${formatDate(dateRange.endDate)}_${dateRange.endDate.getFullYear()}`;
 };
+/**
+ * Detect date range from JSON data (for Supabase processing)
+ */
+export function detectDateRangeFromData(data: {
+  shopify?: any[];
+  meta?: any[];
+  google?: any[];
+}): DateRange | null {
+  const allDates: string[] = [];
+  
+  // Extract dates from Shopify data
+  if (data.shopify && data.shopify.length > 0) {
+    data.shopify.forEach((row: any) => {
+      const date = row['Day'] || row['Date'];
+      if (date) {
+        try {
+          const normalized = normalizeDateToISO(date, 'unknown').isoString;
+          if (normalized) allDates.push(normalized);
+        } catch (e) {
+          // Skip invalid dates
+        }
+      }
+    });
+  }
+  
+  // Extract dates from Meta data
+  if (data.meta && data.meta.length > 0) {
+    data.meta.forEach((row: any) => {
+      const date = row['Date'];
+      if (date) {
+        try {
+          const normalized = normalizeDateToISO(date, 'unknown').isoString;
+          if (normalized) allDates.push(normalized);
+        } catch (e) {
+          // Skip invalid dates
+        }
+      }
+    });
+  }
+  
+  // Extract dates from Google data
+  if (data.google && data.google.length > 0) {
+    data.google.forEach((row: any) => {
+      const date = row['Date'];
+      if (date) {
+        try {
+          const normalized = normalizeDateToISO(date, 'unknown').isoString;
+          if (normalized) allDates.push(normalized);
+        } catch (e) {
+          // Skip invalid dates
+        }
+      }
+    });
+  }
+  
+  if (allDates.length === 0) {
+    console.warn('No valid dates found in data');
+    return null;
+  }
+  
+  // Sort and get unique dates
+  const uniqueDates = Array.from(new Set(allDates)).sort();
+  
+  console.log('📅 Date range detection from data:', {
+    allDatesCount: allDates.length,
+    uniqueDatesCount: uniqueDates.length,
+    firstDate: uniqueDates[0],
+    lastDate: uniqueDates[uniqueDates.length - 1],
+    allUniqueDates: uniqueDates
+  });
+  
+  // Log the actual unique dates for debugging
+  console.log('📅 All unique dates found:', uniqueDates);
+  
+  // For single-day data, use the most common date
+  // For multi-day data, use the actual range
+  if (uniqueDates.length === 1) {
+    // Only one unique date - use it for both start and end
+    return {
+      startDate: uniqueDates[0],
+      endDate: uniqueDates[0],
+      dataPoints: 1
+    };
+  }
+  
+  // Check if most dates are the same (e.g., 1000 records of Sept 29, but a few outliers)
+  const dateFrequency: Record<string, number> = {};
+  allDates.forEach(date => {
+    dateFrequency[date] = (dateFrequency[date] || 0) + 1;
+  });
+  
+  // Find the most common date
+  let mostCommonDate = uniqueDates[0];
+  let maxCount = 0;
+  Object.entries(dateFrequency).forEach(([date, count]) => {
+    if (count > maxCount) {
+      maxCount = count;
+      mostCommonDate = date;
+    }
+  });
+  
+  // If one date represents > 95% of all records, use just that date
+  if (maxCount > allDates.length * 0.95) {
+    console.log(`📅 Single dominant date detected: ${mostCommonDate} (${maxCount}/${allDates.length} records)`);
+    return {
+      startDate: mostCommonDate,
+      endDate: mostCommonDate,
+      dataPoints: 1
+    };
+  }
+  
+  // Otherwise use the full range
+  return {
+    startDate: uniqueDates[0],
+    endDate: uniqueDates[uniqueDates.length - 1],
+    dataPoints: uniqueDates.length
+  };
+}
+
+// Simple helper for date normalization
+function normalizeDate(date: string): string | null {
+  try {
+    const normalized = normalizeDateToISO(date, 'unknown');
+    return normalized.isoString;
+  } catch (e) {
+    return null;
+  }
+}

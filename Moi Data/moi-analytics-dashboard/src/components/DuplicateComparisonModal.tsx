@@ -45,6 +45,7 @@ const DuplicateComparisonModal: React.FC<DuplicateComparisonModalProps> = ({
   isResolving
 }) => {
   const [resolutions, setResolutions] = useState<Record<string, 'keep_existing' | 'replace_with_new' | 'skip'>>({});
+  const [applyToAll, setApplyToAll] = useState<'keep_existing' | 'replace_with_new' | 'skip' | ''>('');
 
   if (!isOpen) return null;
 
@@ -53,6 +54,15 @@ const DuplicateComparisonModal: React.FC<DuplicateComparisonModalProps> = ({
       ...prev,
       [duplicateKey]: resolution
     }));
+  };
+
+  const handleApplyToAll = () => {
+    if (!applyToAll) return;
+    const newResolutions: Record<string, 'keep_existing' | 'replace_with_new' | 'skip'> = {};
+    duplicates.forEach(dup => {
+      newResolutions[dup.key] = applyToAll;
+    });
+    setResolutions(newResolutions);
   };
 
   const handleResolveAll = () => {
@@ -110,6 +120,32 @@ const DuplicateComparisonModal: React.FC<DuplicateComparisonModalProps> = ({
             <X className="w-5 h-5 text-gray-500" />
           </button>
         </div>
+
+        {/* Apply to All Section */}
+        {duplicates.length > 1 && (
+          <div className="px-6 pt-4 pb-2 border-b border-gray-100 bg-gray-50">
+            <div className="flex items-center gap-4">
+              <label className="text-sm font-medium text-gray-700">Apply to all duplicates:</label>
+              <select
+                value={applyToAll}
+                onChange={(e) => setApplyToAll(e.target.value as any)}
+                className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="">Select action...</option>
+                <option value="keep_existing">Keep all existing</option>
+                <option value="replace_with_new">Replace all with new</option>
+                <option value="skip">Skip all</option>
+              </select>
+              <button
+                onClick={handleApplyToAll}
+                disabled={!applyToAll}
+                className="px-4 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Apply
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Content */}
         <div className="p-6 space-y-6">

@@ -45,7 +45,9 @@ Use numbered folders: `01_Data/`, `02_Scripts/`, `03_Reports/`, `04_Visuals/`, `
 ## Communication
 - Tables for comparisons, ask audience if unclear
 - Concise bullet points
-- End with: `<<Agents Used>>: [agents]`
+- **REQUIRED**: End EVERY response with:
+  - `<<Agents Used>>: [agents]`
+  - `<<Tools Used>>: [tools]`
 
 ## Task Approach
 Use appropriate built-in agents based on task complexity and type.

@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Campaign Dashboard - CRTX.in</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background-color: #f9fafb;
+            min-height: 100vh;
+        }
+
+        /* Layout Components */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header-title h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .header-title p {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        /* Form Elements */
+        select {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            background: white;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        select:hover {
+            border-color: #9ca3af;
+        }
+
+        select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
+        }
+
+        /* Main Content */
+        main {
+            padding: 1.5rem;
+        }
+
+        /* Grid System */
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+        @media (min-width: 768px) {
+            .md-grid-cols-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .lg-grid-cols-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .lg-grid-cols-4 {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .lg-col-span-2 {
+                grid-column: span 2;
+            }
+        }
+
+        /* Card Component */
+        .card {
+            background: white;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        /* KPI Cards */
+        .kpi-card {
+            position: relative;
+        }
+
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+        }
+
+        .kpi-value {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0.5rem 0;
+        }
+
+        .kpi-change {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .kpi-change.positive {
+            color: #10b981;
+        }
+
+        .kpi-change.negative {
+            color: #ef4444;
+        }
+
+        /* Badge Component */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.625rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 9999px;
+            white-space: nowrap;
+        }
+
+        .badge-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .badge-error {
+            background: #ef4444;
+            color: white;
+        }
+
+        .badge-info {
+            background: #3b82f6;
+            color: white;
+        }
+
+        /* Table Component */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f9fafb;
+        }
+
+        th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            color: #1f2937;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 0.5rem;
+            background: #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3b82f6;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.75rem;
+            color: #6b7280;
+            min-width: 2.5rem;
+            text-align: right;
+        }
+
+        /* Activity List */
+        .activity-item {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            flex-shrink: 0;
+            margin-top: 0.125rem;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            font-size: 0.875rem;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        /* Top Performers */
+        .performer-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: #f9fafb;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .performer-rank {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #9ca3af;
+            margin-right: 0.75rem;
+        }
+
+        .performer-info {
+            flex: 1;
+        }
+
+        .performer-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .performer-metric {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.125rem;
+        }
+
+        .performer-trend {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #10b981;
+        }
+
+        /* Utility Classes */
+        .flex {
+            display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .gap-2 {
+            gap: 0.5rem;
+        }
+
+        .gap-3 {
+            gap: 0.75rem;
+        }
+
+        .mb-6 {
+            margin-bottom: 1.5rem;
+        }
+
+        .text-green-500 {
+            color: #10b981;
+        }
+
+        .text-blue-500 {
+            color: #3b82f6;
+        }
+
+        .text-purple-500 {
+            color: #8b5cf6;
+        }
+
+        .text-yellow-500 {
+            color: #f59e0b;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .header-controls {
+                justify-content: stretch;
+            }
+
+            .header-controls > * {
+                flex: 1;
+            }
+
+            .table-container {
+                overflow-x: scroll;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="header-title">
+                <h1>Marketing Campaign Dashboard</h1>
+                <p>CRTX.in - Build AI Once. Scale Everywhere.</p>
+            </div>
+            <div class="header-controls">
+                <select>
+                    <option>Last 30 Days</option>
+                    <option>Last 7 Days</option>
+                    <option>Last 90 Days</option>
+                    <option>Year to Date</option>
+                </select>
+                <button class="btn btn-primary">Export Report</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 md-grid-cols-2 lg-grid-cols-4 mb-6">
+            <div class="card kpi-card">
+                <div class="kpi-header">
+                    <span class="kpi-label">Total Campaigns</span>
+                    <i data-lucide="trending-up" class="text-green-500" style="width: 16px; height: 16px;"></i>
+                </div>
+                <div class="kpi-value">6</div>
+                <div class="kpi-change positive">+12% from last month</div>
+            </div>
+
+            <div class="card kpi-card">
+                <div class="kpi-header">
+                    <span class="kpi-label">Total Reach</span>
+                    <i data-lucide="users" class="text-blue-500" style="width: 16px; height: 16px;"></i>
+                </div>
+                <div class="kpi-value">100K</div>
+                <div class="kpi-change positive">+18% from last month</div>
+            </div>
+
+            <div class="card kpi-card">
+                <div class="kpi-header">
+                    <span class="kpi-label">Engagement Rate</span>
+                    <i data-lucide="activity" class="text-purple-500" style="width: 16px; height: 16px;"></i>
+                </div>
+                <div class="kpi-value">4.0%</div>
+                <div class="kpi-change positive">+0.5% from last month</div>
+            </div>
+
+            <div class="card kpi-card">
+                <div class="kpi-header">
+                    <span class="kpi-label">ROI</span>
+                    <i data-lucide="dollar-sign" class="text-yellow-500" style="width: 16px; height: 16px;"></i>
+                </div>
+                <div class="kpi-value">250%</div>
+                <div class="kpi-change positive">+42% from last month</div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="grid grid-cols-1 md-grid-cols-2 mb-6">
+            <!-- Performance Chart -->
+            <div class="card">
+                <h3 class="card-title">Campaign Performance</h3>
+                <canvas id="performanceChart" width="400" height="200"></canvas>
+            </div>
+
+            <!-- Channel Distribution -->
+            <div class="card">
+                <h3 class="card-title">Channel Distribution</h3>
+                <canvas id="channelChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+
+        <!-- Campaigns Table -->
+        <div class="card mb-6">
+            <div class="card-header">
+                <h3 class="card-title">Active Campaigns</h3>
+                <div class="flex gap-2">
+                    <button class="btn btn-secondary">All</button>
+                    <button class="btn btn-secondary">Active</button>
+                    <button class="btn btn-secondary">Paused</button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Campaign Name</th>
+                            <th>Channel</th>
+                            <th>Status</th>
+                            <th>Budget</th>
+                            <th>Spent</th>
+                            <th>CTR</th>
+                            <th>Conversions</th>
+                            <th>Progress</th>
+                        </tr>
+                    </thead>
+                    <tbody id="campaignsTableBody">
+                        <!-- Table rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Recent Activities and Top Performers -->
+        <div class="grid grid-cols-1 lg-grid-cols-3">
+            <div class="card lg-col-span-2">
+                <h3 class="card-title">Recent Activities</h3>
+                <div id="activitiesList">
+                    <!-- Activities will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">Top Performers</h3>
+                <div id="topPerformers">
+                    <!-- Top performers will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Simple dummy data for campaigns
+        const campaignsData = [
+            {
+                name: "Campaign A",
+                channel: "Email",
+                status: "Active",
+                budget: 10000,
+                spent: 7500,
+                ctr: "5.0%",
+                conversions: 500,
+                progress: 75
+            },
+            {
+                name: "Campaign B",
+                channel: "Social",
+                status: "Active",
+                budget: 8000,
+                spent: 4000,
+                ctr: "3.5%",
+                conversions: 300,
+                progress: 50
+            },
+            {
+                name: "Campaign C",
+                channel: "Google",
+                status: "Active",
+                budget: 15000,
+                spent: 12000,
+                ctr: "4.2%",
+                conversions: 800,
+                progress: 80
+            },
+            {
+                name: "Campaign D",
+                channel: "Display",
+                status: "Paused",
+                budget: 5000,
+                spent: 5000,
+                ctr: "2.0%",
+                conversions: 150,
+                progress: 100
+            },
+            {
+                name: "Campaign E",
+                channel: "Facebook",
+                status: "Active",
+                budget: 12000,
+                spent: 3600,
+                ctr: "6.5%",
+                conversions: 400,
+                progress: 30
+            },
+            {
+                name: "Campaign F",
+                channel: "LinkedIn",
+                status: "Active",
+                budget: 6000,
+                spent: 4200,
+                ctr: "3.0%",
+                conversions: 100,
+                progress: 70
+            }
+        ];
+
+        // Populate campaigns table
+        function populateCampaignsTable() {
+            const tbody = document.getElementById('campaignsTableBody');
+            
+            campaignsData.forEach(campaign => {
+                const row = document.createElement('tr');
+                
+                const statusBadgeClass = campaign.status === 'Active' ? 'badge-success' : 'badge-warning';
+                
+                row.innerHTML = `
+                    <td style="font-weight: 600;">${campaign.name}</td>
+                    <td>${campaign.channel}</td>
+                    <td>
+                        <span class="badge ${statusBadgeClass}">${campaign.status}</span>
+                    </td>
+                    <td>$${campaign.budget.toLocaleString()}</td>
+                    <td>$${campaign.spent.toLocaleString()}</td>
+                    <td>${campaign.ctr}</td>
+                    <td>${campaign.conversions.toLocaleString()}</td>
+                    <td>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${campaign.progress}%"></div>
+                            </div>
+                            <span class="progress-text">${campaign.progress}%</span>
+                        </div>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+
+        // Create Performance Chart
+        function createPerformanceChart() {
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [
+                        {
+                            label: 'Impressions',
+                            data: [10000, 15000, 20000, 25000],
+                            borderColor: 'rgb(59, 130, 246)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Clicks',
+                            data: [500, 750, 1000, 1250],
+                            borderColor: 'rgb(16, 185, 129)',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Conversions',
+                            data: [50, 75, 100, 125],
+                            borderColor: 'rgb(251, 146, 60)',
+                            backgroundColor: 'rgba(251, 146, 60, 0.1)',
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create Channel Distribution Chart
+        function createChannelChart() {
+            const ctx = document.getElementById('channelChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Email', 'Social', 'Google', 'Display', 'LinkedIn'],
+                    datasets: [{
+                        data: [30, 25, 20, 15, 10],
+                        backgroundColor: [
+                            'rgb(59, 130, 246)',
+                            'rgb(16, 185, 129)',
+                            'rgb(251, 146, 60)',
+                            'rgb(167, 139, 250)',
+                            'rgb(251, 113, 133)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Populate Recent Activities
+        function populateActivities() {
+            const activities = [
+                { time: '1 hour ago', action: 'Campaign A reached 75% of budget', type: 'warning' },
+                { time: '2 hours ago', action: 'Campaign C achieved 800 conversions', type: 'success' },
+                { time: '3 hours ago', action: 'Campaign D completed', type: 'info' },
+                { time: '5 hours ago', action: 'Campaign E started successfully', type: 'success' },
+                { time: '1 day ago', action: 'Weekly report generated', type: 'info' }
+            ];
+
+            const container = document.getElementById('activitiesList');
+            
+            activities.forEach(activity => {
+                const item = document.createElement('div');
+                item.className = 'activity-item';
+                
+                let iconColor = '';
+                let icon = '';
+                switch(activity.type) {
+                    case 'success':
+                        iconColor = 'text-green-500';
+                        icon = 'check-circle';
+                        break;
+                    case 'warning':
+                        iconColor = 'text-yellow-500';
+                        icon = 'alert-circle';
+                        break;
+                    case 'info':
+                        iconColor = 'text-blue-500';
+                        icon = 'info';
+                        break;
+                }
+                
+                item.innerHTML = `
+                    <div class="activity-icon">
+                        <i data-lucide="${icon}" class="${iconColor}" style="width: 20px; height: 20px;"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-text">${activity.action}</div>
+                        <div class="activity-time">${activity.time}</div>
+                    </div>
+                `;
+                
+                container.appendChild(item);
+            });
+            
+            // Re-initialize Lucide icons for dynamically added content
+            lucide.createIcons();
+        }
+
+        // Populate Top Performers
+        function populateTopPerformers() {
+            const performers = [
+                { name: 'Campaign C', metric: '800 conversions', trend: '+15%' },
+                { name: 'Campaign A', metric: '5.0% CTR', trend: '+10%' },
+                { name: 'Campaign E', metric: '6.5% CTR', trend: '+12%' },
+                { name: 'Campaign B', metric: '300 conversions', trend: '+8%' }
+            ];
+
+            const container = document.getElementById('topPerformers');
+            
+            performers.forEach((performer, index) => {
+                const item = document.createElement('div');
+                item.className = 'performer-item';
+                
+                item.innerHTML = `
+                    <div class="flex items-center">
+                        <span class="performer-rank">#${index + 1}</span>
+                        <div class="performer-info">
+                            <div class="performer-name">${performer.name}</div>
+                            <div class="performer-metric">${performer.metric}</div>
+                        </div>
+                    </div>
+                    <span class="performer-trend">${performer.trend}</span>
+                `;
+                
+                container.appendChild(item);
+            });
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            populateCampaignsTable();
+            createPerformanceChart();
+            createChannelChart();
+            populateActivities();
+            populateTopPerformers();
+        });
+    </script>
+</body>
+</html>

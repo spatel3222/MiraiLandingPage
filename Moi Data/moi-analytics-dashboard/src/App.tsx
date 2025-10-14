@@ -1,6 +1,6 @@
 // UPDATED OUTPUT FILES: 2025-10-04T18:09:00 - Using latest Ad Set Level and Top Level CSV with correct pivot field mappings 
-import { useState, useEffect } from 'react';
-import { Settings, MessageCircle, Download, X, Send, FileUp, RotateCcw } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { Settings, MessageCircle, Download, X, Send, FileUp, RotateCcw, Bug } from 'lucide-react';
 import KeyMetricsPanel from './components/KeyMetricsPanel';
 import SimplifiedCampaignPerformance from './components/SimplifiedCampaignPerformance';
 import UploadModal from './components/UploadModal';
@@ -9,7 +9,9 @@ import ExportModal from './components/ExportModal';
 import ChatBot from './components/ChatBot';
 import LogicTemplateSettings from './components/LogicTemplateSettings';
 import { SupabaseConnectionTest } from './components/SupabaseConnectionTest';
+import DataPipelineDebugger from './components/DataPipelineDebugger';
 import { FileUploadInterface } from './components/FileUploadInterface';
+import { loadDashboardDataFromSupabase, checkSupabaseDataAvailability, exportDataFromSupabase } from './services/supabaseDataLoader';
 import { DateRangeSelector } from './components/DateRangeSelector';
 import { processShopifyCSV } from './utils/csvProcessor';
 import { generateSampleOutputData, loadDashboardFromOutputFiles } from './utils/outputDataProcessor';
@@ -99,6 +101,7 @@ function App() {
   const [showExportModal, setShowExportModal] = useState(false);
   const [showChatBot, setShowChatBot] = useState(false);
   const [showLogicSettings, setShowLogicSettings] = useState(false);
+  const [showDebugPanel, setShowDebugPanel] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [reportGenerated, setReportGenerated] = useState(false);
@@ -107,6 +110,12 @@ function App() {
   // Phase 4: Date Range Selection for Multi-Day Aggregation
   const [selectedDateRange, setSelectedDateRange] = useState<{startDate: string, endDate: string} | null>(null);
   const [availableDateRanges, setAvailableDateRanges] = useState<{startDate: string, endDate: string}[]>([]);
+
+  // Memoized callback to prevent infinite loop
+  const handleDateRangeChange = useCallback((dateRange: {startDate: string, endDate: string}) => {
+    setSelectedDateRange(dateRange);
+    console.log('Date range selected:', dateRange);
+  }, []);
 
   // Load cached data on mount - disabled auto file loading to prevent fetch issues
   useEffect(() => {
@@ -217,8 +226,35 @@ function App() {
         localStorage.setItem('moi-dashboard-data', JSON.stringify(outputData));
         localStorage.setItem('moi-dashboard-timestamp', timestamp);
       } else {
-        console.log('No cached data available, dashboard will show empty state');
-        console.log('Please use "Generate Reports" to upload and process your files');
+        console.log('No cached data available, checking Supabase...');
+        
+        // Try to load from Supabase if no cache
+        const hasSupabaseData = await checkSupabaseDataAvailability();
+        if (hasSupabaseData) {
+          console.log('✅ Found data in Supabase, loading...');
+          setIsLoading(true);
+          try {
+            const supabaseData = await loadDashboardDataFromSupabase();
+            if (supabaseData) {
+              console.log('📊 Successfully loaded data from Supabase');
+              setDashboardData(supabaseData);
+              setLastUpdated(new Date().toLocaleString());
+              setReportGenerated(true);
+              
+              // Cache the loaded data
+              localStorage.setItem('moi-dashboard-data', JSON.stringify(supabaseData));
+              localStorage.setItem('moi-dashboard-timestamp', new Date().toISOString());
+            }
+          } catch (error) {
+            console.error('Failed to load from Supabase:', error);
+            console.error('Failed to load data from database');
+          } finally {
+            setIsLoading(false);
+          }
+        } else {
+          console.log('No data in Supabase either - dashboard will show empty state');
+          console.log('Please use "Generate Reports" to upload and process your files');
+        }
       }
     };
     
@@ -677,6 +713,14 @@ Reached Checkout ",Total Abandoned Checkout,Session Duration,Users with Session 
             >
               <Settings className="w-5 h-5" />
             </button>
+            
+            <button
+              onClick={() => setShowDebugPanel(true)}
+              className="flex items-center space-x-2 p-2 text-moi-grey hover:text-moi-charcoal transition-colors"
+              title="Data Pipeline Debugger"
+            >
+              <Bug className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </header>
@@ -697,25 +741,20 @@ Reached Checkout ",Total Abandoned Checkout,Session Duration,Users with Session 
             }
           }}
         />
-
-        {/* Phase 4: Date Range Selector for Multi-Day Aggregation */}
-        <div className="mt-6">
-          <DateRangeSelector
-            onDateRangeChange={(dateRange) => {
-              setSelectedDateRange(dateRange);
-              console.log('Date range selected:', dateRange);
-            }}
-            availableDateRanges={availableDateRanges}
-            selectedRange={selectedDateRange}
-          />
-        </div>
-
-
         
         {dashboardData ? (
           <div className="space-y-8">
-            {/* Key Metrics Panel */}
-            <KeyMetricsPanel data={dashboardData} />
+            {/* Key Metrics Panel with Date Range Selector */}
+            <KeyMetricsPanel 
+              data={dashboardData}
+              dateRangeSelector={
+                <DateRangeSelector
+                  onDateRangeChange={handleDateRangeChange}
+                  availableDateRanges={availableDateRanges}
+                  selectedRange={selectedDateRange}
+                />
+              }
+            />
             
             {/* Campaign Performance Tiers */}
             <SimplifiedCampaignPerformance />
@@ -821,6 +860,12 @@ Reached Checkout ",Total Abandoned Checkout,Session Duration,Users with Session 
           dashboardData={dashboardData}
         />
       )}
+
+      {/* Data Pipeline Debugger */}
+      <DataPipelineDebugger
+        isOpen={showDebugPanel}
+        onClose={() => setShowDebugPanel(false)}
+      />
 
       {/* Logic Template Settings */}
       {showLogicSettings && (

@@ -25,24 +25,44 @@ const ExportModal: React.FC<Props> = ({ onClose, dashboardData }) => {
   const getDateRange = () => {
     // Use actual date range from dashboard data if available
     if (dashboardData?.dateRange) {
-      // Convert string dates back to Date objects if needed
-      const dateRange = {
-        startDate: typeof dashboardData.dateRange.startDate === 'string' 
-          ? new Date(dashboardData.dateRange.startDate) 
-          : dashboardData.dateRange.startDate,
-        endDate: typeof dashboardData.dateRange.endDate === 'string' 
-          ? new Date(dashboardData.dateRange.endDate) 
-          : dashboardData.dateRange.endDate,
-        dayCount: dashboardData.dateRange.dayCount,
-        formattedDates: dashboardData.dateRange.formattedDates || []
-      };
-      return formatDateRangeForFilename(dateRange);
+      // Ensure we have valid dates before trying to format
+      const start = dashboardData.dateRange.start;
+      const end = dashboardData.dateRange.end;
+      
+      if (start && end) {
+        try {
+          const dateRange = {
+            startDate: start instanceof Date 
+              ? start 
+              : new Date(start),
+            endDate: end instanceof Date 
+              ? end 
+              : new Date(end),
+            dayCount: dashboardData.dateRange.days,
+            formattedDates: []
+          };
+          
+          // Validate the dates are valid before calling formatDateRangeForFilename
+          if (!isNaN(dateRange.startDate.getTime()) && !isNaN(dateRange.endDate.getTime())) {
+            return formatDateRangeForFilename(dateRange);
+          } else {
+            console.warn('⚠️ Invalid dates after conversion:', dateRange);
+          }
+        } catch (e) {
+          console.error('Error converting dates:', e);
+        }
+      } else {
+        console.warn('⚠️ Missing start or end date in dashboardData.dateRange:', dashboardData.dateRange);
+      }
     }
     
     // FIXED: Use actual date from dashboard data instead of hardcoded date
-    const dataDate = data.dailyMetrics && data.dailyMetrics.length > 0 
-      ? new Date(data.dailyMetrics[0].date) 
-      : new Date(); // Current date as fallback, not hardcoded Sept 29
+    // Fallback to current date if no dashboard data available
+    const dataDate = dashboardData?.dateRange?.start 
+      ? (dashboardData.dateRange.start instanceof Date 
+          ? dashboardData.dateRange.start 
+          : new Date(dashboardData.dateRange.start))
+      : new Date(); // Current date as fallback
     const formatDate = (date: Date) => {
       const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       return `${months[date.getMonth()]}${date.getDate()}`;
@@ -254,9 +274,12 @@ const ExportModal: React.FC<Props> = ({ onClose, dashboardData }) => {
           // CRITICAL: Use the actual data date, not today's date!
           // The data is from Sept 29th based on the original files
           // FIXED: Use actual date from data instead of hardcoded fallback
-          const dataDate = dashboardData.dateRange?.startDate || 
-                          dashboardData.dateRange?.start || 
-                          (new Date().toISOString().split('T')[0]); // Current date fallback, not hardcoded Sept 29
+          // Convert to Date object properly
+          let dataDateStr = dashboardData.dateRange?.startDate || 
+                           dashboardData.dateRange?.start || 
+                           (new Date().toISOString().split('T')[0]); // Current date fallback
+          const dataDateObj = dataDateStr instanceof Date ? dataDateStr : new Date(dataDateStr);
+          const dataDate = dataDateObj.toISOString().split('T')[0]; // Convert to string format for CSV
           
           // Smart field detection: try all possible field names and log what we find
           const findFieldValue = (campaign: any, fieldType: string, possibleNames: string[]) => {
