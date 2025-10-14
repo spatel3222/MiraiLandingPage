@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Use Cases Showcase - Walmart Transformation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0071DC 0%, #041E42 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .walmart-logo {
+            width: 120px;
+            height: 40px;
+            background: #FFC220;
+            border-radius: 8px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #0071DC;
+        }
+        
+        h1 {
+            color: #041E42;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .nav-link {
+            background: #0071DC;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .nav-link:hover {
+            background: #041E42;
+        }
+        
+        .use-case {
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .use-case:hover {
+            transform: translateY(-5px);
+        }
+        
+        .use-case-header {
+            background: linear-gradient(135deg, #041E42, #0071DC);
+            color: white;
+            padding: 25px 30px;
+            position: relative;
+        }
+        
+        .use-case-number {
+            position: absolute;
+            top: -10px;
+            right: 30px;
+            background: #FFC220;
+            color: #041E42;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .use-case-title {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .use-case-category {
+            background: rgba(255, 194, 32, 0.2);
+            color: #FFC220;
+            padding: 5px 15px;
+            border-radius: 15px;
+            display: inline-block;
+            font-size: 0.9rem;
+        }
+        
+        .use-case-content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            color: #041E42;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-icon {
+            width: 35px;
+            height: 35px;
+            background: #0071DC;
+            color: white;
+            border-radius: 50%;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        
+        .problem-statement {
+            background: #fff5f5;
+            border-left: 4px solid #dc3545;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .solution-box {
+            background: #f0f9ff;
+            border-left: 4px solid #0071DC;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .visual-mockup {
+            background: #f8f9fa;
+            border: 2px dashed #0071DC;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mockup-phone {
+            width: 200px;
+            height: 400px;
+            background: #333;
+            border-radius: 25px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .mockup-screen {
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .mockup-header {
+            background: #0071DC;
+            color: white;
+            padding: 8px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .mockup-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .mockup-element {
+            background: #f0f0f0;
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 0.7rem;
+            text-align: left;
+        }
+        
+        .mockup-button {
+            background: #FFC220;
+            color: #041E42;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        
+        .framework-connection {
+            background: linear-gradient(135deg, #e8f5e8, #f0f9ff);
+            border: 2px solid #28a745;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .framework-title {
+            color: #28a745;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .framework-icon {
+            width: 25px;
+            height: 25px;
+            background: #28a745;
+            color: white;
+            border-radius: 50%;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .metric-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #0071DC;
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .ar-demo {
+            position: relative;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .ar-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .ar-measurement {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: #FFC220;
+            color: #041E42;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        
+        .conversation-demo {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            height: 300px;
+            overflow-y: auto;
+        }
+        
+        .chat-message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .user-message {
+            justify-content: flex-end;
+        }
+        
+        .message-bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 0.9rem;
+        }
+        
+        .ai-bubble {
+            background: #0071DC;
+            color: white;
+            border-bottom-left-radius: 6px;
+        }
+        
+        .user-bubble {
+            background: #e9ecef;
+            color: #333;
+            border-bottom-right-radius: 6px;
+        }
+        
+        .dashboard-demo {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            height: 300px;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .dashboard-title {
+            font-weight: bold;
+            color: #041E42;
+        }
+        
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #0071DC;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .use-case-content {
+                padding: 20px;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="walmart-logo">Walmart</div>
+            <h1>AI Use Cases Showcase</h1>
+            <div class="subtitle">Problem-Solution-Visual Framework Analysis</div>
+            <div class="nav-links">
+                <a href="data-validation-framework.html" class="nav-link">← Strategic Framework</a>
+                <a href="prioritization-framework.html" class="nav-link">Prioritization Analysis →</a>
+            </div>
+        </div>
+        
+        <!-- Use Case 1: AI Style Concierge -->
+        <div class="use-case">
+            <div class="use-case-header">
+                <div class="use-case-number">01</div>
+                <div class="use-case-title">AI Style Concierge</div>
+                <div class="use-case-category">Conversational Commerce</div>
+            </div>
+            <div class="use-case-content">
+                <div class="section">
+                    <div class="section-title">
+                        <div class="section-icon">⚠️</div>
+                        Problem Statement / Hypothesis
+                    </div>
+                    <div class="problem-statement">
+                        <strong>Problem:</strong> 73% of online shoppers abandon purchases due to decision paralysis when choosing shoes. Current product catalogs show features but don't understand personal style preferences or lifestyle needs.<br><br>
+                        <strong>Hypothesis:</strong> A conversational AI that understands customer style, occasion, and preferences can reduce decision time by 60% while increasing purchase confidence and satisfaction.
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <div class="section-icon">💡</div>
+                        Solution
+                    </div>
+                    <div class="solution-box">
+                        <strong>AI-Powered Style Assistant:</strong> Natural language interface that learns customer preferences through conversation, analyzes uploaded photos of existing wardrobe, and provides personalized shoe recommendations with styling advice.<br><br>
+                        <strong>Key Features:</strong> Voice/text interaction, image analysis, style preference learning, outfit coordination, occasion-based recommendations, real-time inventory integration.
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <div class="section-icon">📱</div>
+                        Visual Mockup
+                    </div>
+                    <div class="visual-mockup">
+                        <div class="conversation-demo">
+                            <div class="chat-message">
+                                <div class="message-bubble ai-bubble">
+                                    Hi! I'm your style assistant. What occasion are you shopping for?
+                                </div>
+                            </div>
+                            <div class="chat-message user-message">
+                                <div class="message-bubble user-bubble">
+                                    I need comfortable shoes for work - I'm on my feet all day
+                                </div>
+                            </div>
+                            <div class="chat-message">
+                                <div class="message-bubble ai-bubble">
+                                    Perfect! What's your style preference - classic, modern, or athletic-inspired?
+                                </div>
+                            </div>
+                            <div class="chat-message user-message">
+                                <div class="message-bubble user-bubble">
+                                    Classic, but I need good arch support
+                                </div>
+                            </div>
+                            <div class="chat-message">
+                                <div class="message-bubble ai-bubble">
+                                    I found 3 perfect matches! Here are classic loafers with orthopedic support...
+                                    <div style="background: #FFC220; color: #041E42; padding: 8px; border-radius: 8px; margin-top: 8px; font-weight: bold;">
+                                        🥿 Cole Haan Grand Series - $129
+                                        ⭐ 4.8/5 (2.1k reviews)
+                                        ✅ Arch support certified
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <div class="section-icon">🎯</div>
+                        Framework Connection
+                    </div>
+                    <div class="framework-connection">
+                        <div class="framework-title">
+                            <div class="framework-icon">⭐</div>
+                            BCG Stars Investment Priority
+                        </div>
+                        <p><strong>Why High Priority:</strong> High market growth (conversational commerce growing 40% YoY) + Walmart's customer data advantage = defensible competitive position.</p>
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <div class="metric-value">60%</div>
+                                <div class="metric-label">Decision Time Reduction</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">35%</div>
+                                <div class="metric-label">Conversion Lift Target</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">4.8+</div>
+                                <div class="metric-label">Target Satisfaction Score</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">$150M</div>
+                                <div class="metric-label">Revenue Opportunity</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Use Case 2: FitGenius AR Scanner -->
+        <div class="use-case">
+            <div class="use-case-header">
+                <div class="use-case-number">02</div>
+                <div class="use-case-title">FitGenius AR Scanner</div>
+                <div class="use-case-category">Augmented Reality</div>
+            </div>
+            <div class="use-case-content">
+                <div class="section">
+                    <div class="section-title">
+                        <div class="section-icon">⚠️</div>
+                        Problem Statement / Hypothesis
+                    </div>
+                    <div class="problem-statement">
+                        <strong>Problem:</strong> 64% of shoe returns are due to sizing issues. Traditional size charts don't account for foot shape variations, leading to $2.8B in annual return costs across retail.<br><br>
+                        <strong>Hypothesis:</strong> AR-powered foot scanning that provides precise measurements and 3D fit prediction can reduce returns by 75% while increasing customer confidence in online purchases.
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <div class="section-icon">💡</div>
+                        Solution
+                    </div>
+                    <div class="solution-box">
+                        <strong>3D Foot Scanning Technology:</strong> Mobile AR scanner captures precise foot measurements, analyzes arch height, width variations, and gait patterns to recommend perfect-fitting shoes.<br><br>
+                        <strong>Key Features:</strong> AR camera interface, 3D measurement capture, brand-specific size translation, fit confidence scoring, virtual try-on preview.
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <div class="section-icon">📱</div>
+                        Visual Mockup
+                    </div>
+                    <div class="visual-mockup">
+                        <div class="ar-demo">
+                            <div style="font-size: 1.5rem; text-align: center;">
+                                📱 AR Camera Active
+                                <div style="margin: 20px 0; font-size: 1rem;">
+                                    Scanning foot dimensions...
+                                </div>
+                                <div style="border: 2px dashed white; width: 150px; height: 200px; margin: 0 auto; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                                    👟 Foot Outline
+                                </div>
+                            </div>
+                            <div class="ar-overlay">
+                                🎯 Scanning Progress: 87%
+                            </div>
+                            <div class="ar-measurement">
+                                📏 Length: 10.2" Width: 3.8"<br>
+                                🎯 Confidence: 98%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <div class="section-icon">🎯</div>
+                        Framework Connection
+                    </div>
+                    <div class="framework-connection">
+                        <div class="framework-title">
+                            <div class="framework-icon">🌊</div>
+                            Blue Ocean Strategy - Create Uncontested Value
+                        </div>
+                        <p><strong>Market Creation:</strong> First major retailer to offer consumer-grade 3D foot scanning creates new category of "precision fit commerce."</p>
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <div class="metric-value">75%</div>
+                                <div class="metric-label">Return Reduction Target</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">±2mm</div>
+                                <div class="metric-label">Measurement Precision</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">$420M</div>
+                                <div class="metric-label">Cost Savings Potential</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">95%</div>
+                                <div class="metric-label">Device Compatibility</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Use Case 3: HomeHarmony AI -->
+        <div class="use-case">
+            <div class="use-case-header">
+                <div class="use-case-number">03</div>
+                <div class="use-case-title">HomeHarmony AI</div>
+                <div class="use-case-category">Cross-Category Intelligence</div>
+            </div>
+            <div class="use-case-content">
+                <div class="section">
+                    <div class="section-title">
+                        <div class="section-icon">⚠️</div>
+                        Problem Statement / Hypothesis
+                    </div>
+                    <div class="problem-statement">
+                        <strong>Problem:</strong> Home furnishing purchases have 40% higher returns than other categories due to size, style, and color mismatches. Customers struggle to visualize how products work together in their space.<br><br>
+                        <strong>Hypothesis:</strong> AI that understands room dimensions, existing decor, and personal style can increase purchase confidence by 80% and create cross-category selling opportunities worth $300M annually.
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <div class="section-icon">💡</div>
+                        Solution
+                    </div>
+                    <div class="solution-box">
+                        <strong>Spatial Intelligence Platform:</strong> AI analyzes room photos to understand space, style, and dimensions, then recommends furniture combinations that work harmoniously together.<br><br>
+                        <strong>Key Features:</strong> Room analysis, style identification, dimensional optimization, color coordination, budget-based recommendations, 3D room preview.
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <div class="section-icon">📱</div>
+                        Visual Mockup
+                    </div>
+                    <div class="visual-mockup">
+                        <div class="dashboard-demo">
+                            <div class="dashboard-header">
+                                <div class="dashboard-title">🏠 Your Living Room Analysis</div>
+                                <div style="background: #28a745; color: white; padding: 5px 10px; border-radius: 15px; font-size: 0.8rem;">
+                                    ✨ Style Match: 94%
+                                </div>
+                            </div>
+                            <div class="dashboard-stats">
+                                <div class="stat-card">
+                                    <div class="stat-number">12x8</div>
+                                    <div class="stat-label">Room Dimensions</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">Modern</div>
+                                    <div class="stat-label">Style Detected</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-number">$1,200</div>
+                                    <div class="stat-label">Budget Suggested</div>
+                                </div>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                                <div style="font-weight: bold; margin-bottom: 10px; color: #041E42;">🎯 Perfect Matches Found:</div>
+                                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                    <div style="background: #f0f9ff; padding: 8px 12px; border-radius: 6px; font-size: 0.8rem;">
+                                        🛋️ Modern Sectional - $799
+                                    </div>
+                                    <div style="background: #f0f9ff; padding: 8px 12px; border-radius: 6px; font-size: 0.8rem;">
+                                        🪑 Accent Chair - $299
+                                    </div>
+                                    <div style="background: #f0f9ff; padding: 8px 12px; border-radius: 6px; font-size: 0.8rem;">
+                                        🏮 Floor Lamp - $89
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <div class="section-icon">🎯</div>
+                        Framework Connection
+                    </div>
+                    <div class="framework-connection">
+                        <div class="framework-title">
+                            <div class="framework-icon">❓</div>
+                            BCG Question Mark - Validate Then Scale
+                        </div>
+                        <p><strong>Strategic Approach:</strong> High growth potential but uncertain market readiness requires rigorous testing before major investment.</p>
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <div class="metric-value">40%</div>
+                                <div class="metric-label">Current Return Rate</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">80%</div>
+                                <div class="metric-label">Confidence Improvement</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">3.2x</div>
+                                <div class="metric-label">Cross-sell Opportunity</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">$300M</div>
+                                <div class="metric-label">Annual Revenue Potential</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Use Case 4: FamilyFlow Assistant -->
+        <div class="use-case">
+            <div class="use-case-header">
+                <div class="use-case-number">04</div>
+                <div class="use-case-title">FamilyFlow Assistant</div>
+                <div class="use-case-category">Family Optimization</div>
+            </div>
+            <div class="use-case-content">
+                <div class="section">
+                    <div class="section-title">
+                        <div class="section-icon">⚠️</div>
+                        Problem Statement / Hypothesis
+                    </div>
+                    <div class="problem-statement">
+                        <strong>Problem:</strong> Families spend 3.2 hours weekly on shopping decisions and meal planning. 67% of grocery purchases are reactive rather than planned, leading to food waste and budget overruns.<br><br>
+                        <strong>Hypothesis:</strong> AI that learns family preferences, dietary needs, and schedules can reduce planning time by 70% while improving nutrition and reducing waste by 45%.
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <div class="section-icon">💡</div>
+                        Solution
+                    </div>
+                    <div class="solution-box">
+                        <strong>Intelligent Family Assistant:</strong> AI learns individual family member preferences, dietary restrictions, and schedules to create optimized meal plans and shopping lists.<br><br>
+                        <strong>Key Features:</strong> Family profile learning, meal planning automation, grocery list optimization, nutrition tracking, budget management, schedule integration.
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <div class="section-icon">📱</div>
+                        Visual Mockup
+                    </div>
+                    <div class="visual-mockup">
+                        <div class="mockup-phone">
+                            <div class="mockup-screen">
+                                <div class="mockup-header">👨‍👩‍👧‍👦 FamilyFlow Dashboard</div>
+                                <div class="mockup-content">
+                                    <div class="mockup-element" style="background: #e8f5e8;">
+                                        📅 This Week's Plan
+                                        <div style="font-size: 0.6rem; margin-top: 3px;">
+                                            Mon: Taco Tuesday (Kids love!)<br>
+                                            Tue: Salmon (Heart healthy for Dad)
+                                        </div>
+                                    </div>
+                                    <div class="mockup-element">
+                                        🛒 Smart Shopping List
+                                        <div style="font-size: 0.6rem; margin-top: 3px;">
+                                            ✅ Ground beef - $4.99<br>
+                                            ⭐ Sale: Avocados 2 for $3
+                                        </div>
+                                    </div>
+                                    <div class="mockup-element" style="background: #fff3cd;">
+                                        💡 AI Suggestions
+                                        <div style="font-size: 0.6rem; margin-top: 3px;">
+                                            Try whole grain tortillas?<br>
+                                            +15% more fiber for kids
+                                        </div>
+                                    </div>
+                                    <div class="mockup-button">
+                                        📱 Order Groceries Now
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title">
+                        <div class="section-icon">🎯</div>
+                        Framework Connection
+                    </div>
+                    <div class="framework-connection">
+                        <div class="framework-title">
+                            <div class="framework-icon">🐄</div>
+                            BCG Cash Cow - Optimize Existing Strength
+                        </div>
+                        <p><strong>Strategic Value:</strong> Leverages Walmart's grocery dominance and customer data to create sticky, high-frequency touchpoints.</p>
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <div class="metric-value">70%</div>
+                                <div class="metric-label">Planning Time Reduction</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">45%</div>
+                                <div class="metric-label">Food Waste Reduction</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">2.3x</div>
+                                <div class="metric-label">Purchase Frequency</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value">$180M</div>
+                                <div class="metric-label">Customer LTV Impact</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #041E42, #0071DC); color: white; border-radius: 15px; padding: 30px; text-align: center; margin-top: 30px;">
+            <h2 style="margin-bottom: 15px;">Strategic Implementation Sequence</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 20px;">Each use case validates specific aspects of our AI transformation hypothesis</p>
+            <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold; color: #FFC220;">4</div>
+                    <div>Core Use Cases</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold; color: #FFC220;">$850M</div>
+                    <div>Revenue Opportunity</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold; color: #FFC220;">65%</div>
+                    <div>Avg Efficiency Gain</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold; color: #FFC220;">24M</div>
+                    <div>Customers Impacted</div>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <a href="prioritization-framework.html" style="background: #FFC220; color: #041E42; padding: 12px 25px; border-radius: 25px; text-decoration: none; font-weight: bold;">
+                    View Prioritization Analysis →
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

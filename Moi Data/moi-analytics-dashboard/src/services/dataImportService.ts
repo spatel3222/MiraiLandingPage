@@ -65,8 +65,10 @@ export class DataImportService {
   
   // Get default project ID - will be created if it doesn't exist
   private static async getDefaultProjectId(): Promise<string> {
+    console.log('🏗️ Getting/Creating default project...');
     try {
       // Try to get existing default project
+      console.log('  - Checking for existing "MOI Analytics Dashboard" project...');
       const { data: existingProjects, error } = await supabase
         .from('projects')
         .select('id')
@@ -74,10 +76,16 @@ export class DataImportService {
         .limit(1);
 
       if (!error && existingProjects && existingProjects.length > 0) {
+        console.log(`  ✅ Found existing project: ${existingProjects[0].id}`);
         return existingProjects[0].id;
       }
 
+      if (error) {
+        console.warn('  ⚠️ Error checking for project:', error);
+      }
+
       // Create default project if it doesn't exist
+      console.log('  - Creating new "MOI Analytics Dashboard" project...');
       const { data: newProject, error: createError } = await supabase
         .from('projects')
         .insert({ name: 'MOI Analytics Dashboard' })
@@ -85,13 +93,16 @@ export class DataImportService {
         .single();
 
       if (createError || !newProject) {
-        console.warn('Failed to create default project, using fallback ID');
+        console.warn('  ❌ Failed to create default project:', createError);
+        console.warn('  - Using fallback ID: 00000000-0000-0000-0000-000000000000');
         return '00000000-0000-0000-0000-000000000000';
       }
 
+      console.log(`  ✅ Created new project: ${newProject.id}`);
       return newProject.id;
     } catch (error) {
-      console.warn('Failed to get/create default project:', error);
+      console.warn('❌ Failed to get/create default project:', error);
+      console.warn('  - Using fallback ID: 00000000-0000-0000-0000-000000000000');
       return '00000000-0000-0000-0000-000000000000';
     }
   }
@@ -101,6 +112,9 @@ export class DataImportService {
     onProgress?: (progress: ImportProgress) => void,
     options?: ImportOptions
   ): Promise<ImportResult> {
+    console.log('🚀 === DATAIMPORTSERVICE.IMPORTFILE CALLED ===');
+    console.log('📁 File:', file.name, 'Size:', file.size, 'bytes');
+    console.log('⚙️ Options:', options);
     const result: ImportResult = {
       success: false,
       sessionId: '',
@@ -126,9 +140,11 @@ export class DataImportService {
       }
 
       // Step 2: Get project ID and create import session
+      console.log('\n📋 Step 2: Setting up import session...');
       const projectId = await this.getDefaultProjectId();
       const session = await this.createImportSession(projectId);
       if (!session.success) {
+        console.error('❌ Failed to create session:', session.error);
         result.errors.push({
           type: 'database',
           message: session.error || 'Failed to create import session'
@@ -175,9 +191,33 @@ export class DataImportService {
           result.duplicatesDetected = duplicateGroups.length;
           
           if (options?.duplicateResolutions) {
-            // Resolve duplicates based on user choices
-            await this.resolveDuplicates(duplicateGroups, options.duplicateResolutions);
-            filteredData = this.filterDuplicatesWithResolutions(csvData, duplicateGroups, options.duplicateResolutions, validation.source);
+            // Filter data based on duplicate resolutions
+            const resolutions = options.duplicateResolutions;
+            filteredData = csvData.filter(row => {
+              // Build the key for this row
+              const campaign = DataImportService.parseRowCampaign(row, validation.source);
+              const date = DataImportService.parseRowDate(row);
+              const key = `${campaign}_${date}_${validation.source}`;
+              
+              // Check if this row is in our duplicates list
+              const isDuplicate = duplicateGroups.some(group => group.key === key);
+              
+              if (!isDuplicate) {
+                // Not a duplicate, keep it
+                return true;
+              }
+              
+              // This is a duplicate, check the resolution
+              const resolution = resolutions[key];
+              if (resolution === 'skip') {
+                // Skip all versions of this duplicate
+                return false;
+              }
+              
+              // For 'keep_existing' and 'replace_with_new', we keep the data
+              // The actual resolution happens in the database layer
+              return resolution === 'replace_with_new';
+            });
           } else {
             // No resolutions provided - return error to show modal
             result.errors.push({
@@ -204,6 +244,8 @@ export class DataImportService {
       });
 
       // Step 6: Import data in batches
+      console.log('\n📋 Step 6: Starting batch import...');
+      console.log('  - Filtered data rows:', filteredData.length);
       const importedCount = await this.importDataBatches(
         filteredData, 
         validation.source, 
@@ -274,24 +316,34 @@ export class DataImportService {
   }
 
   private static async createImportSession(projectId: string): Promise<{ success: boolean; sessionId?: string; error?: string }> {
+    console.log('📝 Creating import session...');
+    console.log('  - Project ID:', projectId);
+    
     try {
+      const sessionData = {
+        project_id: projectId,
+        status: 'in_progress',
+        files_imported: {},
+        validation_errors: {}
+      };
+      
+      console.log('  - Session data:', JSON.stringify(sessionData, null, 2));
+      
       const { data, error } = await supabase
         .from('import_sessions')
-        .insert({
-          project_id: projectId,
-          status: 'in_progress',
-          files_imported: {},
-          validation_errors: {}
-        })
+        .insert(sessionData)
         .select()
         .single();
 
       if (error) {
+        console.error('  ❌ Failed to create import session:', error);
         return { success: false, error: error.message };
       }
 
+      console.log(`  ✅ Import session created: ${data.id}`);
       return { success: true, sessionId: data.id };
     } catch (error) {
+      console.error('❌ Exception creating import session:', error);
       return { 
         success: false, 
         error: error instanceof Error ? error.message : 'Failed to create import session' 
@@ -594,26 +646,85 @@ export class DataImportService {
     projectId: string,
     onProgress?: (processed: number) => void
   ): Promise<number> {
+    console.log('🔄 === IMPORTING DATA BATCHES ===');
+    console.log('📊 Total rows to import:', data.length);
+    console.log('📦 Batch size:', this.BATCH_SIZE);
+    console.log('🏷️ Source type:', source);
+    console.log('🆔 Project ID:', projectId);
+    console.log('🔖 Session ID:', sessionId);
+    
     let importedCount = 0;
+    let batchNumber = 0;
+    
+    // Also track what tables we're attempting to write to
+    const tablesBySource = {
+      meta: 'raw_data_meta',
+      google: 'raw_data_google', 
+      shopify: 'raw_data_shopify'
+    };
+    
+    console.log(`📝 Will write to tables:`);
+    console.log(`  - campaign_data (main table)`);
+    console.log(`  - ${tablesBySource[source]} (raw data table)`);
     
     for (let i = 0; i < data.length; i += this.BATCH_SIZE) {
+      batchNumber++;
       const batch = data.slice(i, i + this.BATCH_SIZE);
+      console.log(`\n📤 Processing batch ${batchNumber}/${Math.ceil(data.length / this.BATCH_SIZE)}`);
+      console.log(`  - Rows in batch: ${batch.length}`);
+      
+      // Map batch data
       const mappedBatch = batch.map(row => this.mapRowToCampaignData(row, source, sessionId, projectId));
       
-      const { error } = await supabase
+      // Log sample of mapped data
+      if (mappedBatch.length > 0) {
+        console.log('  - Sample mapped row:', JSON.stringify(mappedBatch[0], null, 2));
+      }
+      
+      // Insert into campaign_data table
+      console.log(`  - Inserting into campaign_data table...`);
+      const { data: insertedData, error } = await supabase
         .from('campaign_data')
-        .insert(mappedBatch);
+        .insert(mappedBatch)
+        .select();
 
       if (error) {
-        console.error('Batch import error:', error);
+        console.error(`❌ Batch ${batchNumber} import error:`, error);
+        console.error('  - Error details:', JSON.stringify(error, null, 2));
+        console.error('  - Failed batch sample:', JSON.stringify(mappedBatch[0], null, 2));
         // Continue with other batches even if one fails
       } else {
         importedCount += batch.length;
+        console.log(`✅ Batch ${batchNumber} imported successfully`);
+        console.log(`  - Rows imported: ${batch.length}`);
+        console.log(`  - Total imported so far: ${importedCount}`);
+        if (insertedData && insertedData.length > 0) {
+          console.log(`  - First inserted ID: ${insertedData[0].id}`);
+        }
+      }
+
+      // Also attempt to insert raw data into source-specific table
+      console.log(`  - Attempting to insert raw data into ${tablesBySource[source]} table...`);
+      const rawDataBatch = batch.map(row => this.mapRowToRawData(row, source, sessionId, projectId));
+      
+      const { error: rawError } = await supabase
+        .from(tablesBySource[source])
+        .insert(rawDataBatch);
+        
+      if (rawError) {
+        console.warn(`⚠️ Raw data insert failed for ${tablesBySource[source]}:`, rawError.message);
+        console.warn('  - This is expected if table does not exist yet');
+      } else {
+        console.log(`✅ Raw data inserted into ${tablesBySource[source]}`);
       }
 
       onProgress?.(importedCount);
     }
 
+    console.log('\n📊 === BATCH IMPORT COMPLETE ===');
+    console.log(`✅ Successfully imported: ${importedCount} rows`);
+    console.log(`❌ Failed rows: ${data.length - importedCount}`);
+    
     return importedCount;
   }
 
@@ -678,13 +789,16 @@ export class DataImportService {
   private static parseRowCampaign(row: any, source: SourceType): string | null {
     switch (source) {
       case 'meta':
-        return row['Campaign Name'] || row['Campaign name'] || null;
+        return row['Campaign Name'] || row['Campaign name'] || 'Unknown Campaign';
       case 'google':
-        return row['Campaign'] || row['Campaign name'] || null;
+        return row['Campaign'] || row['Campaign name'] || 'Unknown Campaign';
       case 'shopify':
-        return row['UTM campaign'] || row['UTM Campaign'] || row['utm_campaign'] || null;
+        // For Shopify, use UTM campaign, or fallback to UTM term, or a default
+        return row['UTM campaign'] || row['UTM Campaign'] || row['utm_campaign'] || 
+               row['UTM term'] || row['UTM Term'] || row['utm_term'] || 
+               'Direct/Unknown';
       default:
-        return null;
+        return 'Unknown Campaign';
     }
   }
 
@@ -695,6 +809,51 @@ export class DataImportService {
     
     const numValue = parseFloat(value.toString().replace(/[,$]/g, ''));
     return isNaN(numValue) ? null : numValue;
+  }
+
+  // Helper method to map raw data for source-specific tables
+  private static mapRowToRawData(row: any, source: SourceType, sessionId: string, projectId: string): any {
+    const baseData = {
+      project_id: projectId,
+      import_session_id: sessionId,
+      raw_data: row // Store original row as JSON
+    };
+
+    switch (source) {
+      case 'meta':
+        return {
+          ...baseData,
+          date_reported: this.parseRowDate(row),
+          campaign_name: this.parseRowCampaign(row, source),
+          ad_set_name: row['Ad Set Name'] || null,
+          amount_spent: this.parseNumber(row['Amount spent (INR)']),
+          impressions: this.parseNumber(row['Impressions']),
+          link_clicks: this.parseNumber(row['Link Clicks'])
+        };
+      case 'google':
+        return {
+          ...baseData,
+          date: this.parseRowDate(row),
+          campaign: this.parseRowCampaign(row, source),
+          cost: this.parseNumber(row['Cost']),
+          clicks: this.parseNumber(row['Clicks']),
+          impressions: this.parseNumber(row['Impressions']),
+          conversions: this.parseNumber(row['Conversions'])
+        };
+      case 'shopify':
+        return {
+          ...baseData,
+          day: this.parseRowDate(row),
+          utm_campaign: row['UTM campaign'] || row['UTM Campaign'] || null,
+          utm_term: row['UTM term'] || row['UTM Term'] || null,
+          online_store_visitors: this.parseNumber(row['Online store visitors'] || row['Online Store Visitors']),
+          sessions: this.parseNumber(row['Sessions']),
+          orders: this.parseNumber(row['Orders']),
+          total_sales: this.parseNumber(row['Total Sales'])
+        };
+      default:
+        return baseData;
+    }
   }
 
   private static async recordImportMetadata(

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Campaign Dashboard - CRTX.in</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 222.2 84% 4.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 222.2 84% 4.9%;
+            --popover: 0 0% 100%;
+            --popover-foreground: 222.2 84% 4.9%;
+            --primary: 222.2 47.4% 11.2%;
+            --primary-foreground: 210 40% 98%;
+            --secondary: 210 40% 96.1%;
+            --secondary-foreground: 222.2 47.4% 11.2%;
+            --muted: 210 40% 96.1%;
+            --muted-foreground: 215.4 16.3% 46.9%;
+            --accent: 210 40% 96.1%;
+            --accent-foreground: 222.2 47.4% 11.2%;
+            --destructive: 0 84.2% 60.2%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 214.3 31.8% 91.4%;
+            --input: 214.3 31.8% 91.4%;
+            --ring: 222.2 84% 4.9%;
+            --radius: 0.5rem;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background: 222.2 84% 4.9%;
+                --foreground: 210 40% 98%;
+                --card: 222.2 84% 4.9%;
+                --card-foreground: 210 40% 98%;
+                --popover: 222.2 84% 4.9%;
+                --popover-foreground: 210 40% 98%;
+                --primary: 210 40% 98%;
+                --primary-foreground: 222.2 47.4% 11.2%;
+                --secondary: 217.2 32.6% 17.5%;
+                --secondary-foreground: 210 40% 98%;
+                --muted: 217.2 32.6% 17.5%;
+                --muted-foreground: 215 20.2% 65.1%;
+                --accent: 217.2 32.6% 17.5%;
+                --accent-foreground: 210 40% 98%;
+                --destructive: 0 62.8% 30.6%;
+                --destructive-foreground: 210 40% 98%;
+                --border: 217.2 32.6% 17.5%;
+                --input: 217.2 32.6% 17.5%;
+                --ring: 212.7 26.8% 83.9%;
+            }
+        }
+
+        * {
+            border-color: hsl(var(--border));
+        }
+
+        body {
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+        }
+
+        .card {
+            background-color: hsl(var(--card));
+            color: hsl(var(--card-foreground));
+            border-radius: calc(var(--radius));
+            border: 1px solid hsl(var(--border));
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 9999px;
+            padding: 0.125rem 0.625rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition-property: color, background-color, border-color;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+
+        .badge-success {
+            background-color: hsl(142 76% 36%);
+            color: white;
+        }
+
+        .badge-warning {
+            background-color: hsl(48 96% 53%);
+            color: hsl(222.2 84% 4.9%);
+        }
+
+        .badge-error {
+            background-color: hsl(0 84.2% 60.2%);
+            color: white;
+        }
+
+        .badge-info {
+            background-color: hsl(199 89% 48%);
+            color: white;
+        }
+
+        .tab-active {
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+        }
+
+        .progress-bar {
+            background-color: hsl(var(--secondary));
+            border-radius: 9999px;
+            overflow: hidden;
+            height: 8px;
+        }
+
+        .progress-fill {
+            background-color: hsl(var(--primary));
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <!-- Header -->
+    <header class="border-b bg-white dark:bg-gray-800 px-6 py-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold">Marketing Campaign Dashboard</h1>
+                <p class="text-sm text-gray-500 dark:text-gray-400">CRTX.in - Build AI Once. Scale Everywhere.</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <select class="px-3 py-2 border rounded-md text-sm">
+                    <option>Last 30 Days</option>
+                    <option>Last 7 Days</option>
+                    <option>Last 90 Days</option>
+                    <option>Year to Date</option>
+                </select>
+                <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                    Export Report
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-6">
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="card p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <p class="text-sm font-medium text-gray-500">Total Campaigns</p>
+                    <i data-lucide="trending-up" class="w-4 h-4 text-green-500"></i>
+                </div>
+                <p class="text-2xl font-bold">6</p>
+                <p class="text-xs text-green-600">+12% from last month</p>
+            </div>
+
+            <div class="card p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <p class="text-sm font-medium text-gray-500">Total Reach</p>
+                    <i data-lucide="users" class="w-4 h-4 text-blue-500"></i>
+                </div>
+                <p class="text-2xl font-bold">100K</p>
+                <p class="text-xs text-blue-600">+18% from last month</p>
+            </div>
+
+            <div class="card p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <p class="text-sm font-medium text-gray-500">Engagement Rate</p>
+                    <i data-lucide="activity" class="w-4 h-4 text-purple-500"></i>
+                </div>
+                <p class="text-2xl font-bold">4.0%</p>
+                <p class="text-xs text-purple-600">+0.5% from last month</p>
+            </div>
+
+            <div class="card p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <p class="text-sm font-medium text-gray-500">ROI</p>
+                    <i data-lucide="dollar-sign" class="w-4 h-4 text-yellow-500"></i>
+                </div>
+                <p class="text-2xl font-bold">250%</p>
+                <p class="text-xs text-yellow-600">+42% from last month</p>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- Performance Chart -->
+            <div class="card p-6">
+                <h3 class="text-lg font-semibold mb-4">Campaign Performance</h3>
+                <canvas id="performanceChart" width="400" height="200"></canvas>
+            </div>
+
+            <!-- Channel Distribution -->
+            <div class="card p-6">
+                <h3 class="text-lg font-semibold mb-4">Channel Distribution</h3>
+                <canvas id="channelChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+
+        <!-- Campaigns Table -->
+        <div class="card p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">Active Campaigns</h3>
+                <div class="flex gap-2">
+                    <button class="px-3 py-1 text-sm border rounded-md hover:bg-gray-50 dark:hover:bg-gray-700">
+                        All
+                    </button>
+                    <button class="px-3 py-1 text-sm border rounded-md hover:bg-gray-50 dark:hover:bg-gray-700">
+                        Active
+                    </button>
+                    <button class="px-3 py-1 text-sm border rounded-md hover:bg-gray-50 dark:hover:bg-gray-700">
+                        Paused
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b">
+                            <th class="text-left py-3 px-4">Campaign Name</th>
+                            <th class="text-left py-3 px-4">Channel</th>
+                            <th class="text-left py-3 px-4">Status</th>
+                            <th class="text-left py-3 px-4">Budget</th>
+                            <th class="text-left py-3 px-4">Spent</th>
+                            <th class="text-left py-3 px-4">CTR</th>
+                            <th class="text-left py-3 px-4">Conversions</th>
+                            <th class="text-left py-3 px-4">Progress</th>
+                        </tr>
+                    </thead>
+                    <tbody id="campaignsTableBody">
+                        <!-- Table rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Recent Activities -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+            <div class="card p-6 lg:col-span-2">
+                <h3 class="text-lg font-semibold mb-4">Recent Activities</h3>
+                <div class="space-y-4" id="activitiesList">
+                    <!-- Activities will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Top Performing Campaigns -->
+            <div class="card p-6">
+                <h3 class="text-lg font-semibold mb-4">Top Performers</h3>
+                <div class="space-y-3" id="topPerformers">
+                    <!-- Top performers will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Simple dummy data for campaigns
+        const campaignsData = [
+            {
+                name: "Campaign A",
+                channel: "Email",
+                status: "Active",
+                budget: 10000,
+                spent: 7500,
+                ctr: "5.0%",
+                conversions: 500,
+                progress: 75
+            },
+            {
+                name: "Campaign B",
+                channel: "Social",
+                status: "Active",
+                budget: 8000,
+                spent: 4000,
+                ctr: "3.5%",
+                conversions: 300,
+                progress: 50
+            },
+            {
+                name: "Campaign C",
+                channel: "Google",
+                status: "Active",
+                budget: 15000,
+                spent: 12000,
+                ctr: "4.2%",
+                conversions: 800,
+                progress: 80
+            },
+            {
+                name: "Campaign D",
+                channel: "Display",
+                status: "Paused",
+                budget: 5000,
+                spent: 5000,
+                ctr: "2.0%",
+                conversions: 150,
+                progress: 100
+            },
+            {
+                name: "Campaign E",
+                channel: "Facebook",
+                status: "Active",
+                budget: 12000,
+                spent: 3600,
+                ctr: "6.5%",
+                conversions: 400,
+                progress: 30
+            },
+            {
+                name: "Campaign F",
+                channel: "LinkedIn",
+                status: "Active",
+                budget: 6000,
+                spent: 4200,
+                ctr: "3.0%",
+                conversions: 100,
+                progress: 70
+            }
+        ];
+
+        // Populate campaigns table
+        function populateCampaignsTable() {
+            const tbody = document.getElementById('campaignsTableBody');
+            
+            campaignsData.forEach(campaign => {
+                const row = document.createElement('tr');
+                row.className = 'border-b hover:bg-gray-50 dark:hover:bg-gray-800';
+                
+                const statusBadgeClass = campaign.status === 'Active' ? 'badge-success' : 'badge-warning';
+                
+                row.innerHTML = `
+                    <td class="py-3 px-4 font-medium">${campaign.name}</td>
+                    <td class="py-3 px-4">${campaign.channel}</td>
+                    <td class="py-3 px-4">
+                        <span class="badge ${statusBadgeClass}">${campaign.status}</span>
+                    </td>
+                    <td class="py-3 px-4">$${campaign.budget.toLocaleString()}</td>
+                    <td class="py-3 px-4">$${campaign.spent.toLocaleString()}</td>
+                    <td class="py-3 px-4">${campaign.ctr}</td>
+                    <td class="py-3 px-4">${campaign.conversions.toLocaleString()}</td>
+                    <td class="py-3 px-4">
+                        <div class="flex items-center gap-2">
+                            <div class="progress-bar flex-1">
+                                <div class="progress-fill" style="width: ${campaign.progress}%"></div>
+                            </div>
+                            <span class="text-xs text-gray-500">${campaign.progress}%</span>
+                        </div>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+
+        // Create Performance Chart
+        function createPerformanceChart() {
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [
+                        {
+                            label: 'Impressions',
+                            data: [10000, 15000, 20000, 25000],
+                            borderColor: 'rgb(59, 130, 246)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Clicks',
+                            data: [500, 750, 1000, 1250],
+                            borderColor: 'rgb(16, 185, 129)',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Conversions',
+                            data: [50, 75, 100, 125],
+                            borderColor: 'rgb(251, 146, 60)',
+                            backgroundColor: 'rgba(251, 146, 60, 0.1)',
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create Channel Distribution Chart
+        function createChannelChart() {
+            const ctx = document.getElementById('channelChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Email', 'Social Media', 'Google Ads', 'Display', 'LinkedIn'],
+                    datasets: [{
+                        data: [30, 25, 20, 15, 10],
+                        backgroundColor: [
+                            'rgb(59, 130, 246)',
+                            'rgb(16, 185, 129)',
+                            'rgb(251, 146, 60)',
+                            'rgb(167, 139, 250)',
+                            'rgb(251, 113, 133)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Populate Recent Activities
+        function populateActivities() {
+            const activities = [
+                { time: '1 hour ago', action: 'Campaign A reached 75% of budget', type: 'warning' },
+                { time: '2 hours ago', action: 'Campaign C achieved 800 conversions', type: 'success' },
+                { time: '3 hours ago', action: 'Campaign D completed', type: 'info' },
+                { time: '5 hours ago', action: 'Campaign E started successfully', type: 'success' },
+                { time: '1 day ago', action: 'Weekly report generated', type: 'info' }
+            ];
+
+            const container = document.getElementById('activitiesList');
+            
+            activities.forEach(activity => {
+                const item = document.createElement('div');
+                item.className = 'flex items-start gap-3 pb-3 border-b last:border-0';
+                
+                let iconColor = '';
+                let icon = '';
+                switch(activity.type) {
+                    case 'success':
+                        iconColor = 'text-green-500';
+                        icon = 'check-circle';
+                        break;
+                    case 'warning':
+                        iconColor = 'text-yellow-500';
+                        icon = 'alert-circle';
+                        break;
+                    case 'info':
+                        iconColor = 'text-blue-500';
+                        icon = 'info';
+                        break;
+                }
+                
+                item.innerHTML = `
+                    <i data-lucide="${icon}" class="w-5 h-5 ${iconColor} mt-0.5"></i>
+                    <div class="flex-1">
+                        <p class="text-sm">${activity.action}</p>
+                        <p class="text-xs text-gray-500 mt-1">${activity.time}</p>
+                    </div>
+                `;
+                
+                container.appendChild(item);
+            });
+            
+            // Re-initialize Lucide icons for dynamically added content
+            lucide.createIcons();
+        }
+
+        // Populate Top Performers
+        function populateTopPerformers() {
+            const performers = [
+                { name: 'Campaign C', metric: '800 conversions', trend: '+15%' },
+                { name: 'Campaign A', metric: '5.0% CTR', trend: '+10%' },
+                { name: 'Campaign E', metric: '6.5% CTR', trend: '+12%' },
+                { name: 'Campaign B', metric: '300 conversions', trend: '+8%' }
+            ];
+
+            const container = document.getElementById('topPerformers');
+            
+            performers.forEach((performer, index) => {
+                const item = document.createElement('div');
+                item.className = 'flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg';
+                
+                item.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="text-lg font-bold text-gray-400">#${index + 1}</span>
+                        <div>
+                            <p class="font-medium text-sm">${performer.name}</p>
+                            <p class="text-xs text-gray-500">${performer.metric}</p>
+                        </div>
+                    </div>
+                    <span class="text-xs font-semibold text-green-600">${performer.trend}</span>
+                `;
+                
+                container.appendChild(item);
+            });
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            populateCampaignsTable();
+            createPerformanceChart();
+            createChannelChart();
+            populateActivities();
+            populateTopPerformers();
+        });
+    </script>
+</body>
+</html>

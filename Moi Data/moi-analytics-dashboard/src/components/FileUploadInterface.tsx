@@ -74,11 +74,20 @@ export const FileUploadInterface: React.FC<FileUploadInterfaceProps> = ({ onImpo
   const handleStartImport = async () => {
     if (!selectedFile || !validation?.isValid) return;
     
+    console.log('🚀 === FILE UPLOAD STARTED ===');
+    console.log('📁 File:', selectedFile.name);
+    console.log('📏 Size:', selectedFile.size, 'bytes');
+    console.log('🏷️ Source:', validation.source);
+    console.log('📅 Date range:', validation.dateRange);
+    
     // Check if Supabase is configured
     if (!supabaseConfig.isConfigured) {
+      console.error('❌ Supabase not configured');
       alert('⚠️ Supabase Configuration Required\n\nPlease configure your Supabase credentials in the .env.local file before importing data.\n\nSee the connection test above for setup instructions.');
       return;
     }
+    
+    console.log('✅ Supabase configured, starting import...');
 
     setIsImporting(true);
     setImportProgress(null);
@@ -86,6 +95,7 @@ export const FileUploadInterface: React.FC<FileUploadInterfaceProps> = ({ onImpo
 
     try {
       const result = await DataImportService.importFile(selectedFile, (progress) => {
+        console.log(`📊 Import progress: ${progress.progress}% - ${progress.currentStep}`);
         setImportProgress(progress);
       });
       

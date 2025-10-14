@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walmart AI Transformation Framework - CRTX.in Strategic Vision</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Walmart Brand Colors & Variables */
+        :root {
+            --walmart-blue: #0071DC;
+            --walmart-yellow: #FFC220;
+            --walmart-dark-blue: #041E42;
+            --walmart-light-blue: #E6F1FC;
+            --walmart-gray: #74767A;
+            --walmart-light-gray: #F5F5F5;
+            --success-green: #10B981;
+            --warning-orange: #F59E0B;
+            --error-red: #EF4444;
+            --purple: #8B5CF6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, var(--walmart-light-blue) 0%, white 30%, var(--walmart-light-gray) 100%);
+            color: var(--walmart-dark-blue);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: white;
+            padding: 16px 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--walmart-dark-blue);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--walmart-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--walmart-blue);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 24px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--walmart-blue) 0%, var(--walmart-dark-blue) 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="grad"><stop offset="0%" stop-color="rgba(255,194,32,0.1)"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23grad)"/><circle cx="800" cy="300" r="150" fill="url(%23grad)"/><circle cx="300" cy="800" r="120" fill="url(%23grad)"/></svg>') no-repeat center center;
+            background-size: cover;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(45deg, white, var(--walmart-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            margin-bottom: 24px;
+            opacity: 0.9;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--walmart-yellow);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--walmart-dark-blue);
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--walmart-gray);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Concept Cards Grid */
+        .concepts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .concept-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: 1px solid var(--walmart-light-gray);
+        }
+
+        .concept-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+        }
+
+        .concept-header {
+            height: 200px;
+            position: relative;
+            background: linear-gradient(135deg, var(--walmart-blue), var(--walmart-dark-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .concept-icon {
+            font-size: 48px;
+            color: white;
+        }
+
+        .concept-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--walmart-yellow);
+            color: var(--walmart-dark-blue);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .concept-content {
+            padding: 24px;
+        }
+
+        .concept-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--walmart-dark-blue);
+        }
+
+        .concept-description {
+            font-size: 14px;
+            color: var(--walmart-gray);
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .concept-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .feature-tag {
+            background: var(--walmart-light-blue);
+            color: var(--walmart-dark-blue);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .concept-impact {
+            background: var(--walmart-light-gray);
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--walmart-dark-blue);
+            font-weight: 500;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--walmart-blue);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 48px;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            width: 45%;
+            position: relative;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: var(--walmart-yellow);
+            border: 4px solid var(--walmart-blue);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .phase-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--walmart-blue);
+            margin-bottom: 8px;
+        }
+
+        .phase-duration {
+            font-size: 12px;
+            color: var(--walmart-gray);
+            margin-bottom: 12px;
+        }
+
+        .phase-description {
+            font-size: 14px;
+            color: var(--walmart-dark-blue);
+            margin-bottom: 16px;
+        }
+
+        .phase-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 12px;
+            background: var(--walmart-light-blue);
+            border-radius: 8px;
+        }
+
+        .metric-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--walmart-blue);
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: var(--walmart-gray);
+        }
+
+        /* Investment Chart */
+        .investment-section {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            margin: 48px 0;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 32px 0;
+        }
+
+        .investment-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .investment-card {
+            background: var(--walmart-light-blue);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .investment-amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--walmart-blue);
+            margin-bottom: 8px;
+        }
+
+        .investment-label {
+            font-size: 14px;
+            color: var(--walmart-dark-blue);
+            font-weight: 500;
+        }
+
+        /* ROI Projection */
+        .roi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .roi-card {
+            background: linear-gradient(135deg, var(--success-green), #059669);
+            color: white;
+            padding: 32px;
+            border-radius: 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .roi-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .roi-year {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .roi-value {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .roi-description {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Risk Assessment */
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .risk-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            border-left: 4px solid var(--warning-orange);
+        }
+
+        .risk-level {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .risk-high {
+            background: var(--error-red);
+            color: white;
+        }
+
+        .risk-medium {
+            background: var(--warning-orange);
+            color: white;
+        }
+
+        .risk-low {
+            background: var(--success-green);
+            color: white;
+        }
+
+        .risk-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--walmart-dark-blue);
+        }
+
+        .risk-description {
+            font-size: 14px;
+            color: var(--walmart-gray);
+            margin-bottom: 12px;
+        }
+
+        .risk-mitigation {
+            background: var(--walmart-light-gray);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--walmart-dark-blue);
+        }
+
+        /* Data Requirements */
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .data-category {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+        }
+
+        .data-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--walmart-light-blue);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .data-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--walmart-dark-blue);
+        }
+
+        .data-list {
+            list-style: none;
+            font-size: 13px;
+            color: var(--walmart-gray);
+        }
+
+        .data-list li {
+            padding: 4px 0;
+            position: relative;
+            padding-left: 16px;
+        }
+
+        .data-list li::before {
+            content: '•';
+            color: var(--walmart-blue);
+            position: absolute;
+            left: 0;
+        }
+
+        /* Action Plan */
+        .action-plan {
+            background: linear-gradient(135deg, var(--walmart-dark-blue), var(--walmart-blue));
+            color: white;
+            padding: 48px;
+            border-radius: 24px;
+            margin: 48px 0;
+        }
+
+        .action-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .action-step {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: var(--walmart-yellow);
+            color: var(--walmart-dark-blue);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .step-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .step-description {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .concepts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                flex-direction: column !important;
+                padding-left: 40px;
+            }
+
+            .timeline-content {
+                width: 100%;
+            }
+
+            .timeline-marker {
+                left: 20px !important;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .hero-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-30px);
+            animation: slideInLeft 0.6s ease-out forwards;
+        }
+
+        @keyframes slideInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .mb-32 { margin-bottom: 32px; }
+        .mt-32 { margin-top: 32px; }
+        .p-24 { padding: 24px; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <i data-lucide="zap" style="width: 24px; height: 24px; color: var(--walmart-blue);"></i>
+                <span>CRTX.in</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#overview" class="nav-link active">Overview</a></li>
+                <li><a href="#concepts" class="nav-link">AI Concepts</a></li>
+                <li><a href="#strategy" class="nav-link">Strategy</a></li>
+                <li><a href="#investment" class="nav-link">Investment</a></li>
+                <li><a href="#implementation" class="nav-link">Implementation</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="overview">
+        <div class="hero-content">
+            <h1>Walmart AI Transformation Framework</h1>
+            <p class="hero-subtitle">"Build AI Once. Scale Everywhere" - Complete LLM-Driven Shopping Ecosystem</p>
+            
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">AI Shopping Concepts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$1.5B</div>
+                    <div class="stat-label">Year 3 Revenue Impact</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3.75x</div>
+                    <div class="stat-label">Cumulative ROI</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">36</div>
+                    <div class="stat-label">Month Implementation</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Concepts Section -->
+    <section class="section" id="concepts">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">8 Revolutionary AI Shopping Concepts</h2>
+                <p class="section-subtitle">Transforming every aspect of the customer journey through intelligent, personalized experiences</p>
+            </div>
+
+            <div class="concepts-grid">
+                <!-- Proven Concepts -->
+                <div class="concept-card fade-in">
+                    <div class="concept-header">
+                        <div class="concept-icon">💬</div>
+                        <span class="concept-badge">PROVEN</span>
+                    </div>
+                    <div class="concept-content">
+                        <h3 class="concept-title">AI Style Concierge</h3>
+                        <p class="concept-description">Conversational shopping assistant with visual style analysis and instant product recommendations</p>
+                        <div class="concept-features">
+                            <span class="feature-tag">Natural Language</span>
+                            <span class="feature-tag">Image Upload</span>
+                            <span class="feature-tag">Style Matching</span>
+                        </div>
+                        <div class="concept-impact">📈 40% reduction in search time, 25% conversion increase</div>
+                    </div>
+                </div>
+
+                <div class="concept-card fade-in">
+                    <div class="concept-header">
+                        <div class="concept-icon">📏</div>
+                        <span class="concept-badge">PROVEN</span>
+                    </div>
+                    <div class="concept-content">
+                        <h3 class="concept-title">FitGenius</h3>
+                        <p class="concept-description">AR-powered virtual fitting with 3D foot scanning and predictive comfort algorithms</p>
+                        <div class="concept-features">
+                            <span class="feature-tag">3D Scanning</span>
+                            <span class="feature-tag">AR Visualization</span>
+                            <span class="feature-tag">Fit Prediction</span>
+                        </div>
+                        <div class="concept-impact">📈 60% reduction in returns, 98% fit accuracy</div>
+                    </div>
+                </div>
+
+                <div class="concept-card fade-in">
+                    <div class="concept-header">
+                        <div class="concept-icon">📖</div>
+                        <span class="concept-badge">PROVEN</span>
+                    </div>
+                    <div class="concept-content">
+                        <h3 class="concept-title">ShoeStory</h3>
+                        <p class="concept-description">Narrative-driven product discovery connecting shoes to personal lifestyle and goals</p>
+                        <div class="concept-features">
+                            <span class="feature-tag">Storytelling</span>
+                            <span class="feature-tag">Lifestyle Integration</span>
+                            <span class="feature-tag">Social Proof</span>
+                        </div>
+                        <div class="concept-impact">📈 30% engagement increase, 35% satisfaction boost</div>
+                    </div>
+                </div>
+
+                <!-- New Concepts -->
+                <div class="concept-card fade-in">
+                    <div class="concept-header">
+                        <div class="concept-icon">🏠</div>
+                        <span class="concept-badge">NEW</span>
+                    </div>
+                    <div class="concept-content">
+                        <h3 class="concept-title">HomeHarmony AI</h3>
+                        <p class="concept-description">Smart space planning with room visualization and compatibility matching for furniture</p>
+                        <div class="concept-features">
+                            <span class="feature-tag">Room Design</span>
+                            <span class="feature-tag">Space Planning</span>
+                            <span class="feature-tag">Style Synthesis</span>
+                        </div>
+                        <div class="concept-impact">📈 40-60% basket size increase in home category</div>
+                    </div>
+                </div>
+
+                <div class="concept-card fade-in">
+                    <div class="concept-header">
+                        <div class="concept-icon">👨‍👩‍👧‍👦</div>
+                        <span class="concept-badge">NEW</span>
+                    </div>
+                    <div class="concept-content">
+                        <h3 class="concept-title">FamilyFlow Assistant</h3>
+                        <p class="concept-description">Multi-person decision support understanding family dynamics and preferences</p>
+                        <div class="concept-features">
+                            <span class="feature-tag">Family Personas</span>
+                            <span class="feature-tag">Consensus Building</span>
+                            <span class="feature-tag">Need Prediction</span>
+                        </div>
+                        <div class="concept-impact">📈 35% larger baskets, stronger family retention</div>
+                    </div>
+                </div>
+
+                <div class="concept-card fade-in">
+                    <div class="concept-header">
+                        <div class="concept-icon">🔧</div>
+                        <span class="concept-badge">NEW</span>
+                    </div>
+                    <div class="concept-content">
+                        <h3 class="concept-title">TechMentor Pro</h3>
+                        <p class="concept-description">AI technology educator translating complex specs into user-friendly guidance</p>
+                        <div class="concept-features">
+                            <span class="feature-tag">Tech Translation</span>
+                            <span class="feature-tag">Compatibility Check</span>
+                            <span class="feature-tag">Future Proofing</span>
+                        </div>
+                        <div class="concept-impact">📈 30% premium conversion, 50% fewer support calls</div>
+                    </div>
+                </div>
+
+                <div class="concept-card fade-in">
+                    <div class="concept-header">
+                        <div class="concept-icon">🔄</div>
+                        <span class="concept-badge">NEW</span>
+                    </div>
+                    <div class="concept-content">
+                        <h3 class="concept-title">LifeCycle Genius</h3>
+                        <p class="concept-description">Predictive replacement intelligence tracking product lifecycles and upgrade timing</p>
+                        <div class="concept-features">
+                            <span class="feature-tag">Lifecycle Tracking</span>
+                            <span class="feature-tag">Predictive Modeling</span>
+                            <span class="feature-tag">Value Optimization</span>
+                        </div>
+                        <div class="concept-impact">📈 60% repeat purchase increase, optimal timing</div>
+                    </div>
+                </div>
+
+                <div class="concept-card fade-in">
+                    <div class="concept-header">
+                        <div class="concept-icon">🎁</div>
+                        <span class="concept-badge">NEW</span>
+                    </div>
+                    <div class="concept-content">
+                        <h3 class="concept-title">GiftGenius Network</h3>
+                        <p class="concept-description">Social intelligence for perfect gift discovery using recipient analysis and trends</p>
+                        <div class="concept-features">
+                            <span class="feature-tag">Recipient Profiling</span>
+                            <span class="feature-tag">Social Trends</span>
+                            <span class="feature-tag">Sentiment Analysis</span>
+                        </div>
+                        <div class="concept-impact">📈 45% seasonal growth, viral sharing potential</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategic Timeline -->
+    <section class="section" id="strategy">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">3-Phase Strategic Deployment</h2>
+                <p class="section-subtitle">Systematic 36-month transformation using proven consulting methodologies</p>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item slide-in-left">
+                    <div class="timeline-content">
+                        <div class="timeline-marker"></div>
+                        <div class="phase-title">Phase 1: Foundation & Validation</div>
+                        <div class="phase-duration">Months 1-12</div>
+                        <div class="phase-description">Establish AI credibility through proven shoe concepts and build core infrastructure capabilities</div>
+                        <div class="phase-metrics">
+                            <div class="metric">
+                                <div class="metric-value">$125M</div>
+                                <div class="metric-label">Investment</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">1.6x</div>
+                                <div class="metric-label">ROI</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item slide-in-left">
+                    <div class="timeline-content">
+                        <div class="timeline-marker"></div>
+                        <div class="phase-title">Phase 2: Category Expansion</div>
+                        <div class="phase-duration">Months 13-24</div>
+                        <div class="phase-description">Scale AI capabilities across high-value categories: Home, Electronics, Appliances</div>
+                        <div class="phase-metrics">
+                            <div class="metric">
+                                <div class="metric-value">$180M</div>
+                                <div class="metric-label">Investment</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">2.2x</div>
+                                <div class="metric-label">Cumulative ROI</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item slide-in-left">
+                    <div class="timeline-content">
+                        <div class="timeline-marker"></div>
+                        <div class="phase-title">Phase 3: Ecosystem Completion</div>
+                        <div class="phase-duration">Months 25-36</div>
+                        <div class="phase-description">Full omnichannel integration with Family and Gift concepts, achieving AI-native retail leadership</div>
+                        <div class="phase-metrics">
+                            <div class="metric">
+                                <div class="metric-value">$95M</div>
+                                <div class="metric-label">Investment</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">3.75x</div>
+                                <div class="metric-label">Final ROI</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Analysis -->
+    <section class="section" id="investment">
+        <div class="container">
+            <div class="investment-section">
+                <div class="section-header">
+                    <h2 class="section-title">Investment & ROI Analysis</h2>
+                    <p class="section-subtitle">$400M total investment delivering $1.5B Year 3 revenue impact</p>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="investmentChart"></canvas>
+                </div>
+
+                <div class="investment-summary">
+                    <div class="investment-card">
+                        <div class="investment-amount">$400M</div>
+                        <div class="investment-label">Total 36-Month Investment</div>
+                    </div>
+                    <div class="investment-card">
+                        <div class="investment-amount">$2.5B</div>
+                        <div class="investment-label">Cumulative Revenue Impact</div>
+                    </div>
+                    <div class="investment-card">
+                        <div class="investment-amount">3.75x</div>
+                        <div class="investment-label">Final ROI Multiple</div>
+                    </div>
+                    <div class="investment-card">
+                        <div class="investment-amount">18 months</div>
+                        <div class="investment-label">Payback Period</div>
+                    </div>
+                </div>
+
+                <div class="roi-grid">
+                    <div class="roi-card">
+                        <div class="roi-year">Year 1</div>
+                        <div class="roi-value">$200M</div>
+                        <div class="roi-description">Incremental Revenue<br>1.6x ROI</div>
+                    </div>
+                    <div class="roi-card">
+                        <div class="roi-year">Year 2</div>
+                        <div class="roi-value">$800M</div>
+                        <div class="roi-description">Cumulative Impact<br>2.2x ROI</div>
+                    </div>
+                    <div class="roi-card">
+                        <div class="roi-year">Year 3</div>
+                        <div class="roi-value">$1.5B</div>
+                        <div class="roi-description">Annual Revenue<br>3.75x ROI</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Risk Assessment -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Risk Assessment & Mitigation</h2>
+                <p class="section-subtitle">Comprehensive risk management framework with proven mitigation strategies</p>
+            </div>
+
+            <div class="risk-grid">
+                <div class="risk-card">
+                    <span class="risk-level risk-high">HIGH RISK</span>
+                    <h3 class="risk-title">LLM Performance Inconsistency</h3>
+                    <p class="risk-description">AI responses may be unpredictable or inaccurate, affecting customer trust</p>
+                    <div class="risk-mitigation">
+                        <strong>Mitigation:</strong> Extensive testing protocols, fallback mechanisms, human escalation paths, real-time quality monitoring
+                    </div>
+                </div>
+
+                <div class="risk-card">
+                    <span class="risk-level risk-high">HIGH RISK</span>
+                    <h3 class="risk-title">Integration Complexity</h3>
+                    <p class="risk-description">Complex integration with existing Walmart systems may cause delays or failures</p>
+                    <div class="risk-mitigation">
+                        <strong>Mitigation:</strong> Phased rollout approach, extensive API testing, rollback procedures, alternative integration paths
+                    </div>
+                </div>
+
+                <div class="risk-card">
+                    <span class="risk-level risk-medium">MEDIUM RISK</span>
+                    <h3 class="risk-title">Customer Adoption Rate</h3>
+                    <p class="risk-description">Customers may resist AI-powered shopping experiences or find them confusing</p>
+                    <div class="risk-mitigation">
+                        <strong>Mitigation:</strong> Intuitive UX design, comprehensive support, value demonstration, feedback integration
+                    </div>
+                </div>
+
+                <div class="risk-card">
+                    <span class="risk-level risk-medium">MEDIUM RISK</span>
+                    <h3 class="risk-title">Competitive Response</h3>
+                    <p class="risk-description">Amazon or other competitors may accelerate their AI initiatives in response</p>
+                    <div class="risk-mitigation">
+                        <strong>Mitigation:</strong> Leverage physical store advantage, exclusive partnerships, continuous innovation, rapid iteration
+                    </div>
+                </div>
+
+                <div class="risk-card">
+                    <span class="risk-level risk-low">LOW RISK</span>
+                    <h3 class="risk-title">Regulatory Changes</h3>
+                    <p class="risk-description">New AI regulations may impact implementation or require additional compliance</p>
+                    <div class="risk-mitigation">
+                        <strong>Mitigation:</strong> Privacy-first design, ethical AI principles, regulatory monitoring, compliance frameworks
+                    </div>
+                </div>
+
+                <div class="risk-card">
+                    <span class="risk-level risk-low">LOW RISK</span>
+                    <h3 class="risk-title">Technology Evolution</h3>
+                    <p class="risk-description">Rapid AI advancement may make current approaches obsolete</p>
+                    <div class="risk-mitigation">
+                        <strong>Mitigation:</strong> Modular architecture, continuous learning systems, technology partnerships, adaptation protocols
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Requirements -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Data Requirements for Validation</h2>
+                <p class="section-subtitle">Critical data collection and analysis framework to validate assumptions and optimize performance</p>
+            </div>
+
+            <div class="data-grid">
+                <div class="data-category">
+                    <div class="data-icon">
+                        <i data-lucide="user" style="width: 24px; height: 24px; color: var(--walmart-blue);"></i>
+                    </div>
+                    <h3 class="data-title">Customer Behavior</h3>
+                    <ul class="data-list">
+                        <li>Conversation patterns and preferences</li>
+                        <li>Click streams and navigation paths</li>
+                        <li>Search queries and intent analysis</li>
+                        <li>Purchase decision timelines</li>
+                        <li>Return and exchange patterns</li>
+                        <li>Cross-category shopping behaviors</li>
+                    </ul>
+                </div>
+
+                <div class="data-category">
+                    <div class="data-icon">
+                        <i data-lucide="shopping-bag" style="width: 24px; height: 24px; color: var(--walmart-blue);"></i>
+                    </div>
+                    <h3 class="data-title">Product Performance</h3>
+                    <ul class="data-list">
+                        <li>AI recommendation acceptance rates</li>
+                        <li>Product view to purchase conversion</li>
+                        <li>Category-specific engagement metrics</li>
+                        <li>Feature usage and adoption</li>
+                        <li>Comparison shopping patterns</li>
+                        <li>Seasonal and trend analysis</li>
+                    </ul>
+                </div>
+
+                <div class="data-category">
+                    <div class="data-icon">
+                        <i data-lucide="target" style="width: 24px; height: 24px; color: var(--walmart-blue);"></i>
+                    </div>
+                    <h3 class="data-title">Satisfaction Metrics</h3>
+                    <ul class="data-list">
+                        <li>Net Promoter Score (NPS) tracking</li>
+                        <li>Customer effort scores (CES)</li>
+                        <li>AI interaction satisfaction</li>
+                        <li>Feature-specific feedback</li>
+                        <li>Support ticket reduction</li>
+                        <li>Customer lifetime value impact</li>
+                    </ul>
+                </div>
+
+                <div class="data-category">
+                    <div class="data-icon">
+                        <i data-lucide="zap" style="width: 24px; height: 24px; color: var(--walmart-blue);"></i>
+                    </div>
+                    <h3 class="data-title">Technical Performance</h3>
+                    <ul class="data-list">
+                        <li>System response times and latency</li>
+                        <li>AI model accuracy and confidence</li>
+                        <li>API performance and reliability</li>
+                        <li>Error rates and failure patterns</li>
+                        <li>Scalability and load handling</li>
+                        <li>Integration point monitoring</li>
+                    </ul>
+                </div>
+
+                <div class="data-category">
+                    <div class="data-icon">
+                        <i data-lucide="dollar-sign" style="width: 24px; height: 24px; color: var(--walmart-blue);"></i>
+                    </div>
+                    <h3 class="data-title">Business Impact</h3>
+                    <ul class="data-list">
+                        <li>Revenue attribution by AI feature</li>
+                        <li>Conversion rate improvements</li>
+                        <li>Average order value changes</li>
+                        <li>Customer acquisition costs</li>
+                        <li>Market share in AI-enhanced categories</li>
+                        <li>Competitive benchmarking</li>
+                    </ul>
+                </div>
+
+                <div class="data-category">
+                    <div class="data-icon">
+                        <i data-lucide="shield" style="width: 24px; height: 24px; color: var(--walmart-blue);"></i>
+                    </div>
+                    <h3 class="data-title">Privacy & Ethics</h3>
+                    <ul class="data-list">
+                        <li>Data consent and opt-out rates</li>
+                        <li>Privacy compliance audits</li>
+                        <li>Bias detection and mitigation</li>
+                        <li>Ethical AI usage patterns</li>
+                        <li>Transparency report metrics</li>
+                        <li>Customer trust indicators</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Implementation Action Plan -->
+    <section class="section" id="implementation">
+        <div class="container">
+            <div class="action-plan">
+                <div class="section-header">
+                    <h2 class="section-title" style="color: white;">Immediate Action Plan</h2>
+                    <p class="section-subtitle" style="color: rgba(255,255,255,0.9);">Next 90 days critical path to transformation success</p>
+                </div>
+
+                <div class="action-steps">
+                    <div class="action-step">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Executive Alignment (Days 1-7)</h3>
+                        <p class="step-description">Secure C-suite commitment, $400M investment approval, and strategic steering committee formation</p>
+                    </div>
+
+                    <div class="action-step">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Team Formation (Days 8-30)</h3>
+                        <p class="step-description">Recruit AI Center of Excellence leadership, establish category specialist teams, begin capability assessment</p>
+                    </div>
+
+                    <div class="action-step">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Technology Foundation (Days 31-60)</h3>
+                        <p class="step-description">Complete LLM vendor evaluation, establish cloud infrastructure, begin core platform development</p>
+                    </div>
+
+                    <div class="action-step">
+                        <div class="step-number">4</div>
+                        <h3 class="step-title">Pilot Launch (Days 61-90)</h3>
+                        <p class="step-description">Deploy AI Style Concierge in select markets, establish measurement frameworks, begin customer feedback collection</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: var(--walmart-dark-blue); color: white; padding: 48px 24px; text-align: center;">
+        <div class="container">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 16px;">
+                <i data-lucide="zap" style="width: 24px; height: 24px; color: var(--walmart-yellow);"></i>
+                <span style="font-size: 20px; font-weight: 700;">CRTX.in</span>
+            </div>
+            <p style="opacity: 0.8; margin-bottom: 24px;">"Build AI Once. Scale Everywhere"</p>
+            <p style="font-size: 14px; opacity: 0.6;">© 2024 CRTX.in - AI Consultation for Healthcare, Legal & Retail</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                    
+                    // Update active nav link
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // Investment Chart
+        const ctx = document.getElementById('investmentChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Phase 1\n(Months 1-12)', 'Phase 2\n(Months 13-24)', 'Phase 3\n(Months 25-36)'],
+                datasets: [
+                    {
+                        label: 'Investment ($M)',
+                        data: [125, 180, 95],
+                        backgroundColor: '#0071DC',
+                        borderColor: '#041E42',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Revenue Impact ($M)',
+                        data: [200, 800, 1500],
+                        backgroundColor: '#FFC220',
+                        borderColor: '#041E42',
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Investment vs Revenue Impact by Phase',
+                        font: { size: 16, weight: 'bold' }
+                    },
+                    legend: {
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Amount ($M)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = Math.random() * 0.3 + 's';
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.concept-card, .timeline-item, .risk-card, .data-category').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Dynamic stats counter animation
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            function update() {
+                start += increment;
+                if (start < target) {
+                    element.textContent = Math.floor(start);
+                    requestAnimationFrame(update);
+                } else {
+                    element.textContent = target;
+                }
+            }
+            update();
+        }
+
+        // Animate hero stats when page loads
+        window.addEventListener('load', () => {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers[1].textContent = '0'; // Reset for animation
+            statNumbers[2].textContent = '0'; // Reset for animation
+            
+            setTimeout(() => {
+                animateCounter(statNumbers[1], 1.5);
+                animateCounter(statNumbers[2], 3.75);
+            }, 500);
+        });
+
+        // Concept card hover effects
+        document.querySelectorAll('.concept-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // ROI card animation
+        function animateROICards() {
+            const roiCards = document.querySelectorAll('.roi-card');
+            roiCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.animation = 'fadeInUp 0.6s ease-out forwards';
+                }, index * 200);
+            });
+        }
+
+        // Trigger ROI animation when section comes into view
+        const roiObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateROICards();
+                    roiObserver.unobserve(entry.target);
+                }
+            });
+        });
+
+        const roiSection = document.querySelector('.roi-grid');
+        if (roiSection) {
+            roiObserver.observe(roiSection);
+        }
+    </script>
+</body>
+</html>
