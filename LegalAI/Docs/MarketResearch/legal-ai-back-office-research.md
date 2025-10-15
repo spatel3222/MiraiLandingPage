@@ -104,6 +104,69 @@ The analysis reveals **unprecedented market underservation** in back office auto
 
 ---
 
-*Generated: January 2025*  
+## 📋 Additional Market Players Analysis
+
+### Zelican Document Management Features
+**Core Document Capabilities:**
+- **Unlimited Document Storage** - Cloud-based with no storage limits
+- **Document Automation** - Auto-assembles documents using client/matter details
+- **Template Creation** - Frequently used document templates
+- **Document Sharing** - Secure sharing with team members and clients
+- **Permission Controls** - Granular access management
+- **Collaborative Editing** - Team document collaboration
+
+### MyCase Legal Practice Management Features
+
+**Case Management:**
+- **Centralized Case Repository** - All case documents and details in one location
+- **Deadline Tracking** - Centralized calendar for important dates
+- **Case Reporting** - Analytics and tracking capabilities
+
+**Client Communication:**
+- **Client Portal** - Secure online client access
+- **Real-time Updates** - Live case status messaging
+- **Integrated Text Messaging** - Dedicated firm text number
+- **Automated Reminders** - Text-based deadline alerts
+
+**Document Management:**
+- **Document Generation** - Online creation tools
+- **Auto-population** - Client details automatically inserted
+- **eSignature** - Electronic document signing
+- **Document Tracking** - Secure monitoring and version control
+
+**Billing & Financial:**
+- **Time Tracking** - Billable minute capture with multiple rates
+- **Smart Time Finder** - Automated time detection
+- **Invoice Generation** - Automatic billing creation
+- **Online Payments** - Payment acceptance and plans
+- **Financial Analytics** - Revenue and payment reporting
+
+**Lead Management:**
+- **Web Intake Forms** - Online client onboarding
+- **Lead Pipeline** - Prospect tracking and conversion
+- **Retainer Automation** - Automated agreement creation
+
+**Technology Features:**
+- **Mobile App** - Full mobile access
+- **Bank-grade Security** - Enterprise-level protection
+- **Third-party Integrations** - Connects with other tools
+- **Easy Onboarding** - Streamlined setup process
+
+### Combined L1 Summary: Key Features
+
+**Core Capabilities:**
+- **Document Management**: Unlimited storage, automation, templates, eSignature
+- **Case Management**: Centralized tracking, deadline calendars, reporting
+- **Client Portal**: Secure access, real-time updates, messaging
+- **Billing & Payments**: Time tracking, invoicing, online payments, analytics
+- **Lead Management**: Web intake, pipeline tracking, retainer automation
+- **Communication**: Integrated messaging, automated reminders
+- **Technology**: Mobile apps, bank-grade security, third-party integrations
+
+**Combined Value**: Full legal practice management suite covering documents, cases, clients, billing, and communications in one platform.
+
+---
+
+*Updated: October 2025*  
 *Parent Document: Legal AI Competitive Intelligence Report 2025*  
 *Focus: Back Office Workflow Automation Analysis*
