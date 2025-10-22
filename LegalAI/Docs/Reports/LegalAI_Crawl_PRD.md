@@ -1,5 +1,5 @@
 # Legal AI Self-Service Portal: Product Requirements Document
-## Simplified Feature Specification - CRAWL Phase
+## CRAWL Phase
 
 **Document Version:** 1.0 - IMPLEMENTATION READY
 
