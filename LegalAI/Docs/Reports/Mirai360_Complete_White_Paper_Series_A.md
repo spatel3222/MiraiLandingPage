@@ -1,10 +1,5 @@
 # Mirai360.ai: Transforming India's Legal Industry Through AI
-## Amazon-Style White Paper for Series A Funding
 
-**Target Investors**: IIMA Ventures & Ahmedabad University Venture Studio  
-**Investment Stage**: Series A Funding Round  
-**Funding Target**: ₹15-20 Crores  
-**Prepared by**: CRTX.in Executive Orchestrator  
 **Date**: October 2025  
 
 ---
