@@ -43,9 +43,11 @@ Coder must:
 ```
 Coder must:
 1. Code only approved atomic steps
-2. Commit each step to GitHub
-3. Update documentation with learnings
-4. Stop at phase boundaries for my validation
+2. Use Playwright MCP for immediate validation
+3. Access browser console for debugging
+4. Commit each step to GitHub
+5. Update documentation with learnings
+6. Stop at phase boundaries for my validation
 ```
 
 ### When Presenting Completed Phase
@@ -53,9 +55,11 @@ Coder must:
 I expect:
 1. Clear explanation of what was built
 2. GitHub commit hash
-3. Step-by-step testing instructions
-4. "git pull origin main" in the instructions
-5. Wait for my validation before next phase
+3. Playwright MCP validation results
+4. Console logs and error screenshots
+5. Step-by-step testing instructions
+6. "git pull origin main" in the instructions
+7. Wait for my validation before next phase
 ```
 
 ## My Project Structure
@@ -73,6 +77,7 @@ I expect:
 - **Database**: Supabase PostgreSQL 
 - **AI**: Claude for data correction
 - **Testing**: Jest + Playwright + Artillery
+- **Code Validation**: Playwright MCP for real-time testing
 - **Analytics**: Julius V7 methodology port
 
 ## My Validation Process
@@ -174,6 +179,36 @@ git config user.name "Shivang Patel"
 - Use context7 MCP to get current project state
 - Don't proceed without understanding current documentation
 
+## Playwright MCP Integration for Code Validation
+
+### Required Playwright MCP Usage
+- **Real-time Testing**: Use Playwright MCP to test code as you write it
+- **Console Access**: Capture browser console logs for debugging
+- **Error Screenshots**: Take screenshots when errors occur
+- **Network Monitoring**: Check API calls and responses
+- **Performance Validation**: Verify load times and responsiveness
+
+### Playwright MCP Workflow
+```
+1. Write code component/feature
+2. Use Playwright MCP to navigate to test page
+3. Capture console logs and network activity
+4. Take screenshots of working/broken states
+5. Document findings before committing
+6. Include validation results in phase completion
+```
+
+### Console Access Protocol
+```
+1. Open browser via Playwright MCP
+2. Navigate to application URL
+3. Open developer console
+4. Execute test scenarios
+5. Capture console.log, console.error, console.warn
+6. Screenshot any error states
+7. Document console findings in commit message
+```
+
 ### Key Documents to Reference
 ```
 - project-architecture.md (system design)
@@ -189,10 +224,12 @@ git config user.name "Shivang Patel"
 
 ### If Something Goes Wrong
 1. **Stop immediately** and don't continue coding
-2. Document the issue clearly for me
-3. Determine if it's current phase or previous phase
-4. **Wait for my decision** on how to proceed
-5. Commit any fixes with detailed explanation
+2. Use Playwright MCP to capture browser state
+3. Screenshot console errors and network issues
+4. Document the issue clearly for me
+5. Determine if it's current phase or previous phase
+6. **Wait for my decision** on how to proceed
+7. Commit any fixes with detailed explanation
 
 ### If Implementation Differs from Docs
 1. **Stop and update documentation first**
@@ -206,6 +243,8 @@ git config user.name "Shivang Patel"
 - Follows Next.js and TypeScript best practices
 - Includes proper error handling and validation
 - Has tests as defined in testing-strategy.md
+- Validated with Playwright MCP in real browsers
+- Console logs captured for debugging
 - Clean, readable, and well-documented
 - Committed properly to GitHub
 
@@ -221,6 +260,8 @@ git config user.name "Shivang Patel"
 - Reviewing and approving phase plans
 - Testing each completed phase thoroughly
 - Validating that implementations match documentation
+- Reviewing Playwright MCP validation results
+- Analyzing console logs and error screenshots
 - Providing feedback and direction for next steps
 
 ### I Won't Spend Time On:
@@ -228,6 +269,7 @@ git config user.name "Shivang Patel"
 - Writing code myself (that's what I hired for)
 - Guessing what was built without clear explanation
 - Testing things that should have been tested before presenting
+- Investigating issues that weren't captured with Playwright MCP
 
 ---
 

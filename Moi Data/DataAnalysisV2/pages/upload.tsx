@@ -19,7 +19,7 @@ export default function UploadPage() {
   
   const [uploadState, setUploadState] = useState<'initial' | 'uploading' | 'success' | 'error'>('initial')
   const [uploadResults, setUploadResults] = useState<Record<Platform, any> | null>(null)
-  const [corrections, setCorrections] = useState<Record<Platform, any>>({})
+  const [corrections, setCorrections] = useState<Record<Platform, any>>({} as Record<Platform, any>)
 
   const handleFileSelect = async (platform: Platform, file: File) => {
     setFiles(prev => ({ ...prev, [platform]: file }))
@@ -28,17 +28,8 @@ export default function UploadPage() {
     const result = await validateCSV(platform, file)
     setValidationResults(prev => ({ ...prev, [platform]: result }))
     
-    // If there are AI suggestions from schema validation, set them
-    if (result.schemaValidation?.suggestions?.length > 0) {
-      setCorrections(prev => ({
-        ...prev,
-        [platform]: {
-          suggestions: result.schemaValidation.suggestions,
-          timestamp: new Date().toISOString(),
-          model: 'schema-validator'
-        }
-      }))
-    }
+    // AI corrections would be set here if available
+    // Currently using strict schema validation instead
   }
 
   const canUpload = () => {
@@ -68,7 +59,7 @@ export default function UploadPage() {
     if (!hasFilesReadyForUpload()) return
     
     setUploadState('uploading')
-    const results: Record<Platform, any> = {}
+    const results: Record<Platform, any> = {} as Record<Platform, any>
     
     try {
       const readyPlatforms = getReadyFiles()
@@ -104,16 +95,42 @@ export default function UploadPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-6xl mx-auto px-4">
-        <header className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
-            MOI Data Analytics - Upload & Validation
-          </h1>
-          <p className="text-gray-600 mt-2">
-            Upload Meta, Google, and Shopify CSV files for processing
-          </p>
-        </header>
+    <div className="min-h-screen bg-gray-50">
+      {/* Navigation */}
+      <nav className="bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-8">
+              <h1 className="text-xl font-semibold text-gray-900">MOI Analytics</h1>
+              <div className="flex space-x-4">
+                <a 
+                  href="/upload" 
+                  className="px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-md"
+                >
+                  Upload Data
+                </a>
+                <a 
+                  href="/reports" 
+                  className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
+                >
+                  Generate Reports
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div className="py-8">
+        <div className="max-w-6xl mx-auto px-4">
+          <header className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Upload & Validation
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Upload Meta, Google, and Shopify CSV files for processing
+            </p>
+          </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           {platforms.map(({ key, label }) => (
@@ -286,6 +303,7 @@ export default function UploadPage() {
               )}
             </div>
           )}
+        </div>
         </div>
       </div>
     </div>

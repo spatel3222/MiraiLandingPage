@@ -346,10 +346,10 @@ function performValidation(platform: Platform, data: any[], headers: string[]): 
   if (duplicateHeaders.length > 0) {
     errors.push({
       type: 'duplicate_headers',
-      message: `Duplicate column headers found: ${[...new Set(duplicateHeaders)].join(', ')}`,
+      message: `Duplicate column headers found: ${Array.from(new Set(duplicateHeaders)).join(', ')}`,
       howToFix: 'Rename duplicate column headers to unique names',
       examples: [
-        'Find duplicate columns: ' + [...new Set(duplicateHeaders)].join(', '),
+        'Find duplicate columns: ' + Array.from(new Set(duplicateHeaders)).join(', '),
         'Rename them to unique names like: "Campaign_1", "Campaign_2"',
         'Or remove duplicate columns if identical data',
         'Save and re-upload'

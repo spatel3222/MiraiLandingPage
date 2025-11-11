@@ -22,11 +22,6 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/bulk-upload": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/bulk-upload.js"
-    ],
     "/upload": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
