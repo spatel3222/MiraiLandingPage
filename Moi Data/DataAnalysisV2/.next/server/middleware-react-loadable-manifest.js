@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{\"../lib/supabase.ts -> papaparse\":{\"id\":\"../lib/supabase.ts -> papaparse\",\"files\":[]}}"
+self.__REACT_LOADABLE_MANIFEST="{}"

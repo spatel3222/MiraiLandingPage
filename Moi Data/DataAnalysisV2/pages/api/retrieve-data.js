@@ -150,7 +150,16 @@ function convertToCSV(data) {
   if (!data || data.length === 0) return ''
 
   const headers = Object.keys(data[0])
-  const csvRows = [headers.join(',')]
+  
+  // Properly escape headers that contain commas, quotes, or newlines
+  const escapedHeaders = headers.map(header => {
+    if (header.includes(',') || header.includes('"') || header.includes('\n')) {
+      return `"${header.replace(/"/g, '""')}"`
+    }
+    return header
+  })
+  
+  const csvRows = [escapedHeaders.join(',')]
 
   for (const row of data) {
     const values = headers.map(header => {
