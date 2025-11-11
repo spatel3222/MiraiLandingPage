@@ -173,7 +173,7 @@ export default function ReportsPage() {
                 <div className="flex flex-wrap gap-2">
                   {retrievedData.meta && (
                     <button
-                      onClick={() => downloadCSV(retrievedData.meta, 'meta', dateRange)}
+                      onClick={() => downloadCSV(retrievedData.meta!, 'meta', dateRange)}
                       className="px-3 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
                     >
                       📘 Download Meta CSV ({retrievedData.meta.length} rows)
@@ -181,7 +181,7 @@ export default function ReportsPage() {
                   )}
                   {retrievedData.google && (
                     <button
-                      onClick={() => downloadCSV(retrievedData.google, 'google', dateRange)}
+                      onClick={() => downloadCSV(retrievedData.google!, 'google', dateRange)}
                       className="px-3 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700"
                     >
                       🟢 Download Google CSV ({retrievedData.google.length} rows)
@@ -189,7 +189,7 @@ export default function ReportsPage() {
                   )}
                   {retrievedData.shopify && (
                     <button
-                      onClick={() => downloadCSV(retrievedData.shopify, 'shopify', dateRange)}
+                      onClick={() => downloadCSV(retrievedData.shopify!, 'shopify', dateRange)}
                       className="px-3 py-2 bg-purple-600 text-white text-sm rounded hover:bg-purple-700"
                     >
                       🟣 Download Shopify CSV ({retrievedData.shopify.length} rows)
