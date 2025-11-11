@@ -124,9 +124,9 @@ export default function DateRangeSelector({ dateRange, onChange }: DateRangeSele
         </label>
         <div className="flex flex-wrap gap-2">
           {[
-            { key: 'daily', label: 'Daily (Last 7 Days)', desc: 'Past week' },
-            { key: 'weekly', label: 'Weekly (Last 4 Weeks)', desc: 'Past month' },
-            { key: 'monthly', label: 'Monthly (Last 3 Months)', desc: 'Past quarter' },
+            { key: 'daily', label: 'Daily', desc: 'Latest day' },
+            { key: 'weekly', label: 'Weekly', desc: '7 days' },
+            { key: 'monthly', label: 'Monthly', desc: '30 days' },
             { key: 'custom', label: 'Custom Range', desc: 'Select dates' }
           ].map(({ key, label, desc }) => (
             <button
@@ -139,7 +139,7 @@ export default function DateRangeSelector({ dateRange, onChange }: DateRangeSele
               }`}
             >
               <div className="text-center">
-                <div>{label.split(' ')[0]}</div>
+                <div>{label}</div>
                 <div className="text-xs opacity-75">{desc}</div>
               </div>
             </button>
