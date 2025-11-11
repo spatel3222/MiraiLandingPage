@@ -25,6 +25,7 @@ export default async function handler(req, res) {
         const { data, error } = await supabase
           .from(platform.table)
           .select(platform.dateColumn)
+          .not(platform.dateColumn, 'is', null)
           .order(platform.dateColumn, { ascending: false })
           .limit(1)
 
