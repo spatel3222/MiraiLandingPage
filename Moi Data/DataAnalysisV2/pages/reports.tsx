@@ -8,8 +8,8 @@ export default function ReportsPage() {
     endDate: string
     quickFilter: 'daily' | 'weekly' | 'monthly' | 'custom'
   }>({
-    startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 7 days ago
-    endDate: new Date().toISOString().split('T')[0], // today
+    startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // Default 7 days ago
+    endDate: new Date().toISOString().split('T')[0], // Default today (will be updated by DateRangeSelector)
     quickFilter: 'weekly'
   })
 

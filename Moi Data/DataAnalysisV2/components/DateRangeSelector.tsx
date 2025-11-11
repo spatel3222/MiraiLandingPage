@@ -13,30 +13,70 @@ interface DateRangeSelectorProps {
   }) => void
 }
 
+interface LatestDateInfo {
+  latestDate: string
+  availablePlatforms: string[]
+  missingPlatforms: string[]
+  message: string
+}
+
 export default function DateRangeSelector({ dateRange, onChange }: DateRangeSelectorProps) {
   const [localRange, setLocalRange] = useState(dateRange)
+  const [latestDateInfo, setLatestDateInfo] = useState<LatestDateInfo | null>(null)
+  const [isLoadingLatestDate, setIsLoadingLatestDate] = useState(true)
+  const [latestDateError, setLatestDateError] = useState<string | null>(null)
 
   useEffect(() => {
     setLocalRange(dateRange)
   }, [dateRange])
 
+  // Fetch latest data date on component mount
+  useEffect(() => {
+    const fetchLatestDate = async () => {
+      try {
+        setIsLoadingLatestDate(true)
+        setLatestDateError(null)
+        
+        const response = await fetch('/api/latest-data-date')
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to fetch latest date')
+        }
+
+        setLatestDateInfo(data)
+      } catch (error) {
+        console.error('Error fetching latest date:', error)
+        setLatestDateError(error instanceof Error ? error.message : 'Unknown error')
+      } finally {
+        setIsLoadingLatestDate(false)
+      }
+    }
+
+    fetchLatestDate()
+  }, [])
+
   const handleQuickFilterChange = (filter: typeof dateRange.quickFilter) => {
-    const today = new Date()
+    // Use latest data date if available, otherwise fallback to today
+    const referenceDate = latestDateInfo?.latestDate 
+      ? new Date(latestDateInfo.latestDate) 
+      : new Date()
+    
     let startDate: string
-    let endDate = today.toISOString().split('T')[0]
+    let endDate = referenceDate.toISOString().split('T')[0]
 
     switch (filter) {
       case 'daily':
-        // Last 7 days for daily view
-        startDate = new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+        // Just the latest data date (single day)
+        startDate = endDate
         break
       case 'weekly':
-        // Last 4 weeks (28 days)
-        startDate = new Date(today.getTime() - 27 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+        // 7 days back from latest data date
+        startDate = new Date(referenceDate.getTime() - 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
         break
       case 'monthly':
-        // Last 3 months (90 days)
-        startDate = new Date(today.getTime() - 89 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+        // 30 days back from latest data date
+        startDate = new Date(referenceDate.getTime() - 29 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
         break
       case 'custom':
         // Keep existing dates for custom
@@ -132,7 +172,7 @@ export default function DateRangeSelector({ dateRange, onChange }: DateRangeSele
             value={localRange.endDate}
             onChange={(e) => handleDateChange('endDate', e.target.value)}
             min={localRange.startDate}
-            max={new Date().toISOString().split('T')[0]}
+            max={latestDateInfo?.latestDate || new Date().toISOString().split('T')[0]}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
@@ -151,6 +191,53 @@ export default function DateRangeSelector({ dateRange, onChange }: DateRangeSele
           </div>
         </div>
       </div>
+
+      {/* Latest Data Info */}
+      {isLoadingLatestDate && (
+        <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="flex items-center space-x-2">
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+            <p className="text-sm text-blue-800">Loading latest data information...</p>
+          </div>
+        </div>
+      )}
+
+      {latestDateError && (
+        <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+          <div className="flex items-start space-x-2">
+            <svg className="w-4 h-4 text-red-600 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+            </svg>
+            <div>
+              <p className="text-sm font-medium text-red-800">Error Loading Latest Date</p>
+              <p className="text-sm text-red-700">{latestDateError}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {latestDateInfo && (
+        <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+          <div className="flex items-start space-x-2">
+            <svg className="w-4 h-4 text-green-600 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            </svg>
+            <div>
+              <p className="text-sm font-medium text-green-800">Latest Available Data</p>
+              <p className="text-sm text-green-700">
+                <strong>Date:</strong> {latestDateInfo.latestDate} | 
+                <strong> Platforms:</strong> {latestDateInfo.availablePlatforms.join(', ')}
+                {latestDateInfo.missingPlatforms.length > 0 && (
+                  <span className="text-yellow-700"> | <strong>Missing:</strong> {latestDateInfo.missingPlatforms.join(', ')}</span>
+                )}
+              </p>
+              <p className="text-sm text-green-600 mt-1">
+                Quick filters are calculated from this latest data date.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Data Coverage Warning */}
       <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
