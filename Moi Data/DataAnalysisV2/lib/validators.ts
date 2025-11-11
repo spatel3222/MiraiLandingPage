@@ -1,5 +1,6 @@
 import Papa from 'papaparse'
 import { Platform } from './supabase'
+import { validateStrictSchema } from './strict-schema-validator'
 
 export interface ValidationResult {
   isValid: boolean
@@ -70,7 +71,7 @@ export const PLATFORM_SCHEMAS: Record<Platform, {
     ],
     dateColumn: 'Day',
     requiredDateFormat: 'YYYY-MM-DD',
-    acceptedFormats: ['YYYY-MM-DD'],
+    acceptedFormats: ['YYYY-MM-DD', 'DD/MM/YYYY', 'MM/DD/YYYY', 'YYYY/MM/DD'], // Google exports in various formats
     orderMatters: false // Google Ads exports are flexible
   },
   shopify: {
@@ -90,12 +91,47 @@ export const PLATFORM_SCHEMAS: Record<Platform, {
 }
 
 export async function validateCSV(platform: Platform, file: File): Promise<ValidationResult> {
-  return new Promise((resolve) => {
+  return new Promise(async (resolve) => {
     Papa.parse(file, {
       header: true,
       preview: 100,
-      complete: (results) => {
-        const validation = performValidation(platform, results.data, results.meta.fields || [])
+      complete: async (results) => {
+        const csvHeaders = results.meta.fields || []
+        
+        // STRICT SCHEMA VALIDATION FIRST
+        const strictValidation = await validateStrictSchema(platform, csvHeaders)
+        
+        if (!strictValidation.isValid) {
+          resolve({
+            isValid: false,
+            hasErrors: true,
+            hasWarnings: strictValidation.warnings.length > 0,
+            needsCorrection: false,
+            errors: strictValidation.errors.map(error => ({
+              type: 'strict_schema_mismatch',
+              message: error,
+              howToFix: 'Fix column names to exactly match database schema (case-sensitive)',
+              examples: [
+                'Check spelling and capitalization of column names',
+                'Ensure all required columns are present',
+                'Remove or rename extra columns',
+                'Download template CSV with correct headers'
+              ]
+            })),
+            warnings: strictValidation.warnings.map(warning => ({
+              type: 'extra_column',
+              message: warning,
+              howToFix: 'Extra columns will be ignored during upload'
+            })),
+            rowCount: results.data.length,
+            columnCount: csvHeaders.length,
+            dateRange: null
+          })
+          return
+        }
+        
+        // If strict validation passes, continue with data validation
+        const validation = performValidation(platform, results.data, csvHeaders)
         resolve(validation)
       },
       error: (error) => {
@@ -194,17 +230,31 @@ function performValidation(platform: Platform, data: any[], headers: string[]): 
   }
 
   if (caseMismatchColumns.length > 0) {
-    errors.push({
-      type: 'column_case_mismatch',
-      message: `Column case mismatch found: ${caseMismatchColumns.map(c => `"${c.found}" should be "${c.required}"`).join(', ')}`,
-      howToFix: 'Update column headers to match the exact case (uppercase/lowercase) required',
-      examples: [
-        'Open your CSV file in Excel/Google Sheets',
-        ...caseMismatchColumns.map(c => `Rename "${c.found}" to "${c.required}"`),
-        'Save the file and re-upload'
-      ],
-      columns: caseMismatchColumns.map(c => c.required)
-    })
+    // For Google platform, treat case mismatches as warnings instead of errors
+    if (platform === 'google') {
+      warnings.push({
+        type: 'column_case_mismatch',
+        message: `Column case mismatch found: ${caseMismatchColumns.map(c => `"${c.found}" should be "${c.required}"`).join(', ')}`,
+        howToFix: 'Column names are close enough but case differs. This is acceptable for Google Ads data.',
+        examples: [
+          'Current: ' + caseMismatchColumns.map(c => `"${c.found}"`).join(', '),
+          'Expected: ' + caseMismatchColumns.map(c => `"${c.required}"`).join(', '),
+          'This will be handled automatically during upload.'
+        ]
+      })
+    } else {
+      errors.push({
+        type: 'column_case_mismatch',
+        message: `Column case mismatch found: ${caseMismatchColumns.map(c => `"${c.found}" should be "${c.required}"`).join(', ')}`,
+        howToFix: 'Update column headers to match the exact case (uppercase/lowercase) required',
+        examples: [
+          'Open your CSV file in Excel/Google Sheets',
+          ...caseMismatchColumns.map(c => `Rename "${c.found}" to "${c.required}"`),
+          'Save the file and re-upload'
+        ],
+        columns: caseMismatchColumns.map(c => c.required)
+      })
+    }
   }
 
   if (nameVariationColumns.length > 0) {
@@ -226,7 +276,10 @@ function performValidation(platform: Platform, data: any[], headers: string[]): 
     !schema.required.some(req => normalizeColumnName(header) === normalizeColumnName(req))
   )
   
-  if (unexpectedColumns.length > 0 && unexpectedColumns.length > 3) {
+  // For Google, allow extra columns like "Currency code" - just warn if there are many
+  const unexpectedThreshold = platform === 'google' ? 5 : 3;
+  
+  if (unexpectedColumns.length > unexpectedThreshold) {
     warnings.push({
       type: 'unexpected_columns',
       message: `Many unexpected columns found (${unexpectedColumns.length}). Verify this is the correct platform.`,
@@ -238,6 +291,18 @@ function performValidation(platform: Platform, data: any[], headers: string[]): 
         'Or select different platform if this CSV is for another service'
       ],
       details: { unexpectedColumns: unexpectedColumns.slice(0, 5) }
+    })
+  } else if (unexpectedColumns.length > 0 && platform === 'google') {
+    warnings.push({
+      type: 'extra_columns_google',
+      message: `Extra columns found: ${unexpectedColumns.join(', ')}. These will be ignored during upload.`,
+      howToFix: 'Extra columns are acceptable for Google Ads exports and will be ignored.',
+      examples: [
+        'Common extra columns: Currency code, Account, etc.',
+        'These will not affect the upload process',
+        'Only required columns will be processed'
+      ],
+      details: { extraColumns: unexpectedColumns }
     })
   }
 
