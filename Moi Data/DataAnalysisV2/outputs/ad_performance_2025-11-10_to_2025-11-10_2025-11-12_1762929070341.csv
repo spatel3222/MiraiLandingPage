@@ -1,0 +1,2 @@
+Date,Campaign_Name,Ad_Set_Name,Ad_Name,Spent,Impressions,Clicks,CTR,Cost_Per_User,Users,Good_Leads,Cost_Per_Good_Lead,Conversion_Rate,Performance_Score,Recommendation,Shrinkage_Applied
+2025-11-10,Test Campaign,Test AdSet,Unknown,100,0,0,0.0119,0,0,0,0,0,0.05,Pause/Fix,true

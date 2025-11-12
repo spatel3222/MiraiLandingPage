@@ -41,25 +41,34 @@ export default async function handler(req, res) {
       try {
         console.log(`Querying ${platform.table} for date range ${startDate} to ${endDate}`)
 
-        // Query Supabase for the platform data
-        const { data: platformData, error } = await supabase
-          .from(platform.table)
-          .select('*')
-          .gte(platform.dateColumn, startDate)
-          .lte(platform.dateColumn, endDate)
-          .order(platform.dateColumn, { ascending: true })
+        // Query Supabase for the platform data with pagination to handle large datasets
+        let platformData = []
+        let hasMoreData = true
+        let offset = 0
+        const BATCH_SIZE = 1000
+        
+        while (hasMoreData) {
+          const { data: batchData, error } = await supabase
+            .from(platform.table)
+            .select('*')
+            .gte(platform.dateColumn, startDate)
+            .lte(platform.dateColumn, endDate)
+            .order(platform.dateColumn, { ascending: true })
+            .range(offset, offset + BATCH_SIZE - 1)
 
-        if (error) {
-          console.error(`Error querying ${platform.table}:`, error)
-          results.push({
-            platform: platform.name,
-            success: false,
-            rowCount: 0,
-            dateRange: { min: null, max: null },
-            error: error.message
-          })
-          data[platform.name] = null
-          continue
+          if (error) {
+            console.error(`Error querying ${platform.table} at offset ${offset}:`, error)
+            throw error
+          }
+
+          if (batchData && batchData.length > 0) {
+            platformData.push(...batchData)
+            offset += BATCH_SIZE
+            hasMoreData = batchData.length === BATCH_SIZE // Continue if we got a full batch
+            console.log(`${platform.name}: Retrieved batch of ${batchData.length} rows (total: ${platformData.length})`)
+          } else {
+            hasMoreData = false
+          }
         }
 
         const rowCount = platformData ? platformData.length : 0
@@ -100,7 +109,14 @@ export default async function handler(req, res) {
           sampleData: platformData && platformData.length > 0 ? [platformData[0]] : []
         })
 
-        data[platform.name] = platformData
+        // For large datasets, don't send full data to avoid 4MB limit
+        // Send only sample data for UI display, full data available via streaming API
+        if (platformData && platformData.length > 5000) {
+          console.warn(`Large dataset detected for ${platform.name}: ${platformData.length} rows. Sending sample data only.`)
+          data[platform.name] = platformData.slice(0, 1000) // Send first 1000 rows as sample
+        } else {
+          data[platform.name] = platformData
+        }
 
         console.log(`${platform.name}: ${rowCount} rows retrieved`)
 

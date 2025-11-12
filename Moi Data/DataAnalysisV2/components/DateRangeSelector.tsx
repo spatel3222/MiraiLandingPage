@@ -57,10 +57,13 @@ export default function DateRangeSelector({ dateRange, onChange }: DateRangeSele
   }, [])
 
   const handleQuickFilterChange = (filter: typeof dateRange.quickFilter) => {
-    // Use latest data date if available, otherwise fallback to today
-    const referenceDate = latestDateInfo?.latestDate 
-      ? new Date(latestDateInfo.latestDate) 
-      : new Date()
+    // Require latest data info for quick filters
+    if (!latestDateInfo?.latestDate) {
+      console.warn('Cannot use quick filters: Latest data date not available yet')
+      return
+    }
+    
+    const referenceDate = new Date(latestDateInfo.latestDate)
     
     let startDate: string
     let endDate = referenceDate.toISOString().split('T')[0]
@@ -132,9 +135,12 @@ export default function DateRangeSelector({ dateRange, onChange }: DateRangeSele
             <button
               key={key}
               onClick={() => handleQuickFilterChange(key as any)}
+              disabled={isLoadingLatestDate || !latestDateInfo?.latestDate}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 localRange.quickFilter === key
                   ? 'bg-blue-600 text-white shadow-sm'
+                  : isLoadingLatestDate || !latestDateInfo?.latestDate
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >

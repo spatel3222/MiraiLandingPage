@@ -24,6 +24,8 @@ export default function ReportsPage() {
   })
 
   const [isRetrieving, setIsRetrieving] = useState(false)
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [phase3Results, setPhase3Results] = useState<any>(null)
 
   const handleDateRangeChange = (newRange: typeof dateRange) => {
     setDateRange(newRange)
@@ -33,6 +35,124 @@ export default function ReportsPage() {
 
   const handleDataRetrieved = (data: typeof retrievedData) => {
     setRetrievedData(data)
+    // Clear previous Phase 3 results when new data is retrieved
+    setPhase3Results(null)
+  }
+
+  const handlePhase3Processing = async () => {
+    if (!retrievedData.meta && !retrievedData.google && !retrievedData.shopify) {
+      alert('Please retrieve data first before processing Phase 3 analytics')
+      return
+    }
+
+    setIsProcessing(true)
+    
+    try {
+      console.log('🚀 Starting Phase 3 Julius V7 processing...')
+      
+      const response = await fetch('/api/process-phase3', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          data: retrievedData,
+          dateRange: {
+            startDate: dateRange.startDate,
+            endDate: dateRange.endDate,
+            reportType: dateRange.quickFilter
+          },
+          platforms: ['meta', 'google', 'shopify'],
+          options: {
+            applyShrinkage: true,
+            generateRecommendations: true
+          }
+        })
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Phase 3 processing failed')
+      }
+
+      setPhase3Results(result)
+      console.log('✅ Phase 3 processing completed successfully')
+      
+    } catch (error) {
+      console.error('❌ Phase 3 processing error:', error)
+      alert(`Phase 3 processing failed: ${error.message}`)
+    } finally {
+      setIsProcessing(false)
+    }
+  }
+
+  const downloadPhase3CSV = (outputType: 'topLevel' | 'adSetLevel' | 'adLevel') => {
+    if (!phase3Results || !phase3Results.outputs[outputType]) return
+
+    const output = phase3Results.outputs[outputType]
+    
+    if (output.error) {
+      alert(`Error accessing ${outputType} file: ${output.error}`)
+      return
+    }
+    
+    if (!output.filename) {
+      alert('No file available for this output type')
+      return
+    }
+
+    // Download from server-saved file
+    const downloadUrl = `/api/download-csv/${output.filename}`
+    const link = document.createElement('a')
+    link.href = downloadUrl
+    link.download = output.filename
+    link.style.visibility = 'hidden'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+  
+  const downloadPhase3CSVDirect = (outputType: 'topLevel' | 'adSetLevel' | 'adLevel') => {
+    if (!phase3Results || !phase3Results.rawData[outputType]) return
+
+    const data = phase3Results.rawData[outputType].data
+    
+    if (!data || data.length === 0) {
+      alert('No data available for this output type')
+      return
+    }
+
+    // Convert to CSV (fallback method)
+    const headers = Object.keys(data[0])
+    const csvRows = [headers.join(',')]
+    
+    for (const row of data) {
+      const values = headers.map(header => {
+        const value = row[header]
+        if (value === null || value === undefined) return ''
+        const stringValue = String(value)
+        if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
+          return `"${stringValue.replace(/"/g, '""')}"`
+        }
+        return stringValue
+      })
+      csvRows.push(values.join(','))
+    }
+
+    const csvContent = csvRows.join('\n')
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob)
+      link.setAttribute('href', url)
+      link.setAttribute('download', `${outputType}_fallback.csv`)
+      link.style.visibility = 'hidden'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    }
   }
 
   const downloadCSV = (data: any[], platform: string, dateRange: any) => {
@@ -205,6 +325,241 @@ export default function ReportsPage() {
                     </button>
                   )}
                 </div>
+              </div>
+            </div>
+          )}
+          
+          {/* Phase 3 Analytics Processing */}
+          {(retrievedData.meta || retrievedData.google || retrievedData.shopify) && (
+            <div className="bg-white rounded-lg shadow p-6">
+              <h2 className="text-xl font-semibold mb-4">Phase 3: Julius V7 Analytics</h2>
+              <div className="space-y-4">
+                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                  <h3 className="font-medium text-purple-800 mb-2">Julius V7 Methodology</h3>
+                  <div className="text-sm text-purple-700 space-y-1">
+                    <p>• <strong>Attribution Logic:</strong> Meta (Day+Campaign+AdSet+Ad), Google (Day+Campaign)</p>
+                    <p>• <strong>Business Metrics:</strong> Good Leads, Cost-per metrics, ROAS calculation</p>
+                    <p>• <strong>Empirical Bayes Shrinkage:</strong> Statistical validation for small samples</p>
+                    <p>• <strong>Performance Scoring:</strong> Efficiency (40%) + Quality (40%) + Volume (20%)</p>
+                    <p>• <strong>Recommendations:</strong> Scale, Test-to-Scale, Optimize, Pause/Fix</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-gray-600">
+                      Process retrieved data through Julius V7 analytics engine
+                    </p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Generate 3 output files: Daily Summary, Ad Set Performance, Ad-Level Metrics
+                    </p>
+                  </div>
+                  
+                  <button
+                    onClick={handlePhase3Processing}
+                    disabled={isProcessing || isRetrieving}
+                    className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                      isProcessing || isRetrieving
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        : 'bg-purple-600 text-white hover:bg-purple-700 shadow-sm hover:shadow-md'
+                    }`}
+                  >
+                    {isProcessing ? (
+                      <div className="flex items-center space-x-2">
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        <span>Processing Analytics...</span>
+                      </div>
+                    ) : (
+                      'Process Julius V7 Analytics'
+                    )}
+                  </button>
+                </div>
+                
+                {/* Processing Progress */}
+                {isProcessing && (
+                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                    <div className="flex items-center space-x-3">
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-purple-600"></div>
+                      <div>
+                        <p className="text-sm font-medium text-purple-900">Processing Julius V7 Analytics</p>
+                        <p className="text-sm text-purple-700">
+                          Applying attribution logic, calculating business metrics, generating performance scores...
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Phase 3 Results */}
+                {phase3Results && (
+                  <div className="space-y-4">
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                      <div className="flex items-start space-x-2">
+                        <svg className="w-5 h-5 text-green-600 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-green-900">
+                            Julius V7 Analytics Processing Completed!
+                          </p>
+                          <div className="text-sm text-green-700 mt-1 space-y-1">
+                            <p>Processed {phase3Results.summary.totalRows} rows in {phase3Results.processingTime}ms</p>
+                            <p>Total Spend: ${phase3Results.summary.totalSpend} • Total Revenue: ${phase3Results.summary.totalRevenue} • ROAS: {phase3Results.summary.roas}x</p>
+                            <p>Active Platforms: {phase3Results.summary.platforms.join(', ')}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Output Files */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {/* Daily Summary */}
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <h4 className="font-medium text-blue-900 mb-2">📊 Daily Summary</h4>
+                        <p className="text-sm text-blue-700 mb-2">
+                          {phase3Results.outputs.topLevel.rowCount} rows • Top-level daily metrics across all platforms
+                        </p>
+                        {phase3Results.outputs.topLevel.filePath && (
+                          <p className="text-xs text-blue-600 mb-2 font-mono bg-blue-100 p-1 rounded">
+                            💾 {phase3Results.outputs.topLevel.filename}
+                          </p>
+                        )}
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => downloadPhase3CSV('topLevel')}
+                            className="flex-1 px-3 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+                          >
+                            📋 Download Server File
+                          </button>
+                          <button
+                            onClick={() => downloadPhase3CSVDirect('topLevel')}
+                            className="px-2 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600"
+                            title="Fallback download"
+                          >
+                            ⬇️
+                          </button>
+                        </div>
+                        <p className="text-xs text-blue-600 mt-2">
+                          Columns: {phase3Results.outputs.topLevel.columns.length} fields
+                          {phase3Results.outputs.topLevel.size && (
+                            <span> • {Math.round(phase3Results.outputs.topLevel.size / 1024)} KB</span>
+                          )}
+                        </p>
+                        {phase3Results.outputs.topLevel.savedAt && (
+                          <p className="text-xs text-blue-500 mt-1">
+                            Saved: {new Date(phase3Results.outputs.topLevel.savedAt).toLocaleTimeString()}
+                          </p>
+                        )}
+                      </div>
+                      
+                      {/* Ad Set Performance */}
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <h4 className="font-medium text-green-900 mb-2">🎯 Ad Set Performance</h4>
+                        <p className="text-sm text-green-700 mb-2">
+                          {phase3Results.outputs.adSetLevel.rowCount} rows • Meta ad set level performance and recommendations
+                        </p>
+                        {phase3Results.outputs.adSetLevel.filePath && (
+                          <p className="text-xs text-green-600 mb-2 font-mono bg-green-100 p-1 rounded">
+                            💾 {phase3Results.outputs.adSetLevel.filename}
+                          </p>
+                        )}
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => downloadPhase3CSV('adSetLevel')}
+                            className="flex-1 px-3 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700"
+                          >
+                            📋 Download Server File
+                          </button>
+                          <button
+                            onClick={() => downloadPhase3CSVDirect('adSetLevel')}
+                            className="px-2 py-2 bg-green-500 text-white text-sm rounded hover:bg-green-600"
+                            title="Fallback download"
+                          >
+                            ⬇️
+                          </button>
+                        </div>
+                        <p className="text-xs text-green-600 mt-2">
+                          Columns: {phase3Results.outputs.adSetLevel.columns.length} fields
+                          {phase3Results.outputs.adSetLevel.size && (
+                            <span> • {Math.round(phase3Results.outputs.adSetLevel.size / 1024)} KB</span>
+                          )}
+                        </p>
+                        {phase3Results.outputs.adSetLevel.savedAt && (
+                          <p className="text-xs text-green-500 mt-1">
+                            Saved: {new Date(phase3Results.outputs.adSetLevel.savedAt).toLocaleTimeString()}
+                          </p>
+                        )}
+                      </div>
+                      
+                      {/* Ad-Level Metrics */}
+                      <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                        <h4 className="font-medium text-purple-900 mb-2">🎨 Ad-Level Metrics</h4>
+                        <p className="text-sm text-purple-700 mb-2">
+                          {phase3Results.outputs.adLevel.rowCount} rows • Individual ad performance with shrinkage applied
+                        </p>
+                        {phase3Results.outputs.adLevel.filePath && (
+                          <p className="text-xs text-purple-600 mb-2 font-mono bg-purple-100 p-1 rounded">
+                            💾 {phase3Results.outputs.adLevel.filename}
+                          </p>
+                        )}
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => downloadPhase3CSV('adLevel')}
+                            className="flex-1 px-3 py-2 bg-purple-600 text-white text-sm rounded hover:bg-purple-700"
+                          >
+                            📋 Download Server File
+                          </button>
+                          <button
+                            onClick={() => downloadPhase3CSVDirect('adLevel')}
+                            className="px-2 py-2 bg-purple-500 text-white text-sm rounded hover:bg-purple-600"
+                            title="Fallback download"
+                          >
+                            ⬇️
+                          </button>
+                        </div>
+                        <p className="text-xs text-purple-600 mt-2">
+                          Columns: {phase3Results.outputs.adLevel.columns.length} fields
+                          {phase3Results.outputs.adLevel.size && (
+                            <span> • {Math.round(phase3Results.outputs.adLevel.size / 1024)} KB</span>
+                          )}
+                        </p>
+                        {phase3Results.outputs.adLevel.savedAt && (
+                          <p className="text-xs text-purple-500 mt-1">
+                            Saved: {new Date(phase3Results.outputs.adLevel.savedAt).toLocaleTimeString()}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    
+                    {/* Methodology Info */}
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                      <h4 className="font-medium text-gray-900 mb-3">Julius V7 Processing Details</h4>
+                      <div className="text-sm text-gray-700 space-y-2">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <h5 className="font-medium text-gray-800">Attribution Logic Applied:</h5>
+                            <ul className="mt-1 space-y-1">
+                              <li>• Meta: {phase3Results.metadata.methodology.attribution.meta}</li>
+                              <li>• Google: {phase3Results.metadata.methodology.attribution.google}</li>
+                              <li>• Shopify: {phase3Results.metadata.methodology.attribution.shopify}</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h5 className="font-medium text-gray-800">Performance Recommendations:</h5>
+                            <ul className="mt-1 space-y-1">
+                              {Object.entries(phase3Results.metadata.methodology.recommendations).map(([rec, score]) => (
+                                <li key={rec}>• <strong>{rec}:</strong> {score}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-3">
+                          Processing completed at {new Date(phase3Results.metadata.timestamp).toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}
