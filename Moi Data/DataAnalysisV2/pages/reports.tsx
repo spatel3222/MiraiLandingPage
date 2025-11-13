@@ -116,73 +116,17 @@ export default function ReportsPage() {
   }
 
   const processLargeDatasetViaAPI = async () => {
-    // Use streaming API to get data in batches and process via Julius V7
-    console.log('🌊 Starting streaming API approach for large dataset processing')
+    // For large datasets, use direct database queries with Julius V7
+    console.log('🔗 Using direct database processing approach for large dataset')
     
-    const response = await fetch('/api/retrieve-data-stream', {
+    const response = await fetch('/api/process-phase3', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        startDate: dateRange.startDate,
-        endDate: dateRange.endDate,
-        reportType: dateRange.quickFilter || 'custom'
-      })
-    })
-
-    if (!response.ok) {
-      throw new Error('Streaming API failed')
-    }
-
-    const reader = response.body?.getReader()
-    if (!reader) {
-      throw new Error('No reader available')
-    }
-
-    const decoder = new TextDecoder()
-    let allPlatformData: any = { meta: [], google: [], shopify: [] }
-    
-    try {
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-
-        const chunk = decoder.decode(value)
-        const lines = chunk.split('\n')
-
-        for (const line of lines) {
-          if (line.trim() && line.startsWith('data: ')) {
-            const data = line.slice(6)
-            if (data === '[DONE]') continue
-
-            try {
-              const parsed = JSON.parse(data)
-              if (parsed.platformData) {
-                const platform = parsed.platform
-                allPlatformData[platform] = [...allPlatformData[platform], ...parsed.platformData]
-                console.log(`📥 Received ${parsed.platformData.length} rows for ${platform} (total: ${allPlatformData[platform].length})`)
-              }
-            } catch (e) {
-              console.warn('Failed to parse streaming data:', e)
-            }
-          }
-        }
-      }
-    } finally {
-      reader.releaseLock()
-    }
-
-    console.log('🔄 Processing complete dataset via Phase 3...')
-    
-    // Now process the complete dataset
-    const response2 = await fetch('/api/process-phase3', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        data: allPlatformData,
+        // Pass empty data and let backend fetch directly from database
+        data: { meta: [], google: [], shopify: [] },
         dateRange: {
           startDate: dateRange.startDate,
           endDate: dateRange.endDate,
@@ -191,17 +135,18 @@ export default function ReportsPage() {
         platforms: ['meta', 'google', 'shopify'],
         options: {
           applyShrinkage: true,
-          generateRecommendations: true
+          generateRecommendations: true,
+          fetchFromDatabase: true // Signal backend to fetch data directly
         }
       })
     })
 
-    const result = await response2.json()
+    const result = await response.json()
     if (result.success) {
       setPhase3Results(result)
-      console.log('✅ Streaming dataset processing completed successfully')
+      console.log('✅ Direct database processing completed successfully')
     } else {
-      throw new Error(result.error || 'Phase 3 processing failed')
+      throw new Error(result.error || 'Database processing failed')
     }
   }
 

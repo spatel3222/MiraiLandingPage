@@ -485,13 +485,14 @@ export class JuliusV7Engine {
    * Harmonize Shopify-specific fields
    */
   harmonizeShopifyFields(row) {
+    // Start with ALL original fields - don't filter anything out
     const harmonized = { ...row }
     
-    // Map Shopify field names based on actual data structure
+    // Add standardized field mappings for compatibility, but keep originals
     const fieldMap = {
-      'UTM campaign': 'Campaign',
-      'UTM term': 'Ad Set', // Map utm_term to ad set for attribution
-      'UTM content': 'Ad',   // Map utm_content to ad for attribution
+      'UTM campaign': 'Campaign name',    // UTM campaign → Campaign name
+      'UTM term': 'Ad set name',          // UTM term → Ad set name  
+      'UTM content': 'Ad name',           // UTM content → Ad name
       'Online store visitors': 'Sessions',
       'Sessions that completed checkout': 'Orders',
       'Sessions that reached checkout': 'CheckoutSessions',
@@ -500,9 +501,12 @@ export class JuliusV7Engine {
       'Pageviews': 'Pageviews'
     }
     
+    // Add mapped fields WITHOUT removing originals
     Object.entries(fieldMap).forEach(([originalField, standardField]) => {
       if (row[originalField] !== undefined) {
         harmonized[standardField] = row[originalField]
+        // Keep the original field name too
+        harmonized[originalField] = row[originalField]
       }
     })
     
@@ -517,8 +521,12 @@ export class JuliusV7Engine {
       harmonized.GoodLeads = (harmonized.SessionDuration >= 60 && harmonized.Pageviews >= 5) ? 1 : 0
     }
     
-    // Parse numeric fields
-    const numericFields = ['Sessions', 'Orders', 'CheckoutSessions', 'CartSessions', 'SessionDuration', 'Pageviews', 'ConversionRate', 'GoodLeads']
+    // Parse ALL numeric fields (both original and mapped)
+    const numericFields = [
+      'Sessions', 'Orders', 'CheckoutSessions', 'CartSessions', 'SessionDuration', 'Pageviews', 'ConversionRate', 'GoodLeads',
+      'Online store visitors', 'Sessions that completed checkout', 'Sessions that reached checkout', 
+      'Sessions with cart additions', 'Average session duration', 'Pageviews'
+    ]
     numericFields.forEach(field => {
       if (harmonized[field] !== undefined) {
         harmonized[field] = this.parseNumeric(harmonized[field])
@@ -1106,12 +1114,12 @@ export class JuliusV7Engine {
     
     if (scoredData.meta) {
       scoredData.meta.forEach(row => {
-        if (row['Ad Set']) {
+        if (row['Ad set name'] || row['Ad Set']) {
           // AdSet Metrics as per Julius V7 specifications
           adSetSummary.push({
             Date: row.Day,
-            'Campaign name': row.Campaign,
-            'Ad Set Name': row['Ad Set'],
+            'Campaign name': row['Campaign name'] || row.Campaign,
+            'Ad Set Name': row['Ad set name'] || row['Ad Set'],
             'Ad Set Delivery': 'Active',
             'Spent': row.Spend,
             'Cost per user': row.CostPerUser || (row.Spend / (row.Sessions || 1)),
@@ -1131,6 +1139,90 @@ export class JuliusV7Engine {
       })
     }
     
+    // Add Google data to ad set level (campaign level)
+    if (scoredData.google) {
+      scoredData.google.forEach(row => {
+        adSetSummary.push({
+          Date: row.Day,
+          'Campaign name': row['Campaign name'] || row.Campaign,
+          'Ad Set Name': row.Campaign, // Use Campaign as Ad Set for Google
+          'Ad Set Delivery': 'Active',
+          'Spent': row.Spend || row.Cost,
+          'Cost per user': row.CostPerUser || (row.Spend / (row.Sessions || 1)),
+          'Users': row.Sessions || 0,
+          'ATC': row.AddToCarts || 0,
+          'ROAS': row.ROAS || 0,
+          'Good Leads': row.GoodLeads || 0,
+          'Cost Per Good Lead': row.CostPerGoodLead || 0,
+          'Cost Per Lead': row.CostPerLead || 0,
+          'CTR_Shrunk': row.CTR_Shrunk || row.CTR || 0,
+          'CPM_Shrunk': row.CPM_Shrunk || row.CPM || 0,
+          'Impressions': row.Impressions || 0,
+          'Clicks': row.Clicks || 0,
+          'Conversion Rate': row.ConversionRate || 0,
+          'Efficiency Score': row.EfficiencyScore || 0,
+          'Quality Score': row.QualityScore || 0,
+          'Volume Score': row.VolumeScore || 0,
+          'Overall Score': row.OverallScore || 0,
+          'Platform': 'Google'
+        })
+      })
+    }
+    
+    // Add Shopify data to ad set level (UTM term as ad set)
+    if (scoredData.shopify) {
+      scoredData.shopify.forEach(row => {
+        adSetSummary.push({
+          Date: row.Day,
+          'Campaign name': row['UTM campaign'] || row.Campaign,
+          'Ad Set Name': row['UTM term'] || row['Ad Set'] || 'Shopify Traffic',
+          'Ad Set Delivery': 'Active',
+          'Platform': 'Shopify',
+          // Include ALL original Shopify fields
+          ...row
+        })
+      })
+    }
+    
+    // Add Shopify data to ad set level
+    if (scoredData.shopify) {
+      scoredData.shopify.forEach(row => {
+        if (row['UTM campaign'] || row['UTM term']) { // Only include rows with campaign or ad set data
+          adSetSummary.push({
+            Date: row.Day,
+            'Campaign name': row['Campaign name'] || row['UTM campaign'],
+            'Ad Set Name': row['Ad set name'] || row['UTM term'] || 'Shopify Traffic',
+            'Ad Set Delivery': 'Active',
+            'Spent': 0, // Shopify doesn't have spend data
+            'Cost per user': 0,
+            'Users': row.Sessions || row['Online store visitors'] || 0,
+            'ATC': row.CartSessions || row['Sessions with cart additions'] || 0,
+            'ROAS': row.ROAS || 0,
+            'Good Leads': row.GoodLeads || 0,
+            'Cost Per Good Lead': 0,
+            'Cost Per Lead': 0,
+            'CTR_Shrunk': 0,
+            'CPM_Shrunk': 0,
+            'Impressions': 0,
+            'Clicks': 0,
+            'Conversion Rate': row.ConversionRate || 0,
+            'Efficiency Score': row.EfficiencyScore || 0,
+            'Quality Score': row.QualityScore || 0,
+            'Volume Score': row.VolumeScore || 0,
+            'Overall Score': row.OverallScore || 0,
+            'Platform': 'Shopify',
+            // Include Shopify-specific metrics
+            'Online store visitors': row['Online store visitors'] || 0,
+            'Sessions that completed checkout': row['Sessions that completed checkout'] || 0,
+            'Sessions that reached checkout': row['Sessions that reached checkout'] || 0,
+            'Sessions with cart additions': row['Sessions with cart additions'] || 0,
+            'Average session duration': row['Average session duration'] || 0,
+            'Pageviews': row.Pageviews || 0
+          })
+        }
+      })
+    }
+    
     return adSetSummary
   }
 
@@ -1142,13 +1234,13 @@ export class JuliusV7Engine {
     
     if (scoredData.meta) {
       scoredData.meta.forEach(row => {
-        if (row.Ad) {
+        if (row['Ad name'] || row.Ad) {
           // Ad-level Metrics as per Julius V7 specifications
           adSummary.push({
             Date: row.Day,
-            'Campaign name': row.Campaign,
-            'Ad Set Name': row['Ad Set'],
-            'Ad Name': row.Ad,
+            'Campaign name': row['Campaign name'] || row.Campaign,
+            'Ad Set Name': row['Ad set name'] || row['Ad Set'],
+            'Ad Name': row['Ad name'] || row.Ad,
             'Ad Set Delivery': 'Active',
             'Spent': row.Spend,
             'CTR': row.CTR_Shrunk || row.CTR || 0,
@@ -1164,6 +1256,86 @@ export class JuliusV7Engine {
             'ATC with session duration above 1 min': row.QualifiedATCs || 0,
             'Reached Checkout with session duration above 1 min': row.QualifiedCheckouts || 0,
             'Users with Above 5 page views and above 1 min': row.QualifiedUsers || 0
+          })
+        }
+      })
+    }
+    
+    // Add Google data to ad level (treat campaigns as ads)
+    if (scoredData.google) {
+      scoredData.google.forEach(row => {
+        adSummary.push({
+          Date: row.Day,
+          'Campaign name': row['Campaign name'] || row.Campaign,
+          'Ad Set Name': row.Campaign, // Use Campaign as Ad Set for Google
+          'Ad Name': row.Campaign, // Use Campaign as Ad for Google
+          'Ad Set Delivery': 'Active',
+          'Spent': row.Spend || row.Cost,
+          'CTR': row.CTR_Shrunk || row.CTR || 0,
+          'Cost per user': row.CostPerUser || (row.Spend / (row.Sessions || 1)),
+          'Users': row.Sessions || 0,
+          'ATC': row.AddToCarts || 0,
+          'Reached Checkout': row.ReachedCheckout || 0,
+          'Conversions': row.Conversions || 0,
+          'Average session duration': row.AvgSessionDuration || 0,
+          'Cost per 1 min user': row.CostPer1MinUser || 0,
+          '1min user/ total users (%)': row.OneMinUserPercentage || 0,
+          'Users with Session above 1 min': row.UsersAbove1Min || 0,
+          'ATC with session duration above 1 min': row.QualifiedATCs || 0,
+          'Reached Checkout with session duration above 1 min': row.QualifiedCheckouts || 0,
+          'Users with Above 5 page views and above 1 min': row.QualifiedUsers || 0,
+          'Platform': 'Google'
+        })
+      })
+    }
+    
+    // Add Shopify data to ad level (UTM content as ad)
+    if (scoredData.shopify) {
+      scoredData.shopify.forEach(row => {
+        adSummary.push({
+          Date: row.Day,
+          'Campaign name': row['UTM campaign'] || row.Campaign,
+          'Ad Set Name': row['UTM term'] || row['Ad Set'] || 'Shopify Traffic',
+          'Ad Name': row['UTM content'] || row.Ad || 'Shopify Ad',
+          'Ad Set Delivery': 'Active',
+          'Platform': 'Shopify',
+          // Include ALL original Shopify fields
+          ...row
+        })
+      })
+    }
+    
+    // Add Shopify data to ad level
+    if (scoredData.shopify) {
+      scoredData.shopify.forEach(row => {
+        if (row['UTM campaign'] || row['UTM term'] || row['UTM content']) { // Only include rows with campaign, ad set, or ad data
+          adSummary.push({
+            Date: row.Day,
+            'Campaign name': row['Campaign name'] || row['UTM campaign'],
+            'Ad Set Name': row['Ad set name'] || row['UTM term'] || 'Shopify Traffic',
+            'Ad Name': row['Ad name'] || row['UTM content'] || 'Shopify Ad',
+            'Ad Set Delivery': 'Active',
+            'Spent': 0, // Shopify doesn't have spend data
+            'CTR': 0,
+            'Cost per user': 0,
+            'Users': row.Sessions || row['Online store visitors'] || 0,
+            'ATC': row.CartSessions || row['Sessions with cart additions'] || 0,
+            'Reached Checkout': row.CheckoutSessions || row['Sessions that reached checkout'] || 0,
+            'Conversions': row.Orders || row['Sessions that completed checkout'] || 0,
+            'Average session duration': row.SessionDuration || row['Average session duration'] || 0,
+            'Cost per 1 min user': 0,
+            '1min user/ total users (%)': 0,
+            'Users with Session above 1 min': 0,
+            'ATC with session duration above 1 min': 0,
+            'Reached Checkout with session duration above 1 min': 0,
+            'Users with Above 5 page views and above 1 min': 0,
+            'Platform': 'Shopify',
+            // Include Shopify-specific metrics
+            'Online store visitors': row['Online store visitors'] || 0,
+            'Sessions that completed checkout': row['Sessions that completed checkout'] || 0,
+            'Sessions that reached checkout': row['Sessions that reached checkout'] || 0,
+            'Sessions with cart additions': row['Sessions with cart additions'] || 0,
+            'Pageviews': row.Pageviews || 0
           })
         }
       })

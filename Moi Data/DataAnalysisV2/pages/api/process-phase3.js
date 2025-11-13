@@ -1,4 +1,5 @@
 import { JuliusV7Engine } from '../../lib/JuliusV7Engine'
+import { supabase, TABLE_NAMES } from '../../lib/supabase'
 import fs from 'fs'
 import path from 'path'
 
@@ -31,9 +32,27 @@ export default async function handler(req, res) {
     console.log(`🚀 Starting Phase 3 processing for ${platforms.join(', ')} platforms`)
     console.log(`📅 Date range: ${dateRange.startDate} to ${dateRange.endDate}`)
 
+    // Check if we need to fetch data from database
+    let actualData = rawData
+    const needsDatabaseFetch = options.fetchFromDatabase || 
+      Object.values(rawData).every(platformData => !platformData || platformData.length === 0)
+    
+    console.log('🔧 Database fetch check:', {
+      fetchFromDatabaseOption: options.fetchFromDatabase,
+      rawDataEmpty: Object.values(rawData).every(platformData => !platformData || platformData.length === 0),
+      needsDatabaseFetch,
+      rawDataStructure: Object.keys(rawData).map(key => `${key}: ${Array.isArray(rawData[key]) ? rawData[key].length + ' rows' : typeof rawData[key]}`)
+    })
+    
+    if (needsDatabaseFetch) {
+      console.log('🔗 Fetching data directly from database for large dataset processing...')
+      actualData = await fetchDataFromDatabase(dateRange, platforms)
+      console.log('🔗 Database fetch results:', Object.keys(actualData).map(key => `${key}: ${Array.isArray(actualData[key]) ? actualData[key].length + ' rows' : typeof actualData[key]}`))
+    }
+
     // Log data availability
     platforms.forEach(platform => {
-      const platformData = rawData[platform]
+      const platformData = actualData[platform]
       if (platformData && Array.isArray(platformData)) {
         console.log(`📊 ${platform}: ${platformData.length} rows available`)
         console.log(`🔍 ${platform} first row keys:`, platformData.length > 0 ? Object.keys(platformData[0]) : 'No rows')
@@ -56,7 +75,7 @@ export default async function handler(req, res) {
 
     // Process analytics through Julius V7 methodology
     const startTime = Date.now()
-    const result = await engine.processAnalytics(rawData, dateRange, platforms)
+    const result = await engine.processAnalytics(actualData, dateRange, platforms)
     const processingTime = Date.now() - startTime
 
     console.log(`✅ Phase 3 processing completed in ${processingTime}ms`)
@@ -260,4 +279,66 @@ export function convertToCSV(data, filename = 'data.csv') {
     filename,
     size: csvContent.length
   }
+}
+
+/**
+ * Helper function to fetch data directly from database for large dataset processing
+ */
+async function fetchDataFromDatabase(dateRange, platforms) {
+  const data = {}
+  
+  const platformConfigs = [
+    { name: 'meta', table: 'meta_import_data', dateColumn: 'Day' },
+    { name: 'google', table: 'google_import_data', dateColumn: 'Day' },
+    { name: 'shopify', table: 'shopify_import_data', dateColumn: 'Day' }
+  ]
+
+  for (const platform of platformConfigs) {
+    if (!platforms.includes(platform.name)) continue
+
+    try {
+      console.log(`🔗 Fetching ${platform.name} data from database for date range ${dateRange.startDate} to ${dateRange.endDate}`)
+
+      let platformData = []
+      let hasMoreData = true
+      let offset = 0
+      const BATCH_SIZE = 1000
+
+      while (hasMoreData) {
+        const { data: batchData, error } = await supabase
+          .from(platform.table)
+          .select('*')
+          .gte(platform.dateColumn, dateRange.startDate)
+          .lte(platform.dateColumn, dateRange.endDate)
+          .order(platform.dateColumn, { ascending: true })
+          .range(offset, offset + BATCH_SIZE - 1)
+
+        if (error) {
+          console.error(`❌ Error fetching ${platform.name} data at offset ${offset}:`, error)
+          throw error
+        }
+
+        if (batchData && batchData.length > 0) {
+          platformData.push(...batchData)
+          offset += BATCH_SIZE
+          hasMoreData = batchData.length === BATCH_SIZE
+          console.log(`📊 ${platform.name}: Fetched batch of ${batchData.length} rows (total: ${platformData.length})`)
+        } else {
+          hasMoreData = false
+        }
+      }
+
+      data[platform.name] = platformData
+      console.log(`✅ ${platform.name}: Successfully fetched ${platformData.length} rows`)
+
+    } catch (platformError) {
+      console.error(`❌ Failed to fetch ${platform.name} data:`, platformError)
+      data[platform.name] = []
+    }
+  }
+
+  const totalRows = Object.values(data).reduce((sum, platformData) => sum + (Array.isArray(platformData) ? platformData.length : 0), 0)
+  console.log(`🔗 Database fetch complete: ${totalRows} total rows across ${Object.keys(data).length} platforms`)
+  
+  return data
 }
