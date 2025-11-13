@@ -39,9 +39,11 @@ export default async function handler(req, res) {
 
     sendProgress({ 
       type: 'start', 
-      message: 'Starting data retrieval...', 
+      message: 'Starting data retrieval (STREAMING)...', 
       dateRange: { startDate, endDate, reportType } 
     })
+    
+    console.log('🔧 STREAM ENDPOINT: Data retrieval started via streaming API')
 
     const platforms = [
       { name: 'meta', table: 'meta_import_data', dateColumn: 'Day' },
@@ -169,6 +171,7 @@ export default async function handler(req, res) {
               hasMoreData = false // Stop fetching more data to prevent memory issues
             }
 
+
             // Small delay to prevent overwhelming the client
             await new Promise(resolve => setTimeout(resolve, 50))
           } else {
@@ -177,6 +180,9 @@ export default async function handler(req, res) {
         }
 
         const rowCount = platformData._actualRowCount || platformData.length
+        
+        // All rows will be processed using client-side batch processing - no limits
+        const processedRowCount = rowCount
         
         // Calculate date range from actual data
         let dateRangeActual = { min: null, max: null }
@@ -217,6 +223,7 @@ export default async function handler(req, res) {
           platform: platform.name,
           success: true,
           rowCount,
+          processedRowCount,
           dateRange: dateRangeActual,
           sampleData
         }
@@ -232,10 +239,11 @@ export default async function handler(req, res) {
             platform: result.platform,
             success: result.success,
             rowCount: result.rowCount,
+            processedRowCount: result.processedRowCount,
             dateRange: result.dateRange
             // Exclude sampleData from streaming to reduce size
           },
-          message: `${platform.name}: ${rowCount.toLocaleString()} rows retrieved`
+          message: `${platform.name}: ${rowCount.toLocaleString()} rows retrieved (ALL rows will be processed via batch processing)`
         })
 
       } catch (platformError) {
@@ -268,6 +276,7 @@ export default async function handler(req, res) {
       platform: r.platform,
       success: r.success,
       rowCount: r.rowCount,
+      processedRowCount: r.processedRowCount || r.rowCount,
       dateRange: r.dateRange,
       error: r.error || undefined
       // Exclude sampleData from final streaming response

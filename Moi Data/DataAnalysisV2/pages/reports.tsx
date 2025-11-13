@@ -54,44 +54,203 @@ export default function ReportsPage() {
     setIsProcessing(true)
     
     try {
-      console.log('🚀 Starting Phase 3 Julius V7 processing...')
+      console.log('🚀 Starting Phase 3 Julius V7 processing with streaming batches...')
       
-      const response = await fetch('/api/process-phase3', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          data: retrievedData,
-          dateRange: {
-            startDate: dateRange.startDate,
-            endDate: dateRange.endDate,
-            reportType: dateRange.quickFilter
-          },
-          platforms: ['meta', 'google', 'shopify'],
-          options: {
-            applyShrinkage: true,
-            generateRecommendations: true
-          }
-        })
-      })
-
-      const result = await response.json()
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Phase 3 processing failed')
+      // Check total data size and decide processing approach
+      const totalRows = (retrievedData.meta?.length || 0) + (retrievedData.google?.length || 0) + (retrievedData.shopify?.length || 0)
+      console.log(`📊 Total rows to process: ${totalRows}`)
+      
+      if (totalRows > 1000) {
+        // Use streaming approach for large datasets
+        console.log('📡 Using streaming processing for large dataset')
+        await processLargeDataset()
+      } else {
+        // Use original approach for small datasets
+        console.log('📦 Using standard processing for small dataset')
+        await processStandardDataset()
       }
-
-      setPhase3Results(result)
-      console.log('✅ Phase 3 processing completed successfully')
       
-    } catch (error: unknown) {
+    } catch (error) {
       console.error('❌ Phase 3 processing error:', error)
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
-      alert(`Phase 3 processing failed: ${errorMessage}`)
+      alert(`Processing failed: ${error.message}`)
     } finally {
       setIsProcessing(false)
     }
+  }
+
+  const processStandardDataset = async () => {
+    const response = await fetch('/api/process-phase3', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        data: retrievedData,
+        dateRange: {
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate,
+          reportType: dateRange.quickFilter
+        },
+        platforms: ['meta', 'google', 'shopify'],
+        options: {
+          applyShrinkage: true,
+          generateRecommendations: true
+        }
+      })
+    })
+
+    const result = await response.json()
+    if (result.success) {
+      setPhase3Results(result)
+      console.log('✅ Phase 3 processing completed successfully')
+    } else {
+      throw new Error(result.error || 'Processing failed')
+    }
+  }
+
+  const processLargeDataset = async () => {
+    // Process each platform separately to avoid 1MB limit
+    const BATCH_SIZE = 500
+    const platforms = ['meta', 'google', 'shopify'].filter(p => retrievedData[p]?.length > 0)
+    
+    console.log(`📋 Processing ${platforms.length} platforms with batch size ${BATCH_SIZE}`)
+    
+    const allResults = []
+    
+    for (const platform of platforms) {
+      const platformData = retrievedData[platform]
+      if (!platformData || platformData.length === 0) continue
+      
+      console.log(`🔄 Processing ${platform}: ${platformData.length} rows`)
+      
+      // Split platform data into batches
+      const batches = []
+      for (let i = 0; i < platformData.length; i += BATCH_SIZE) {
+        batches.push(platformData.slice(i, i + BATCH_SIZE))
+      }
+      
+      console.log(`📦 ${platform}: Split into ${batches.length} batches`)
+      
+      for (let batchIndex = 0; batchIndex < batches.length; batchIndex++) {
+        const batch = batches[batchIndex]
+        
+        // Create batch data structure
+        const batchData = {
+          [platform]: batch,
+          // Add empty arrays for other platforms
+          ...(['meta', 'google', 'shopify'].filter(p => p !== platform).reduce((acc, p) => {
+            acc[p] = []
+            return acc
+          }, {}))
+        }
+        
+        console.log(`🚀 Processing ${platform} batch ${batchIndex + 1}/${batches.length} (${batch.length} rows)`)
+        
+        const response = await fetch('/api/process-phase3', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            data: batchData,
+            dateRange: {
+              startDate: dateRange.startDate,
+              endDate: dateRange.endDate,
+              reportType: dateRange.quickFilter
+            },
+            platforms: [platform],
+            options: {
+              applyShrinkage: true,
+              generateRecommendations: true
+            }
+          })
+        })
+
+        const batchResult = await response.json()
+        if (batchResult.success) {
+          allResults.push(batchResult)
+          console.log(`✅ ${platform} batch ${batchIndex + 1} completed`)
+        } else {
+          throw new Error(`Batch ${batchIndex + 1} failed: ${batchResult.error}`)
+        }
+      }
+    }
+    
+    // Merge all batch results
+    const mergedResult = mergeBatchResults(allResults)
+    setPhase3Results(mergedResult)
+    console.log('✅ Large dataset processing completed successfully')
+  }
+
+  const mergeBatchResults = (batchResults) => {
+    if (batchResults.length === 0) return null
+    if (batchResults.length === 1) return batchResults[0]
+
+    // Merge multiple batch results
+    const merged = {
+      success: true,
+      summary: {
+        totalRows: batchResults.reduce((sum, result) => sum + (result.summary?.totalRows || 0), 0),
+        platforms: ['meta', 'google', 'shopify'],
+        dateRange: batchResults[0].summary?.dateRange
+      },
+      outputs: {
+        topLevel: [],
+        adSetLevel: [],
+        adLevel: []
+      },
+      processingTime: batchResults.reduce((sum, result) => sum + (result.processingTime || 0), 0),
+      metadata: {
+        timestamp: new Date().toISOString(),
+        batchCount: batchResults.length,
+        processingMethod: 'client-side-batching'
+      }
+    }
+
+    // Merge CSV data from all batches with safe array handling
+    for (const result of batchResults) {
+      console.log('🔍 Merging batch result:', {
+        hasOutputs: !!result.outputs,
+        topLevelType: typeof result.outputs?.topLevel,
+        topLevelLength: Array.isArray(result.outputs?.topLevel) ? result.outputs.topLevel.length : 'not array'
+      })
+      
+      // Handle topLevel data (object with csvData and filename properties)
+      if (result.outputs?.topLevel) {
+        if (Array.isArray(result.outputs.topLevel)) {
+          merged.outputs.topLevel.push(...result.outputs.topLevel)
+        } else if (typeof result.outputs.topLevel === 'object') {
+          // It's an object with csvData and filename - keep the structure
+          merged.outputs.topLevel.push(result.outputs.topLevel)
+        } else if (typeof result.outputs.topLevel === 'string') {
+          merged.outputs.topLevel.push({ csvData: result.outputs.topLevel, filename: `batch_toplevel_${merged.outputs.topLevel.length}.csv` })
+        }
+      }
+      
+      // Handle adSetLevel data
+      if (result.outputs?.adSetLevel) {
+        if (Array.isArray(result.outputs.adSetLevel)) {
+          merged.outputs.adSetLevel.push(...result.outputs.adSetLevel)
+        } else if (typeof result.outputs.adSetLevel === 'object') {
+          merged.outputs.adSetLevel.push(result.outputs.adSetLevel)
+        } else if (typeof result.outputs.adSetLevel === 'string') {
+          merged.outputs.adSetLevel.push({ csvData: result.outputs.adSetLevel, filename: `batch_adsetlevel_${merged.outputs.adSetLevel.length}.csv` })
+        }
+      }
+      
+      // Handle adLevel data
+      if (result.outputs?.adLevel) {
+        if (Array.isArray(result.outputs.adLevel)) {
+          merged.outputs.adLevel.push(...result.outputs.adLevel)
+        } else if (typeof result.outputs.adLevel === 'object') {
+          merged.outputs.adLevel.push(result.outputs.adLevel)
+        } else if (typeof result.outputs.adLevel === 'string') {
+          merged.outputs.adLevel.push({ csvData: result.outputs.adLevel, filename: `batch_adlevel_${merged.outputs.adLevel.length}.csv` })
+        }
+      }
+    }
+
+    return merged
   }
 
   const downloadPhase3CSV = (outputType: 'topLevel' | 'adSetLevel' | 'adLevel') => {
@@ -452,9 +611,15 @@ export default function ReportsPage() {
                           </button>
                         </div>
                         <p className="text-xs text-blue-600 mt-2">
-                          Columns: {phase3Results.outputs.topLevel.columns.length} fields
-                          {phase3Results.outputs.topLevel.size && (
-                            <span> • {Math.round(phase3Results.outputs.topLevel.size / 1024)} KB</span>
+                          {Array.isArray(phase3Results.outputs.topLevel) ? (
+                            <span>Batches: {phase3Results.outputs.topLevel.length} files merged</span>
+                          ) : (
+                            <>
+                              Columns: {phase3Results.outputs.topLevel.columns?.length || 0} fields
+                              {phase3Results.outputs.topLevel.size && (
+                                <span> • {Math.round(phase3Results.outputs.topLevel.size / 1024)} KB</span>
+                              )}
+                            </>
                           )}
                         </p>
                         {phase3Results.outputs.topLevel.savedAt && (
@@ -491,9 +656,15 @@ export default function ReportsPage() {
                           </button>
                         </div>
                         <p className="text-xs text-green-600 mt-2">
-                          Columns: {phase3Results.outputs.adSetLevel.columns.length} fields
-                          {phase3Results.outputs.adSetLevel.size && (
-                            <span> • {Math.round(phase3Results.outputs.adSetLevel.size / 1024)} KB</span>
+                          {Array.isArray(phase3Results.outputs.adSetLevel) ? (
+                            <span>Batches: {phase3Results.outputs.adSetLevel.length} files merged</span>
+                          ) : (
+                            <>
+                              Columns: {phase3Results.outputs.adSetLevel.columns?.length || 0} fields
+                              {phase3Results.outputs.adSetLevel.size && (
+                                <span> • {Math.round(phase3Results.outputs.adSetLevel.size / 1024)} KB</span>
+                              )}
+                            </>
                           )}
                         </p>
                         {phase3Results.outputs.adSetLevel.savedAt && (
@@ -530,9 +701,15 @@ export default function ReportsPage() {
                           </button>
                         </div>
                         <p className="text-xs text-purple-600 mt-2">
-                          Columns: {phase3Results.outputs.adLevel.columns.length} fields
-                          {phase3Results.outputs.adLevel.size && (
-                            <span> • {Math.round(phase3Results.outputs.adLevel.size / 1024)} KB</span>
+                          {Array.isArray(phase3Results.outputs.adLevel) ? (
+                            <span>Batches: {phase3Results.outputs.adLevel.length} files merged</span>
+                          ) : (
+                            <>
+                              Columns: {phase3Results.outputs.adLevel.columns?.length || 0} fields
+                              {phase3Results.outputs.adLevel.size && (
+                                <span> • {Math.round(phase3Results.outputs.adLevel.size / 1024)} KB</span>
+                              )}
+                            </>
                           )}
                         </p>
                         {phase3Results.outputs.adLevel.savedAt && (

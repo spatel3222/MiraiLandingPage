@@ -19,6 +19,7 @@ interface RetrievalResult {
   platform: 'meta' | 'google' | 'shopify'
   success: boolean
   rowCount: number
+  processedRowCount?: number
   dateRange: {
     min: string | null
     max: string | null
@@ -644,8 +645,24 @@ export default function DataRetrieval({
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Rows Retrieved:</span>
-                      <span className="font-medium text-gray-900">{result.rowCount.toLocaleString()}</span>
+                      <span className="font-medium text-gray-900">
+                        {result.rowCount.toLocaleString()}
+                      </span>
                     </div>
+                    
+                    {result.processedRowCount && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Rows for Processing:</span>
+                        <span className="font-medium text-green-600">
+                          {result.processedRowCount.toLocaleString()}
+                          <span className="text-xs text-gray-500 ml-1">
+                            {result.processedRowCount === result.rowCount ? 
+                              '(full dataset - batch processing)' : 
+                              '(partial dataset)'}
+                          </span>
+                        </span>
+                      </div>
+                    )}
                     
                     {result.dateRange.min && result.dateRange.max && (
                       <div className="text-sm">

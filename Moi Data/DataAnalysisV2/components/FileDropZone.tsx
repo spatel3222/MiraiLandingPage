@@ -57,7 +57,7 @@ export default function FileDropZone({ platform, onFileSelect, validationResult 
         <div className="text-green-600">
           <CheckCircleIcon className="w-8 h-8 mx-auto mb-2" />
           <p className="font-medium">File validated successfully</p>
-          <p className="text-sm">{validationResult.rowCount} rows detected</p>
+          <p className="text-sm">{validationResult.rowCount.toLocaleString()} rows detected</p>
         </div>
       ) : validationResult?.hasErrors ? (
         <div className="text-red-600">

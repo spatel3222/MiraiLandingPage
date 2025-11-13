@@ -92,9 +92,13 @@ export const PLATFORM_SCHEMAS: Record<Platform, {
 
 export async function validateCSV(platform: Platform, file: File): Promise<ValidationResult> {
   return new Promise(async (resolve) => {
+    // Get accurate row count efficiently
+    const fileText = await file.text()
+    const actualRowCount = fileText.split('\n').filter(line => line.trim().length > 0).length - 1 // -1 for header
+    
     Papa.parse(file, {
       header: true,
-      preview: 100,
+      preview: 100, // Keep preview for performance, but we now have actual count
       complete: async (results) => {
         const csvHeaders = results.meta.fields || []
         
@@ -123,7 +127,7 @@ export async function validateCSV(platform: Platform, file: File): Promise<Valid
               message: warning,
               howToFix: 'Extra columns will be ignored during upload'
             })),
-            rowCount: results.data.length,
+            rowCount: actualRowCount,
             columnCount: csvHeaders.length,
             dateRange: null
           })
@@ -131,7 +135,7 @@ export async function validateCSV(platform: Platform, file: File): Promise<Valid
         }
         
         // If strict validation passes, continue with data validation
-        const validation = performValidation(platform, results.data, csvHeaders)
+        const validation = performValidation(platform, results.data, csvHeaders, actualRowCount)
         resolve(validation)
       },
       error: (error) => {
@@ -162,7 +166,7 @@ export async function validateCSV(platform: Platform, file: File): Promise<Valid
   })
 }
 
-function performValidation(platform: Platform, data: any[], headers: string[]): ValidationResult {
+function performValidation(platform: Platform, data: any[], headers: string[], actualRowCount?: number): ValidationResult {
   const schema = PLATFORM_SCHEMAS[platform]
   const errors: ValidationError[] = []
   const warnings: ValidationWarning[] = []
@@ -426,7 +430,7 @@ function performValidation(platform: Platform, data: any[], headers: string[]): 
     needsCorrection: warnings.length > 0,
     errors,
     warnings,
-    rowCount: data.length,
+    rowCount: actualRowCount || data.length,
     columnCount: headers.length,
     dateRange: detectDateRange(data, dateColumn)
   }

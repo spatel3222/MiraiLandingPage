@@ -101,22 +101,22 @@ export default async function handler(req, res) {
           }
         }
 
+        // All rows will be processed - no limits
+        const processedRowCount = rowCount
+        console.log(`🔧 DEBUG: ${platform.name} - retrievedRows: ${rowCount}, processedRows: ${processedRowCount} (FULL DATASET)`)
+        
         results.push({
           platform: platform.name,
           success: true,
-          rowCount: rowCount,
+          rowCount, // Total rows retrieved from database
+          processedRowCount, // Rows that will be processed by Julius V7
           dateRange: dateRangeActual,
           sampleData: platformData && platformData.length > 0 ? [platformData[0]] : []
         })
 
-        // For Julius V7 processing, limit data size to stay under 1MB POST body limit
-        // Conservative limit based on shopify row size being ~700 bytes each
-        if (platformData && platformData.length > 1000) {
-          console.log(`Large dataset detected for ${platform.name}: ${platformData.length} rows. Limiting to 800 rows for Julius V7 processing to stay under 1MB limit.`)
-          data[platform.name] = platformData.slice(0, 800) // Conservative limit to ensure under 1MB POST body
-        } else {
-          data[platform.name] = platformData
-        }
+        // Store ALL data - no truncation for Julius V7 processing
+        data[platform.name] = platformData
+        console.log(`${platform.name}: Full dataset stored - ${platformData.length} rows for complete Julius V7 processing`)
 
         console.log(`${platform.name}: ${rowCount} rows retrieved`)
 

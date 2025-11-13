@@ -126,13 +126,34 @@ export class JuliusV7Engine {
         size: Array.isArray(platformData) ? platformData.length : 0
       }
       
-      // Schema validation - check required columns
-      const requiredColumns = this.getRequiredColumns(platform)
-      console.log(`🔍 Debug ${platform} required columns:`, JSON.stringify(requiredColumns))
+      // Schema validation - check required columns with alternatives
+      const requiredColumnSpecs = this.getRequiredColumnSpecs(platform)
       const actualColumns = platformData.length > 0 ? Object.keys(platformData[0]) : []
-      console.log(`🔍 Debug ${platform} actual columns count:`, actualColumns.length)
       console.log(`🔍 Debug ${platform} actual columns:`, JSON.stringify(actualColumns))
-      const missingColumns = requiredColumns.filter(col => !actualColumns.includes(col))
+      
+      const missingColumns = []
+      const foundColumns = []
+      
+      requiredColumnSpecs.forEach(colSpec => {
+        if (Array.isArray(colSpec)) {
+          // Check alternatives [preferred, alternative]
+          const found = colSpec.find(altCol => actualColumns.includes(altCol))
+          if (found) {
+            foundColumns.push(found)
+          } else {
+            missingColumns.push(colSpec[0]) // Use preferred name for error
+          }
+        } else {
+          // Single required column
+          if (actualColumns.includes(colSpec)) {
+            foundColumns.push(colSpec)
+          } else {
+            missingColumns.push(colSpec)
+          }
+        }
+      })
+      
+      console.log(`🔍 Debug ${platform} found columns:`, JSON.stringify(foundColumns))
       console.log(`🔍 Debug ${platform} missing columns:`, JSON.stringify(missingColumns))
       
       validation.schemaValidation[platform] = {
@@ -175,14 +196,44 @@ export class JuliusV7Engine {
   /**
    * Get required columns for each platform from notebook specification
    */
-  getRequiredColumns(platform) {
-    // Updated to match actual API column names from database
+  getRequiredColumnSpecs(platform) {
+    // Support both API format and Facebook export format
     const requiredColumns = {
-      meta: ['Day', 'Campaign', 'Ad Set', 'Ad', 'Spend', 'CPM', 'CTR', 'Impressions', 'Clicks'],
-      google: ['Day', 'Campaign', 'Spend', 'CPM', 'CTR', 'Impressions', 'Clicks'],
-      shopify: ['Day', 'UTM Campaign', 'Sessions', 'Orders', 'Revenue', 'Page Views', 'Average Session Duration']
+      meta: [
+        'Day', 
+        ['Campaign', 'Campaign name'], 
+        ['Ad Set', 'Ad set name'], 
+        ['Ad', 'Ad name'], 
+        ['Spend', 'Amount spent (INR)'], 
+        ['CPM', 'CPM (cost per 1,000 impressions)'], 
+        ['CTR', 'CTR (link click-through rate)']
+      ],
+      google: [
+        'Day', 
+        'Campaign', 
+        ['Spend', 'Cost'], 
+        ['CPM', 'Avg. CPM'], 
+        'CTR'
+      ],
+      shopify: [
+        'Day', 
+        ['UTM Campaign', 'UTM campaign'], 
+        ['Sessions', 'Online store visitors'], 
+        ['Orders', 'Sessions that completed checkout'], 
+        ['ATC', 'Sessions with cart additions'], 
+        'Average session duration', 
+        'Pageviews'
+      ]
     }
+    
     return requiredColumns[platform] || []
+  }
+
+  getRequiredColumns(platform) {
+    // Flatten column alternatives for backward compatibility
+    const platformCols = this.getRequiredColumnSpecs(platform)
+    const flatColumns = platformCols.map(col => Array.isArray(col) ? col[0] : col)
+    return flatColumns
   }
   
   /**
@@ -190,11 +241,17 @@ export class JuliusV7Engine {
    */
   hasEssentialFields(row, platform) {
     if (platform === 'meta') {
-      return row['Campaign'] && row['Spend'] !== undefined
+      const campaign = row['Campaign'] || row['Campaign name']
+      const spend = row['Spend'] || row['Amount spent (INR)']
+      return campaign && spend !== undefined
     } else if (platform === 'google') {
-      return row['Campaign'] && row['Spend'] !== undefined
+      const campaign = row['Campaign']
+      const spend = row['Spend'] || row['Cost']
+      return campaign && spend !== undefined
     } else if (platform === 'shopify') {
-      return row['UTM Campaign'] && row['Sessions'] !== undefined
+      const campaign = row['UTM Campaign'] || row['UTM campaign']
+      const sessions = row['Sessions'] || row['Online store visitors']
+      return campaign && sessions !== undefined
     }
     return true
   }
