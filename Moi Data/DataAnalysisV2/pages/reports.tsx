@@ -181,9 +181,9 @@ export default function ReportsPage() {
           [platform]: batch,
           // Add empty arrays for other platforms
           ...(['meta', 'google', 'shopify'].filter(p => p !== platform).reduce((acc, p) => {
-            acc[p] = []
+            (acc as any)[p] = []
             return acc
-          }, {}))
+          }, {} as Record<string, any[]>))
         }
         
         console.log(`🚀 Processing ${platform} batch ${batchIndex + 1}/${batches.length} (${batch.length} rows)`)
