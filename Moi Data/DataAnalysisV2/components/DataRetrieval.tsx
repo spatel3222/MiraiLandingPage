@@ -318,7 +318,7 @@ export default function DataRetrieval({
           } catch (error) {
             console.error('Error fetching actual data:', error)
             // Show user-friendly error but don't break the flow
-            setRetrievalResults(finalData.results.map(r => ({
+            setRetrievalResults(finalData.results.map((r: any) => ({
               ...r,
               success: false,
               error: 'Failed to retrieve data for Julius V7 processing'
