@@ -153,7 +153,7 @@ export default function ReportsPage() {
   const processLargeDataset = async () => {
     // Process each platform separately to avoid 1MB limit
     const BATCH_SIZE = 500
-    const platforms = ['meta', 'google', 'shopify'].filter(p => retrievedData[p]?.length > 0)
+    const platforms = (['meta', 'google', 'shopify'] as const).filter(p => retrievedData[p as keyof typeof retrievedData]?.length > 0)
     
     console.log(`📋 Processing ${platforms.length} platforms with batch size ${BATCH_SIZE}`)
     
