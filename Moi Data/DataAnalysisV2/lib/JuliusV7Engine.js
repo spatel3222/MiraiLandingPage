@@ -43,7 +43,7 @@ export class JuliusV7Engine {
       console.log('✅ Attribution logic with validation completed')
       
       // Step 5: Business Logic Validation (7.4) - Good leads definition
-      const businessMetricsData = await this.businessLogicValidation(attributedData)
+      const businessMetricsData = await this.calculateBusinessMetrics(attributedData.data)
       console.log('✅ Business logic validation completed')
       
       // Step 6: Empirical Bayes Shrinkage with exact notebook formula
@@ -51,17 +51,17 @@ export class JuliusV7Engine {
       console.log('✅ Empirical Bayes shrinkage (notebook logic) applied')
       
       // Step 7: Scoring with exact notebook formula (0.4*efficiency + 0.4*quality + 0.2*volume)
-      const scoredData = await this.generateNotebookScores(shrunkData)
+      const scoredData = await this.generatePerformanceScores(shrunkData)
       console.log('✅ Performance scores (notebook logic) generated')
       
       // Step 8: Output Validation and Final CSVs (7.5-7.7)
-      const validatedOutputs = await this.outputValidationAndCreation(scoredData, dateRange)
+      const validatedOutputs = await this.createAggregatedViews(scoredData, dateRange)
       console.log('✅ Output validation and CSV creation completed')
       
       return {
         success: true,
-        outputs: validatedOutputs.outputs,
-        validation: validatedOutputs.validation,
+        outputs: validatedOutputs,
+        validation: validatedOutputs.validation || {},
         summary: this.generateProcessingSummary(scoredData, dateRange)
       }
       
@@ -76,6 +76,24 @@ export class JuliusV7Engine {
    */
   async preProcessingValidation(rawData, platforms, dateRange) {
     console.log('📋 Starting Pre-Processing Validation...')
+    console.log('🔍 Raw data structure:', Object.keys(rawData || {}))
+    console.log('🔍 Platforms to process:', platforms)
+    
+    // Enhanced debugging
+    if (rawData) {
+      Object.keys(rawData).forEach(platform => {
+        const platformData = rawData[platform]
+        console.log(`🔍 ${platform} detailed info:`, {
+          exists: !!platformData,
+          type: typeof platformData,
+          isArray: Array.isArray(platformData),
+          length: Array.isArray(platformData) ? platformData.length : 'N/A',
+          firstRowSample: Array.isArray(platformData) && platformData.length > 0 ? Object.keys(platformData[0]).slice(0, 5) : 'No data'
+        })
+      })
+    } else {
+      console.log('🔍 rawData is null/undefined')
+    }
     const validation = {
       fileIntegrity: {},
       schemaValidation: {},
@@ -94,16 +112,28 @@ export class JuliusV7Engine {
       }
       
       const platformData = rawData[platform]
+      console.log(`🔍 Debug ${platform} data type:`, typeof platformData, 'isArray:', Array.isArray(platformData), 'length:', platformData?.length)
+      
+      // Debug: Log first few rows
+      if (Array.isArray(platformData) && platformData.length > 0) {
+        console.log(`🔍 Debug ${platform} first row keys:`, Object.keys(platformData[0]))
+        console.log(`🔍 Debug ${platform} first row sample:`, JSON.stringify(platformData[0]).substring(0, 200))
+      }
+      
       validation.fileIntegrity[platform] = { 
         present: true, 
         readable: true, 
-        size: platformData.length 
+        size: Array.isArray(platformData) ? platformData.length : 0
       }
       
       // Schema validation - check required columns
       const requiredColumns = this.getRequiredColumns(platform)
+      console.log(`🔍 Debug ${platform} required columns:`, JSON.stringify(requiredColumns))
       const actualColumns = platformData.length > 0 ? Object.keys(platformData[0]) : []
+      console.log(`🔍 Debug ${platform} actual columns count:`, actualColumns.length)
+      console.log(`🔍 Debug ${platform} actual columns:`, JSON.stringify(actualColumns))
       const missingColumns = requiredColumns.filter(col => !actualColumns.includes(col))
+      console.log(`🔍 Debug ${platform} missing columns:`, JSON.stringify(missingColumns))
       
       validation.schemaValidation[platform] = {
         requiredPresent: missingColumns.length === 0,
@@ -113,7 +143,7 @@ export class JuliusV7Engine {
       
       // Date range coverage check
       const dateField = platform === 'meta' ? 'Day' : 'Day'
-      const dates = platformData.map(row => row[dateField]).filter(Boolean)
+      const dates = Array.isArray(platformData) ? platformData.map(row => row[dateField]).filter(Boolean) : []
       const uniqueDates = [...new Set(dates)]
       
       validation.dateCoverage[platform] = {
@@ -124,9 +154,9 @@ export class JuliusV7Engine {
       }
       
       // Basic cleaning - remove rows with missing essential fields
-      const cleanedData = platformData.filter(row => {
+      const cleanedData = Array.isArray(platformData) ? platformData.filter(row => {
         return row && row.Day && this.hasEssentialFields(row, platform)
-      })
+      }) : []
       
       extractedData[platform] = cleanedData
       validation.totalRows += cleanedData.length
@@ -146,10 +176,11 @@ export class JuliusV7Engine {
    * Get required columns for each platform from notebook specification
    */
   getRequiredColumns(platform) {
+    // Updated to match actual API column names from database
     const requiredColumns = {
-      meta: ['Day', 'Campaign name', 'Ad set name', 'Ad name', 'Amount spent (INR)', 'CPM (cost per 1,000 impressions)', 'CTR (link click-through rate)'],
-      google: ['Day', 'Campaign', 'Cost', 'Avg. CPM', 'CTR'],
-      shopify: ['Day', 'UTM campaign', 'UTM term', 'UTM content', 'Online store visitors', 'Sessions that completed checkout', 'Sessions that reached checkout', 'Sessions with cart additions', 'Average session duration', 'Pageviews']
+      meta: ['Day', 'Campaign', 'Ad Set', 'Ad', 'Spend', 'CPM', 'CTR', 'Impressions', 'Clicks'],
+      google: ['Day', 'Campaign', 'Spend', 'CPM', 'CTR', 'Impressions', 'Clicks'],
+      shopify: ['Day', 'UTM Campaign', 'Sessions', 'Orders', 'Revenue', 'Page Views', 'Average Session Duration']
     }
     return requiredColumns[platform] || []
   }
@@ -159,11 +190,11 @@ export class JuliusV7Engine {
    */
   hasEssentialFields(row, platform) {
     if (platform === 'meta') {
-      return row['Campaign name'] && row['Amount spent (INR)'] !== undefined
+      return row['Campaign'] && row['Spend'] !== undefined
     } else if (platform === 'google') {
-      return row['Campaign'] && row['Cost'] !== undefined
+      return row['Campaign'] && row['Spend'] !== undefined
     } else if (platform === 'shopify') {
-      return row['UTM campaign'] && row['Online store visitors'] !== undefined
+      return row['UTM Campaign'] && row['Sessions'] !== undefined
     }
     return true
   }
@@ -209,22 +240,22 @@ export class JuliusV7Engine {
       
       console.log(`🧹 Applying quality validation to ${data.length} rows in ${platform}...`)
       
-      const platformCleaned = data.map(row => {
+      const platformCleaned = Array.isArray(data) ? data.map(row => {
         const cleanedRow = { ...row }
         
         // Numeric bounds validation
         if (platform === 'meta' || platform === 'google') {
-          const spendField = platform === 'meta' ? 'Amount spent (INR)' : 'Cost'
+          const spendField = 'Spend'
           cleanedRow[spendField] = this.validateNumericBounds(row[spendField], { min: 0, max: 1000000 })
           
-          const ctrField = platform === 'meta' ? 'CTR (link click-through rate)' : 'CTR'
+          const ctrField = 'CTR'
           if (row[ctrField] !== undefined) {
             // CTR should be 0-100% for display, 0-1 for calculation
             const ctrValue = this.parseNumeric(row[ctrField])
             cleanedRow[ctrField] = this.validateNumericBounds(ctrValue, { min: 0, max: 100 })
           }
           
-          const cpmField = platform === 'meta' ? 'CPM (cost per 1,000 impressions)' : 'Avg. CPM'
+          const cpmField = 'CPM'
           if (row[cpmField] !== undefined) {
             cleanedRow[cpmField] = this.validateNumericBounds(row[cpmField], { min: 0, max: 10000 })
           }
@@ -249,9 +280,9 @@ export class JuliusV7Engine {
         
         // Text data validation and cleaning
         if (platform === 'meta') {
-          cleanedRow['Campaign name'] = this.validateAndCleanText(row['Campaign name'])
-          cleanedRow['Ad set name'] = this.validateAndCleanText(row['Ad set name'])
-          cleanedRow['Ad name'] = this.validateAndCleanText(row['Ad name'])
+          cleanedRow['Campaign'] = this.validateAndCleanText(row['Campaign'])
+          cleanedRow['Ad Set'] = this.validateAndCleanText(row['Ad Set'])
+          cleanedRow['Ad'] = this.validateAndCleanText(row['Ad'])
         } else if (platform === 'google') {
           cleanedRow['Campaign'] = this.validateAndCleanText(row['Campaign'])
         } else if (platform === 'shopify') {
@@ -261,7 +292,7 @@ export class JuliusV7Engine {
         }
         
         return cleanedRow
-      }).filter(row => row.Day) // Remove rows with invalid dates
+      }).filter(row => row.Day) : [] // Remove rows with invalid dates
       
       cleanedData[platform] = platformCleaned
       qualityReport.cleanedRows += platformCleaned.length
@@ -286,7 +317,7 @@ export class JuliusV7Engine {
         continue
       }
       
-      const harmonized = data.map(row => {
+      const harmonized = Array.isArray(data) ? data.map(row => {
         let harmonizedRow = { ...row }
         
         // Normalize date format
@@ -310,7 +341,7 @@ export class JuliusV7Engine {
         harmonizedRow.CampaignNormalized = this.normalizeCampaignName(harmonizedRow.Campaign || harmonizedRow.CampaignMapped || '')
         
         return harmonizedRow
-      })
+      }) : []
       
       harmonizedData[platform] = harmonized
       console.log(`🔄 Harmonized ${harmonized.length} rows for ${platform}`)
@@ -325,18 +356,13 @@ export class JuliusV7Engine {
   harmonizeMetaFields(row) {
     const harmonized = { ...row }
     
-    // Map Meta field names to standard names based on actual data structure
+    // Map Meta field names to standard names based on actual API data structure
     const fieldMap = {
-      'Campaign name': 'Campaign',
-      'Ad set name': 'Ad Set',
-      'Adset name': 'Ad Set', 
-      'Ad name': 'Ad',
-      'Amount spent (INR)': 'Spend',
-      'Amount spent (USD)': 'Spend',
+      // API data already uses correct names (Campaign, Ad Set, Ad, Spend, CPM, CTR)
+      // Only map alternative field names that might appear
       'Link clicks': 'Clicks',
       'Cost per link click (USD)': 'CPC',
-      'CPM (cost per 1,000 impressions)': 'CPM',
-      'CTR (link click-through rate)': 'CTR'
+      'Adset name': 'Ad Set'  // Alternative name for Ad Set
     }
     
     Object.entries(fieldMap).forEach(([originalField, standardField]) => {
@@ -454,15 +480,15 @@ export class JuliusV7Engine {
     
     // Detect platform from Shopify URL using utm_source parameters
     const shopifyData = harmonizedData.shopify || []
-    const shopifyPlatformData = shopifyData.map(row => ({
+    const shopifyPlatformData = Array.isArray(shopifyData) ? shopifyData.map(row => ({
       ...row,
       detectedPlatform: this.detectPlatformFromURL(row['Landing page URL'] || '')
-    }))
+    })) : []
     
     // Separate Shopify data by detected platform
-    const shopifyMeta = shopifyPlatformData.filter(row => row.detectedPlatform === 'Meta')
-    const shopifyGoogle = shopifyPlatformData.filter(row => row.detectedPlatform === 'Google')
-    const shopifyUnknown = shopifyPlatformData.filter(row => row.detectedPlatform === 'Unknown')
+    const shopifyMeta = Array.isArray(shopifyPlatformData) ? shopifyPlatformData.filter(row => row.detectedPlatform === 'Meta') : []
+    const shopifyGoogle = Array.isArray(shopifyPlatformData) ? shopifyPlatformData.filter(row => row.detectedPlatform === 'Google') : []
+    const shopifyUnknown = Array.isArray(shopifyPlatformData) ? shopifyPlatformData.filter(row => row.detectedPlatform === 'Unknown') : []
     
     console.log(`📊 Shopify platform detection: Meta=${shopifyMeta.length}, Google=${shopifyGoogle.length}, Unknown=${shopifyUnknown.length}`)
     
@@ -482,10 +508,10 @@ export class JuliusV7Engine {
     console.log(`📊 Shopify aggregated: Meta=${shopifyMetaAgg.length}, Google=${shopifyGoogleAgg.length}`)
     
     // Apply attribution to Meta: Day + Campaign + Ad Set + Ad
-    const metaWithAttribution = (harmonizedData.meta || []).map(row => ({ ...row, attr_Visitors: 0, attribution_matched: false }))
+    const metaWithAttribution = Array.isArray(harmonizedData.meta) ? harmonizedData.meta.map(row => ({ ...row, attr_Visitors: 0, attribution_matched: false })) : []
     
     // Apply attribution to Google: Day + Campaign
-    const googleWithAttribution = (harmonizedData.google || []).map(row => ({ ...row, attr_Visitors: 0, attribution_matched: false }))
+    const googleWithAttribution = Array.isArray(harmonizedData.google) ? harmonizedData.google.map(row => ({ ...row, attr_Visitors: 0, attribution_matched: false })) : []
     
     const attributedData = {
       meta: metaWithAttribution,
@@ -554,7 +580,22 @@ export class JuliusV7Engine {
     const businessMetricsData = {}
     
     for (const [platform, data] of Object.entries(attributedData)) {
-      if (!data || data.length === 0) {
+      // Enhanced data validation with debugging
+      if (!data) {
+        console.log(`🔍 Debug: ${platform} data is null/undefined`)
+        businessMetricsData[platform] = []
+        continue
+      }
+      
+      if (!Array.isArray(data)) {
+        console.log(`🔍 Debug: ${platform} data is not array, type:`, typeof data)
+        console.log(`🔍 Debug: ${platform} data content:`, JSON.stringify(data).substring(0, 200))
+        businessMetricsData[platform] = []
+        continue
+      }
+      
+      if (data.length === 0) {
+        console.log(`🔍 Debug: ${platform} data array is empty`)
         businessMetricsData[platform] = []
         continue
       }
@@ -562,17 +603,38 @@ export class JuliusV7Engine {
       const enrichedData = data.map(row => {
         const businessMetrics = { ...row }
         
-        // Calculate business-specific metrics
+        // Calculate Julius V7 session analytics metrics
         if (platform === 'shopify') {
-          // Good Leads: Sessions with duration ≥60s AND pageviews ≥5
-          // For now, we'll estimate based on conversion rate and session quality
+          // Good Leads: Duration ≥60s AND Pageviews ≥5 (Julius V7 definition)
           businessMetrics.GoodLeads = this.estimateGoodLeads(row)
           businessMetrics.GoodLeadRate = businessMetrics.Sessions > 0 
             ? (businessMetrics.GoodLeads / businessMetrics.Sessions) 
             : 0
+          
+          // Session analytics as per Julius V7 specifications
+          businessMetrics.AddToCarts = row['Add to cart'] || row.AddToCarts || 0
+          businessMetrics.ReachedCheckout = row['Reached checkout'] || row.ReachedCheckout || 0
+          businessMetrics.AbandonedCheckout = businessMetrics.ReachedCheckout - (businessMetrics.Orders || 0)
+          businessMetrics.AvgSessionDuration = row['Average session duration'] || 0 // NO synthetic data
+          
+          // 1-minute+ user metrics - ONLY use real data
+          businessMetrics.UsersAbove1Min = row['Users with Session above 1 min'] || 0
+          businessMetrics.OneMinUserPercentage = businessMetrics.Sessions > 0 
+            ? (businessMetrics.UsersAbove1Min / businessMetrics.Sessions * 100) 
+            : 0
+          
+          // Qualified engagement metrics - ONLY use real data
+          businessMetrics.QualifiedUsers = row['Users with Above 5 page views and above 1 min'] || 0
+          businessMetrics.QualifiedATCs = row['ATC with session duration above 1 min'] || 0
+          businessMetrics.QualifiedCheckouts = row['Reached Checkout with session duration above 1 min'] || 0
+          
+          // Cost per engagement metrics
+          businessMetrics.CostPer1MinUser = businessMetrics.UsersAbove1Min > 0 
+            ? (businessMetrics.Spend / businessMetrics.UsersAbove1Min) 
+            : 0
         }
         
-        // Cost per metrics
+        // Enhanced cost metrics for Julius V7
         businessMetrics.CostPerUser = businessMetrics.Sessions > 0 
           ? (businessMetrics.Spend / businessMetrics.Sessions) 
           : 0
@@ -582,6 +644,25 @@ export class JuliusV7Engine {
         
         if (businessMetrics.GoodLeads > 0) {
           businessMetrics.CostPerGoodLead = businessMetrics.Spend / businessMetrics.GoodLeads
+        }
+        
+        // For Meta/Google platforms - ONLY use real data, no synthetic estimates
+        if (platform === 'meta' || platform === 'google') {
+          // Use actual data from row if available, otherwise 0 (no synthetic data)
+          businessMetrics.AddToCarts = row['ATC'] || 0
+          businessMetrics.ReachedCheckout = row['Reached Checkout'] || 0
+          businessMetrics.Conversions = row['Conversions'] || 0
+          businessMetrics.AvgSessionDuration = row['Average Session Duration'] || 0
+          businessMetrics.UsersAbove1Min = row['Users with Session above 1 min'] || 0
+          businessMetrics.OneMinUserPercentage = businessMetrics.Sessions > 0 && businessMetrics.UsersAbove1Min > 0
+            ? (businessMetrics.UsersAbove1Min / businessMetrics.Sessions * 100) 
+            : 0
+          businessMetrics.QualifiedUsers = row['Users with Above 5 page views and above 1 min'] || 0
+          businessMetrics.QualifiedATCs = row['ATC with session duration above 1 min'] || 0
+          businessMetrics.QualifiedCheckouts = row['Reached Checkout with session duration above 1 min'] || 0
+          businessMetrics.CostPer1MinUser = businessMetrics.UsersAbove1Min > 0 
+            ? (businessMetrics.Spend / businessMetrics.UsersAbove1Min) 
+            : 0
         }
         
         // ROAS calculation
@@ -615,15 +696,9 @@ export class JuliusV7Engine {
       return 0
     }
     
-    // Fallback estimation when detailed session data unavailable
-    // Use engagement heuristics based on conversion rates and session quality
-    const sessions = row.Sessions || 0
-    const conversionRate = row.ConversionRate || 0
-    
-    // Higher conversion rate suggests better engagement
-    const qualityScore = Math.min(0.8, conversionRate * 10 + 0.1)
-    
-    return Math.round(sessions * qualityScore)
+    // NO SYNTHETIC DATA - Use only real data from Julius V7 columns
+    // Use existing Julius V7 column: 'Users with Above 5 page views and above 1 min'
+    return row['Users with Above 5 page views and above 1 min'] || 0
   }
 
   /**
@@ -671,7 +746,7 @@ export class JuliusV7Engine {
       // Apply shrinkage to key metrics prone to small sample bias
       const shrinkageMetrics = ['CTR', 'ConversionRate', 'CPC', 'CostPerOrder']
       
-      shrunkData[platform] = data.map(row => {
+      shrunkData[platform] = Array.isArray(data) ? data.map(row => {
         const shrunkRow = { ...row }
         
         shrinkageMetrics.forEach(metric => {
@@ -689,9 +764,9 @@ export class JuliusV7Engine {
         })
         
         return shrunkRow
-      })
+      }) : []
       
-      console.log(`📊 Applied Empirical Bayes shrinkage to ${data.length} groups in ${platform}`)
+      console.log(`📊 Applied Empirical Bayes shrinkage to ${data?.length || 0} groups in ${platform}`)
     }
     
     return shrunkData
@@ -754,7 +829,7 @@ export class JuliusV7Engine {
       // Calculate global priors for each metric from all data
       const globalPriors = this.calculateGlobalPriors(data)
       
-      const shrunkRows = data.map(row => {
+      const shrunkRows = Array.isArray(data) ? data.map(row => {
         const shrunkRow = { ...row }
         
         // Apply Empirical Bayes to key metrics
@@ -773,7 +848,7 @@ export class JuliusV7Engine {
         })
         
         return shrunkRow
-      })
+      }) : []
       
       shrunkData[platform] = shrunkRows
       console.log(`🎯 Applied notebook Empirical Bayes (n0=${n0}) to ${shrunkRows.length} groups in ${platform}`)
@@ -792,9 +867,9 @@ export class JuliusV7Engine {
     const metrics = ['CTR', 'ConversionRate']
     
     metrics.forEach(metric => {
-      const validValues = data
+      const validValues = Array.isArray(data) ? data
         .filter(row => row[metric] !== undefined && !isNaN(row[metric]))
-        .map(row => row[metric])
+        .map(row => row[metric]) : []
       
       if (validValues.length > 0) {
         priors[metric] = validValues.reduce((sum, val) => sum + val, 0) / validValues.length
@@ -816,14 +891,14 @@ export class JuliusV7Engine {
         continue
       }
       
-      const scoredRows = data.map(row => {
+      const scoredRows = Array.isArray(data) ? data.map(row => {
         const scores = this.calculatePerformanceScores(row, platform)
         return {
           ...row,
           ...scores,
           Recommendation: this.generateRecommendation(scores.OverallScore)
         }
-      })
+      }) : []
       
       scoredData[platform] = scoredRows
       console.log(`⭐ Generated performance scores for ${scoredRows.length} groups in ${platform}`)
@@ -906,34 +981,24 @@ export class JuliusV7Engine {
     const dates = this.getDateRange(dateRange.startDate, dateRange.endDate)
     
     dates.forEach(date => {
+      // Top Metrics as per Julius V7 specifications
       const dayData = {
         Date: date,
-        Meta_Spend: 0,
-        Meta_Impressions: 0,
-        Meta_Clicks: 0,
-        Meta_CTR: 0,
-        Meta_CPM: 0,
-        Meta_Users: 0,
-        Google_Spend: 0,
-        Google_Impressions: 0,
-        Google_Clicks: 0,
-        Google_CTR: 0,
-        Google_CPM: 0,
-        Google_Users: 0,
-        Shopify_Sessions: 0,
-        Shopify_Revenue: 0,
-        Shopify_Orders: 0,
-        Shopify_Conversion_Rate: 0,
-        Total_Spend: 0,
-        Total_Users: 0,
-        Total_Revenue: 0,
-        ROAS: 0,
-        Good_Leads: 0,
-        Cost_Per_Good_Lead: 0,
-        Quality_Score: 0,
-        Efficiency_Score: 0,
-        Volume_Score: 0,
-        Overall_Score: 0
+        'Meta Spend': 0,
+        'Meta CTR': 0,
+        'Meta CPM': 0,
+        'Google Spend': 0,
+        'Google CTR': 0,
+        'Google CPM': 0,
+        'Shopify Total Users': 0,
+        'Shopify Total ATC': 0,
+        'Shopify Total Reached Checkout': 0,
+        'Shopify Total Abandoned Checkout': 0,
+        'Shopify Session Duration': 0,
+        'Users with Session above 1 min': 0,
+        'Users with Above 5 page views and above 1 min': 0,
+        'ATC with session duration above 1 min': 0,
+        'Reached Checkout with session duration above 1 min': 0
       }
       
       // Aggregate platform data for this date
@@ -943,60 +1008,32 @@ export class JuliusV7Engine {
           const platformAgg = this.aggregatePlatformDay(platformDayData)
           
           if (platform === 'meta') {
-            dayData.Meta_Spend = platformAgg.Spend
-            dayData.Meta_Impressions = platformAgg.Impressions
-            dayData.Meta_Clicks = platformAgg.Clicks
-            dayData.Meta_CTR = platformAgg.CTR
-            dayData.Meta_CPM = platformAgg.CPM
-            dayData.Meta_Users = platformAgg.Sessions
+            dayData['Meta Spend'] = platformAgg.Spend || 0
+            dayData['Meta CTR'] = platformAgg.CTR || 0
+            dayData['Meta CPM'] = platformAgg.CPM || 0
           } else if (platform === 'google') {
-            dayData.Google_Spend = platformAgg.Spend
-            dayData.Google_Impressions = platformAgg.Impressions
-            dayData.Google_Clicks = platformAgg.Clicks
-            dayData.Google_CTR = platformAgg.CTR
-            dayData.Google_CPM = platformAgg.CPM
-            dayData.Google_Users = platformAgg.Sessions
+            dayData['Google Spend'] = platformAgg.Spend || 0
+            dayData['Google CTR'] = platformAgg.CTR || 0
+            dayData['Google CPM'] = platformAgg.CPM || 0
           } else if (platform === 'shopify') {
-            dayData.Shopify_Sessions = platformAgg.Sessions
-            dayData.Shopify_Revenue = platformAgg.Revenue
-            dayData.Shopify_Orders = platformAgg.Orders
-            dayData.Shopify_Conversion_Rate = platformAgg.ConversionRate
+            // Extract session analytics from Shopify data
+            dayData['Shopify Total Users'] = platformAgg.Sessions || 0
+            dayData['Shopify Total ATC'] = platformAgg.AddToCarts || 0
+            dayData['Shopify Total Reached Checkout'] = platformAgg.ReachedCheckout || 0
+            dayData['Shopify Total Abandoned Checkout'] = platformAgg.AbandonedCheckout || 0
+            dayData['Shopify Session Duration'] = platformAgg.AvgSessionDuration || 0
+            // Calculate session-based metrics using Julius V7 good_lead_flag
+            const goodLeadUsers = platformAgg.GoodLeadUsers || 0 // Duration ≥60s AND Pageviews ≥5
+            dayData['Users with Session above 1 min'] = goodLeadUsers
+            dayData['Users with Above 5 page views and above 1 min'] = goodLeadUsers
+            dayData['ATC with session duration above 1 min'] = platformAgg.QualifiedATCs || 0
+            dayData['Reached Checkout with session duration above 1 min'] = platformAgg.QualifiedCheckouts || 0
           }
         }
       })
       
-      // Calculate totals and business metrics
-      dayData.Total_Spend = dayData.Meta_Spend + dayData.Google_Spend
-      dayData.Total_Users = dayData.Meta_Users + dayData.Google_Users + dayData.Shopify_Sessions
-      dayData.Total_Revenue = dayData.Shopify_Revenue
-      dayData.ROAS = dayData.Total_Spend > 0 ? dayData.Total_Revenue / dayData.Total_Spend : 0
-      
-      // Aggregate business metrics across platforms
-      let totalGoodLeads = 0
-      let totalQuality = 0
-      let totalEfficiency = 0
-      let totalVolume = 0
-      let platformCount = 0
-      
-      this.platforms.forEach(platform => {
-        if (scoredData[platform]) {
-          const platformDayData = scoredData[platform].filter(row => row.Day === date)
-          platformDayData.forEach(row => {
-            totalGoodLeads += row.GoodLeads || 0
-            totalQuality += row.QualityScore || 0
-            totalEfficiency += row.EfficiencyScore || 0
-            totalVolume += row.VolumeScore || 0
-            platformCount++
-          })
-        }
-      })
-      
-      dayData.Good_Leads = totalGoodLeads
-      dayData.Cost_Per_Good_Lead = dayData.Good_Leads > 0 ? dayData.Total_Spend / dayData.Good_Leads : 0
-      dayData.Quality_Score = platformCount > 0 ? totalQuality / platformCount : 0
-      dayData.Efficiency_Score = platformCount > 0 ? totalEfficiency / platformCount : 0
-      dayData.Volume_Score = platformCount > 0 ? totalVolume / platformCount : 0
-      dayData.Overall_Score = (dayData.Efficiency_Score * 0.4) + (dayData.Quality_Score * 0.4) + (dayData.Volume_Score * 0.2)
+      // Top Metrics complete - no additional calculations needed
+      // Julius V7 specifications focused on session analytics
       
       summary.push(dayData)
     })
@@ -1013,25 +1050,25 @@ export class JuliusV7Engine {
     if (scoredData.meta) {
       scoredData.meta.forEach(row => {
         if (row['Ad Set']) {
+          // AdSet Metrics as per Julius V7 specifications
           adSetSummary.push({
             Date: row.Day,
-            Campaign_Name: row.Campaign,
-            Ad_Set_Name: row['Ad Set'],
-            Ad_Set_Delivery: 'Active', // Default assumption
-            Spent: row.Spend,
-            Impressions: row.Impressions,
-            Clicks: row.Clicks,
-            CTR: row.CTR_Shrunk || row.CTR,
-            Cost_Per_User: row.CostPerUser,
-            Users: row.Sessions || 0,
-            Good_Leads: row.GoodLeads || 0,
-            Cost_Per_Good_Lead: row.CostPerGoodLead || 0,
-            Conversion_Rate: row.ConversionRate_Shrunk || row.ConversionRate || 0,
-            Quality_Score: row.QualityScore,
-            Efficiency_Score: row.EfficiencyScore,
-            Volume_Score: row.VolumeScore,
-            Overall_Score: row.OverallScore,
-            Recommendation: row.Recommendation
+            'Campaign name': row.Campaign,
+            'Ad Set Name': row['Ad Set'],
+            'Ad Set Delivery': 'Active',
+            'Spent': row.Spend,
+            'Cost per user': row.CostPerUser || (row.Spend / (row.Sessions || 1)),
+            'Users': row.Sessions || 0,
+            'ATC': row.AddToCarts || 0,
+            'Reached Checkout': row.ReachedCheckout || 0,
+            'Conversions': row.Conversions || 0,
+            'Average session duration': row.AvgSessionDuration || 0,
+            'Cost per 1 min user': row.CostPer1MinUser || 0,
+            '1min user/ total users (%)': row.OneMinUserPercentage || 0,
+            'Users with Session above 1 min': row.UsersAbove1Min || 0,
+            'ATC with session duration above 1 min': row.QualifiedATCs || 0,
+            'Reached Checkout with session duration above 1 min': row.QualifiedCheckouts || 0,
+            'Users with Above 5 page views and above 1 min': row.QualifiedUsers || 0
           })
         }
       })
@@ -1049,23 +1086,27 @@ export class JuliusV7Engine {
     if (scoredData.meta) {
       scoredData.meta.forEach(row => {
         if (row.Ad) {
+          // Ad-level Metrics as per Julius V7 specifications
           adSummary.push({
             Date: row.Day,
-            Campaign_Name: row.Campaign,
-            Ad_Set_Name: row['Ad Set'],
-            Ad_Name: row.Ad,
-            Spent: row.Spend,
-            Impressions: row.Impressions,
-            Clicks: row.Clicks,
-            CTR: row.CTR_Shrunk || row.CTR,
-            Cost_Per_User: row.CostPerUser,
-            Users: row.Sessions || 0,
-            Good_Leads: row.GoodLeads || 0,
-            Cost_Per_Good_Lead: row.CostPerGoodLead || 0,
-            Conversion_Rate: row.ConversionRate_Shrunk || row.ConversionRate || 0,
-            Performance_Score: row.OverallScore,
-            Recommendation: row.Recommendation,
-            Shrinkage_Applied: row.CTR_ShrinkageApplied || false
+            'Campaign name': row.Campaign,
+            'Ad Set Name': row['Ad Set'],
+            'Ad Name': row.Ad,
+            'Ad Set Delivery': 'Active',
+            'Spent': row.Spend,
+            'CTR': row.CTR_Shrunk || row.CTR || 0,
+            'Cost per user': row.CostPerUser || (row.Spend / (row.Sessions || 1)),
+            'Users': row.Sessions || 0,
+            'ATC': row.AddToCarts || 0,
+            'Reached Checkout': row.ReachedCheckout || 0,
+            'Conversions': row.Conversions || 0,
+            'Average session duration': row.AvgSessionDuration || 0,
+            'Cost per 1 min user': row.CostPer1MinUser || 0,
+            '1min user/ total users (%)': row.OneMinUserPercentage || 0,
+            'Users with Session above 1 min': row.UsersAbove1Min || 0,
+            'ATC with session duration above 1 min': row.QualifiedATCs || 0,
+            'Reached Checkout with session duration above 1 min': row.QualifiedCheckouts || 0,
+            'Users with Above 5 page views and above 1 min': row.QualifiedUsers || 0
           })
         }
       })
