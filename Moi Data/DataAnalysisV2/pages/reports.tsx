@@ -23,6 +23,7 @@ export default function ReportsPage() {
     shopify: null
   })
 
+  const [hasRetrievedData, setHasRetrievedData] = useState(false)
   const [isRetrieving, setIsRetrieving] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
   const [phase3Results, setPhase3Results] = useState<any>(null)
@@ -31,6 +32,7 @@ export default function ReportsPage() {
     setDateRange(newRange)
     // Clear previous data when date range changes
     setRetrievedData({ meta: null, google: null, shopify: null })
+    setHasRetrievedData(false)
   }
 
   const handleDataRetrieved = (data: typeof retrievedData) => {
@@ -40,13 +42,14 @@ export default function ReportsPage() {
       shopify: data.shopify ? (Array.isArray(data.shopify) ? `${data.shopify.length} rows` : 'Not array') : 'null'
     })
     setRetrievedData(data)
+    setHasRetrievedData(true) // Mark that data retrieval was successful
     // Clear previous Phase 3 results when new data is retrieved
     setPhase3Results(null)
-    console.log('📊 Phase 3 section should now be visible:', !!(data.meta || data.google || data.shopify))
+    console.log('📊 Phase 3 section should now be visible:', true)
   }
 
   const handlePhase3Processing = async () => {
-    if (!retrievedData.meta && !retrievedData.google && !retrievedData.shopify) {
+    if (!hasRetrievedData) {
       alert('Please retrieve data first before processing Phase 3 analytics')
       return
     }
@@ -56,13 +59,17 @@ export default function ReportsPage() {
     try {
       console.log('🚀 Starting Phase 3 Julius V7 processing with streaming batches...')
       
-      // Check total data size and decide processing approach
+      // Check if we have actual data or need to use streaming approach
       const totalRows = (retrievedData.meta?.length || 0) + (retrievedData.google?.length || 0) + (retrievedData.shopify?.length || 0)
-      console.log(`📊 Total rows to process: ${totalRows}`)
+      console.log(`📊 Data in retrievedData: ${totalRows} rows`)
       
-      if (totalRows > 1000) {
-        // Use streaming approach for large datasets
-        console.log('📡 Using streaming processing for large dataset')
+      if (totalRows === 0) {
+        // No data in retrievedData means large dataset using streaming API
+        console.log('📡 Using streaming API approach for large dataset (empty retrievedData)')
+        await processLargeDatasetViaAPI()
+      } else if (totalRows > 1000) {
+        // Use batching approach for datasets with actual data > 1000 rows
+        console.log('📡 Using client-side batch processing for large dataset')
         await processLargeDataset()
       } else {
         // Use original approach for small datasets
@@ -105,6 +112,96 @@ export default function ReportsPage() {
       console.log('✅ Phase 3 processing completed successfully')
     } else {
       throw new Error(result.error || 'Processing failed')
+    }
+  }
+
+  const processLargeDatasetViaAPI = async () => {
+    // Use streaming API to get data in batches and process via Julius V7
+    console.log('🌊 Starting streaming API approach for large dataset processing')
+    
+    const response = await fetch('/api/retrieve-data-stream', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        startDate: dateRange.startDate,
+        endDate: dateRange.endDate,
+        reportType: dateRange.quickFilter || 'custom'
+      })
+    })
+
+    if (!response.ok) {
+      throw new Error('Streaming API failed')
+    }
+
+    const reader = response.body?.getReader()
+    if (!reader) {
+      throw new Error('No reader available')
+    }
+
+    const decoder = new TextDecoder()
+    let allPlatformData: any = { meta: [], google: [], shopify: [] }
+    
+    try {
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+
+        const chunk = decoder.decode(value)
+        const lines = chunk.split('\n')
+
+        for (const line of lines) {
+          if (line.trim() && line.startsWith('data: ')) {
+            const data = line.slice(6)
+            if (data === '[DONE]') continue
+
+            try {
+              const parsed = JSON.parse(data)
+              if (parsed.platformData) {
+                const platform = parsed.platform
+                allPlatformData[platform] = [...allPlatformData[platform], ...parsed.platformData]
+                console.log(`📥 Received ${parsed.platformData.length} rows for ${platform} (total: ${allPlatformData[platform].length})`)
+              }
+            } catch (e) {
+              console.warn('Failed to parse streaming data:', e)
+            }
+          }
+        }
+      }
+    } finally {
+      reader.releaseLock()
+    }
+
+    console.log('🔄 Processing complete dataset via Phase 3...')
+    
+    // Now process the complete dataset
+    const response2 = await fetch('/api/process-phase3', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        data: allPlatformData,
+        dateRange: {
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate,
+          reportType: dateRange.quickFilter
+        },
+        platforms: ['meta', 'google', 'shopify'],
+        options: {
+          applyShrinkage: true,
+          generateRecommendations: true
+        }
+      })
+    })
+
+    const result = await response2.json()
+    if (result.success) {
+      setPhase3Results(result)
+      console.log('✅ Streaming dataset processing completed successfully')
+    } else {
+      throw new Error(result.error || 'Phase 3 processing failed')
     }
   }
 
@@ -501,7 +598,7 @@ export default function ReportsPage() {
           </div>
 
           {/* Phase 3 Analytics Processing */}
-          {(retrievedData.meta || retrievedData.google || retrievedData.shopify) && (
+          {hasRetrievedData && (
             <div className="bg-white rounded-lg shadow p-6 mt-8 border-2 border-purple-200">
               <h2 className="text-xl font-semibold mb-4">Phase 3: Julius V7 Analytics</h2>
               <div className="space-y-4">
