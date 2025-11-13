@@ -139,6 +139,27 @@ export default async function handler(req, res) {
 
     console.log(`Data retrieval complete: ${successCount}/${results.length} platforms successful, ${totalRows} total rows`)
 
+    // Check if response will exceed 4MB limit (estimate ~500 bytes per row)
+    const estimatedResponseSize = totalRows * 500 
+    const MAX_API_RESPONSE_SIZE = 4 * 1024 * 1024 // 4MB in bytes
+    
+    if (estimatedResponseSize > MAX_API_RESPONSE_SIZE) {
+      console.log(`⚠️ Large dataset detected (${Math.round(estimatedResponseSize / 1024 / 1024)}MB estimated). Redirecting to streaming API.`)
+      return res.status(413).json({
+        success: false,
+        useStreaming: true,
+        message: `Dataset too large for direct API response (${totalRows} rows, ~${Math.round(estimatedResponseSize / 1024 / 1024)}MB). Please use streaming endpoint: /api/retrieve-data-stream`,
+        results,
+        summary: {
+          totalRows,
+          successfulPlatforms: successCount,
+          totalPlatforms: results.length,
+          dateRange: { startDate, endDate },
+          reportType
+        }
+      })
+    }
+
     res.status(200).json({
       success: successCount === results.length,
       results,
