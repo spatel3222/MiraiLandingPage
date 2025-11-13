@@ -224,7 +224,7 @@ export default function ReportsPage() {
     console.log('✅ Large dataset processing completed successfully')
   }
 
-  const mergeBatchResults = (batchResults) => {
+  const mergeBatchResults = (batchResults: any[]) => {
     if (batchResults.length === 0) return null
     if (batchResults.length === 1) return batchResults[0]
 
