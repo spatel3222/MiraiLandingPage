@@ -79,7 +79,7 @@ export default function ReportsPage() {
       
     } catch (error) {
       console.error('❌ Phase 3 processing error:', error)
-      alert(`Processing failed: ${error.message}`)
+      alert(`Processing failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
     } finally {
       setIsProcessing(false)
     }
