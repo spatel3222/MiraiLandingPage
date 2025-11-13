@@ -63,19 +63,15 @@ export default async function handler(req, res) {
 
     // Get unique dates from platforms that have data
     const availableDates = validPlatformDates.map(([platform, date]) => date)
-    const uniqueDates = [...new Set(availableDates)]
+    const uniqueDates = [...new Set(availableDates)].sort((a, b) => new Date(b) - new Date(a))
+    
+    // Use the most recent date available across all platforms
+    const latestDate = uniqueDates[0]
     
     if (uniqueDates.length > 1) {
-      console.error('Date mismatch across platforms with data:', platformDates)
-      return res.status(400).json({
-        error: 'Data sync issue: Platforms with data have different latest dates',
-        platformDates,
-        availableDates,
-        details: 'All platforms with data should have the same latest date. Please check data ingestion process.'
-      })
+      console.warn('Date mismatch across platforms with data:', platformDates)
+      console.warn(`Using most recent date available: ${latestDate}`)
     }
-
-    const latestDate = uniqueDates[0]
     const availablePlatforms = validPlatformDates.map(([platform, date]) => platform)
     const missingPlatforms = platforms
       .map(p => p.name)
@@ -86,7 +82,12 @@ export default async function handler(req, res) {
       console.warn(`Warning: ${missingPlatforms.join(', ')} platform(s) have no data for ${latestDate}`)
     }
 
-    console.log(`All platforms synchronized with latest date: ${latestDate}`)
+    const hasDateMismatch = uniqueDates.length > 1
+    const statusMessage = hasDateMismatch 
+      ? `Using most recent date (${latestDate}) - platforms have varying latest dates`
+      : `All platforms synchronized with latest date: ${latestDate}`
+    
+    console.log(statusMessage)
 
     res.status(200).json({
       success: true,
@@ -94,9 +95,12 @@ export default async function handler(req, res) {
       platformDates,
       availablePlatforms,
       missingPlatforms,
-      message: missingPlatforms.length > 0 
-        ? `${availablePlatforms.length} platforms have data for ${latestDate}. Missing: ${missingPlatforms.join(', ')}`
-        : `All ${availablePlatforms.length} platforms have data for ${latestDate}`
+      hasDateMismatch,
+      message: hasDateMismatch
+        ? `${availablePlatforms.length} platforms have data with varying dates. Using most recent: ${latestDate}${missingPlatforms.length > 0 ? `. Missing: ${missingPlatforms.join(', ')}` : ''}`
+        : missingPlatforms.length > 0 
+          ? `${availablePlatforms.length} platforms have data for ${latestDate}. Missing: ${missingPlatforms.join(', ')}`
+          : `All ${availablePlatforms.length} platforms have data for ${latestDate}`
     })
 
   } catch (error) {
