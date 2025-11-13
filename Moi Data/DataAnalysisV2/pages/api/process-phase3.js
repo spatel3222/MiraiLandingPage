@@ -62,12 +62,12 @@ export default async function handler(req, res) {
       }
     })
     
-    console.log('🔍 rawData structure being passed to Julius V7:')
-    console.log('🔍 rawData keys:', Object.keys(rawData))
-    console.log('🔍 rawData overview:', {
-      meta: rawData.meta ? (Array.isArray(rawData.meta) ? `${rawData.meta.length} rows` : typeof rawData.meta) : 'missing',
-      google: rawData.google ? (Array.isArray(rawData.google) ? `${rawData.google.length} rows` : typeof rawData.google) : 'missing',
-      shopify: rawData.shopify ? (Array.isArray(rawData.shopify) ? `${rawData.shopify.length} rows` : typeof rawData.shopify) : 'missing'
+    console.log('🔍 actualData structure being passed to Julius V7:')
+    console.log('🔍 actualData keys:', Object.keys(actualData))
+    console.log('🔍 actualData overview:', {
+      meta: actualData.meta ? (Array.isArray(actualData.meta) ? `${actualData.meta.length} rows` : typeof actualData.meta) : 'missing',
+      google: actualData.google ? (Array.isArray(actualData.google) ? `${actualData.google.length} rows` : typeof actualData.google) : 'missing',
+      shopify: actualData.shopify ? (Array.isArray(actualData.shopify) ? `${actualData.shopify.length} rows` : typeof actualData.shopify) : 'missing'
     })
 
     // Initialize Julius V7 Engine
