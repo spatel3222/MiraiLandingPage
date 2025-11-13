@@ -1,0 +1,132 @@
+Date,Campaign_Name,Ad_Set_Name,Ad_Name,Spent,Impressions,Clicks,CTR,Cost_Per_User,Users,Good_Leads,Cost_Per_Good_Lead,Conversion_Rate,Performance_Score,Recommendation,Shrinkage_Applied
+2025-11-09,BOF | DPA,VC & ATC_1 Day - FB,DPA,428.62,,,0.0784,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,BOF | DPA,VC & ATC_1 Day - IG,DPA,993.55,,,0.081,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | All That Grace,ARL | IGi,All that grace (1) | CI,271.36,,,0.0107,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | All That Grace,ARL | IGi,Debbie Earrings | SV,62.45,,,0.0164,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,BOF | DPA,VC & ATC_1 Day - IGi,DPA,803.23,,,0.0667,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,BOF | DPA,VC & ATC_14 Days - IGi,DPA,817.52,,,0.0307,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,BOF | DPA,VC & ATC_60 Days - IGi,DPA,854.84,,,0.0336,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,BOF | DPA,VC & ATC_180 Days - IGi,DPA,494.04,,,0.0172,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,BOF | DPA,VC & ATC_180 Days - FBi,DPA,1070.15,,,0.0216,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,MOF,MOF | DABA | ENGDi,MOF | DABA 1,1128.37,,,0.0276,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,MOF,MOF | DABA | ENGDi,MOF | DABA 2,425.91,,,0.0232,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,MOF,MOF | DABA | IGi,MOF | DABA 1,851.47,,,0.0388,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,MOF,MOF | DABA | IGi,MOF | DABA 2,495.52,,,0.0202,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,MOF,MOF | HYDi,RV | CC,276.65,,,0.0061,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | Story/Reel,TRL | IGi | ST,Ella Rings I SI,464.87,,,0.0199,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | Story/Reel,TRL | IGi | ST,Raphsody I SI,459.19,,,0.0103,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | Story/Reel,TRL | IGi | ST,Sapphires I SI,902.62,,,0.0148,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | India Modern,TOF | Mumbai | TIFFi,DABA – BS /TP 2,173.27,,,0.0139,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | India Modern,TOF | Mumbai | TIFFi,DABA – BS /TP 1,896.71,,,0.0119,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | India Modern,TOF | Bangalore | TIFFi,DABA – BS /TP 2,15.39,,,0.005,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | India Modern,TOF | Bangalore | TIFFi,DABA – BS /TP 1,730.24,,,0.0122,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | India Modern,TOF | Delhi | TIFFi,DABA – BS /TP 2,161.81,,,0.0153,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | India Modern,TOF | Delhi | TIFFi,DABA – BS /TP 1,854.09,,,0.0133,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | AND,TOF | Delhi | TRLa,DABA – ALL,1551.85,,,0.004,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | AND,TOF | Mumbai | TRLa,DABA – ALL,1535.32,,,0.0027,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | AND,TOF | Bangalore | TRLa,DABA – ALL,1286.72,,,0.0026,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | CUSTOM | AUTO,T1 - INT JWLi,CC – BS /TP | 01,1793.69,,,0.0021,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | CUSTOM | AUTO,T2 - INT JWLi,CC – BS /TP | 01,101.29,,,0.0031,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | ALL,IND - TRLi,DABA – ALL,2480.59,,,0.0056,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | ALL,T2 - TRLi,DABA – ALL,3391.51,,,0.0053,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | ALL,T1 - FB - TRLi,DABA – ALL,1629.91,,,0.0135,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | ALL,T1 - TRLi - FEED,DABA – ALL,3971.77,,,0.008,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | Story/Reel,T1 | TRL | IGi | RL,Firdos Earrings I RL,551.7,,,0.0064,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | Story/Reel,T1 | TRL | IGi | RL,Felix Earrings I RL,341.28,,,0.0045,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | Story/Reel,T1 | TRL | IGi | RL,Revival Necklace I RL,405.54,,,0.0024,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | Story/Reel,T1 | TRL | IGi | RL,Nizam Ring | RL,273.3,,,0.0058,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | Story/Reel,T1 | TRL | IGi | RL,Ira Earrings | RL,203.72,,,0.0037,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | Story/Reel,T1 | TRL | IGi | RL,Qutub Necklace | RL,933.51,,,0.0035,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | Story/Reel,T1 | TRL | IGi | RL,Emir Earrings | RL,376.47,,,0.0085,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | 80k,T1 - LUXEi,80k DABA,491.84,,,0.0657,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | 80k,T1 - LUXEi,80k DABA | Earrings,689.9,,,0.0233,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | 80k,T1 - LUXEi,80k DABA | Rings,351.87,,,0.0416,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,MOF,MOF | New Arrivals,Green Room | CC,126.72,,,0,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,MOF,MOF | New Arrivals | RL SV,Green Room I RL SV 02,251.74,,,0.0171,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,MOF,MOF | New Arrivals | RL SV,Green Room I RL SV 01,302.14,,,0.0045,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | All That Grace,ARL | IGi,Jackie Necklace | CV,201.59,,,0.0334,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | Green Room,T1 - INT JWLi - FEED DABA,Green Room I FEED DABA,1035.62,,,0.0467,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | Green Room,T1 - TRLi - FEED DABA,Green Room I FEED DABA,1017.65,,,0.0185,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | KHB,T1 - INT JWLi - KHB 25 - FEED DABA,KHB 25 I FEED DABA,1092.13,,,0.0538,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | KHB,T1 - TRLi - KHB 25 - FEED DABA,KHB 25 I FEED DABA,1026.72,,,0.0368,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | AB,T1 - TRLi - RL SV,Green Room I RL SV,521.25,,,0.002,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | AB,T1 - TRLi - RL SV,Green Room I Sylvia Torque Necklace | RL SV,520.2,,,0.0053,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | AB,T1 - INT JWLi - ST SV,Green Room I Sylvia Torque Necklace | ST SV,521.87,,,0.0049,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | AB,T1 - INT JWLi - ST SV,Green Room I ST SV,523.25,,,0.0109,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,MOF,MOF | New Arrivals,Green Room | CC 02,437.48,,,0.0256,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,MOF,MOF | T1 | IGi,Juliet Ring | SV,423.86,,,0.0159,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,MOF,MOF | T1 | IGi,RV | CC,940.86,,,0.0122,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | All That Grace,TIFF | IGi,Jackie Necklace | CV,1.45,,,0,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | All That Grace,TIFF | IGi,Mix Match Pearls I SI,0.22,,,0,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | All That Grace,TIFF | IGi,Jackie Necklace | SV,324.09,,,0.0165,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,TOF | All That Grace,TIFF | IGi,All that grace (1) | CI,218.13,,,0.0304,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,BOF | DPA,VC & ATC_60 Days - IG,DPA,1058.9,,,0.0398,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,BOF | DPA,VC & ATC_14 Days - FB,DPA,812.5,,,0.044,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,BOF | DPA,VC & ATC_14 Days - IG,DPA,994.94,,,0.0459,0,0,0,0,0,0,Pause/Fix,false
+2025-11-09,BOF | DPA,VC & ATC_60 Days - FB,DPA,376.84,,,0.0347,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,BOF | DPA,VC & ATC_1 Day - FB,DPA,416.69,,,0.0719,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,BOF | DPA,VC & ATC_1 Day - IG,DPA,1012.87,,,0.0808,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | All That Grace,ARL | IGi,All that grace (1) | CI,206.16,,,0.0121,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | All That Grace,ARL | IGi,Debbie Earrings | SV,317.52,,,0.0214,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | All That Grace,ARL | IGi,Mix Match Pearls I SI,11.31,,,0,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,BOF | DPA,VC & ATC_1 Day - IGi,DPA,755.87,,,0.0576,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,BOF | DPA,VC & ATC_14 Days - IGi,DPA,795.1,,,0.0434,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,BOF | DPA,VC & ATC_60 Days - IGi,DPA,759.88,,,0.0314,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,BOF | DPA,VC & ATC_180 Days - IGi,DPA,538.03,,,0.0116,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,BOF | DPA,VC & ATC_180 Days - FBi,DPA,1021.82,,,0.0234,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,MOF,MOF | DABA | ENGDi,MOF | DABA 1,985.65,,,0.0198,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,MOF,MOF | DABA | ENGDi,MOF | DABA 2,541.83,,,0.0227,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,MOF,MOF | DABA | IGi,MOF | DABA 1,951.78,,,0.0367,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,MOF,MOF | DABA | IGi,MOF | DABA 2,392.38,,,0.0374,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,MOF,MOF | HYDi,Juliet Ring | SV,89.81,,,0.0066,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,MOF,MOF | HYDi,RV | CC,234.64,,,0.0044,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | Story/Reel,TRL | IGi | ST,Ella Rings I SI,426.29,,,0.0132,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | Story/Reel,TRL | IGi | ST,Raphsody I SI,514.6,,,0.0105,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | Story/Reel,TRL | IGi | ST,Sapphires I SI,872.41,,,0.0135,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | India Modern,TOF | Mumbai | TIFFi,DABA – BS /TP 2,156.56,,,0.0135,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | India Modern,TOF | Mumbai | TIFFi,DABA – BS /TP 1,842.98,,,0.0118,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | India Modern,TOF | Bangalore | TIFFi,DABA – BS /TP 2,29.83,,,0.0218,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | India Modern,TOF | Bangalore | TIFFi,DABA – BS /TP 1,750.48,,,0.011,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | India Modern,TOF | Delhi | TIFFi,DABA – BS /TP 2,139.42,,,0.0183,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | India Modern,TOF | Delhi | TIFFi,DABA – BS /TP 1,895.48,,,0.0125,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | AND,TOF | Delhi | TRLa,DABA – ALL,1476.17,,,0.0144,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | AND,TOF | Mumbai | TRLa,DABA – ALL,1435.93,,,0.0121,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | AND,TOF | Bangalore | TRLa,DABA – ALL,767.44,,,0.0069,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | CUSTOM | AUTO,T1 - INT JWLi,CC – BS /TP | 01,1529.3,,,0.0019,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | CUSTOM | AUTO,T2 - INT JWLi,CC – BS /TP | 01,156.12,,,0.0024,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | ALL,IND - TRLi,DABA – ALL,2440.6,,,0.0108,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | ALL,T2 - TRLi,DABA – ALL,1659.74,,,0.0114,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | ALL,T1 - FB - TRLi,DABA – ALL,1526.57,,,0.0117,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | ALL,T1 - TRLi - FEED,DABA – ALL,3118.62,,,0.0161,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | Story/Reel,T1 | TRL | IGi | RL,Firdos Earrings I RL,557.66,,,0.0039,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | Story/Reel,T1 | TRL | IGi | RL,Felix Earrings I RL,332.39,,,0.002,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | Story/Reel,T1 | TRL | IGi | RL,Revival Necklace I RL,557.68,,,0.0017,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | Story/Reel,T1 | TRL | IGi | RL,Nizam Ring | RL,343.61,,,0.0023,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | Story/Reel,T1 | TRL | IGi | RL,Ira Earrings | RL,180.86,,,0.002,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | Story/Reel,T1 | TRL | IGi | RL,Qutub Necklace | RL,575.57,,,0.0031,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | Story/Reel,T1 | TRL | IGi | RL,Emir Earrings | RL,590.04,,,0.0059,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | 80k,T1 - LUXEi,80k DABA,912.39,,,0.0854,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | 80k,T1 - LUXEi,80k DABA | Earrings,485.75,,,0.0131,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | 80k,T1 - LUXEi,80k DABA | Rings,133.26,,,0.0801,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,MOF,MOF | New Arrivals,Green Room | CC,132.07,,,0.004,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,MOF,MOF | New Arrivals | RL SV,Green Room I RL SV 02,336.37,,,0.016,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,MOF,MOF | New Arrivals | RL SV,Green Room I RL SV 01,245.43,,,0.0114,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | All That Grace,ARL | IGi,Jackie Necklace | CV,102.05,,,0.0188,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | Green Room,T1 - INT JWLi - FEED DABA,Green Room I FEED DABA,1054.52,,,0.0894,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | Green Room,T1 - TRLi - FEED DABA,Green Room I FEED DABA,1065.78,,,0.0469,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | KHB,T1 - INT JWLi - KHB 25 - FEED DABA,KHB 25 I FEED DABA,1022.11,,,0.0593,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | KHB,T1 - TRLi - KHB 25 - FEED DABA,KHB 25 I FEED DABA,1140.08,,,0.0664,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | AB,T1 - TRLi - RL SV,Green Room I RL SV,501.29,,,0.0023,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | AB,T1 - TRLi - RL SV,Green Room I Sylvia Torque Necklace | RL SV,507.54,,,0.0044,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | AB,T1 - INT JWLi - ST SV,Green Room I Sylvia Torque Necklace | ST SV,520.1,,,0.0081,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | AB,T1 - INT JWLi - ST SV,Green Room I ST SV,506.36,,,0.0066,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,MOF,MOF | New Arrivals,Green Room | CC 02,439.48,,,0.0128,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,MOF,MOF | T1 | IGi,Juliet Ring | SV,363.01,,,0.0096,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,MOF,MOF | T1 | IGi,RV | CC,971.17,,,0.0109,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | All That Grace,TIFF | IGi,Jackie Necklace | CV,341.41,,,0.0213,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | All That Grace,TIFF | IGi,Jackie Necklace | SV,92.12,,,0.0162,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,TOF | All That Grace,TIFF | IGi,All that grace (1) | CI,169.36,,,0.0222,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,BOF | DPA,VC & ATC_60 Days - IG,DPA,990.3,,,0.0385,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,BOF | DPA,VC & ATC_14 Days - FB,DPA,741.17,,,0.0409,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,BOF | DPA,VC & ATC_14 Days - IG,DPA,994.49,,,0.059,0,0,0,0,0,0,Pause/Fix,false
+2025-11-10,BOF | DPA,VC & ATC_60 Days - FB,DPA,299.11,,,0.0315,0,0,0,0,0,0,Pause/Fix,false

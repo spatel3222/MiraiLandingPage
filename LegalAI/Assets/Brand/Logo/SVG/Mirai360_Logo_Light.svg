@@ -1,0 +1,29 @@
+<svg width="400" height="80" viewBox="0 0 400 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Primary Logo Light Version: mirai360.ai -->
+  
+  <!-- mirai360 text with uniform visual heights -->
+  <text x="0" y="56" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+        font-size="48" font-weight="700" fill="#FFFFFF" letter-spacing="-0.96px">m</text>
+  <text x="35" y="56" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+        font-size="52" font-weight="700" fill="#FFFFFF" letter-spacing="-0.96px">i</text>
+  <text x="60" y="56" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+        font-size="48" font-weight="700" fill="#FFFFFF" letter-spacing="-0.96px">r</text>
+  <text x="85" y="56" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+        font-size="48" font-weight="700" fill="#FFFFFF" letter-spacing="-0.96px">a</text>
+  <text x="115" y="56" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+        font-size="52" font-weight="700" fill="#FFFFFF" letter-spacing="-0.96px">i</text>
+  <text x="140" y="56" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+        font-size="48" font-weight="700" fill="#FFFFFF" letter-spacing="-0.96px">3</text>
+  <text x="170" y="56" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+        font-size="48" font-weight="700" fill="#FFFFFF" letter-spacing="-0.96px">6</text>
+  <text x="200" y="56" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+        font-size="48" font-weight="700" fill="#FFFFFF" letter-spacing="-0.96px">0</text>
+  
+  <!-- .ai domain extension with uniform visual heights -->
+  <text x="230" y="56" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+        font-size="48" font-weight="500" fill="#5BA3D4" letter-spacing="-0.96px">.</text>
+  <text x="245" y="56" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+        font-size="48" font-weight="500" fill="#5BA3D4" letter-spacing="-0.96px">a</text>
+  <text x="275" y="56" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+        font-size="52" font-weight="500" fill="#5BA3D4" letter-spacing="-0.96px">i</text>
+</svg>

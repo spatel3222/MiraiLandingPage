@@ -1,0 +1,2 @@
+Date,Campaign name,Ad Set Name,Ad Name,Ad Set Delivery,Spent,CTR,Cost per user,Users,ATC,Reached Checkout,Conversions,Average session duration,Cost per 1 min user,1min user/ total users (%),Users with Session above 1 min,ATC with session duration above 1 min,Reached Checkout with session duration above 1 min,Users with Above 5 page views and above 1 min
+2025-11-09,Test,Test AdSet,Test Ad,Active,1000,0.05,1000,0,0,0,0,0,0,0,0,0,0,0

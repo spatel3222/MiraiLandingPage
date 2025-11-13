@@ -1,0 +1,35 @@
+-- Meta Batch 3: Records 41-70 (30 records)
+-- Copy and paste this entire SQL into Supabase SQL Editor
+
+INSERT INTO meta_raw_data (reporting_starts, campaign_name, ad_set_name, ad_name, amount_spent_inr, cpm_cost_per_1000_impressions, ctr_link_click_through_rate, ref_parameter) VALUES 
+    ('2024-12-31', 'TOF | All That Grace', 'ARL | IGi', 'Debbie Earrings | SV', 86.01, 73.2, 1.19148936, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | India Modern', 'C-OCC - IG', 'India Modern DABA', 713.43, 85.68700456, 4.4198895, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | All That Grace', 'ARL | IGi', 'Jackie Necklace | SV', 47.37, 52.40044248, 0.77433628, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'BOF | DPA', 'VC & ATC_1 Day - IG', 'DPA', 1207.18, 198.54934211, 9.21052632, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | Earrings', 'OCC', 'Felix Earrings | CV', 0.74, 18.04878049, 4.87804878, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | All That Grace', 'ARL | IGi', 'All that grace (1) | CI', 75.29, 89.52437574, 3.09155767, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | All That Grace', 'BRD | IG', 'Jackie Multilayered Necklace | SV', 0.01, 1.11111111, 0.0, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'BOF | DPA', 'VC & ATC_60 Days - FB', 'DPA', 447.62, 38.12776831, 3.36456559, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | All That Grace', 'BRD | IG', 'Debbie Earrings | SV', 150.73, 139.82374768, 1.2987013, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | India Modern', 'HOME - IG', 'India Modern DABA', 733.39, 88.74515973, 3.09777348, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | All That Grace', 'BRD | IG', 'Jackie Necklace | SV', 106.93, 54.03233957, 1.51591713, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | Earrings', 'TRL', 'Earrings | DABA', 415.03, 38.47858335, 3.50454293, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | Earrings', 'TRL', 'Ira Earrings | CV', 25.72, 19.10846954, 5.42347697, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'MOF', 'MOF | MUM', 'RV | CC', 271.47, 448.7107438, 1.81818182, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | India Modern', 'INT JWLY - IGi', 'India Modern DABA', 382.89, 182.67652672, 6.10687023, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | Earrings', 'TRL', 'Felix Earrings | CV', 23.72, 15.06988564, 3.55781449, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'MOF', 'MOF | KHB', 'Cutch Tassel | SI', 39.35, 101.94300518, 0.0, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'MOF', 'MOF | KHB', 'Zeya Necklace | SV', 197.67, 134.01355932, 1.49152542, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | KHB |', 'OCC | IG', 'KHB | DABA', 8.58, 330.0, 7.69230769, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | ALL', 'TIFF - IG', 'DABA – BS /TP', 305.86, 67.1334504, 3.02897278, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'MOF', 'MOF | KHB', 'ida and ineya | SV', 102.97, 119.31633835, 0.57937428, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | Earrings', 'OCC', 'Earrings | DABA', 423.43, 67.6297716, 3.41798435, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | Earrings', 'OCC', 'Ira Earrings | CV', 49.31, 28.92082111, 3.92961877, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'MOF', 'MOF | BLR', 'Juliet Ring | SV', 237.08, 102.01376936, 1.89328744, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'MOF', 'MOF | DEL', 'RV | CC', 225.08, 311.31396957, 2.0746888, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | ALL', 'TIFF - IG', 'DABA', 1069.58, 42.84318045, 3.91748448, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'BOF | DPA', 'VC & ATC_14 Days - IG', 'DPA', 1478.67, 83.60680764, 6.2931132, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | ALL', 'INT JWLY - IG', 'DABA – BS /TP', 337.35, 43.31664099, 3.44119158, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | KHB |', 'INT JWLY | IG', 'Sikar Necklace | SI', 143.18, 123.00687285, 1.71821306, 'nbclorobfotxrpbmyapi'),
+    ('2024-12-31', 'TOF | KHB |', 'INT JWLY | IG', 'Zeya Necklace | SI', 19.57, 292.08955224, 0.0, 'nbclorobfotxrpbmyapi')
+ON CONFLICT (reporting_starts, campaign_name, ad_set_name, ad_name) DO UPDATE SET processed_at = CURRENT_TIMESTAMP;

@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirai360.ai Brand Guidelines & Logo Showcase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Mirai360.ai Brand Colors */
+            --navy-primary: #1B365D;
+            --navy-light: #405A7A;
+            --tech-accent: #2E86C1;
+            --neutral-base: #FAFBFC;
+            --clean-white: #FFFFFF;
+            --success-green: #28B463;
+            --professional-gray: #566573;
+            --minimal-border: rgba(27, 54, 93, 0.05);
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 2.8rem;
+            --space-lg: 5.6rem;
+            --space-xl: 8.4rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--navy-light);
+            background: var(--clean-white);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-md);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: var(--space-lg);
+            padding: var(--space-lg) 0;
+            background: linear-gradient(135deg, var(--navy-primary) 0%, var(--tech-accent) 100%);
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: var(--space-sm);
+            letter-spacing: -0.025em;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .section {
+            margin-bottom: var(--space-lg);
+            padding: var(--space-lg);
+            background: var(--clean-white);
+            border-radius: 12px;
+            border: 1px solid var(--minimal-border);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--navy-primary);
+            margin-bottom: var(--space-md);
+            border-bottom: 3px solid var(--tech-accent);
+            padding-bottom: var(--space-sm);
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--professional-gray);
+            margin-bottom: var(--space-md);
+        }
+
+        /* Logo Showcase */
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .logo-card {
+            background: var(--neutral-base);
+            border: 1px solid var(--minimal-border);
+            border-radius: 8px;
+            padding: var(--space-lg);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .logo-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(27, 54, 93, 0.1);
+        }
+
+        .logo-display {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-md);
+            border-radius: 6px;
+            border: 1px solid var(--minimal-border);
+        }
+
+        .logo-display.light {
+            background: var(--clean-white);
+        }
+
+        .logo-display.dark {
+            background: var(--navy-primary);
+        }
+
+        .logo-primary {
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.025em;
+            display: flex;
+            align-items: baseline;
+        }
+        
+        .logo-char {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .logo-char.i-char {
+            font-size: 2.7rem; /* 52px equivalent, larger for visual height matching */
+        }
+        
+        .logo-dot-ai {
+            font-size: 2.5rem;
+            font-weight: 500;
+        }
+        
+        .logo-dot-ai .i-char {
+            font-size: 2.7rem;
+        }
+
+        .logo-primary.standard .logo-char {
+            color: var(--navy-primary);
+        }
+        
+        .logo-primary.standard .logo-dot-ai {
+            color: var(--tech-accent);
+        }
+
+        .logo-primary.light .logo-char {
+            color: var(--clean-white);
+        }
+        
+        .logo-primary.light .logo-dot-ai {
+            color: #5BA3D4; /* Lighter tech accent for dark backgrounds */
+        }
+
+        .logo-monogram {
+            font-family: 'Inter', sans-serif;
+            font-size: 4rem;
+            font-weight: 700;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .logo-monogram.standard {
+            background: var(--navy-primary);
+            color: var(--clean-white);
+        }
+
+        .logo-monogram.reverse {
+            background: var(--clean-white);
+            color: var(--navy-primary);
+            border: 2px solid var(--navy-primary);
+        }
+
+        .logo-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--navy-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .logo-card p {
+            font-size: 0.9rem;
+            color: var(--professional-gray);
+        }
+
+        /* Color Palette */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .color-card {
+            background: var(--clean-white);
+            border: 1px solid var(--minimal-border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .color-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(27, 54, 93, 0.1);
+        }
+
+        .color-preview {
+            height: 100px;
+            width: 100%;
+        }
+
+        .color-info {
+            padding: var(--space-sm);
+        }
+
+        .color-name {
+            font-weight: 600;
+            color: var(--navy-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .color-hex {
+            font-family: 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: var(--professional-gray);
+            margin-bottom: 0.25rem;
+        }
+
+        .color-usage {
+            font-size: 0.85rem;
+            color: var(--navy-light);
+        }
+
+        /* Typography */
+        .typography-sample {
+            border: 1px solid var(--minimal-border);
+            border-radius: 8px;
+            padding: var(--space-lg);
+            margin-bottom: var(--space-md);
+        }
+
+        .type-display {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--navy-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .type-h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--navy-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .type-h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.3;
+            color: var(--navy-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .type-body {
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.6;
+            color: var(--navy-light);
+            margin-bottom: var(--space-sm);
+        }
+
+        .type-caption {
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--professional-gray);
+        }
+
+        /* Brand Elements */
+        .brand-elements {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .brand-element {
+            background: var(--neutral-base);
+            border: 1px solid var(--minimal-border);
+            border-radius: 8px;
+            padding: var(--space-md);
+        }
+
+        .brand-element h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--navy-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .brand-element ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .brand-element li {
+            font-size: 0.9rem;
+            color: var(--navy-light);
+            margin-bottom: 0.25rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .brand-element li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success-green);
+            font-weight: 600;
+        }
+
+        /* Spacing Showcase */
+        .spacing-demo {
+            border: 1px solid var(--minimal-border);
+            border-radius: 8px;
+            padding: var(--space-md);
+            margin: var(--space-sm) 0;
+        }
+
+        .spacing-xs { padding: var(--space-xs); background: rgba(46, 134, 193, 0.1); }
+        .spacing-sm { padding: var(--space-sm); background: rgba(46, 134, 193, 0.2); }
+        .spacing-md { padding: var(--space-md); background: rgba(46, 134, 193, 0.3); }
+        .spacing-lg { padding: var(--space-lg); background: rgba(46, 134, 193, 0.4); }
+
+        /* Usage Examples */
+        .usage-example {
+            background: var(--clean-white);
+            border: 1px solid var(--minimal-border);
+            border-radius: 8px;
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .btn-primary {
+            background: var(--navy-primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+            transition: all 0.2s ease;
+            margin-right: var(--space-sm);
+        }
+
+        .btn-primary:hover {
+            background: var(--navy-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--navy-primary);
+            padding: 1rem 2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            border: 2px solid var(--navy-primary);
+            display: inline-block;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--navy-primary);
+            color: white;
+        }
+
+        .metric-display {
+            text-align: center;
+            padding: var(--space-md);
+            background: var(--neutral-base);
+            border-radius: 8px;
+            border: 1px solid var(--minimal-border);
+            margin: var(--space-sm);
+            display: inline-block;
+            min-width: 150px;
+        }
+
+        .metric-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--navy-primary);
+            display: block;
+            line-height: 1;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--professional-gray);
+            margin-top: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .logo-primary {
+                font-size: 1.8rem;
+            }
+            
+            .logo-monogram {
+                font-size: 2.5rem;
+                width: 60px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Mirai360.ai Brand Guidelines</h1>
+        <p>"Build AI Once. Scale Everywhere." - Professional Authority Minimal Design System</p>
+    </div>
+
+    <div class="container">
+        <!-- Logo System -->
+        <div class="section">
+            <h2 class="section-title">Logo System</h2>
+            <p class="section-subtitle">Professional and minimal logo variations - lowercase "m" monogram for space-constrained applications</p>
+            
+            <div class="logo-grid">
+                <!-- Primary Logo - Standard -->
+                <div class="logo-card">
+                    <div class="logo-display light">
+                        <div class="logo-primary standard">
+                            <span class="logo-char">m</span><span class="logo-char i-char">i</span><span class="logo-char">r</span><span class="logo-char">a</span><span class="logo-char i-char">i</span><span class="logo-char">3</span><span class="logo-char">6</span><span class="logo-char">0</span><span class="logo-dot-ai">.</span><span class="logo-dot-ai">a</span><span class="logo-dot-ai i-char">i</span>
+                        </div>
+                    </div>
+                    <h3>Primary Logo (Standard)</h3>
+                    <p>For light backgrounds and formal applications. Visually uniform character heights</p>
+                </div>
+
+                <!-- Primary Logo - Light -->
+                <div class="logo-card">
+                    <div class="logo-display dark">
+                        <div class="logo-primary light">
+                            <span class="logo-char">m</span><span class="logo-char i-char">i</span><span class="logo-char">r</span><span class="logo-char">a</span><span class="logo-char i-char">i</span><span class="logo-char">3</span><span class="logo-char">6</span><span class="logo-char">0</span><span class="logo-dot-ai">.</span><span class="logo-dot-ai">a</span><span class="logo-dot-ai i-char">i</span>
+                        </div>
+                    </div>
+                    <h3>Primary Logo (Reverse)</h3>
+                    <p>For dark backgrounds and overlays. Visually uniform character heights</p>
+                </div>
+
+                <!-- Monogram - Standard -->
+                <div class="logo-card">
+                    <div class="logo-display light">
+                        <div class="logo-monogram standard">m</div>
+                    </div>
+                    <h3>Monogram (Standard)</h3>
+                    <p>For space-constrained applications</p>
+                </div>
+
+                <!-- Monogram - Reverse -->
+                <div class="logo-card">
+                    <div class="logo-display dark">
+                        <div class="logo-monogram reverse">m</div>
+                    </div>
+                    <h3>Monogram (Reverse)</h3>
+                    <p>For dark backgrounds and icons</p>
+                </div>
+            </div>
+
+            <div class="usage-example">
+                <h4>Logo Usage Guidelines</h4>
+                <ul style="columns: 2; list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;">✅ Maintain proper clear space (0.5x logo height)</li>
+                    <li style="margin-bottom: 0.5rem;">✅ Use provided logo files only</li>
+                    <li style="margin-bottom: 0.5rem;">✅ Scale proportionally</li>
+                    <li style="margin-bottom: 0.5rem;">✅ Preserve character size relationships</li>
+                    <li style="margin-bottom: 0.5rem;">✅ Place on appropriate backgrounds</li>
+                    <li style="margin-bottom: 0.5rem;">❌ Don't stretch or distort</li>
+                    <li style="margin-bottom: 0.5rem;">❌ Don't change individual character sizes</li>
+                    <li style="margin-bottom: 0.5rem;">❌ Don't modify visual height optimization</li>
+                    <li style="margin-bottom: 0.5rem;">❌ Don't add effects or shadows</li>
+                    <li style="margin-bottom: 0.5rem;">❌ Don't place on busy backgrounds</li>
+                </ul>
+            </div>
+            
+            <div class="usage-example">
+                <h4>Visual Height Optimization</h4>
+                <p style="margin-bottom: 1rem;"><strong>Design Principle:</strong> All characters appear visually uniform in height through selective font size adjustments.</p>
+                <p style="margin-bottom: 1rem;"><strong>Character Sizing:</strong></p>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;">• Base characters (m, r, a, 3, 6, 0, ., a): 48px (2.5rem)</li>
+                    <li style="margin-bottom: 0.5rem;">• "i" characters: 52px (2.7rem) for visual height matching</li>
+                    <li style="margin-bottom: 0.5rem;">• Weight: Bold (700) for "mirai360", Medium (500) for ".ai"</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Color Palette -->
+        <div class="section">
+            <h2 class="section-title">Color Palette</h2>
+            <p class="section-subtitle">Professional Authority Minimal color system for trust and accessibility</p>
+            
+            <div class="color-grid">
+                <div class="color-card">
+                    <div class="color-preview" style="background: #1B365D;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Navy Primary</div>
+                        <div class="color-hex">#1B365D</div>
+                        <div class="color-usage">Authority, trust, legal excellence</div>
+                    </div>
+                </div>
+
+                <div class="color-card">
+                    <div class="color-preview" style="background: #405A7A;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Navy Light</div>
+                        <div class="color-hex">#405A7A</div>
+                        <div class="color-usage">Readable text, accessibility</div>
+                    </div>
+                </div>
+
+                <div class="color-card">
+                    <div class="color-preview" style="background: #2E86C1;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Tech Accent</div>
+                        <div class="color-hex">#2E86C1</div>
+                        <div class="color-usage">Innovation, CTAs, highlights</div>
+                    </div>
+                </div>
+
+                <div class="color-card">
+                    <div class="color-preview" style="background: #FAFBFC;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Neutral Base</div>
+                        <div class="color-hex">#FAFBFC</div>
+                        <div class="color-usage">Clean backgrounds, breathing room</div>
+                    </div>
+                </div>
+
+                <div class="color-card">
+                    <div class="color-preview" style="background: #28B463;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Success Green</div>
+                        <div class="color-hex">#28B463</div>
+                        <div class="color-usage">Growth, success metrics</div>
+                    </div>
+                </div>
+
+                <div class="color-card">
+                    <div class="color-preview" style="background: #566573;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Professional Gray</div>
+                        <div class="color-hex">#566573</div>
+                        <div class="color-usage">Balance, sophistication</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Typography -->
+        <div class="section">
+            <h2 class="section-title">Typography</h2>
+            <p class="section-subtitle">Inter font family with professional hierarchy for legal industry clarity</p>
+            
+            <div class="typography-sample">
+                <div class="type-display">Display Text (3.5rem)</div>
+                <div class="type-h1">Heading 1 (2.5rem)</div>
+                <div class="type-h2">Heading 2 (1.5rem)</div>
+                <div class="type-body">Body text uses Inter 400 weight with 1.6 line height for optimal readability in legal documents and professional communication. This ensures clarity and reduces eye strain during long reading sessions.</div>
+                <div class="type-caption">Caption text (0.875rem) for supporting information and metadata</div>
+            </div>
+
+            <div class="brand-elements">
+                <div class="brand-element">
+                    <h4>Font Weights</h4>
+                    <ul>
+                        <li>Regular (400) - Body text</li>
+                        <li>Medium (500) - Subheadings</li>
+                        <li>Semibold (600) - Section titles</li>
+                        <li>Bold (700) - Display headlines</li>
+                    </ul>
+                </div>
+
+                <div class="brand-element">
+                    <h4>Typography Principles</h4>
+                    <ul>
+                        <li>Generous line height (1.6)</li>
+                        <li>Strategic font weights only</li>
+                        <li>Consistent spacing scale</li>
+                        <li>Limited font sizes (6 max)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spacing System -->
+        <div class="section">
+            <h2 class="section-title">Spacing System</h2>
+            <p class="section-subtitle">40% more white space with 8px base grid for sophisticated feel</p>
+            
+            <div class="spacing-demo">
+                <div class="spacing-xs">XS (0.5rem / 8px)</div>
+            </div>
+            <div class="spacing-demo">
+                <div class="spacing-sm">SM (1rem / 16px)</div>
+            </div>
+            <div class="spacing-demo">
+                <div class="spacing-md">MD (2.8rem / 45px) - 40% more than traditional</div>
+            </div>
+            <div class="spacing-demo">
+                <div class="spacing-lg">LG (5.6rem / 90px) - Major sections with generous breathing room</div>
+            </div>
+        </div>
+
+        <!-- Brand Applications -->
+        <div class="section">
+            <h2 class="section-title">Brand Applications</h2>
+            <p class="section-subtitle">Interactive elements and component styling examples</p>
+            
+            <div class="usage-example">
+                <h4>Button Styles</h4>
+                <a href="#" class="btn-primary">Primary CTA</a>
+                <a href="#" class="btn-secondary">Secondary Action</a>
+            </div>
+
+            <div class="usage-example">
+                <h4>Key Metrics Display</h4>
+                <div style="text-align: center;">
+                    <div class="metric-display">
+                        <span class="metric-number">65%</span>
+                        <div class="metric-label">Revenue Growth</div>
+                    </div>
+                    <div class="metric-display">
+                        <span class="metric-number">₹5Cr</span>
+                        <div class="metric-label">Deal Capability</div>
+                    </div>
+                    <div class="metric-display">
+                        <span class="metric-number">95%</span>
+                        <div class="metric-label">AI Accuracy</div>
+                    </div>
+                    <div class="metric-display">
+                        <span class="metric-number">50+</span>
+                        <div class="metric-label">Active Firms</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Brand Positioning -->
+        <div class="section">
+            <h2 class="section-title">Brand Positioning</h2>
+            <p class="section-subtitle">Strategic differentiation and competitive advantages</p>
+            
+            <div class="brand-elements">
+                <div class="brand-element">
+                    <h4>vs. Harvey.ai</h4>
+                    <ul>
+                        <li>Indian legal system expertise</li>
+                        <li>Cultural understanding</li>
+                        <li>Regulatory compliance</li>
+                        <li>Local court procedures</li>
+                    </ul>
+                </div>
+
+                <div class="brand-element">
+                    <h4>vs. Lucio.ai</h4>
+                    <ul>
+                        <li>Complete end-to-end solution</li>
+                        <li>Superior accuracy (95%)</li>
+                        <li>Workflow integration</li>
+                        <li>Boutique firm focus</li>
+                    </ul>
+                </div>
+
+                <div class="brand-element">
+                    <h4>Value Proposition</h4>
+                    <ul>
+                        <li>Legal democratization</li>
+                        <li>India-first innovation</li>
+                        <li>Measurable transformation</li>
+                        <li>Future-ready practice</li>
+                    </ul>
+                </div>
+
+                <div class="brand-element">
+                    <h4>Brand Voice</h4>
+                    <ul>
+                        <li>Authoritative yet approachable</li>
+                        <li>Technical without jargon</li>
+                        <li>Success-oriented</li>
+                        <li>Culturally aware</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Implementation -->
+        <div class="section">
+            <h2 class="section-title">Implementation Guidelines</h2>
+            <p class="section-subtitle">Quality standards and best practices for brand consistency</p>
+            
+            <div class="usage-example">
+                <h4>Quality Standards</h4>
+                <p style="margin-bottom: 1rem;"><strong>Excellence:</strong> 95%+ on-time delivery, 4.8+ satisfaction scores</p>
+                <p style="margin-bottom: 1rem;"><strong>Performance:</strong> Sub-second response times, 99.9% uptime</p>
+                <p style="margin-bottom: 1rem;"><strong>Adoption:</strong> 90%+ user adoption, 95% client retention</p>
+            </div>
+
+            <div class="brand-elements">
+                <div class="brand-element">
+                    <h4>Design Checklist</h4>
+                    <ul>
+                        <li>Logo usage specifications</li>
+                        <li>Color hex code accuracy</li>
+                        <li>Inter font family usage</li>
+                        <li>8px grid system spacing</li>
+                    </ul>
+                </div>
+
+                <div class="brand-element">
+                    <h4>Content Checklist</h4>
+                    <ul>
+                        <li>Brand voice alignment</li>
+                        <li>Messaging hierarchy</li>
+                        <li>Appropriate CTA styling</li>
+                        <li>Accessibility standards</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add smooth hover effects
+        document.querySelectorAll('.logo-card, .color-card, .brand-element').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-4px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Add click-to-copy for color hex codes
+        document.querySelectorAll('.color-hex').forEach(hex => {
+            hex.style.cursor = 'pointer';
+            hex.title = 'Click to copy';
+            
+            hex.addEventListener('click', function() {
+                navigator.clipboard.writeText(this.textContent).then(() => {
+                    const original = this.textContent;
+                    this.textContent = 'Copied!';
+                    this.style.color = 'var(--success-green)';
+                    
+                    setTimeout(() => {
+                        this.textContent = original;
+                        this.style.color = 'var(--professional-gray)';
+                    }, 1000);
+                });
+            });
+        });
+
+        // Add logo variation hover effects
+        document.querySelectorAll('.logo-display').forEach(display => {
+            display.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+                this.style.transition = 'transform 0.3s ease';
+            });
+            
+            display.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -157,6 +157,18 @@ export default async function handler(req, res) {
               batchSize: batchData.length
             })
 
+            // For very large datasets, limit memory usage by processing in chunks
+            if (platformData.length >= 5000) {
+              console.log(`Large dataset detected for ${platform.name}: ${platformData.length} rows. Sending sample data only.`)
+              // Store actual count before truncation
+              const actualRowCount = totalRows || platformData.length
+              // Keep only first 1000 rows in memory for sample data
+              platformData = platformData.slice(0, 1000)
+              // Store actual count for reporting
+              platformData._actualRowCount = actualRowCount
+              hasMoreData = false // Stop fetching more data to prevent memory issues
+            }
+
             // Small delay to prevent overwhelming the client
             await new Promise(resolve => setTimeout(resolve, 50))
           } else {
@@ -164,11 +176,11 @@ export default async function handler(req, res) {
           }
         }
 
-        const rowCount = platformData.length
+        const rowCount = platformData._actualRowCount || platformData.length
         
         // Calculate date range from actual data
         let dateRangeActual = { min: null, max: null }
-        if (rowCount > 0) {
+        if (platformData.length > 0) {
           const dates = platformData.map(row => row[platform.dateColumn]).filter(Boolean)
           if (dates.length > 0) {
             const sortedDates = dates.sort()
@@ -192,21 +204,37 @@ export default async function handler(req, res) {
           }
         }
 
+        // Create minimal sample data to avoid 4MB limit
+        const sampleData = platformData.length > 0 ? [{
+          ...Object.keys(platformData[0]).slice(0, 5).reduce((obj, key) => {
+            obj[key] = platformData[0][key]
+            return obj
+          }, {}),
+          '...': `${Object.keys(platformData[0]).length - 5} more columns`
+        }] : []
+
         const result = {
           platform: platform.name,
           success: true,
           rowCount,
           dateRange: dateRangeActual,
-          sampleData: platformData.length > 0 ? [platformData[0]] : []
+          sampleData
         }
 
         results.push(result)
-        data[platform.name] = platformData
+        // Don't store full platformData to avoid memory issues
+        data[platform.name] = rowCount > 0 ? 'DATA_AVAILABLE' : null
 
         sendProgress({
           type: 'platform_complete',
           platform: platform.name,
-          result,
+          result: {
+            platform: result.platform,
+            success: result.success,
+            rowCount: result.rowCount,
+            dateRange: result.dateRange
+            // Exclude sampleData from streaming to reduce size
+          },
           message: `${platform.name}: ${rowCount.toLocaleString()} rows retrieved`
         })
 
@@ -235,12 +263,23 @@ export default async function handler(req, res) {
     const totalRows = results.reduce((sum, result) => sum + result.rowCount, 0)
     const successCount = results.filter(r => r.success).length
 
+    // Create minimal results for streaming to avoid 4MB limit
+    const minimalResults = results.map(r => ({
+      platform: r.platform,
+      success: r.success,
+      rowCount: r.rowCount,
+      dateRange: r.dateRange,
+      error: r.error || undefined
+      // Exclude sampleData from final streaming response
+    }))
+
     sendProgress({
       type: 'complete',
       success: successCount === results.length,
-      results,
-      data,
-      localStorage,
+      results: minimalResults,
+      // Don't send actual data through streaming API to avoid 4MB limit
+      dataKeys: Object.keys(data),
+      localStorageKeys: Object.keys(localStorage),
       summary: {
         totalRows,
         successfulPlatforms: successCount,

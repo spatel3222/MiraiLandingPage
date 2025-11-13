@@ -109,11 +109,11 @@ export default async function handler(req, res) {
           sampleData: platformData && platformData.length > 0 ? [platformData[0]] : []
         })
 
-        // For large datasets, don't send full data to avoid 4MB limit
-        // Send only sample data for UI display, full data available via streaming API
-        if (platformData && platformData.length > 5000) {
-          console.warn(`Large dataset detected for ${platform.name}: ${platformData.length} rows. Sending sample data only.`)
-          data[platform.name] = platformData.slice(0, 1000) // Send first 1000 rows as sample
+        // For Julius V7 processing, limit data size to stay under 1MB POST body limit
+        // Conservative limit based on shopify row size being ~700 bytes each
+        if (platformData && platformData.length > 1000) {
+          console.log(`Large dataset detected for ${platform.name}: ${platformData.length} rows. Limiting to 800 rows for Julius V7 processing to stay under 1MB limit.`)
+          data[platform.name] = platformData.slice(0, 800) // Conservative limit to ensure under 1MB POST body
         } else {
           data[platform.name] = platformData
         }

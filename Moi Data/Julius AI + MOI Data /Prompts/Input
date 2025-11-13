@@ -1,0 +1,39 @@
+Input 
+
+Google 
+
+ - Day	
+ - Campaign	
+ - Currency code	
+ - Cost	
+ - Avg. CPM	
+ - CTR
+
+
+Meta
+
+Day	
+Campaign name	
+Ad set name	
+Ad name	
+Amount spent (INR)	
+CPM (cost per 1,000 impressions)	
+CTR (link click-through rate)	
+Ad set delivery	
+Reporting starts	
+Reporting ends
+
+
+Shopify
+
+ - Day	
+ - UTM campaign	
+ - UTM term	
+ - UTM content	
+ - Landing page URL	
+ - Online store visitors	
+ - Sessions that completed checkout	
+ - Sessions that reached checkout	
+ - Sessions with cart additions	
+ - Average session duration	
+ - Pageviews

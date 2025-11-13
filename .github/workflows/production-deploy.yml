@@ -1,0 +1,41 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy-production:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Validate HTML files
+      run: |
+        echo "🔍 Validating HTML files..."
+        find . -name "*.html" -not -path "./node_modules/*" -not -path "./.next/*" | while read file; do
+          echo "✅ Checking: $file"
+          # Basic HTML structure check
+          if ! grep -q "<html" "$file" && ! grep -q "<!DOCTYPE" "$file"; then
+            echo "⚠️  Warning: $file may not be a complete HTML document"
+          fi
+        done
+        
+    - name: Check critical files exist
+      run: |
+        echo "🔍 Checking critical files..."
+        test -f "index.html" && echo "✅ index.html exists" || echo "❌ index.html missing"
+        test -f "CNAME" && echo "✅ CNAME exists" || echo "❌ CNAME missing"
+        
+    - name: Deploy to GitHub Pages (production)
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./
+        cname: crtx.in
+        
+    - name: Production deployment success notification
+      run: |
+        echo "🚀 Production deployment completed!"
+        echo "🌐 Site available at: https://crtx.in"

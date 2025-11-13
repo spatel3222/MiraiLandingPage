@@ -34,9 +34,15 @@ export default function ReportsPage() {
   }
 
   const handleDataRetrieved = (data: typeof retrievedData) => {
+    console.log('📥 handleDataRetrieved called with:', {
+      meta: data.meta ? (Array.isArray(data.meta) ? `${data.meta.length} rows` : 'Not array') : 'null',
+      google: data.google ? (Array.isArray(data.google) ? `${data.google.length} rows` : 'Not array') : 'null',
+      shopify: data.shopify ? (Array.isArray(data.shopify) ? `${data.shopify.length} rows` : 'Not array') : 'null'
+    })
     setRetrievedData(data)
     // Clear previous Phase 3 results when new data is retrieved
     setPhase3Results(null)
+    console.log('📊 Phase 3 section should now be visible:', !!(data.meta || data.google || data.shopify))
   }
 
   const handlePhase3Processing = async () => {
@@ -79,9 +85,10 @@ export default function ReportsPage() {
       setPhase3Results(result)
       console.log('✅ Phase 3 processing completed successfully')
       
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('❌ Phase 3 processing error:', error)
-      alert(`Phase 3 processing failed: ${error.message}`)
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+      alert(`Phase 3 processing failed: ${errorMessage}`)
     } finally {
       setIsProcessing(false)
     }
@@ -329,9 +336,14 @@ export default function ReportsPage() {
             </div>
           )}
           
+          {/* Debug: Show retrieved data state */}
+          <div className="text-xs text-gray-400 mt-2">
+            Debug: retrievedData.meta={retrievedData.meta?.length || 0}, google={retrievedData.google?.length || 0}, shopify={retrievedData.shopify?.length || 0}
+          </div>
+
           {/* Phase 3 Analytics Processing */}
           {(retrievedData.meta || retrievedData.google || retrievedData.shopify) && (
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="bg-white rounded-lg shadow p-6 mt-8 border-2 border-purple-200">
               <h2 className="text-xl font-semibold mb-4">Phase 3: Julius V7 Analytics</h2>
               <div className="space-y-4">
                 <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
@@ -548,7 +560,7 @@ export default function ReportsPage() {
                             <h5 className="font-medium text-gray-800">Performance Recommendations:</h5>
                             <ul className="mt-1 space-y-1">
                               {Object.entries(phase3Results.metadata.methodology.recommendations).map(([rec, score]) => (
-                                <li key={rec}>• <strong>{rec}:</strong> {score}</li>
+                                <li key={rec}>• <strong>{rec}:</strong> {String(score)}</li>
                               ))}
                             </ul>
                           </div>

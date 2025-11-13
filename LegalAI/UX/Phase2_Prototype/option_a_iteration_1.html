@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirai360.ai - Brief Creation | Option A - Iteration 1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            /* Refined Brand Colors - More Selective Usage */
+            --navy-primary: #1B365D;
+            --navy-light: #405A7A;
+            --tech-accent: #2E86C1;
+            --neutral-base: #FAFBFC;
+            --clean-white: #FFFFFF;
+            --success-green: #28B463;
+            --professional-gray: #566573;
+            --subtle-gray: #F8F9FA;
+            --border-light: #E8F4FD;
+            
+            /* Simplified Typography */
+            --font-size-h1: 2rem;
+            --font-size-h2: 1.5rem;
+            --font-size-h3: 1.25rem;
+            --font-size-body: 1rem;
+            --font-size-caption: 0.875rem;
+            
+            /* Consistent Font Weights */
+            --font-weight-regular: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+            
+            /* Enhanced Spacing Scale */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            
+            /* Simplified Shadows */
+            --shadow-subtle: 0 1px 3px rgba(27, 54, 93, 0.08);
+            --shadow-card: 0 2px 8px rgba(27, 54, 93, 0.12);
+            --shadow-elevated: 0 4px 16px rgba(27, 54, 93, 0.15);
+            
+            /* Cleaner Gradients */
+            --gradient-primary: linear-gradient(135deg, #1B365D 0%, #405A7A 100%);
+            --gradient-accent: linear-gradient(135deg, #2E86C1 0%, #3498DB 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: var(--font-size-body);
+            line-height: 1.6;
+            color: var(--navy-light);
+            background: var(--neutral-base);
+        }
+
+        /* Simplified Header */
+        .header {
+            background: var(--clean-white);
+            border-bottom: 1px solid var(--border-light);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            box-shadow: var(--shadow-subtle);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: var(--font-weight-bold);
+            color: var(--navy-primary);
+        }
+
+        .logo-ai {
+            font-weight: var(--font-weight-medium);
+            color: var(--tech-accent);
+        }
+
+        /* Cleaner Cost Dashboard */
+        .cost-dashboard {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            background: var(--subtle-gray);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 8px;
+            border: 1px solid var(--success-green);
+        }
+
+        .cost-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            font-size: var(--font-size-caption);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .cost-current {
+            color: var(--success-green);
+        }
+
+        .cost-budget {
+            color: var(--professional-gray);
+        }
+
+        /* Simplified AI Status */
+        .ai-status {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            background: var(--tech-accent);
+            color: white;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 6px;
+            font-size: var(--font-size-caption);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-caption);
+        }
+
+        /* Enhanced Main Layout with Better Spacing */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: var(--spacing-xl);
+            padding: var(--spacing-lg);
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Cleaner Sidebar */
+        .sidebar {
+            background: var(--clean-white);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            box-shadow: var(--shadow-card);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar-section {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .sidebar-title {
+            font-size: var(--font-size-h3);
+            font-weight: var(--font-weight-semibold);
+            color: var(--navy-primary);
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        /* Simplified Template Cards */
+        .template-card {
+            background: var(--subtle-gray);
+            border: 1px solid transparent;
+            border-radius: 6px;
+            padding: var(--spacing-sm);
+            margin-bottom: var(--spacing-xs);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .template-card:hover,
+        .template-card.active {
+            border-color: var(--tech-accent);
+            background: white;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .template-name {
+            font-weight: var(--font-weight-medium);
+            color: var(--navy-primary);
+            margin-bottom: 2px;
+        }
+
+        .template-desc {
+            font-size: var(--font-size-caption);
+            color: var(--professional-gray);
+        }
+
+        /* Cleaner AI Badge */
+        .ai-badge {
+            background: var(--tech-accent);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: var(--font-weight-medium);
+            position: absolute;
+            top: 4px;
+            right: 4px;
+        }
+
+        /* Simplified Main Content */
+        .main-content {
+            background: var(--clean-white);
+            border-radius: 8px;
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+        }
+
+        /* Clean Content Header */
+        .content-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: var(--spacing-lg);
+        }
+
+        .content-title {
+            font-size: var(--font-size-h1);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .content-subtitle {
+            font-size: var(--font-size-body);
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        /* Simplified AI Helper */
+        .ai-helper {
+            background: rgba(255, 255, 255, 0.15);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 4px;
+            font-size: var(--font-size-caption);
+        }
+
+        .content-body {
+            padding: var(--spacing-lg);
+        }
+
+        /* Enhanced Progress Indicator */
+        .progress-steps {
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--spacing-xl);
+            padding: var(--spacing-md);
+            background: var(--subtle-gray);
+            border-radius: 8px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            flex: 1;
+            position: relative;
+        }
+
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            width: 40px;
+            height: 2px;
+            background: var(--border-light);
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .step.active::after {
+            background: var(--tech-accent);
+        }
+
+        .step-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: var(--font-weight-semibold);
+            color: var(--professional-gray);
+        }
+
+        .step.active .step-number {
+            background: var(--tech-accent);
+            color: white;
+        }
+
+        .step.completed .step-number {
+            background: var(--success-green);
+            color: white;
+        }
+
+        .step-label {
+            font-size: var(--font-size-caption);
+            font-weight: var(--font-weight-medium);
+            color: var(--professional-gray);
+        }
+
+        .step.active .step-label {
+            color: var(--navy-primary);
+        }
+
+        /* Enhanced Brief Form */
+        .brief-form {
+            display: grid;
+            gap: var(--spacing-xl);
+        }
+
+        /* Cleaner Form Sections */
+        .form-section {
+            background: var(--subtle-gray);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            border-left: 3px solid var(--tech-accent);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .section-title {
+            font-size: var(--font-size-h3);
+            font-weight: var(--font-weight-semibold);
+            color: var(--navy-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        /* Simplified AI Suggestion Button */
+        .ai-suggestion-btn {
+            background: var(--tech-accent);
+            color: white;
+            border: none;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 4px;
+            font-size: var(--font-size-caption);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .ai-suggestion-btn:hover {
+            background: var(--navy-light);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-label {
+            display: block;
+            font-weight: var(--font-weight-medium);
+            color: var(--navy-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        /* Cleaner Form Inputs */
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: var(--spacing-sm);
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: var(--font-size-body);
+            transition: border-color 0.2s ease;
+            background: white;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--tech-accent);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Enhanced Date/Event Table */
+        .date-event-table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-subtle);
+            border: 1px solid var(--tech-accent);
+        }
+
+        .table-header {
+            background: var(--tech-accent);
+            color: white;
+            padding: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .table-title {
+            font-weight: var(--font-weight-semibold);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .add-event-btn {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: none;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 4px;
+            font-size: var(--font-size-caption);
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .add-event-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .events-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .events-table th,
+        .events-table td {
+            padding: var(--spacing-sm);
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .events-table th {
+            background: var(--subtle-gray);
+            font-weight: var(--font-weight-semibold);
+            color: var(--navy-primary);
+        }
+
+        .events-table tr:hover {
+            background: var(--subtle-gray);
+        }
+
+        .event-type {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: var(--font-size-caption);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .event-filing {
+            background: #E3F2FD;
+            color: var(--tech-accent);
+        }
+
+        .event-hearing {
+            background: #FFF3E0;
+            color: #F57C00;
+        }
+
+        .event-deadline {
+            background: #FFEBEE;
+            color: #D32F2F;
+        }
+
+        /* Simplified AI Confidence Display */
+        .ai-confidence {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: var(--font-size-caption);
+        }
+
+        .confidence-bar {
+            width: 40px;
+            height: 4px;
+            background: var(--border-light);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: var(--success-green);
+            transition: width 0.3s ease;
+        }
+
+        /* Cleaner Upload Zone */
+        .upload-zone {
+            background: var(--subtle-gray);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            border: 2px dashed var(--tech-accent);
+        }
+
+        .upload-area {
+            text-align: center;
+            padding: var(--spacing-lg);
+            background: white;
+            border-radius: 6px;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .uploaded-files {
+            display: grid;
+            gap: var(--spacing-sm);
+        }
+
+        /* Simplified File Items */
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: var(--spacing-sm);
+            border-radius: 6px;
+            box-shadow: var(--shadow-subtle);
+            border-left: 3px solid var(--tech-accent);
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .file-name {
+            font-weight: var(--font-weight-semibold);
+            color: var(--navy-primary);
+            margin-bottom: 2px;
+        }
+
+        .file-size {
+            font-size: var(--font-size-caption);
+            color: var(--professional-gray);
+        }
+
+        /* Cleaner AI Trigger Button */
+        .ai-trigger-btn.cost-aware {
+            background: var(--tech-accent);
+            color: white;
+            border: none;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 6px;
+            font-size: var(--font-size-caption);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .ai-trigger-btn.cost-aware:hover {
+            background: var(--navy-light);
+        }
+
+        .cost-indicator {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            margin-left: var(--spacing-xs);
+        }
+
+        /* Enhanced Digital Twin Preview */
+        .digital-twin-preview {
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow-subtle);
+            overflow: hidden;
+            border: 1px solid var(--tech-accent);
+        }
+
+        .twin-header {
+            background: var(--tech-accent);
+            color: white;
+            padding: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            justify-content: space-between;
+        }
+
+        .processing-badge {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: var(--font-size-caption);
+        }
+
+        .twin-content {
+            padding: var(--spacing-md);
+            line-height: 1.6;
+        }
+
+        .twin-content p {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .twin-actions {
+            padding: var(--spacing-sm);
+            background: var(--subtle-gray);
+            display: flex;
+            gap: var(--spacing-xs);
+        }
+
+        /* Simplified Trigger Panel */
+        .trigger-panel {
+            background: var(--subtle-gray);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            border: 1px solid var(--tech-accent);
+        }
+
+        .trigger-warning {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            padding: var(--spacing-sm);
+            background: rgba(243, 156, 18, 0.1);
+            border-radius: 6px;
+        }
+
+        .trigger-warning i {
+            color: #F39C12;
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+
+        .trigger-warning h4 {
+            color: var(--navy-primary);
+            margin-bottom: 4px;
+        }
+
+        .trigger-warning p {
+            color: var(--professional-gray);
+            font-size: var(--font-size-caption);
+            margin: 0;
+        }
+
+        /* Cleaner Main Trigger Button */
+        .btn-trigger-ai {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            width: 100%;
+            padding: var(--spacing-md);
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-card);
+        }
+
+        .btn-trigger-ai:hover {
+            box-shadow: var(--shadow-elevated);
+        }
+
+        .trigger-icon {
+            font-size: 2rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: var(--spacing-sm);
+            border-radius: 50%;
+        }
+
+        .trigger-text {
+            flex: 1;
+        }
+
+        .trigger-title {
+            font-weight: var(--font-weight-bold);
+            font-size: var(--font-size-h3);
+            margin-bottom: 4px;
+        }
+
+        .trigger-subtitle {
+            opacity: 0.9;
+            font-size: var(--font-size-caption);
+        }
+
+        .trigger-cost {
+            text-align: center;
+        }
+
+        .cost-amount {
+            font-size: 1.5rem;
+            font-weight: var(--font-weight-bold);
+            margin-bottom: 2px;
+        }
+
+        .cost-label {
+            font-size: var(--font-size-caption);
+            opacity: 0.8;
+        }
+
+        /* Simplified AI Suggestions Panel */
+        .ai-suggestions {
+            background: var(--subtle-gray);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            border: 1px dashed var(--tech-accent);
+        }
+
+        .suggestions-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .suggestions-title {
+            font-weight: var(--font-weight-semibold);
+            color: var(--navy-primary);
+        }
+
+        .suggestion-item {
+            background: white;
+            border-radius: 6px;
+            padding: var(--spacing-sm);
+            margin-bottom: var(--spacing-xs);
+            border-left: 2px solid var(--tech-accent);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .suggestion-item:hover {
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .suggestion-text {
+            font-size: var(--font-size-caption);
+            color: var(--navy-light);
+            margin-bottom: 4px;
+        }
+
+        .suggestion-confidence {
+            font-size: 11px;
+            color: var(--professional-gray);
+        }
+
+        /* Cleaner Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-lg);
+            background: var(--subtle-gray);
+            border-top: 1px solid var(--border-light);
+        }
+
+        .btn {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: 6px;
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-size: var(--font-size-body);
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .btn-primary:hover {
+            box-shadow: var(--shadow-card);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--navy-primary);
+            border: 1px solid var(--navy-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--navy-primary);
+            color: white;
+        }
+
+        .btn-ai {
+            background: var(--tech-accent);
+            color: white;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .btn-ai:hover {
+            background: var(--navy-light);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
+            }
+            
+            .sidebar {
+                position: static;
+                order: 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: var(--spacing-sm);
+            }
+            
+            .content-header {
+                padding: var(--spacing-md);
+            }
+            
+            .content-body {
+                padding: var(--spacing-md);
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .events-table {
+                font-size: var(--font-size-caption);
+            }
+
+            .progress-steps {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+
+            .step:not(:last-child)::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-text">mirai360<span class="logo-ai">.ai</span></span>
+            </div>
+            <div class="cost-dashboard">
+                <div class="cost-item">
+                    <i class="fas fa-dollar-sign" style="color: var(--success-green);"></i>
+                    <span>AI Cost: <span class="cost-current">₹0.00</span></span>
+                </div>
+                <div class="cost-item">
+                    <i class="fas fa-wallet" style="color: var(--professional-gray);"></i>
+                    <span class="cost-budget">Budget: ₹500</span>
+                </div>
+            </div>
+            <div class="ai-status">
+                <i class="fas fa-shield-alt"></i>
+                Manual Control Mode
+            </div>
+            <div class="user-profile">
+                <span>Adv. Rajesh Kumar</span>
+                <div class="user-avatar">RK</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-file-alt"></i>
+                    Brief Templates
+                </h3>
+                <div class="template-card active">
+                    <div class="ai-badge">AI</div>
+                    <div class="template-name">Civil Appeal Brief</div>
+                    <div class="template-desc">High Court civil appeal format</div>
+                </div>
+                <div class="template-card">
+                    <div class="ai-badge">AI</div>
+                    <div class="template-name">Criminal Bail Application</div>
+                    <div class="template-desc">Magistrate court bail format</div>
+                </div>
+                <div class="template-card">
+                    <div class="ai-badge">AI</div>
+                    <div class="template-name">Commercial Suit</div>
+                    <div class="template-desc">Business dispute format</div>
+                </div>
+                <div class="template-card">
+                    <div class="ai-badge">AI</div>
+                    <div class="template-name">Family Court Petition</div>
+                    <div class="template-desc">Family matters format</div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-lightbulb"></i>
+                    AI Assistance
+                </h3>
+                <div class="ai-suggestions">
+                    <div class="suggestions-header">
+                        <i class="fas fa-magic"></i>
+                        <span class="suggestions-title">Smart Suggestions</span>
+                    </div>
+                    <div class="suggestion-item">
+                        <div class="suggestion-text">Add precedent citations for similar cases</div>
+                        <div class="suggestion-confidence">95% confidence</div>
+                    </div>
+                    <div class="suggestion-item">
+                        <div class="suggestion-text">Include statutory provisions under CPC</div>
+                        <div class="suggestion-confidence">88% confidence</div>
+                    </div>
+                    <div class="suggestion-item">
+                        <div class="suggestion-text">Suggest filing timeline optimization</div>
+                        <div class="suggestion-confidence">92% confidence</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1 class="content-title">Create Legal Brief</h1>
+                <div class="content-subtitle">
+                    <i class="fas fa-robot"></i>
+                    <span>AI-Powered Brief Builder</span>
+                    <span class="ai-helper">30% faster with AI assistance</span>
+                </div>
+            </div>
+
+            <div class="content-body">
+                <!-- Enhanced Progress Steps -->
+                <div class="progress-steps">
+                    <div class="step completed">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Upload</div>
+                    </div>
+                    <div class="step active">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Digital Twin</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Brief Creation</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-label">Review</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div class="step-label">Finalize</div>
+                    </div>
+                </div>
+
+                <form class="brief-form">
+                    <!-- Document Upload Section -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                Document Upload
+                            </h3>
+                        </div>
+                        
+                        <div class="upload-zone">
+                            <div class="upload-area">
+                                <i class="fas fa-cloud-upload-alt" style="font-size: 2.5rem; color: var(--tech-accent); margin-bottom: var(--spacing-sm);"></i>
+                                <h4 style="margin-bottom: var(--spacing-xs);">Upload Legal Documents</h4>
+                                <p style="color: var(--professional-gray); margin-bottom: var(--spacing-sm);">Drag & drop files or click to browse</p>
+                                <button type="button" class="btn btn-secondary">
+                                    <i class="fas fa-folder-open"></i> Browse Files
+                                </button>
+                            </div>
+                            
+                            <div class="uploaded-files">
+                                <div class="file-item">
+                                    <div class="file-info">
+                                        <i class="fas fa-file-pdf" style="color: #E74C3C; font-size: 1.5rem;"></i>
+                                        <div>
+                                            <div class="file-name">FIR_Copy_CR_1234_2024.pdf</div>
+                                            <div class="file-size">2.3 MB • Uploaded 2 mins ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="file-actions">
+                                        <button class="ai-trigger-btn cost-aware">
+                                            <i class="fas fa-robot"></i>
+                                            Create Digital Twin
+                                            <span class="cost-indicator">₹25</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="file-item">
+                                    <div class="file-info">
+                                        <i class="fas fa-file-word" style="color: var(--tech-accent); font-size: 1.5rem;"></i>
+                                        <div>
+                                            <div class="file-name">Chargesheet_Details.docx</div>
+                                            <div class="file-size">1.8 MB • Uploaded 1 min ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="file-actions">
+                                        <button class="ai-trigger-btn cost-aware">
+                                            <i class="fas fa-robot"></i>
+                                            Create Digital Twin
+                                            <span class="cost-indicator">₹20</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Digital Twin Review -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <i class="fas fa-eye"></i>
+                                Digital Twin Review
+                            </h3>
+                        </div>
+                        
+                        <div class="digital-twin-preview">
+                            <div class="twin-header">
+                                <div style="display: flex; align-items: center; gap: var(--spacing-xs);">
+                                    <i class="fas fa-robot"></i>
+                                    <span>AI-Generated Digital Twin</span>
+                                </div>
+                                <span class="processing-badge">Processing Complete</span>
+                            </div>
+                            <div class="twin-content">
+                                <p><strong>Case Summary:</strong> Criminal case involving theft under Section 379 IPC. Accused Rajesh Kumar allegedly stole electronic goods worth ₹50,000 from complainant's shop on 15th March 2024. FIR registered at PS Andheri East.</p>
+                                <p><strong>Key Evidence:</strong> CCTV footage, witness statements, recovery memo.</p>
+                                <p><strong>Legal Issues:</strong> Bail application, evidence admissibility, quantum of punishment.</p>
+                            </div>
+                            <div class="twin-actions">
+                                <button class="btn btn-ai">
+                                    <i class="fas fa-check"></i> Approve
+                                </button>
+                                <button class="btn btn-secondary">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-secondary">
+                                    <i class="fas fa-redo"></i> Regenerate
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Manual Brief Creation Trigger -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <i class="fas fa-rocket"></i>
+                                Brief Creation Trigger
+                            </h3>
+                        </div>
+                        
+                        <div class="trigger-panel">
+                            <div class="trigger-warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <div>
+                                    <h4>Manual AI Processing Control</h4>
+                                    <p>Click below to manually trigger AI brief creation. This action will incur processing costs.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="trigger-button-area">
+                                <button class="btn-trigger-ai">
+                                    <div class="trigger-icon">
+                                        <i class="fas fa-magic"></i>
+                                    </div>
+                                    <div class="trigger-text">
+                                        <div class="trigger-title">Generate Legal Brief with AI</div>
+                                        <div class="trigger-subtitle">Uses approved digital twin to create comprehensive brief</div>
+                                    </div>
+                                    <div class="trigger-cost">
+                                        <div class="cost-amount">₹35</div>
+                                        <div class="cost-label">Processing Cost</div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Basic Information -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <i class="fas fa-info-circle"></i>
+                                Basic Information
+                            </h3>
+                            <button type="button" class="ai-suggestion-btn">
+                                <i class="fas fa-magic"></i> Auto-fill
+                            </button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Case Title</label>
+                            <input type="text" class="form-input" placeholder="e.g., Rajesh Kumar vs. State of Maharashtra" value="Rajesh Kumar vs. State of Maharashtra">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Court/Tribunal</label>
+                            <input type="text" class="form-input" placeholder="e.g., Sessions Court, Mumbai" value="Sessions Court, Mumbai">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Case Number</label>
+                            <input type="text" class="form-input" placeholder="e.g., CRL. A. No. 1234/2024" value="CRL. A. No. 1234/2024">
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Date/Event Table - Priority Feature -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <i class="fas fa-calendar-alt"></i>
+                                Important Dates & Events
+                            </h3>
+                            <button type="button" class="ai-suggestion-btn">
+                                <i class="fas fa-brain"></i> AI Timeline
+                            </button>
+                        </div>
+                        
+                        <div class="date-event-table">
+                            <div class="table-header">
+                                <span class="table-title">
+                                    <i class="fas fa-timeline"></i>
+                                    Case Timeline Management
+                                </span>
+                                <button type="button" class="add-event-btn">
+                                    <i class="fas fa-plus"></i> Add Event
+                                </button>
+                            </div>
+                            
+                            <table class="events-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Event Type</th>
+                                        <th>Description</th>
+                                        <th>AI Confidence</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>15/03/2024</td>
+                                        <td><span class="event-type event-filing">Filing</span></td>
+                                        <td>FIR registered at PS Andheri</td>
+                                        <td>
+                                            <div class="ai-confidence">
+                                                <div class="confidence-bar">
+                                                    <div class="confidence-fill" style="width: 95%"></div>
+                                                </div>
+                                                95%
+                                            </div>
+                                        </td>
+                                        <td><i class="fas fa-edit" style="color: var(--tech-accent); cursor: pointer;"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td>22/03/2024</td>
+                                        <td><span class="event-type event-hearing">Hearing</span></td>
+                                        <td>First remand hearing</td>
+                                        <td>
+                                            <div class="ai-confidence">
+                                                <div class="confidence-bar">
+                                                    <div class="confidence-fill" style="width: 88%"></div>
+                                                </div>
+                                                88%
+                                            </div>
+                                        </td>
+                                        <td><i class="fas fa-edit" style="color: var(--tech-accent); cursor: pointer;"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td>05/04/2024</td>
+                                        <td><span class="event-type event-deadline">Deadline</span></td>
+                                        <td>Chargesheet filing deadline</td>
+                                        <td>
+                                            <div class="ai-confidence">
+                                                <div class="confidence-bar">
+                                                    <div class="confidence-fill" style="width: 92%"></div>
+                                                </div>
+                                                92%
+                                            </div>
+                                        </td>
+                                        <td><i class="fas fa-edit" style="color: var(--tech-accent); cursor: pointer;"></i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Brief Content -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h3 class="section-title">
+                                <i class="fas fa-document"></i>
+                                Brief Content
+                            </h3>
+                            <button type="button" class="ai-suggestion-btn">
+                                <i class="fas fa-feather-alt"></i> AI Draft
+                            </button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Legal Arguments</label>
+                            <textarea class="form-textarea" placeholder="The AI will help structure your legal arguments based on the case type and precedents..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Facts of the Case</label>
+                            <textarea class="form-textarea" placeholder="Chronological facts will be auto-organized from your date/event table..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Prayer/Relief Sought</label>
+                            <textarea class="form-textarea" placeholder="AI will suggest appropriate reliefs based on case type..."></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-ai" onclick="handleMainAIGeneration()">
+                    <i class="fas fa-magic"></i>
+                    Complete Brief Generation
+                    <span style="margin-left: 8px; font-size: 0.8em; opacity: 0.8;">₹50</span>
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-save"></i>
+                    Save Draft
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-eye"></i>
+                    Preview
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-share"></i>
+                    Collaborate
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Enhanced interactions with cleaner animations
+        document.addEventListener('DOMContentLoaded', function() {
+            let totalCost = 0;
+            const costDisplay = document.querySelector('.cost-current');
+
+            // Template selection
+            const templateCards = document.querySelectorAll('.template-card');
+            templateCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    templateCards.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // AI trigger buttons with cost confirmation
+            const aiTriggerBtns = document.querySelectorAll('.ai-trigger-btn.cost-aware');
+            aiTriggerBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const costIndicator = this.querySelector('.cost-indicator');
+                    const cost = parseFloat(costIndicator.textContent.replace('₹', ''));
+                    
+                    if (confirm(`This AI operation will cost ${costIndicator.textContent}. Continue?`)) {
+                        // Show processing state
+                        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing Digital Twin...';
+                        this.disabled = true;
+                        this.style.opacity = '0.7';
+                        
+                        // Simulate AI processing
+                        setTimeout(() => {
+                            this.innerHTML = '<i class="fas fa-check"></i> Digital Twin Created';
+                            this.style.background = 'var(--success-green)';
+                            this.disabled = false;
+                            this.style.opacity = '1';
+                            
+                            // Update total cost
+                            totalCost += cost;
+                            costDisplay.textContent = `₹${totalCost.toFixed(2)}`;
+                            
+                            // Update progress step
+                            updateProgressStep(2);
+                        }, 2500);
+                    }
+                });
+            });
+
+            // Main AI trigger button
+            const mainTriggerBtn = document.querySelector('.btn-trigger-ai');
+            if (mainTriggerBtn) {
+                mainTriggerBtn.addEventListener('click', function() {
+                    const costAmount = this.querySelector('.cost-amount').textContent;
+                    const cost = parseFloat(costAmount.replace('₹', ''));
+                    
+                    if (confirm(`Generate complete legal brief for ${costAmount}?`)) {
+                        // Show processing state
+                        this.innerHTML = `
+                            <div class="trigger-icon">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                            <div class="trigger-text">
+                                <div class="trigger-title">Generating Brief...</div>
+                                <div class="trigger-subtitle">AI is analyzing case data and creating comprehensive brief</div>
+                            </div>
+                            <div class="trigger-cost">
+                                <div class="cost-amount">${costAmount}</div>
+                                <div class="cost-label">Processing</div>
+                            </div>
+                        `;
+                        this.disabled = true;
+                        this.style.opacity = '0.8';
+                        
+                        // Simulate AI processing
+                        setTimeout(() => {
+                            this.innerHTML = `
+                                <div class="trigger-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="trigger-text">
+                                    <div class="trigger-title">Brief Generated Successfully!</div>
+                                    <div class="trigger-subtitle">Ready for review and finalization</div>
+                                </div>
+                                <div class="trigger-cost">
+                                    <div class="cost-amount">✓</div>
+                                    <div class="cost-label">Complete</div>
+                                </div>
+                            `;
+                            this.style.background = 'var(--success-green)';
+                            this.style.opacity = '1';
+                            
+                            // Update total cost
+                            totalCost += cost;
+                            costDisplay.textContent = `₹${totalCost.toFixed(2)}`;
+                            
+                            // Update progress step
+                            updateProgressStep(3);
+                            
+                            // Change color based on budget usage
+                            const budgetUsage = totalCost / 500;
+                            if (budgetUsage > 0.8) {
+                                costDisplay.style.color = '#E74C3C';
+                            } else if (budgetUsage > 0.6) {
+                                costDisplay.style.color = '#F39C12';
+                            }
+                        }, 4000);
+                    }
+                });
+            }
+
+            // Progress step update function
+            function updateProgressStep(stepNumber) {
+                const steps = document.querySelectorAll('.step');
+                steps.forEach((step, index) => {
+                    if (index < stepNumber) {
+                        step.classList.add('completed');
+                        step.classList.remove('active');
+                    } else if (index === stepNumber) {
+                        step.classList.add('active');
+                        step.classList.remove('completed');
+                    } else {
+                        step.classList.remove('active', 'completed');
+                    }
+                });
+            }
+
+            // AI suggestion items
+            const suggestionItems = document.querySelectorAll('.suggestion-item');
+            suggestionItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    this.style.opacity = '0.5';
+                    setTimeout(() => {
+                        this.style.opacity = '1';
+                        this.style.backgroundColor = '#E8F5E8';
+                        this.style.borderLeft = '2px solid var(--success-green)';
+                    }, 300);
+                });
+            });
+
+            // Enhanced table interactions
+            const tableRows = document.querySelectorAll('.events-table tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('click', function() {
+                    // Remove previous selections
+                    tableRows.forEach(r => {
+                        r.style.background = '';
+                        r.style.transform = '';
+                    });
+                    
+                    // Highlight selected row
+                    this.style.background = 'rgba(46, 134, 193, 0.08)';
+                    this.style.transition = 'all 0.2s ease';
+                });
+            });
+
+            // Form inputs with AI assistance
+            const formInputs = document.querySelectorAll('.form-input, .form-textarea');
+            formInputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    const aiBtn = this.closest('.form-section').querySelector('.ai-suggestion-btn');
+                    if (aiBtn) {
+                        aiBtn.style.opacity = '0.8';
+                        setTimeout(() => {
+                            aiBtn.style.opacity = '1';
+                        }, 200);
+                    }
+                });
+            });
+
+            // Digital twin actions
+            const twinActions = document.querySelectorAll('.twin-actions .btn');
+            twinActions.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (this.textContent.includes('Approve')) {
+                        const twinPreview = this.closest('.digital-twin-preview');
+                        twinPreview.style.borderColor = 'var(--success-green)';
+                        
+                        const header = twinPreview.querySelector('.twin-header');
+                        header.style.background = 'var(--success-green)';
+                        
+                        const badge = twinPreview.querySelector('.processing-badge');
+                        badge.textContent = 'Approved';
+                        
+                        this.innerHTML = '<i class="fas fa-check-circle"></i> Approved';
+                        this.style.background = 'var(--success-green)';
+                        
+                        // Update progress step
+                        updateProgressStep(3);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

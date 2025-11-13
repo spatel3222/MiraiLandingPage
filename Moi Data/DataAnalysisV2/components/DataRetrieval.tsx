@@ -267,24 +267,84 @@ export default function DataRetrieval({
       // Process final results
       if (finalData) {
         setRetrievalResults(finalData.results)
-        setLocalStorageInfo(finalData.localStorage)
-        onDataRetrieved({
-          meta: finalData.data.meta,
-          google: finalData.data.google,
-          shopify: finalData.data.shopify
-        })
+        setLocalStorageInfo(finalData.localStorageKeys ? {} : finalData.localStorage || {})
+        
+        // If the response was modified to avoid 4MB limit, fetch the actual data
+        if (finalData.dataKeys) {
+          console.log('Fetching actual data after streaming completion...')
+          try {
+            const dataResponse = await fetch('/api/retrieve-data', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ 
+                startDate: dateRange.startDate, 
+                endDate: dateRange.endDate, 
+                reportType: dateRange.quickFilter 
+              })
+            })
+            
+            if (dataResponse.ok) {
+              const actualData = await dataResponse.json()
+              console.log('✅ Successfully fetched actual data:', {
+                success: actualData.success,
+                meta: actualData.data?.meta?.length || 0,
+                google: actualData.data?.google?.length || 0,
+                shopify: actualData.data?.shopify?.length || 0,
+                keys: Object.keys(actualData)
+              })
+              
+              if (actualData.success && actualData.data) {
+                console.log('🎯 Calling onDataRetrieved with data:', {
+                  meta: actualData.data.meta?.length || 0,
+                  google: actualData.data.google?.length || 0,
+                  shopify: actualData.data.shopify?.length || 0
+                })
+                
+                onDataRetrieved({
+                  meta: actualData.data.meta || null,
+                  google: actualData.data.google || null,
+                  shopify: actualData.data.shopify || null
+                })
+                
+                console.log('✅ onDataRetrieved called successfully')
+              } else {
+                throw new Error(`API returned unsuccessful response: ${JSON.stringify(actualData)}`)
+              }
+            } else {
+              const errorText = await dataResponse.text()
+              throw new Error(`HTTP ${dataResponse.status}: ${errorText}`)
+            }
+          } catch (error) {
+            console.error('Error fetching actual data:', error)
+            // Show user-friendly error but don't break the flow
+            setRetrievalResults(finalData.results.map(r => ({
+              ...r,
+              success: false,
+              error: 'Failed to retrieve data for Julius V7 processing'
+            })))
+            onDataRetrieved({ meta: null, google: null, shopify: null })
+          }
+        } else {
+          // Old format with full data
+          onDataRetrieved({
+            meta: finalData.data?.meta || null,
+            google: finalData.data?.google || null,
+            shopify: finalData.data?.shopify || null
+          })
+        }
       }
 
-    } catch (error) {
-      if (error.name === 'AbortError') {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.name === 'AbortError') {
         console.log('Data retrieval cancelled')
         setOverallProgress(prev => ({ ...prev, currentPhase: 'Cancelled' }))
       } else {
         console.error('Streaming retrieval error:', error)
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
         setRetrievalResults([
-          { platform: 'meta', success: false, rowCount: 0, dateRange: { min: null, max: null }, error: error.message },
-          { platform: 'google', success: false, rowCount: 0, dateRange: { min: null, max: null }, error: error.message },
-          { platform: 'shopify', success: false, rowCount: 0, dateRange: { min: null, max: null }, error: error.message }
+          { platform: 'meta', success: false, rowCount: 0, dateRange: { min: null, max: null }, error: errorMessage },
+          { platform: 'google', success: false, rowCount: 0, dateRange: { min: null, max: null }, error: errorMessage },
+          { platform: 'shopify', success: false, rowCount: 0, dateRange: { min: null, max: null }, error: errorMessage }
         ])
       }
     } finally {
@@ -342,12 +402,13 @@ export default function DataRetrieval({
         shopify: result.data.shopify
       })
 
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Data retrieval error:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
       setRetrievalResults([
-        { platform: 'meta', success: false, rowCount: 0, dateRange: { min: null, max: null }, error: error.message },
-        { platform: 'google', success: false, rowCount: 0, dateRange: { min: null, max: null }, error: error.message },
-        { platform: 'shopify', success: false, rowCount: 0, dateRange: { min: null, max: null }, error: error.message }
+        { platform: 'meta', success: false, rowCount: 0, dateRange: { min: null, max: null }, error: errorMessage },
+        { platform: 'google', success: false, rowCount: 0, dateRange: { min: null, max: null }, error: errorMessage },
+        { platform: 'shopify', success: false, rowCount: 0, dateRange: { min: null, max: null }, error: errorMessage }
       ])
     } finally {
       setIsRetrieving(false)

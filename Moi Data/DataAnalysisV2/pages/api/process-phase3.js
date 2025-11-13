@@ -36,9 +36,19 @@ export default async function handler(req, res) {
       const platformData = rawData[platform]
       if (platformData && Array.isArray(platformData)) {
         console.log(`📊 ${platform}: ${platformData.length} rows available`)
+        console.log(`🔍 ${platform} first row keys:`, platformData.length > 0 ? Object.keys(platformData[0]) : 'No rows')
+        console.log(`🔍 ${platform} first row sample:`, platformData.length > 0 ? JSON.stringify(platformData[0]).substring(0, 150) + '...' : 'No data')
       } else {
-        console.log(`⚠️ ${platform}: No data available`)
+        console.log(`⚠️ ${platform}: No data available - type:`, typeof platformData, 'isArray:', Array.isArray(platformData))
       }
+    })
+    
+    console.log('🔍 rawData structure being passed to Julius V7:')
+    console.log('🔍 rawData keys:', Object.keys(rawData))
+    console.log('🔍 rawData overview:', {
+      meta: rawData.meta ? (Array.isArray(rawData.meta) ? `${rawData.meta.length} rows` : typeof rawData.meta) : 'missing',
+      google: rawData.google ? (Array.isArray(rawData.google) ? `${rawData.google.length} rows` : typeof rawData.google) : 'missing',
+      shopify: rawData.shopify ? (Array.isArray(rawData.shopify) ? `${rawData.shopify.length} rows` : typeof rawData.shopify) : 'missing'
     })
 
     // Initialize Julius V7 Engine

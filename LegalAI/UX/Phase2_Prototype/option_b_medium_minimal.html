@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirai360.ai - Brief Creation | Medium Minimal Aesthetic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            /* Brand Colors */
+            --navy-primary: #1B365D;
+            --navy-light: #405A7A;
+            --tech-accent: #2E86C1;
+            --neutral-base: #FAFBFC;
+            --clean-white: #FFFFFF;
+            --success-green: #28B463;
+            --professional-gray: #566573;
+            --cost-warning: #F39C12;
+            --cost-danger: #E74C3C;
+            
+            /* Typography Scale */
+            --font-size-display: 3.5rem;
+            --font-size-h1: 2.5rem;
+            --font-size-h2: 1.5rem;
+            --font-size-h3: 1.25rem;
+            --font-size-body: 1rem;
+            --font-size-caption: 0.875rem;
+            
+            /* Font Weights */
+            --font-weight-regular: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+            
+            /* Spacing - 40% more white space */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 2.8rem;
+            --spacing-lg: 5.6rem;
+            --spacing-xl: 8.4rem;
+            
+            /* Shadows & Effects - Subtle */
+            --shadow-sm: 0 1px 3px rgba(27, 54, 93, 0.08);
+            --shadow-md: 0 2px 8px rgba(27, 54, 93, 0.12);
+            --border-subtle: 1px solid rgba(27, 54, 93, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: var(--font-size-body);
+            line-height: 1.6;
+            color: var(--navy-light);
+            background: var(--neutral-base);
+        }
+
+        /* Header */
+        .header {
+            background: var(--clean-white);
+            border-bottom: var(--border-subtle);
+            padding: var(--spacing-sm) var(--spacing-md);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: var(--font-weight-bold);
+            color: var(--navy-primary);
+        }
+
+        .logo-ai {
+            font-weight: var(--font-weight-medium);
+            color: var(--tech-accent);
+        }
+
+        .cost-monitor {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            background: var(--neutral-base);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 8px;
+            border: var(--border-subtle);
+        }
+
+        .cost-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            font-size: var(--font-size-caption);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .cost-amount {
+            color: var(--success-green);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--navy-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-caption);
+        }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Workflow Sidebar */
+        .workflow-sidebar {
+            background: var(--clean-white);
+            border-radius: 8px;
+            border: var(--border-subtle);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .workflow-header {
+            padding: var(--spacing-sm);
+            border-bottom: var(--border-subtle);
+            background: var(--neutral-base);
+            border-radius: 8px 8px 0 0;
+        }
+
+        .workflow-title {
+            font-size: var(--font-size-h3);
+            font-weight: var(--font-weight-semibold);
+            color: var(--navy-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .workflow-steps {
+            padding: var(--spacing-sm);
+        }
+
+        .workflow-step {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm);
+            margin-bottom: var(--spacing-xs);
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .workflow-step.active {
+            background: var(--neutral-base);
+            border: 1px solid var(--tech-accent);
+        }
+
+        .workflow-step.completed {
+            background: rgba(40, 180, 99, 0.1);
+            color: var(--success-green);
+        }
+
+        .step-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--professional-gray);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-caption);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        .workflow-step.active .step-number {
+            background: var(--tech-accent);
+        }
+
+        .workflow-step.completed .step-number {
+            background: var(--success-green);
+        }
+
+        .step-text {
+            font-size: var(--font-size-caption);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .cost-control-panel {
+            margin-top: var(--spacing-sm);
+            padding: var(--spacing-sm);
+            background: rgba(243, 156, 18, 0.1);
+            border-radius: 6px;
+            border: 1px solid var(--cost-warning);
+        }
+
+        .cost-title {
+            font-size: var(--font-size-caption);
+            font-weight: var(--font-weight-semibold);
+            color: var(--cost-warning);
+            margin-bottom: var(--spacing-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .cost-info {
+            font-size: 11px;
+            color: var(--professional-gray);
+            line-height: 1.4;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: var(--clean-white);
+            border-radius: 8px;
+            border: var(--border-subtle);
+            overflow: hidden;
+        }
+
+        .content-header {
+            background: var(--navy-primary);
+            color: white;
+            padding: var(--spacing-md);
+        }
+
+        .content-title {
+            font-size: var(--font-size-h1);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .content-subtitle {
+            font-size: var(--font-size-body);
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .ai-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: var(--font-size-caption);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .content-body {
+            padding: var(--spacing-md);
+        }
+
+        /* Document Upload Section */
+        .upload-section {
+            background: var(--neutral-base);
+            border: 2px dashed var(--tech-accent);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+            transition: all 0.2s ease;
+        }
+
+        .upload-section:hover {
+            background: rgba(46, 134, 193, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 2rem;
+            color: var(--tech-accent);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .upload-text {
+            font-weight: var(--font-weight-medium);
+            color: var(--navy-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .upload-subtext {
+            font-size: var(--font-size-caption);
+            color: var(--professional-gray);
+        }
+
+        .uploaded-files {
+            display: grid;
+            gap: var(--spacing-xs);
+            margin-top: var(--spacing-sm);
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: var(--spacing-sm);
+            border-radius: 6px;
+            border: var(--border-subtle);
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .file-name {
+            font-weight: var(--font-weight-medium);
+            color: var(--navy-primary);
+        }
+
+        .file-size {
+            font-size: var(--font-size-caption);
+            color: var(--professional-gray);
+        }
+
+        .ai-trigger-btn {
+            background: var(--tech-accent);
+            color: white;
+            border: none;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 6px;
+            font-size: var(--font-size-caption);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .ai-trigger-btn:hover {
+            background: var(--navy-primary);
+            transform: translateY(-1px);
+        }
+
+        .cost-tooltip {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--cost-warning);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .ai-trigger-btn:hover .cost-tooltip {
+            opacity: 1;
+        }
+
+        /* Digital Twin Review Section */
+        .digital-twin-section {
+            background: var(--neutral-base);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            border-left: 4px solid var(--tech-accent);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .section-title {
+            font-size: var(--font-size-h3);
+            font-weight: var(--font-weight-semibold);
+            color: var(--navy-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            flex: 1;
+        }
+
+        .twin-preview {
+            background: white;
+            border-radius: 6px;
+            padding: var(--spacing-sm);
+            border: var(--border-subtle);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .twin-content {
+            font-size: var(--font-size-caption);
+            color: var(--navy-light);
+            line-height: 1.5;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .twin-actions {
+            display: flex;
+            gap: var(--spacing-xs);
+        }
+
+        .btn-small {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border: none;
+            border-radius: 4px;
+            font-size: var(--font-size-caption);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-approve {
+            background: var(--success-green);
+            color: white;
+        }
+
+        .btn-edit {
+            background: var(--neutral-base);
+            color: var(--navy-primary);
+            border: 1px solid var(--navy-primary);
+        }
+
+        /* Date/Event Table - Priority Feature */
+        .date-event-section {
+            background: white;
+            border-radius: 8px;
+            margin-bottom: var(--spacing-md);
+            border: 2px solid var(--tech-accent);
+            overflow: hidden;
+        }
+
+        .table-header {
+            background: var(--tech-accent);
+            color: white;
+            padding: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .table-title {
+            font-weight: var(--font-weight-semibold);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .add-event-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 4px;
+            font-size: var(--font-size-caption);
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .add-event-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .events-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .events-table th,
+        .events-table td {
+            padding: var(--spacing-sm);
+            text-align: left;
+            border-bottom: var(--border-subtle);
+        }
+
+        .events-table th {
+            background: var(--neutral-base);
+            font-weight: var(--font-weight-semibold);
+            color: var(--navy-primary);
+            font-size: var(--font-size-caption);
+        }
+
+        .events-table tr:hover {
+            background: var(--neutral-base);
+        }
+
+        .event-type {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: var(--font-size-caption);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .event-filing {
+            background: rgba(46, 134, 193, 0.1);
+            color: var(--tech-accent);
+        }
+
+        .event-hearing {
+            background: rgba(243, 156, 18, 0.1);
+            color: var(--cost-warning);
+        }
+
+        .event-deadline {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--cost-danger);
+        }
+
+        .ai-confidence {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: var(--font-size-caption);
+        }
+
+        .confidence-bar {
+            width: 40px;
+            height: 4px;
+            background: rgba(27, 54, 93, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: var(--success-green);
+            transition: width 0.3s ease;
+        }
+
+        /* Brief Creation Interface */
+        .brief-creation {
+            background: var(--neutral-base);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            border-left: 4px solid var(--success-green);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .form-label {
+            display: block;
+            font-weight: var(--font-weight-medium);
+            color: var(--navy-primary);
+            margin-bottom: var(--spacing-xs);
+            font-size: var(--font-size-caption);
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: var(--spacing-sm);
+            border: var(--border-subtle);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: var(--font-size-body);
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--tech-accent);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .ai-assistance-panel {
+            position: fixed;
+            right: var(--spacing-sm);
+            top: 50%;
+            transform: translateY(-50%);
+            width: 280px;
+            background: white;
+            border-radius: 8px;
+            border: var(--border-subtle);
+            box-shadow: var(--shadow-md);
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .ai-assistance-panel.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .ai-panel-header {
+            background: var(--tech-accent);
+            color: white;
+            padding: var(--spacing-sm);
+            border-radius: 8px 8px 0 0;
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-caption);
+        }
+
+        .ai-suggestions {
+            padding: var(--spacing-sm);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .suggestion-item {
+            background: var(--neutral-base);
+            border-radius: 4px;
+            padding: var(--spacing-xs);
+            margin-bottom: var(--spacing-xs);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: var(--font-size-caption);
+        }
+
+        .suggestion-item:hover {
+            background: rgba(46, 134, 193, 0.1);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md);
+            background: var(--neutral-base);
+            border-top: var(--border-subtle);
+            justify-content: space-between;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: var(--spacing-xs);
+        }
+
+        .btn {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: 6px;
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-size: var(--font-size-body);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .btn-primary {
+            background: var(--navy-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--navy-light);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--navy-primary);
+            border: 1px solid var(--navy-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--navy-primary);
+            color: white;
+        }
+
+        .btn-ai {
+            background: var(--tech-accent);
+            color: white;
+            position: relative;
+        }
+
+        .btn-ai:hover {
+            background: var(--navy-primary);
+        }
+
+        .btn-ai .cost-indicator {
+            margin-left: var(--spacing-xs);
+            font-size: 10px;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-sm);
+            }
+            
+            .workflow-sidebar {
+                position: static;
+                order: 2;
+            }
+
+            .ai-assistance-panel {
+                position: static;
+                width: 100%;
+                margin-top: var(--spacing-sm);
+                opacity: 1;
+                pointer-events: all;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: var(--spacing-sm);
+            }
+            
+            .content-header {
+                padding: var(--spacing-sm);
+            }
+            
+            .content-body {
+                padding: var(--spacing-sm);
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: var(--spacing-xs);
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-text">mirai360<span class="logo-ai">.ai</span></span>
+            </div>
+            <div class="cost-monitor">
+                <div class="cost-indicator">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>AI Cost: <span class="cost-amount">₹0.00</span></span>
+                </div>
+                <div class="cost-indicator">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Budget: ₹500</span>
+                </div>
+            </div>
+            <div class="user-profile">
+                <span style="font-size: var(--font-size-caption);">Adv. Rajesh Kumar</span>
+                <div class="user-avatar">RK</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Workflow Sidebar -->
+        <aside class="workflow-sidebar">
+            <div class="workflow-header">
+                <h3 class="workflow-title">
+                    <i class="fas fa-route"></i>
+                    Brief Workflow
+                </h3>
+            </div>
+            <div class="workflow-steps">
+                <div class="workflow-step completed">
+                    <div class="step-number">1</div>
+                    <span class="step-text">Upload Documents</span>
+                </div>
+                <div class="workflow-step completed">
+                    <div class="step-number">2</div>
+                    <span class="step-text">AI Digital Twin</span>
+                </div>
+                <div class="workflow-step active">
+                    <div class="step-number">3</div>
+                    <span class="step-text">Review & Approve</span>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">4</div>
+                    <span class="step-text">Create Brief</span>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">5</div>
+                    <span class="step-text">Finalize & Export</span>
+                </div>
+            </div>
+            
+            <div class="cost-control-panel">
+                <div class="cost-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Cost Control
+                </div>
+                <div class="cost-info">
+                    Manual triggers prevent unexpected AI costs. Each AI operation requires your explicit approval.
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1 class="content-title">AI-Native Legal Brief Builder</h1>
+                <div class="content-subtitle">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Manual Cost Control</span>
+                    <span class="ai-badge">AI-Powered</span>
+                </div>
+            </div>
+
+            <div class="content-body">
+                <!-- Document Upload Section -->
+                <div class="upload-section">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="upload-text">Upload Legal Documents</div>
+                    <div class="upload-subtext">Drag & drop or click to upload case files, judgments, and related documents</div>
+                    
+                    <div class="uploaded-files">
+                        <div class="file-item">
+                            <div class="file-info">
+                                <i class="fas fa-file-pdf" style="color: var(--cost-danger);"></i>
+                                <div>
+                                    <div class="file-name">FIR_Copy_CR_1234_2024.pdf</div>
+                                    <div class="file-size">2.3 MB</div>
+                                </div>
+                            </div>
+                            <button class="ai-trigger-btn">
+                                <i class="fas fa-robot"></i>
+                                Convert to Digital Twin
+                                <span class="cost-tooltip">₹25.00</span>
+                            </button>
+                        </div>
+                        <div class="file-item">
+                            <div class="file-info">
+                                <i class="fas fa-file-word" style="color: var(--tech-accent);"></i>
+                                <div>
+                                    <div class="file-name">Chargesheet_Summary.docx</div>
+                                    <div class="file-size">1.8 MB</div>
+                                </div>
+                            </div>
+                            <button class="ai-trigger-btn">
+                                <i class="fas fa-robot"></i>
+                                Convert to Digital Twin
+                                <span class="cost-tooltip">₹20.00</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Digital Twin Review Section -->
+                <div class="digital-twin-section">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fas fa-eye"></i>
+                            Digital Twin Review
+                        </h3>
+                    </div>
+                    
+                    <div class="twin-preview">
+                        <div class="twin-content">
+                            <strong>AI-Generated Summary:</strong> Criminal case involving theft under Section 379 IPC. Accused Rajesh Kumar allegedly stole electronic goods worth ₹50,000 from complainant's shop on 15th March 2024. FIR registered at PS Andheri East. Key evidence includes CCTV footage and witness statements.
+                        </div>
+                        <div class="twin-actions">
+                            <button class="btn-small btn-approve">
+                                <i class="fas fa-check"></i> Approve
+                            </button>
+                            <button class="btn-small btn-edit">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date/Event Table - Priority Feature -->
+                <div class="date-event-section">
+                    <div class="table-header">
+                        <span class="table-title">
+                            <i class="fas fa-calendar-alt"></i>
+                            Case Timeline & Events
+                        </span>
+                        <div style="display: flex; gap: var(--spacing-xs);">
+                            <button class="add-event-btn">
+                                <i class="fas fa-plus"></i> Add Event
+                            </button>
+                            <button class="ai-trigger-btn" style="background: rgba(255,255,255,0.2);">
+                                <i class="fas fa-magic"></i> AI Timeline
+                                <span class="cost-tooltip">₹15.00</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <table class="events-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Event Type</th>
+                                <th>Description</th>
+                                <th>AI Confidence</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>15/03/2024</td>
+                                <td><span class="event-type event-filing">Filing</span></td>
+                                <td>FIR registered at PS Andheri East</td>
+                                <td>
+                                    <div class="ai-confidence">
+                                        <div class="confidence-bar">
+                                            <div class="confidence-fill" style="width: 95%"></div>
+                                        </div>
+                                        95%
+                                    </div>
+                                </td>
+                                <td><i class="fas fa-edit" style="color: var(--tech-accent); cursor: pointer;"></i></td>
+                            </tr>
+                            <tr>
+                                <td>22/03/2024</td>
+                                <td><span class="event-type event-hearing">Hearing</span></td>
+                                <td>First remand hearing - bail rejected</td>
+                                <td>
+                                    <div class="ai-confidence">
+                                        <div class="confidence-bar">
+                                            <div class="confidence-fill" style="width: 88%"></div>
+                                        </div>
+                                        88%
+                                    </div>
+                                </td>
+                                <td><i class="fas fa-edit" style="color: var(--tech-accent); cursor: pointer;"></i></td>
+                            </tr>
+                            <tr>
+                                <td>05/04/2024</td>
+                                <td><span class="event-type event-deadline">Deadline</span></td>
+                                <td>Chargesheet filing deadline (90 days)</td>
+                                <td>
+                                    <div class="ai-confidence">
+                                        <div class="confidence-bar">
+                                            <div class="confidence-fill" style="width: 92%"></div>
+                                        </div>
+                                        92%
+                                    </div>
+                                </td>
+                                <td><i class="fas fa-edit" style="color: var(--tech-accent); cursor: pointer;"></i></td>
+                            </tr>
+                            <tr>
+                                <td>12/04/2024</td>
+                                <td><span class="event-type event-hearing">Hearing</span></td>
+                                <td>Arguments on bail application</td>
+                                <td>
+                                    <div class="ai-confidence">
+                                        <div class="confidence-bar">
+                                            <div class="confidence-fill" style="width: 85%"></div>
+                                        </div>
+                                        85%
+                                    </div>
+                                </td>
+                                <td><i class="fas fa-edit" style="color: var(--tech-accent); cursor: pointer;"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Brief Creation Interface -->
+                <div class="brief-creation">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fas fa-document"></i>
+                            Brief Creation
+                        </h3>
+                        <button class="ai-trigger-btn">
+                            <i class="fas fa-magic"></i>
+                            Generate Brief
+                            <span class="cost-tooltip">₹35.00</span>
+                        </button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Case Title</label>
+                        <input type="text" class="form-input" placeholder="Rajesh Kumar vs. State of Maharashtra" value="Rajesh Kumar vs. State of Maharashtra">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Court/Tribunal</label>
+                        <input type="text" class="form-input" placeholder="Sessions Court, Mumbai" value="Sessions Court, Mumbai">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Brief Type</label>
+                        <select class="form-input">
+                            <option>Bail Application</option>
+                            <option>Appeal Brief</option>
+                            <option>Written Arguments</option>
+                            <option>Application for Discharge</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Legal Arguments (AI will suggest based on case analysis)</label>
+                        <textarea class="form-textarea" placeholder="Arguments will be auto-generated from case facts and timeline..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <div class="btn-group">
+                    <button class="btn btn-ai">
+                        <i class="fas fa-robot"></i>
+                        Generate Complete Brief
+                        <span class="cost-indicator">₹50</span>
+                    </button>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Save Progress
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-eye"></i>
+                        Preview
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- AI Assistance Panel -->
+    <div class="ai-assistance-panel" id="aiPanel">
+        <div class="ai-panel-header">
+            <i class="fas fa-lightbulb"></i>
+            AI Suggestions
+        </div>
+        <div class="ai-suggestions">
+            <div class="suggestion-item">
+                <strong>Precedent:</strong> Similar bail case in Bombay HC (2023)
+            </div>
+            <div class="suggestion-item">
+                <strong>Statutory:</strong> Section 437 CrPC provisions
+            </div>
+            <div class="suggestion-item">
+                <strong>Timeline:</strong> Optimize hearing schedule
+            </div>
+            <div class="suggestion-item">
+                <strong>Evidence:</strong> CCTV footage admissibility
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Workflow step navigation
+            const workflowSteps = document.querySelectorAll('.workflow-step');
+            workflowSteps.forEach((step, index) => {
+                step.addEventListener('click', function() {
+                    // Remove active class from all steps
+                    workflowSteps.forEach(s => s.classList.remove('active'));
+                    // Add active class to clicked step
+                    this.classList.add('active');
+                });
+            });
+
+            // AI trigger buttons with cost confirmation
+            const aiTriggerBtns = document.querySelectorAll('.ai-trigger-btn');
+            aiTriggerBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const costTooltip = this.querySelector('.cost-tooltip');
+                    const cost = costTooltip ? costTooltip.textContent : '₹25.00';
+                    
+                    if (confirm(`This AI operation will cost ${cost}. Continue?`)) {
+                        // Simulate AI processing
+                        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                        this.disabled = true;
+                        
+                        setTimeout(() => {
+                            this.innerHTML = '<i class="fas fa-check"></i> Completed';
+                            this.style.background = 'var(--success-green)';
+                        }, 2000);
+                        
+                        // Update cost in header
+                        const costAmount = document.querySelector('.cost-amount');
+                        const currentCost = parseFloat(costAmount.textContent.replace('₹', ''));
+                        const newCost = currentCost + parseFloat(cost.replace('₹', ''));
+                        costAmount.textContent = `₹${newCost.toFixed(2)}`;
+                    }
+                });
+            });
+
+            // Table row interactions
+            const tableRows = document.querySelectorAll('.events-table tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('click', function() {
+                    // Highlight selected row
+                    tableRows.forEach(r => r.style.background = '');
+                    this.style.background = 'rgba(46, 134, 193, 0.1)';
+                    
+                    // Show AI assistance panel
+                    const aiPanel = document.getElementById('aiPanel');
+                    aiPanel.classList.add('active');
+                });
+            });
+
+            // Form interactions
+            const formInputs = document.querySelectorAll('.form-input, .form-textarea');
+            formInputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    // Show AI assistance when focusing on form fields
+                    const aiPanel = document.getElementById('aiPanel');
+                    aiPanel.classList.add('active');
+                });
+            });
+
+            // Hide AI panel when clicking outside
+            document.addEventListener('click', function(e) {
+                const aiPanel = document.getElementById('aiPanel');
+                if (!aiPanel.contains(e.target) && !e.target.closest('.form-input, .form-textarea, .events-table')) {
+                    aiPanel.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

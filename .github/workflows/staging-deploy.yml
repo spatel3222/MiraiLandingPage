@@ -1,0 +1,45 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [ staging ]
+  pull_request:
+    branches: [ staging ]
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Validate HTML files
+      run: |
+        # Simple HTML validation check
+        find . -name "*.html" -exec echo "Checking {}" \;
+        
+    - name: Check for broken links (basic)
+      run: |
+        # Basic link checker - can be enhanced later
+        grep -r "href=" *.html | grep -i "http" | head -5 || true
+        
+    - name: Deploy to GitHub Pages (staging branch)
+      if: github.ref == 'refs/heads/staging'
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./
+        destination_dir: staging
+        keep_files: false
+        
+    - name: Comment PR with staging URL
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '🚀 Staging preview will be available at: https://spatelCRTX.github.io/staging/'
+          })

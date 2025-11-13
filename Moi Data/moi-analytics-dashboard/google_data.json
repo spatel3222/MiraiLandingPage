@@ -1,0 +1,128 @@
+[
+  {
+    "day": "2025-10-27",
+    "campaign": "Brand-Search",
+    "cost": 4023.97,
+    "source_file": "./Google_27th_Sept.csv",
+    "source_file_name": "Daily Dashboard",
+    "date_range_start": "2025-10-27",
+    "date_range_end": "2025-10-27"
+  },
+  {
+    "day": "2025-10-27",
+    "campaign": "Moi Ahmedabad - Local Store Visits",
+    "cost": 514.55,
+    "source_file": "./Google_27th_Sept.csv",
+    "source_file_name": "Daily Dashboard",
+    "date_range_start": "2025-10-27",
+    "date_range_end": "2025-10-27"
+  },
+  {
+    "day": "2025-10-27",
+    "campaign": "Moi Chennai - Local Store Visits",
+    "cost": 260.66,
+    "source_file": "./Google_27th_Sept.csv",
+    "source_file_name": "Daily Dashboard",
+    "date_range_start": "2025-10-27",
+    "date_range_end": "2025-10-27"
+  },
+  {
+    "day": "2025-10-27",
+    "campaign": "T1 Pmax Rings",
+    "cost": 390.85,
+    "source_file": "./Google_27th_Sept.csv",
+    "source_file_name": "Daily Dashboard",
+    "date_range_start": "2025-10-27",
+    "date_range_end": "2025-10-27"
+  },
+  {
+    "day": "2025-10-27",
+    "campaign": "T1 Pmax Earrings",
+    "cost": 18.76,
+    "source_file": "./Google_27th_Sept.csv",
+    "source_file_name": "Daily Dashboard",
+    "date_range_start": "2025-10-27",
+    "date_range_end": "2025-10-27"
+  },
+  {
+    "day": "2025-10-27",
+    "campaign": "BOF-YT-ALL PRODUCTS",
+    "cost": 472.19,
+    "source_file": "./Google_27th_Sept.csv",
+    "source_file_name": "Daily Dashboard",
+    "date_range_start": "2025-10-27",
+    "date_range_end": "2025-10-27"
+  },
+  {
+    "day": "2025-10-27",
+    "campaign": "T1 Pmax Bracelets",
+    "cost": 68.87,
+    "source_file": "./Google_27th_Sept.csv",
+    "source_file_name": "Daily Dashboard",
+    "date_range_start": "2025-10-27",
+    "date_range_end": "2025-10-27"
+  },
+  {
+    "day": "2025-09-29",
+    "campaign": "Brand-Search",
+    "cost": 7843.83,
+    "source_file": "./Google_29th_Sept.csv",
+    "source_file_name": "Daily Dashboard",
+    "date_range_start": "2025-09-29",
+    "date_range_end": "2025-09-29"
+  },
+  {
+    "day": "2025-09-29",
+    "campaign": "Moi Ahmedabad - Local Store Visits",
+    "cost": 529.22,
+    "source_file": "./Google_29th_Sept.csv",
+    "source_file_name": "Daily Dashboard",
+    "date_range_start": "2025-09-29",
+    "date_range_end": "2025-09-29"
+  },
+  {
+    "day": "2025-09-29",
+    "campaign": "Moi Chennai - Local Store Visits",
+    "cost": 500.15,
+    "source_file": "./Google_29th_Sept.csv",
+    "source_file_name": "Daily Dashboard",
+    "date_range_start": "2025-09-29",
+    "date_range_end": "2025-09-29"
+  },
+  {
+    "day": "2025-09-29",
+    "campaign": "T1 Pmax Rings",
+    "cost": 3242.05,
+    "source_file": "./Google_29th_Sept.csv",
+    "source_file_name": "Daily Dashboard",
+    "date_range_start": "2025-09-29",
+    "date_range_end": "2025-09-29"
+  },
+  {
+    "day": "2025-09-29",
+    "campaign": "T1 Pmax Earrings",
+    "cost": 3976.18,
+    "source_file": "./Google_29th_Sept.csv",
+    "source_file_name": "Daily Dashboard",
+    "date_range_start": "2025-09-29",
+    "date_range_end": "2025-09-29"
+  },
+  {
+    "day": "2025-09-29",
+    "campaign": "BOF-YT-ALL PRODUCTS",
+    "cost": 462.69,
+    "source_file": "./Google_29th_Sept.csv",
+    "source_file_name": "Daily Dashboard",
+    "date_range_start": "2025-09-29",
+    "date_range_end": "2025-09-29"
+  },
+  {
+    "day": "2025-09-29",
+    "campaign": "T1 Pmax Bracelets",
+    "cost": 527.9,
+    "source_file": "./Google_29th_Sept.csv",
+    "source_file_name": "Daily Dashboard",
+    "date_range_start": "2025-09-29",
+    "date_range_end": "2025-09-29"
+  }
+]

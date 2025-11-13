@@ -1,0 +1,213 @@
+{
+  "execution_summary": {
+    "total_time": 1.533163070678711,
+    "total_batches": 20,
+    "successful_batches": 20,
+    "failed_batches": 0,
+    "total_records": 3060,
+    "ref_parameter": "nbclorobfotxrpbmyapi",
+    "timestamp": "2025-11-02T09:48:07.211136"
+  },
+  "batch_results": [
+    {
+      "batch_number": 0,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0000.sql",
+      "execution_time": 0.4945981502532959,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 26398  100   207  100 26191    434  55006 --:--:-- --:--:-- --:--:-- 55457\n"
+    },
+    {
+      "batch_number": 1,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0001.sql",
+      "execution_time": 0.5034868717193604,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 27616  100   207  100 27409    424  56242 --:--:-- --:--:-- --:--:-- 56706\n"
+    },
+    {
+      "batch_number": 2,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0002.sql",
+      "execution_time": 0.5293831825256348,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 27270  100   207  100 27063    403  52762 --:--:-- --:--:-- --:--:-- 53261\n"
+    },
+    {
+      "batch_number": 3,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0003.sql",
+      "execution_time": 0.5421247482299805,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 26529  100   207  100 26322    393  50070 --:--:-- --:--:-- --:--:-- 50531\n"
+    },
+    {
+      "batch_number": 4,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0004.sql",
+      "execution_time": 0.5073180198669434,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 27571  100   207  100 27364    422  55847 --:--:-- --:--:-- --:--:-- 56382\n"
+    },
+    {
+      "batch_number": 5,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0005.sql",
+      "execution_time": 0.522385835647583,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 26853  100   207  100 26646    410  52794 --:--:-- --:--:-- --:--:-- 53279\n"
+    },
+    {
+      "batch_number": 6,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0006.sql",
+      "execution_time": 0.49843668937683105,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 27078  100   207  100 26871    432  56138 --:--:-- --:--:-- --:--:-- 56648\n"
+    },
+    {
+      "batch_number": 7,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0007.sql",
+      "execution_time": 0.5292730331420898,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 27053  100   207  100 26846    401  52127 --:--:-- --:--:-- --:--:-- 52632\n"
+    },
+    {
+      "batch_number": 8,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0008.sql",
+      "execution_time": 0.5122959613800049,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 26879  100   207  100 26672    424  54638 --:--:-- --:--:-- --:--:-- 54967\n"
+    },
+    {
+      "batch_number": 9,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0009.sql",
+      "execution_time": 0.5074620246887207,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 26648  100   207  100 26441    427  54667 --:--:-- --:--:-- --:--:-- 55057\n"
+    },
+    {
+      "batch_number": 10,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0010.sql",
+      "execution_time": 0.49487900733947754,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 27753  100   207  100 27546    436  58026 --:--:-- --:--:-- --:--:-- 58427\n"
+    },
+    {
+      "batch_number": 11,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0011.sql",
+      "execution_time": 0.5111620426177979,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 26383  100   207  100 26176    421  53332 --:--:-- --:--:-- --:--:-- 53733\n"
+    },
+    {
+      "batch_number": 12,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0012.sql",
+      "execution_time": 0.4909088611602783,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 27153  100   207  100 26946    434  56500 --:--:-- --:--:-- --:--:-- 56924\n"
+    },
+    {
+      "batch_number": 13,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0013.sql",
+      "execution_time": 0.4900062084197998,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 26308  100   207  100 26101    435  54869 --:--:-- --:--:-- --:--:-- 55268\n"
+    },
+    {
+      "batch_number": 14,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0014.sql",
+      "execution_time": 0.4943370819091797,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 26941  100   207  100 26734    428  55366 --:--:-- --:--:-- --:--:-- 55778\n"
+    },
+    {
+      "batch_number": 15,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0015.sql",
+      "execution_time": 0.4914100170135498,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 26037  100   207  100 25830    429  53612 --:--:-- --:--:-- --:--:-- 54018\n"
+    },
+    {
+      "batch_number": 16,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0016.sql",
+      "execution_time": 0.5311410427093506,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 26748  100   207  100 26541    414  53189 --:--:-- --:--:-- --:--:-- 53710\n"
+    },
+    {
+      "batch_number": 17,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0017.sql",
+      "execution_time": 0.49481797218322754,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 27081  100   207  100 26874    442  57423 --:--:-- --:--:-- --:--:-- 57989\n"
+    },
+    {
+      "batch_number": 18,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0018.sql",
+      "execution_time": 0.515449047088623,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 26654  100   207  100 26447    423  54081 --:--:-- --:--:-- --:--:-- 54618\n"
+    },
+    {
+      "batch_number": 19,
+      "file_path": "/Users/shivangpatel/Documents/GitHub/crtx.in/Moi Data/moi-analytics-dashboard/sql_batches/shopify_sample_batch_0019.sql",
+      "execution_time": 0.5157749652862549,
+      "success": true,
+      "response": {
+        "raw_output": "<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n"
+      },
+      "error": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 26643  100   207  100 26436    419  53567 --:--:-- --:--:-- --:--:-- 54042\n"
+    }
+  ]
+}
