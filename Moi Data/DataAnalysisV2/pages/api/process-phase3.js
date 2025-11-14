@@ -21,7 +21,7 @@ export default async function handler(req, res) {
     } = req.body
 
     // Validate required inputs
-    if (!rawData) {
+    if (!rawData && !options.fetchFromDatabase) {
       return res.status(400).json({ error: 'Data is required for processing' })
     }
 
@@ -33,15 +33,15 @@ export default async function handler(req, res) {
     console.log(`📅 Date range: ${dateRange.startDate} to ${dateRange.endDate}`)
 
     // Check if we need to fetch data from database
-    let actualData = rawData
+    let actualData = rawData || {}
     const needsDatabaseFetch = options.fetchFromDatabase || 
-      Object.values(rawData).every(platformData => !platformData || platformData.length === 0)
+      !rawData || Object.values(rawData).every(platformData => !platformData || platformData.length === 0)
     
     console.log('🔧 Database fetch check:', {
       fetchFromDatabaseOption: options.fetchFromDatabase,
-      rawDataEmpty: Object.values(rawData).every(platformData => !platformData || platformData.length === 0),
+      rawDataEmpty: !rawData || Object.values(rawData).every(platformData => !platformData || platformData.length === 0),
       needsDatabaseFetch,
-      rawDataStructure: Object.keys(rawData).map(key => `${key}: ${Array.isArray(rawData[key]) ? rawData[key].length + ' rows' : typeof rawData[key]}`)
+      rawDataStructure: rawData ? Object.keys(rawData).map(key => `${key}: ${Array.isArray(rawData[key]) ? rawData[key].length + ' rows' : typeof rawData[key]}`) : ['No rawData provided']
     })
     
     if (needsDatabaseFetch) {
@@ -92,19 +92,47 @@ export default async function handler(req, res) {
     
     const savedFiles = {}
     
+    // Generate proper filenames based on date range and output type
+    function generateFilename(outputType, startDate, endDate) {
+      const start = new Date(startDate)
+      const end = new Date(endDate)
+      const daysDiff = Math.ceil((end - start) / (1000 * 60 * 60 * 24))
+      
+      let periodType, dateLabel
+      
+      if (daysDiff <= 1) {
+        periodType = 'Daily'
+        dateLabel = startDate
+      } else if (daysDiff <= 5) {
+        periodType = 'Weekly'
+        dateLabel = `${startDate}_to_${endDate}`
+      } else {
+        periodType = 'DateRange'
+        dateLabel = `${startDate}_to_${endDate}`
+      }
+      
+      const typeMap = {
+        topLevel: 'TopLevel',
+        adSetLevel: 'AdSetLevel', 
+        adLevel: 'AdLevel'
+      }
+      
+      return `${typeMap[outputType]}_${periodType}_${dateLabel}.csv`
+    }
+    
     // Save each CSV file
     const outputs = {
       topLevel: {
         data: result.outputs.topLevel,
-        filename: `daily_summary_${dateRange.startDate}_to_${dateRange.endDate}_${sessionId}.csv`
+        filename: generateFilename('topLevel', dateRange.startDate, dateRange.endDate)
       },
       adSetLevel: {
         data: result.outputs.adSetLevel,
-        filename: `adset_performance_${dateRange.startDate}_to_${dateRange.endDate}_${sessionId}.csv`
+        filename: generateFilename('adSetLevel', dateRange.startDate, dateRange.endDate)
       },
       adLevel: {
         data: result.outputs.adLevel,
-        filename: `ad_performance_${dateRange.startDate}_to_${dateRange.endDate}_${sessionId}.csv`
+        filename: generateFilename('adLevel', dateRange.startDate, dateRange.endDate)
       }
     }
     

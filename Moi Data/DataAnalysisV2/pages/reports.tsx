@@ -260,34 +260,36 @@ export default function ReportsPage() {
       // Handle topLevel data (object with csvData and filename properties)
       if (result.outputs?.topLevel) {
         if (Array.isArray(result.outputs.topLevel)) {
-          merged.outputs.topLevel.push(...result.outputs.topLevel)
+          (merged.outputs.topLevel as any[]).push(...(result.outputs.topLevel as any[]))
         } else if (typeof result.outputs.topLevel === 'object') {
           // It's an object with csvData and filename - keep the structure
-          merged.outputs.topLevel.push(result.outputs.topLevel)
+          (merged.outputs.topLevel as any[]).push(result.outputs.topLevel as any)
         } else if (typeof result.outputs.topLevel === 'string') {
-          merged.outputs.topLevel.push({ csvData: result.outputs.topLevel, filename: `batch_toplevel_${merged.outputs.topLevel.length}.csv` })
+          (merged.outputs.topLevel as any[]).push({ csvData: result.outputs.topLevel, filename: `batch_toplevel_${(merged.outputs.topLevel as any[]).length}.csv` })
         }
       }
       
       // Handle adSetLevel data
       if (result.outputs?.adSetLevel) {
         if (Array.isArray(result.outputs.adSetLevel)) {
-          merged.outputs.adSetLevel.push(...result.outputs.adSetLevel)
+          (merged.outputs.adSetLevel as any[]).push(...result.outputs.adSetLevel as any)
         } else if (typeof result.outputs.adSetLevel === 'object') {
-          merged.outputs.adSetLevel.push(result.outputs.adSetLevel)
+          // It's an object with csvData and filename - keep the structure
+          (merged.outputs.adSetLevel as any[]).push(result.outputs.adSetLevel as any)
         } else if (typeof result.outputs.adSetLevel === 'string') {
-          merged.outputs.adSetLevel.push({ csvData: result.outputs.adSetLevel, filename: `batch_adsetlevel_${merged.outputs.adSetLevel.length}.csv` })
+          (merged.outputs.adSetLevel as any[]).push({ csvData: result.outputs.adSetLevel, filename: `batch_adsetlevel_${(merged.outputs.adSetLevel as any[]).length}.csv` })
         }
       }
       
       // Handle adLevel data
       if (result.outputs?.adLevel) {
         if (Array.isArray(result.outputs.adLevel)) {
-          merged.outputs.adLevel.push(...result.outputs.adLevel)
+          (merged.outputs.adLevel as any[]).push(...result.outputs.adLevel as any)
         } else if (typeof result.outputs.adLevel === 'object') {
-          merged.outputs.adLevel.push(result.outputs.adLevel)
+          // It's an object with csvData and filename - keep the structure
+          (merged.outputs.adLevel as any[]).push(result.outputs.adLevel as any)
         } else if (typeof result.outputs.adLevel === 'string') {
-          merged.outputs.adLevel.push({ csvData: result.outputs.adLevel, filename: `batch_adlevel_${merged.outputs.adLevel.length}.csv` })
+          (merged.outputs.adLevel as any[]).push({ csvData: result.outputs.adLevel, filename: `batch_adlevel_${(merged.outputs.adLevel as any[]).length}.csv` })
         }
       }
     }
@@ -321,6 +323,34 @@ export default function ReportsPage() {
     document.body.removeChild(link)
   }
   
+  // Generate proper filenames based on date range and output type
+  const generateFilename = (outputType: 'topLevel' | 'adSetLevel' | 'adLevel', startDate: string, endDate: string) => {
+    const start = new Date(startDate)
+    const end = new Date(endDate)
+    const daysDiff = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
+    
+    let periodType: string, dateLabel: string
+    
+    if (daysDiff <= 1) {
+      periodType = 'Daily'
+      dateLabel = startDate
+    } else if (daysDiff <= 5) {
+      periodType = 'Weekly'
+      dateLabel = `${startDate}_to_${endDate}`
+    } else {
+      periodType = 'DateRange'
+      dateLabel = `${startDate}_to_${endDate}`
+    }
+    
+    const typeMap = {
+      topLevel: 'TopLevel',
+      adSetLevel: 'AdSetLevel', 
+      adLevel: 'AdLevel'
+    }
+    
+    return `${typeMap[outputType]}_${periodType}_${dateLabel}.csv`
+  }
+
   const downloadPhase3CSVDirect = (outputType: 'topLevel' | 'adSetLevel' | 'adLevel') => {
     if (!phase3Results || !phase3Results.rawData[outputType]) return
 
@@ -355,7 +385,8 @@ export default function ReportsPage() {
     if (link.download !== undefined) {
       const url = URL.createObjectURL(blob)
       link.setAttribute('href', url)
-      link.setAttribute('download', `${outputType}_fallback.csv`)
+      const filename = generateFilename(outputType, dateRange.startDate, dateRange.endDate)
+      link.setAttribute('download', filename)
       link.style.visibility = 'hidden'
       document.body.appendChild(link)
       link.click()

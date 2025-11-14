@@ -202,8 +202,8 @@ export class JuliusV7Engine {
       meta: [
         'Day', 
         ['Campaign', 'Campaign name'], 
-        ['Ad Set', 'Ad set name'], 
-        ['Ad', 'Ad name'], 
+        ['Ad Set', 'Ad Set Name', 'Ad set name'], 
+        ['Ad', 'Ad Name', 'Ad name'], 
         ['Spend', 'Amount spent (INR)'], 
         ['CPM', 'CPM (cost per 1,000 impressions)'], 
         ['CTR', 'CTR (link click-through rate)']
@@ -537,66 +537,135 @@ export class JuliusV7Engine {
   }
 
   /**
-   * Step 4: Attribution Logic Implementation (Section 7.3 from notebook)
+   * Step 3-4: Harmonization & Attribution (Exact notebook logic)
    */
   async applyAttributionWithValidation(validatedData) {
     const { data: harmonizedData, validation } = validatedData
-    console.log('🎯 Starting Attribution Logic Implementation...')
+    console.log('🔄 Starting Harmonization & Attribution (Notebook Logic)...')
     
-    // Detect platform from Shopify URL using utm_source parameters
-    const shopifyData = harmonizedData.shopify || []
-    const shopifyPlatformData = Array.isArray(shopifyData) ? shopifyData.map(row => ({
+    // STEP 1: Harmonization & UTM prep (from notebook cell e5c2a293)
+    let meta = harmonizedData.meta || []
+    let google = harmonizedData.google || []
+    let shop = harmonizedData.shopify || []
+    
+    console.log(`📊 Input data: Meta=${meta.length}, Google=${google.length}, Shopify=${shop.length}`)
+    
+    // Ensure datetime and CTR normalization (from notebook)
+    meta = meta.map(row => ({
       ...row,
-      detectedPlatform: this.detectPlatformFromURL(row['Landing page URL'] || '')
-    })) : []
+      Day: row.Day || row.Date,
+      ctr_decimal: (this.parseNumeric(row['CTR']) || this.parseNumeric(row['CTR (link click-through rate)'])) / 100 || 0, // CRITICAL FIX: Add Meta CTR mapping
+      cpm: this.parseNumeric(row['CPM']) || this.parseNumeric(row['CPM (cost per 1,000 impressions)']) || 0, // CRITICAL FIX: Add Meta CPM mapping
+      amount_spent_inr: this.parseNumeric(row['Spend']) || this.parseNumeric(row['Amount spent (INR)']) || this.parseNumeric(row['Amount spent']) || 0,
+      campaign_name: row['Campaign name'] || row['Campaign'],
+      ad_set_name: row['Ad set name'] || row['Ad Set Name'],
+      ad_name: row['Ad name'] || row['Ad Name'],
+      ad_set_delivery: row['Delivery'] || 'Active'
+    }))
     
-    // Separate Shopify data by detected platform
-    const shopifyMeta = Array.isArray(shopifyPlatformData) ? shopifyPlatformData.filter(row => row.detectedPlatform === 'Meta') : []
-    const shopifyGoogle = Array.isArray(shopifyPlatformData) ? shopifyPlatformData.filter(row => row.detectedPlatform === 'Google') : []
-    const shopifyUnknown = Array.isArray(shopifyPlatformData) ? shopifyPlatformData.filter(row => row.detectedPlatform === 'Unknown') : []
+    google = google.map(row => ({
+      ...row,
+      Day: row.Day || row.Date,
+      ctr_decimal: this.parseNumeric(String(row['CTR'] || '').replace('%', '')) / 100 || 0,
+      cpm: this.parseNumeric(row['Avg. CPM']) || 0,
+      Campaign: row['Campaign'] || row['Campaign name'],
+      Cost: this.parseNumeric(row['Cost']) || this.parseNumeric(row['Spend']) || 0
+    }))
     
-    console.log(`📊 Shopify platform detection: Meta=${shopifyMeta.length}, Google=${shopifyGoogle.length}, Unknown=${shopifyUnknown.length}`)
+    // Shopify harmonization with derived flags (from notebook)
+    shop = shop.map(row => {
+      const visitors = this.parseNumeric(row['Online store visitors']) || 0
+      const pageviews = this.parseNumeric(row['Page views']) || this.parseNumeric(row['Pageviews']) || 0 // CRITICAL FIX: Handle both field names
+      const atc = this.parseNumeric(row['Sessions with cart additions']) || 0
+      const reached_checkout = this.parseNumeric(row['Sessions reached checkout']) || 0
+      const completed_checkout = this.parseNumeric(row['Sessions that completed checkout']) || 0
+      const avg_duration = this.parseNumeric(row['Average session duration']) || 0
+      
+      // Derive flags and proxy counts (EXACT notebook logic)
+      const long_session_flag = avg_duration >= 60 ? 1 : 0
+      const deep_views_flag = pageviews >= 5 ? 1 : 0
+      const gl_flag = (long_session_flag === 1 && deep_views_flag === 1) ? 1 : 0
+      
+      // Proxy counts
+      const users_1min = visitors * long_session_flag
+      const users_5pv_1min = visitors * gl_flag
+      const atc_1min = atc * long_session_flag
+      const reached_1min = reached_checkout * long_session_flag
+      
+      // Flag templated UTMs (from notebook)
+      const utm_campaign = String(row['UTM campaign'] || '')
+      const utm_term = String(row['UTM term'] || '')
+      const utm_content = String(row['UTM content'] || '')
+      const is_templated = utm_campaign.includes('{{') || utm_term.includes('{{') || utm_content.includes('{{') ? 1 : 0
+      
+      return {
+        ...row,
+        Day: row.Day || row.Date,
+        utm_campaign,
+        utm_term,
+        utm_content,
+        visitors,
+        pageviews,
+        atc,
+        reached_checkout,
+        completed_checkout,
+        avg_session_duration: avg_duration,
+        long_session_flag,
+        deep_views_flag,
+        gl_flag,
+        users_1min,
+        users_5pv_1min,
+        atc_1min,
+        reached_1min,
+        is_templated
+      }
+    })
     
-    // Aggregate Shopify by attribution keys to avoid duplicates
-    // Meta attribution key: day + utm_campaign + utm_term + utm_content
-    const shopifyMetaAgg = this.aggregateShopifyByAttributionKeys(
-      shopifyMeta, 
-      ['Day', 'UTM campaign', 'UTM term', 'UTM content']
-    )
+    // STEP 2: Attribution (from notebook cells 9638f822 & b517ba44)
+    // Filter out templated UTMs from attribution
+    const shop_attr = shop.filter(row => row.is_templated === 0)
+    console.log(`📊 Filtered Shopify for attribution: ${shop_attr.length} (removed ${shop.length - shop_attr.length} templated)`)
     
-    // Google attribution key: day + utm_campaign  
-    const shopifyGoogleAgg = this.aggregateShopifyByAttributionKeys(
-      shopifyGoogle,
-      ['Day', 'UTM campaign']
-    )
+    // Aggregate Shopify BEFORE joining (CRITICAL - this was missing)
+    const shop_meta_keys = ['Day', 'utm_campaign', 'utm_term', 'utm_content']
+    const shop_metrics = ['visitors', 'pageviews', 'avg_session_duration', 'atc', 'reached_checkout', 'completed_checkout', 'users_1min', 'users_5pv_1min', 'atc_1min', 'reached_1min']
     
-    console.log(`📊 Shopify aggregated: Meta=${shopifyMetaAgg.length}, Google=${shopifyGoogleAgg.length}`)
+    const shop_meta_agg = this.groupByAndSum(shop_attr, shop_meta_keys, shop_metrics)
     
-    // Apply attribution to Meta: Day + Campaign + Ad Set + Ad
-    const metaWithAttribution = Array.isArray(harmonizedData.meta) ? harmonizedData.meta.map(row => ({ ...row, attr_Visitors: 0, attribution_matched: false })) : []
+    const shop_google_keys = ['Day', 'utm_campaign']
+    const shop_google_agg = this.groupByAndSum(shop_attr, shop_google_keys, shop_metrics)
     
-    // Apply attribution to Google: Day + Campaign
-    const googleWithAttribution = Array.isArray(harmonizedData.google) ? harmonizedData.google.map(row => ({ ...row, attr_Visitors: 0, attribution_matched: false })) : []
+    console.log(`📊 Shopify aggregated: Meta=${shop_meta_agg.length}, Google=${shop_google_agg.length}`)
     
-    const attributedData = {
-      meta: metaWithAttribution,
-      google: googleWithAttribution,
-      shopify_meta_attributed: shopifyMetaAgg,
-      shopify_google_attributed: shopifyGoogleAgg,
-      shopify_unknown: shopifyUnknown
-    }
+    // STEP 3: Join aggregated Shopify to Meta/Google (from notebook)
+    // Meta join
+    const meta_eval = this.joinMetaShopify(meta, shop_meta_agg)
     
-    // Attribution validation checks
-    const attributionValidation = this.validateAttribution(attributedData, harmonizedData)
+    // Google join (aggregate Google to campaign-day first to avoid duplicating Shopify metrics)
+    const google_day_agg = this.groupByAndSum(google, ['Day', 'Campaign'], ['Cost', 'ctr_decimal', 'cpm'])
+    const google_eval = this.joinGoogleShopify(google_day_agg, shop_google_agg)
     
-    console.log('✅ Attribution logic implementation completed')
+    // Stack unified attribution
+    const unified_attr = [...meta_eval, ...google_eval]
     
-    return { 
-      data: attributedData, 
-      validation: { 
-        ...validation, 
-        attribution: attributionValidation 
-      } 
+    console.log(`📊 Final attribution: Meta=${meta_eval.length}, Google=${google_eval.length}, Total=${unified_attr.length}`)
+    
+    return {
+      data: {
+        meta: meta_eval,
+        google: google_eval, 
+        unified_attr,
+        shop_raw: shop,
+        shop_attributed: shop_attr
+      },
+      validation: {
+        ...validation,
+        attribution: {
+          meta_rows: meta_eval.length,
+          google_rows: google_eval.length,
+          total_attributed: unified_attr.length
+        }
+      }
     }
   }
 
@@ -1024,15 +1093,30 @@ export class JuliusV7Engine {
   }
 
   /**
-   * Step 7: Create aggregated views (top-level, ad set, ad-level)
+   * Step 5: Generate Output Tables (exact notebook logic from cell c8bfdf9f)
    */
-  async createAggregatedViews(scoredData, dateRange) {
-    console.log('📋 Creating aggregated CSV outputs...')
+  async createAggregatedViews(attributedData, dateRange) {
+    console.log('📋 Creating output tables from unified attribution...')
+    
+    const ua = attributedData.unified_attr || []
+    const shopifyOriginal = attributedData.shop_attributed || [] // Original Shopify data before duplication
+    
+    if (!ua || ua.length === 0) {
+      console.log('⚠️ No unified attribution data available')
+      return {
+        topLevel: [],
+        adSetLevel: [],
+        adLevel: []
+      }
+    }
+    
+    console.log(`📊 Processing ${ua.length} unified attribution rows`)
+    console.log(`📊 Original Shopify rows: ${shopifyOriginal.length}`)
     
     const outputs = {
-      topLevel: await this.createTopLevelSummary(scoredData, dateRange),
-      adSetLevel: await this.createAdSetSummary(scoredData),
-      adLevel: await this.createAdLevelSummary(scoredData)
+      topLevel: this.createTopMetricsTable(ua, shopifyOriginal), // Pass original Shopify data
+      adSetLevel: this.createAdSetMetricsTable(ua),
+      adLevel: this.createAdLevelMetricsTable(ua)
     }
     
     return outputs
@@ -1113,8 +1197,11 @@ export class JuliusV7Engine {
     const adSetSummary = []
     
     if (scoredData.meta) {
-      scoredData.meta.forEach(row => {
-        if (row['Ad set name'] || row['Ad Set']) {
+      console.log(`🔍 Processing ${scoredData.meta.length} meta rows for Ad Set summary`)
+      scoredData.meta.forEach((row, index) => {
+        const hasAdSet = row['Ad set name'] || row['Ad Set']
+        if (index < 3) console.log(`🔍 Row ${index} - Ad set name: "${row['Ad set name']}", Ad Set: "${row['Ad Set']}", hasAdSet: ${!!hasAdSet}`)
+        if (hasAdSet) {
           // AdSet Metrics as per Julius V7 specifications
           adSetSummary.push({
             Date: row.Day,
@@ -1223,6 +1310,7 @@ export class JuliusV7Engine {
       })
     }
     
+    console.log(`✅ AdSet summary generated: ${adSetSummary.length} rows`)
     return adSetSummary
   }
 
@@ -1233,8 +1321,11 @@ export class JuliusV7Engine {
     const adSummary = []
     
     if (scoredData.meta) {
-      scoredData.meta.forEach(row => {
-        if (row['Ad name'] || row.Ad) {
+      console.log(`🔍 Processing ${scoredData.meta.length} meta rows for Ad Level summary`)
+      scoredData.meta.forEach((row, index) => {
+        const hasAd = row['Ad name'] || row.Ad
+        if (index < 3) console.log(`🔍 Row ${index} - Ad name: "${row['Ad name']}", Ad: "${row.Ad}", hasAd: ${!!hasAd}`)
+        if (hasAd) {
           // Ad-level Metrics as per Julius V7 specifications
           adSummary.push({
             Date: row.Day,
@@ -1341,6 +1432,7 @@ export class JuliusV7Engine {
       })
     }
     
+    console.log(`✅ Ad summary generated: ${adSummary.length} rows`)
     return adSummary
   }
 
@@ -1493,16 +1585,451 @@ export class JuliusV7Engine {
   }
 
   // Stub methods for step-by-step implementation
+  // Helper: Group by keys and sum metrics (from notebook aggregation logic)
+  groupByAndSum(rows, groupKeys, sumKeys) {
+    if (!rows || rows.length === 0) return []
+    
+    const grouped = {}
+    
+    rows.forEach(row => {
+      // Create group key
+      const keyValues = groupKeys.map(key => String(row[key] || '').trim())
+      const groupKey = keyValues.join('|||')
+      
+      if (!grouped[groupKey]) {
+        // Initialize group with key fields
+        grouped[groupKey] = {}
+        groupKeys.forEach((key, i) => {
+          grouped[groupKey][key] = keyValues[i]
+        })
+        
+        // Initialize sum fields to 0 (REAL data only, no synthetic values)
+        sumKeys.forEach(key => {
+          grouped[groupKey][key] = 0
+        })
+      }
+      
+      // Sum metrics (only real data, no synthetic addition)
+      sumKeys.forEach(key => {
+        const value = this.parseNumeric(row[key])
+        if (value !== null && !isNaN(value)) {
+          grouped[groupKey][key] += value
+        }
+      })
+    })
+    
+    return Object.values(grouped)
+  }
+  
+  // Join Meta and Shopify (from notebook meta_eval logic)
+  joinMetaShopify(meta, shop_agg) {
+    const result = []
+    let matchCount = 0
+    let totalMeta = meta.length
+    
+    console.log(`🔍 DEBUG: Joining ${totalMeta} Meta rows with ${shop_agg.length} Shopify aggregated rows`)
+    
+    meta.forEach((metaRow, index) => {
+      // Find matching Shopify data
+      const shopMatch = shop_agg.find(shopRow => 
+        shopRow.Day === metaRow.Day &&
+        shopRow.utm_campaign === metaRow.campaign_name &&
+        shopRow.utm_term === metaRow.ad_set_name &&
+        shopRow.utm_content === metaRow.ad_name
+      )
+      
+      // DEBUG: Log first 3 matches/mismatches
+      if (index < 3) {
+        console.log(`🔍 Meta Row ${index}: Day="${metaRow.Day}", Campaign="${metaRow.campaign_name}", AdSet="${metaRow.ad_set_name}", Ad="${metaRow.ad_name}"`)
+        if (shopMatch) {
+          console.log(`✅ MATCH found: visitors=${shopMatch.visitors}, pageviews=${shopMatch.pageviews}`)
+          matchCount++
+        } else {
+          console.log(`❌ NO MATCH - checking first 2 Shopify rows:`)
+          shop_agg.slice(0, 2).forEach((shop, i) => {
+            console.log(`  Shop ${i}: Day="${shop.Day}", utm_campaign="${shop.utm_campaign}", utm_term="${shop.utm_term}", utm_content="${shop.utm_content}"`)
+          })
+        }
+      } else if (shopMatch) {
+        matchCount++
+      }
+      
+      // Combine Meta + Shopify data (ONLY real data, no synthetic values)
+      const combined = {
+        Day: metaRow.Day,
+        source: 'Meta',
+        utm_campaign: metaRow.campaign_name || '',
+        utm_term: metaRow.ad_set_name || '',
+        utm_content: metaRow.ad_name || '',
+        amount_spent_inr: metaRow.amount_spent_inr || 0,
+        ctr_decimal: metaRow.ctr_decimal || 0,
+        cpm: metaRow.cpm || 0,
+        ad_set_delivery: metaRow.ad_set_delivery || '',
+        
+        // Shopify metrics (0 if no match - this represents NO DATA, not synthetic data)
+        visitors: shopMatch?.visitors || 0,
+        pageviews: shopMatch?.pageviews || 0,
+        avg_session_duration: shopMatch?.avg_session_duration || 0,
+        atc: shopMatch?.atc || 0,
+        reached_checkout: shopMatch?.reached_checkout || 0,
+        completed_checkout: shopMatch?.completed_checkout || 0,
+        users_1min: shopMatch?.users_1min || 0,
+        users_5pv_1min: shopMatch?.users_5pv_1min || 0,
+        atc_1min: shopMatch?.atc_1min || 0,
+        reached_1min: shopMatch?.reached_1min || 0
+      }
+      
+      result.push(combined)
+    })
+    
+    console.log(`📊 Meta-Shopify Join Results: ${matchCount}/${totalMeta} Meta rows matched with Shopify data (${Math.round(matchCount/totalMeta*100)}%)`)
+    
+    return result
+  }
+  
+  // Join Google and Shopify (from notebook google_eval logic)
+  joinGoogleShopify(google_agg, shop_agg) {
+    const result = []
+    
+    google_agg.forEach(googleRow => {
+      // Find matching Shopify data (Google only matches on Day + Campaign)
+      const shopMatch = shop_agg.find(shopRow => 
+        shopRow.Day === googleRow.Day &&
+        shopRow.utm_campaign === googleRow.Campaign
+      )
+      
+      // Combine Google + Shopify data (ONLY real data, no synthetic values)
+      const combined = {
+        Day: googleRow.Day,
+        source: 'Google',
+        utm_campaign: googleRow.Campaign || '',
+        utm_term: '', // Google has no ad set granularity in our data
+        utm_content: '', // Google has no ad granularity in our data
+        amount_spent_inr: googleRow.Cost || 0,
+        ctr_decimal: googleRow.ctr_decimal || 0,
+        cpm: googleRow.cpm || 0,
+        ad_set_delivery: '',
+        
+        // Shopify metrics (0 if no match - represents NO DATA, not synthetic)
+        visitors: shopMatch?.visitors || 0,
+        pageviews: shopMatch?.pageviews || 0,
+        avg_session_duration: shopMatch?.avg_session_duration || 0,
+        atc: shopMatch?.atc || 0,
+        reached_checkout: shopMatch?.reached_checkout || 0,
+        completed_checkout: shopMatch?.completed_checkout || 0,
+        users_1min: shopMatch?.users_1min || 0,
+        users_5pv_1min: shopMatch?.users_5pv_1min || 0,
+        atc_1min: shopMatch?.atc_1min || 0,
+        reached_1min: shopMatch?.reached_1min || 0
+      }
+      
+      result.push(combined)
+    })
+    
+    return result
+  }
+  
   detectPlatformFromURL(url) {
-    return 'Meta' // Stub for now
+    if (!url) return 'Unknown'
+    const urlStr = String(url).toLowerCase()
+    if (urlStr.includes('facebook') || urlStr.includes('instagram') || urlStr.includes('meta')) return 'Meta'
+    if (urlStr.includes('google') || urlStr.includes('gclid')) return 'Google'
+    return 'Unknown'
   }
   
   aggregateShopifyByAttributionKeys(rows, keys) {
-    return [] // Stub for now
+    if (!rows || rows.length === 0) return []
+    
+    console.log(`🔍 Aggregating ${rows.length} Shopify rows by keys: ${keys.join(', ')}`)
+    
+    // Group by attribution keys
+    const grouped = {}
+    
+    rows.forEach(row => {
+      // Create key from the specified attribution fields
+      const keyValues = keys.map(key => {
+        // Normalize key names to match data
+        const value = row[key] || row[key.replace(/ /g, '_')] || row[key.toLowerCase()] || ''
+        return String(value).trim()
+      })
+      const groupKey = keyValues.join('|||')
+      
+      if (!grouped[groupKey]) {
+        grouped[groupKey] = {
+          // Preserve key fields
+          Day: row.Day,
+          'UTM campaign': row['UTM campaign'] || row.utm_campaign || '',
+          'UTM term': row['UTM term'] || row.utm_term || '',
+          'UTM content': row['UTM content'] || row.utm_content || '',
+          
+          // Aggregate metrics
+          'Online store visitors': 0,
+          'Page views': 0,
+          'Sessions with cart additions': 0,
+          'Sessions reached checkout': 0,
+          'Sessions completed checkout': 0,
+          'Average session duration': [],
+          
+          // Derived metrics for calculations
+          visitors_with_long_sessions: 0,
+          visitors_with_deep_views: 0,
+          visitors_qualified: 0,
+          atc_with_long_sessions: 0,
+          checkout_with_long_sessions: 0,
+          
+          count: 0
+        }
+      }
+      
+      const group = grouped[groupKey]
+      
+      // Sum quantitative metrics
+      group['Online store visitors'] += this.parseNumeric(row['Online store visitors']) || 0
+      group['Page views'] += this.parseNumeric(row['Page views']) || 0
+      group['Sessions with cart additions'] += this.parseNumeric(row['Sessions with cart additions']) || 0
+      group['Sessions reached checkout'] += this.parseNumeric(row['Sessions reached checkout']) || 0
+      group['Sessions completed checkout'] += this.parseNumeric(row['Sessions completed checkout']) || 0
+      
+      // Collect session durations for averaging
+      const duration = this.parseNumeric(row['Average session duration']) || 0
+      if (duration > 0) {
+        group['Average session duration'].push(duration)
+      }
+      
+      // Calculate derived metrics based on Python logic
+      const visitors = this.parseNumeric(row['Online store visitors']) || 0
+      const pageviews = this.parseNumeric(row['Page views']) || this.parseNumeric(row['Pageviews']) || 0 // CRITICAL FIX: Handle both field names
+      const atc = this.parseNumeric(row['Sessions with cart additions']) || 0
+      const checkout = this.parseNumeric(row['Sessions reached checkout']) || 0
+      
+      // Long session flag: duration >= 60
+      const longSessionFlag = duration >= 60 ? 1 : 0
+      // Deep views flag: pageviews >= 5  
+      const deepViewsFlag = pageviews >= 5 ? 1 : 0
+      // Good lead flag: both conditions
+      const goodLeadFlag = longSessionFlag && deepViewsFlag ? 1 : 0
+      
+      // Proxy counts (multiply visitors by flags)
+      group.visitors_with_long_sessions += visitors * longSessionFlag
+      group.visitors_with_deep_views += visitors * deepViewsFlag
+      group.visitors_qualified += visitors * goodLeadFlag
+      group.atc_with_long_sessions += atc * longSessionFlag
+      group.checkout_with_long_sessions += checkout * longSessionFlag
+      
+      group.count++
+    })
+    
+    // Convert to array and calculate averages
+    const result = Object.values(grouped).map(group => {
+      // Average session duration
+      const durations = group['Average session duration']
+      group['Average session duration'] = durations.length > 0 
+        ? durations.reduce((a, b) => a + b, 0) / durations.length 
+        : 0
+      
+      // Add final derived metrics that match Python output
+      group['Users with Session above 1 min'] = group.visitors_with_long_sessions
+      group['Users with Above 5 page views and above 1 min'] = group.visitors_qualified
+      group['ATC with session duration above 1 min'] = group.atc_with_long_sessions
+      group['Reached Checkout with session duration above 1 min'] = group.checkout_with_long_sessions
+      
+      return group
+    })
+    
+    console.log(`📊 Aggregated ${Object.keys(grouped).length} unique attribution groups`)
+    return result
   }
   
   validateAttribution(attributed, original) {
-    return {} // Stub for now
+    return {
+      meta_attributed: attributed.meta?.length || 0,
+      google_attributed: attributed.google?.length || 0,
+      total_unified: attributed.unified_attr?.length || 0
+    }
+  }
+  
+  // Create Top Metrics Table (from notebook cell c8bfdf9f)
+  createTopMetricsTable(ua, shopifyOriginal = null) {
+    // Daily per-source splits with proper averaging for CTR/CPM
+    const meta_rows = ua.filter(row => row.source === 'Meta' && row.amount_spent_inr > 0)
+    const meta_day = this.groupByAndSum(meta_rows, ['Day'], ['amount_spent_inr']).map(row => {
+      const dayRows = meta_rows.filter(r => r.Day === row.Day && (r.ctr_decimal > 0 || r.cpm > 0))
+      const totalSpend = row.amount_spent_inr || 0
+      
+      // Use spend-weighted averages for CTR/CPM as per notebook logic
+      let weightedCTR = 0
+      let weightedCPM = 0
+      let totalSpendForCTR = 0
+      let totalSpendForCPM = 0
+      
+      dayRows.forEach(r => {
+        const spend = r.amount_spent_inr || 0
+        if (r.ctr_decimal > 0) {
+          weightedCTR += (r.ctr_decimal * spend)
+          totalSpendForCTR += spend
+        }
+        if (r.cpm > 0) {
+          weightedCPM += (r.cpm * spend)
+          totalSpendForCPM += spend
+        }
+      })
+      
+      const avgCTR = totalSpendForCTR > 0 ? weightedCTR / totalSpendForCTR : 0
+      const avgCPM = totalSpendForCPM > 0 ? weightedCPM / totalSpendForCPM : 0
+      
+      return {
+        Day: row.Day,
+        'Meta Spend': totalSpend,
+        'Meta CTR': avgCTR, // Only real calculated values, no synthetic data
+        'Meta CPM': avgCPM // Only real calculated values, no synthetic data
+      }
+    })
+    
+    const google_rows = ua.filter(row => row.source === 'Google' && row.amount_spent_inr > 0)
+    const google_day = this.groupByAndSum(google_rows, ['Day'], ['amount_spent_inr']).map(row => {
+      const dayRows = google_rows.filter(r => r.Day === row.Day)
+      const totalSpend = row.amount_spent_inr || 0
+      const avgCTR = dayRows.length > 0 ? dayRows.reduce((sum, r) => sum + (r.ctr_decimal || 0), 0) / dayRows.length : 0
+      const avgCPM = dayRows.length > 0 ? dayRows.reduce((sum, r) => sum + (r.cpm || 0), 0) / dayRows.length : 0
+      
+      return {
+        Day: row.Day,
+        'Google Spend': totalSpend,
+        'Google CTR': avgCTR,
+        'Google CPM': avgCPM
+      }
+    })
+    
+    // CRITICAL FIX: Use notebook's exact logic - aggregate Shopify from ORIGINAL data before attribution
+    // This prevents the 7,388 → 128 users duplication issue
+    let shop_cols
+    
+    if (shopifyOriginal && shopifyOriginal.length > 0) {
+      // Use original Shopify data before it gets multiplied across Meta/Google rows
+      console.log(`📊 Using original Shopify data: ${shopifyOriginal.length} rows`)
+      shop_cols = this.groupByAndSum(
+        shopifyOriginal.filter(row => row.visitors > 0), // Only attributed rows
+        ['Day'], // Group by Day to get daily totals
+        ['visitors', 'pageviews', 'avg_session_duration'] 
+      ).map(row => ({
+        Day: row.Day,
+        'Shopify Total Users': row.visitors || 0, // Should be 128, not 7,388
+        'Shopify Total Pageviews': row.pageviews || 0, // Should be 225, not 0  
+        'Shopify Session Duration': row.avg_session_duration || 0
+      }))
+      console.log(`📊 Shopify daily totals: ${shop_cols.length} days, ${shop_cols.reduce((sum, row) => sum + row['Shopify Total Users'], 0)} total users`)
+    } else {
+      // Fallback to unified attribution (old logic)
+      console.log('⚠️ No original Shopify data, using unified attribution fallback')
+      const shopify_attributed_users = ua.filter(row => row.visitors > 0)
+      shop_cols = this.groupByAndSum(
+        shopify_attributed_users,
+        ['Day'],
+        ['visitors', 'pageviews', 'avg_session_duration'] 
+      ).map(row => ({
+        Day: row.Day,
+        'Shopify Total Users': row.visitors || 0,
+        'Shopify Total Pageviews': row.pageviews || 0,  
+        'Shopify Session Duration': row.avg_session_duration || 0
+      }))
+    }
+    
+    // Merge daily tables (left join pattern from notebook)
+    const top_metrics = shop_cols.map(shopRow => {
+      const metaMatch = meta_day.find(m => m.Day === shopRow.Day)
+      const googleMatch = google_day.find(g => g.Day === shopRow.Day)
+      
+      return {
+        Day: shopRow.Day,
+        'Shopify Total Users': shopRow['Shopify Total Users'],
+        'Shopify Total Pageviews': shopRow['Shopify Total Pageviews'],
+        'Shopify Session Duration': shopRow['Shopify Session Duration'],
+        'Meta Spend': metaMatch?.['Meta Spend'] || 0,
+        'Meta CTR': metaMatch?.['Meta CTR'] || 0,
+        'Meta CPM': metaMatch?.['Meta CPM'] || 0,
+        'Google Spend': googleMatch?.['Google Spend'] || 0,
+        'Google CTR': googleMatch?.['Google CTR'] || 0,
+        'Google CPM': googleMatch?.['Google CPM'] || 0
+      }
+    })
+    
+    return top_metrics.sort((a, b) => new Date(a.Date) - new Date(b.Date))
+  }
+  
+  // Create AdSet Metrics Table (Meta only, from notebook)
+  createAdSetMetricsTable(ua) {
+    const meta_only = ua.filter(row => row.source === 'Meta')
+    
+    const adset = this.groupByAndSum(
+      meta_only,
+      ['Day', 'utm_campaign', 'utm_term', 'ad_set_delivery'],
+      ['amount_spent_inr', 'visitors', 'atc', 'reached_checkout', 'completed_checkout', 'avg_session_duration', 'users_1min', 'users_5pv_1min']
+    )
+    
+    return adset.map(row => {
+      const users = row.visitors || 0
+      const users_1min = row.users_1min || 0
+      const spent = row.amount_spent_inr || 0
+      
+      return {
+        Date: row.Day,
+        'Campaign name': row.utm_campaign || '',
+        'Ad Set Name': row.utm_term || '',
+        'Ad Set Delivery': row.ad_set_delivery || '',
+        'Spent': spent,
+        'Cost per user': users > 0 ? (spent / users) : 0,
+        'Users': users,
+        'ATC': row.atc || 0,
+        'Reached Checkout': row.reached_checkout || 0,
+        'Conversions': row.completed_checkout || 0,
+        'Average session duration': row.avg_session_duration || 0,
+        'Cost per 1 min user': users_1min > 0 ? (spent / users_1min) : 0,
+        '1min user/ total users (%)': users > 0 ? ((users_1min / users) * 100) : 0,
+        'Users with Session above 1 min': users_1min,
+        'ATC with session duration above 1 min': row.atc_1min || 0,
+        'Reached Checkout with session duration above 1 min': row.reached_1min || 0,
+        'Users with Above 5 page views and above 1 min': row.users_5pv_1min || 0
+      }
+    }).sort((a, b) => new Date(a.Date) - new Date(b.Date))
+  }
+  
+  // Create Ad Level Metrics Table (Meta only, from notebook)
+  createAdLevelMetricsTable(ua) {
+    const meta_only = ua.filter(row => row.source === 'Meta')
+    
+    const ad_level = this.groupByAndSum(
+      meta_only,
+      ['Day', 'utm_campaign', 'utm_term', 'utm_content', 'ad_set_delivery'],
+      ['amount_spent_inr', 'ctr_decimal', 'visitors', 'atc', 'reached_checkout', 'completed_checkout', 'avg_session_duration', 'users_1min', 'users_5pv_1min']
+    )
+    
+    return ad_level.map(row => {
+      const users = row.visitors || 0
+      const users_1min = row.users_1min || 0
+      const spent = row.amount_spent_inr || 0
+      
+      return {
+        Date: row.Day,
+        'Campaign name': row.utm_campaign || '',
+        'Ad Set Name': row.utm_term || '',
+        'Ad Name': row.utm_content || '',
+        'Ad Set Delivery': row.ad_set_delivery || '',
+        'Spent': spent,
+        'CTR': row.ctr_decimal || 0,
+        'Cost per user': users > 0 ? (spent / users) : 0,
+        'Users': users,
+        'ATC': row.atc || 0,
+        'Reached Checkout': row.reached_checkout || 0,
+        'Conversions': row.completed_checkout || 0,
+        'Average session duration': row.avg_session_duration || 0,
+        'Cost per 1 min user': users_1min > 0 ? (spent / users_1min) : 0,
+        '1min user/ total users (%)': users > 0 ? ((users_1min / users) * 100) : 0,
+        'Users with Session above 1 min': users_1min,
+        'ATC with session duration above 1 min': row.atc_1min || 0,
+        'Reached Checkout with session duration above 1 min': row.reached_1min || 0,
+        'Users with Above 5 page views and above 1 min': row.users_5pv_1min || 0
+      }
+    }).sort((a, b) => new Date(a.Date) - new Date(b.Date))
   }
 }
 
