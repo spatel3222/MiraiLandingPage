@@ -1568,11 +1568,14 @@ export class JuliusV7Engine {
       if (platformData) {
         totalRows += platformData.length
         platformData.forEach(row => {
-          totalSpend += row.Spend || 0
-          totalRevenue += row.Revenue || 0
+          // Fix field mapping to match actual data structure
+          totalSpend += (row.Spent || row['Meta Spend'] || row['Google Spend'] || row.Spend || 0)
+          totalRevenue += (row.Revenue || row['Total Revenue'] || row.Orders || 0)
         })
       }
     })
+    
+    console.log(`📊 Summary calculation - Rows: ${totalRows}, Spend: $${totalSpend}, Revenue: $${totalRevenue}`)
     
     return {
       totalRows,
