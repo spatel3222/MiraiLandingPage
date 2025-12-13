@@ -7,7 +7,7 @@ export function Hero() {
       {/* Blue accent bar */}
       <div className="absolute top-0 left-0 right-0 h-1" style={{ backgroundColor: '#2563EB' }} />
       
-      <div className="max-w-4xl mx-auto px-6 pt-16 md:pt-24 pb-20 md:pb-32 text-center">
+      <div className="max-w-4xl mx-auto px-6 pt-12 md:pt-16 pb-12 md:pb-16 text-center">
         {/* Logo */}
         <div className="mb-6 md:mb-8">
           <h1 className="inline-block" style={{ 
@@ -46,9 +46,9 @@ export function Hero() {
         </p>
 
         {/* Stealth badge */}
-        <Badge 
-          variant="outline" 
-          className="mb-8 md:mb-12 gap-2 py-2 px-4 rounded-full"
+        <Badge
+          variant="outline"
+          className="gap-2 py-2 px-4 rounded-full"
           style={{
             backgroundColor: '#FAFBFC',
             borderColor: 'rgba(27, 54, 93, 0.1)',
@@ -59,24 +59,6 @@ export function Hero() {
           <Lock size={14} />
           Currently operating in stealth mode
         </Badge>
-
-        {/* Founder line */}
-        <p className="px-4" style={{ 
-          fontSize: 'clamp(14px, 3vw, 16px)',
-          color: '#405A7A',
-          lineHeight: '1.6'
-        }}>
-          Shivang Patel | Founder & CEO |{' '}
-          <a 
-            href="mailto:shivang@mirai360.ai"
-            className="transition-colors duration-200"
-            style={{ color: '#2E86C1' }}
-            onMouseEnter={(e) => e.currentTarget.style.color = '#2563EB'}
-            onMouseLeave={(e) => e.currentTarget.style.color = '#2E86C1'}
-          >
-            shivang@mirai360.ai
-          </a>
-        </p>
       </div>
     </section>
   );

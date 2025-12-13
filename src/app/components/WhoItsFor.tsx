@@ -24,9 +24,9 @@ export function WhoItsFor() {
   ];
 
   return (
-    <section className="py-16 md:py-24 px-6" style={{ backgroundColor: '#FAFBFC' }}>
+    <section className="py-10 md:py-14 px-6" style={{ backgroundColor: '#FAFBFC' }}>
       <div className="max-w-6xl mx-auto">
-        <h2 className="mb-12 md:mb-16 text-center" style={{ 
+        <h2 className="mb-6 md:mb-8 text-center" style={{ 
           fontSize: 'clamp(32px, 6vw, 40px)', 
           fontWeight: 600,
           color: '#1B365D',
@@ -35,7 +35,7 @@ export function WhoItsFor() {
           Who It's For
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
           {phases.map((phase, index) => (
             <Card
               key={index}

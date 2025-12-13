@@ -3,10 +3,10 @@ import { Separator } from './ui/separator';
 
 export function Footer() {
   return (
-    <footer className="py-12 md:py-16 px-6" style={{ backgroundColor: '#1B365D' }}>
+    <footer className="py-8 md:py-10 px-6" style={{ backgroundColor: '#1B365D' }}>
       <div className="max-w-4xl mx-auto text-center">
         {/* Contact */}
-        <div className="mb-8">
+        <div className="mb-4">
           <p className="mb-4 px-4" style={{ 
             fontSize: 'clamp(16px, 3.5vw, 18px)',
             color: '#ffffff',
@@ -35,7 +35,7 @@ export function Footer() {
         </div>
 
         {/* Divider */}
-        <Separator className="my-8" style={{
+        <Separator className="my-4" style={{
           backgroundColor: 'rgba(255, 255, 255, 0.1)'
         }} />
 

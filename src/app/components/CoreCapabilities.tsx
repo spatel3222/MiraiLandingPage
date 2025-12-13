@@ -21,9 +21,9 @@ export function CoreCapabilities() {
   ];
 
   return (
-    <section className="py-16 md:py-24 px-6">
+    <section className="py-10 md:py-14 px-6">
       <div className="max-w-6xl mx-auto">
-        <h2 className="mb-12 md:mb-16 text-center" style={{ 
+        <h2 className="mb-6 md:mb-8 text-center" style={{ 
           fontSize: 'clamp(32px, 6vw, 40px)', 
           fontWeight: 600,
           color: '#1B365D',
@@ -32,7 +32,7 @@ export function CoreCapabilities() {
           Core Capabilities
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {capabilities.map((capability, index) => (
             <Card
               key={index}
