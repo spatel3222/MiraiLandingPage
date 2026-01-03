@@ -1,0 +1,8 @@
+{
+  "name": "Mirai360 Deck Generator",
+  "id": "mirai360-deck-generator",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"]
+}

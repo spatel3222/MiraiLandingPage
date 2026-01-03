@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+      :root { font-family: Inter, Roboto, system-ui, -apple-system, "Segoe UI", sans-serif; }
+      body { margin: 12px; color: #111; font-size: 14px; }
+      h3 { margin: 0 0 8px 0; font-size: 18px; }
+      p { margin: 0 0 12px 0; color: #444; font-size: 13px; }
+      .row { display:flex; gap:8px; margin-bottom:10px; }
+      button {
+        padding: 10px 14px;
+        font-size: 14px;
+        background:#2563EB;
+        color:white;
+        border:none;
+        border-radius:6px;
+        cursor:pointer;
+      }
+      button.secondary {
+        background:#6B7280;
+      }
+      #manualCopyBox { display:none; margin-top:12px; }
+      textarea { width:100%; height:100px; padding:8px; font-size:13px; border-radius:6px; border:1px solid #e5e7eb; resize:vertical; }
+      small { color:#6b7280; }
+    </style>
+  </head>
+
+  <body>
+    <h3>Mirai360 Deck Generator</h3>
+    <p>Create the next Mirai360 slide in this Figma file (one slide per run).</p>
+
+    <div class="row">
+      <button id="create">Create Next Slide</button>
+      <button id="reset" class="secondary">Reset Counter</button>
+    </div>
+
+    <small>Tip: Run the plugin repeatedly to create slides 2 → 12. Use Reset to start over.</small>
+
+    <!-- Manual copy box (appears only if UI copy is blocked) -->
+    <div id="manualCopyBox" aria-hidden="true">
+      <p><strong>Manual copy required</strong></p>
+      <p>The plugin attempted to copy text to your clipboard but the browser blocked it. Please copy manually:</p>
+      <textarea id="manualCopyArea" readonly></textarea>
+      <div style="margin-top:8px;">
+        <button id="closeManual">Close</button>
+      </div>
+    </div>
+
+    <script>
+      const btnCreate = document.getElementById('create');
+      const btnReset = document.getElementById('reset');
+      const manualBox = document.getElementById('manualCopyBox');
+      const manualArea = document.getElementById('manualCopyArea');
+      const closeManual = document.getElementById('closeManual');
+
+      btnCreate.onclick = () => {
+        parent.postMessage({ pluginMessage: { type: 'create-next-slide' } }, '*');
+      };
+
+      btnReset.onclick = () => {
+        parent.postMessage({ pluginMessage: { type: 'reset-counter' } }, '*');
+      };
+
+      closeManual.onclick = () => {
+        manualBox.style.display = 'none';
+        manualBox.setAttribute('aria-hidden', 'true');
+        manualArea.value = '';
+      };
+
+      // Listen for plugin messages (copy requests, or manual-copy payloads)
+      window.onmessage = async (event) => {
+        const msg = event.data && event.data.pluginMessage;
+        if (!msg) return;
+
+        // Plugin asks UI to copy a string to the OS clipboard
+        if (msg.type === 'copy-to-clipboard') {
+          try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(msg.text);
+              // success - tell plugin
+              parent.postMessage({ pluginMessage: { type: 'copy-result', ok: true } }, '*');
+            } else {
+              // fallback: show manual copy box
+              manualArea.value = msg.text;
+              manualBox.style.display = 'block';
+              manualBox.setAttribute('aria-hidden', 'false');
+              parent.postMessage({ pluginMessage: { type: 'copy-result', ok: false, text: msg.text } }, '*');
+            }
+          } catch (err) {
+            // copy blocked - show manual box
+            manualArea.value = msg.text;
+            manualBox.style.display = 'block';
+            manualBox.setAttribute('aria-hidden', 'false');
+            parent.postMessage({ pluginMessage: { type: 'copy-result', ok: false, text: msg.text } }, '*');
+          }
+        }
+
+        // plugin can also send a 'manual-copy' message to prefill manual area
+        if (msg.type === 'manual-copy') {
+          manualArea.value = msg.text || '';
+          manualBox.style.display = 'block';
+          manualBox.setAttribute('aria-hidden', 'false');
+        }
+      };
+    </script>
+  </body>
+</html>

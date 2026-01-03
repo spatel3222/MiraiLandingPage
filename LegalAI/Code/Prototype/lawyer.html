@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lawyer Dashboard - Mirai Legal OS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy-primary': '#1B365D',
+                        'navy-light': '#405A7A',
+                        'tech-accent': '#2E86C1',
+                        'neutral-base': '#FAFBFC',
+                        'success-green': '#28B463',
+                        'professional-gray': '#566573',
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .card-hover { transition: all 0.2s ease; }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(27, 54, 93, 0.1); }
+        .framework-card { transition: all 0.3s ease; }
+        .framework-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(27, 54, 93, 0.15); }
+    </style>
+</head>
+<body class="bg-neutral-base min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-6">
+                    <a href="index.html" class="flex items-center gap-2">
+                        <span class="text-2xl font-bold text-navy-primary">mirai360</span>
+                        <span class="text-2xl font-medium text-tech-accent">.ai</span>
+                    </a>
+                    <span class="text-sm text-professional-gray border-l border-gray-200 pl-6">Lawyer Dashboard</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Search documents, cases..." class="w-64 pl-10 pr-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/20 focus:border-tech-accent">
+                        <svg class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                    <button class="p-2 text-professional-gray hover:text-navy-primary transition-colors relative">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                        <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">3</span>
+                    </button>
+                    <div class="w-10 h-10 bg-navy-primary rounded-full flex items-center justify-center text-white font-medium">
+                        AK
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex pt-16">
+        <!-- Sidebar -->
+        <aside class="fixed left-0 top-16 bottom-0 w-64 bg-white border-r border-gray-200 p-6">
+            <!-- Case Selector -->
+            <div class="mb-6">
+                <label class="text-xs font-medium text-professional-gray uppercase tracking-wide">Current Case</label>
+                <select class="mt-2 w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-navy-primary focus:outline-none focus:ring-2 focus:ring-tech-accent/20">
+                    <option>Netflix Bundling Complaint</option>
+                    <option>TechCorp Contract Dispute</option>
+                    <option>RetailCorp Service Agreement</option>
+                    <option>+ Create New Case</option>
+                </select>
+            </div>
+
+            <nav class="space-y-2">
+                <a href="lawyer.html" class="flex items-center gap-3 px-4 py-3 text-navy-primary bg-navy-primary/10 rounded-lg font-medium">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Dashboard
+                </a>
+
+                <div class="pt-4 pb-2">
+                    <span class="text-xs font-medium text-professional-gray uppercase tracking-wide px-4">Workflows</span>
+                </div>
+
+                <a href="prepare.html" class="flex items-center gap-3 px-4 py-3 text-professional-gray hover:bg-gray-50 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/>
+                    </svg>
+                    Prepare
+                </a>
+                <a href="research.html" class="flex items-center gap-3 px-4 py-3 text-professional-gray hover:bg-gray-50 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    Research
+                </a>
+                <a href="create.html" class="flex items-center gap-3 px-4 py-3 text-professional-gray hover:bg-gray-50 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                    </svg>
+                    Create
+                </a>
+
+                <div class="pt-4 pb-2">
+                    <span class="text-xs font-medium text-professional-gray uppercase tracking-wide px-4">Manage</span>
+                </div>
+
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-professional-gray hover:bg-gray-50 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                    </svg>
+                    Knowledge Base
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-professional-gray hover:bg-gray-50 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                    Team
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-professional-gray hover:bg-gray-50 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    Settings
+                </a>
+            </nav>
+
+            <div class="absolute bottom-6 left-6 right-6">
+                <a href="index.html" class="flex items-center gap-2 text-sm text-professional-gray hover:text-navy-primary transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"/>
+                    </svg>
+                    Back to Portal Selection
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="ml-64 flex-1 p-8">
+            <!-- Welcome Header -->
+            <div class="flex items-start justify-between mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-navy-primary mb-2">Good morning, Advocate Kumar</h1>
+                    <p class="text-professional-gray">Working on: <span class="text-navy-primary font-medium">Netflix Bundling Complaint</span> • 125 documents</p>
+                </div>
+                <button class="px-5 py-2.5 bg-navy-primary text-white font-medium rounded-lg hover:bg-navy-primary/90 transition-colors flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                    </svg>
+                    Upload Documents
+                </button>
+            </div>
+
+            <!-- Three Framework Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- PREPARE -->
+                <a href="prepare.html" class="framework-card bg-white rounded-xl border border-gray-200 p-6 block">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-tech-accent to-blue-600 rounded-xl flex items-center justify-center">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-navy-primary">Prepare</h2>
+                            <p class="text-sm text-professional-gray">Tabular Review</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-professional-gray mb-4">Organize documents with AI-generated columns. Auto-classify, tag, and analyze evidence with custom prompts.</p>
+                    <ul class="space-y-2 text-sm text-navy-light mb-4">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-tech-accent" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Auto-organize documents
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-tech-accent" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Custom AI columns
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-tech-accent" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Claimant/Defendant analysis
+                        </li>
+                    </ul>
+                    <div class="flex items-center text-tech-accent font-medium">
+                        Open Tabular View
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- RESEARCH -->
+                <a href="research.html" class="framework-card bg-white rounded-xl border border-gray-200 p-6 block">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-navy-primary to-navy-light rounded-xl flex items-center justify-center">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-navy-primary">Research</h2>
+                            <p class="text-sm text-professional-gray">AI Chat & Analysis</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-professional-gray mb-4">Chat with your case knowledge base. Find clauses, compare documents, and get AI-powered legal insights.</p>
+                    <ul class="space-y-2 text-sm text-navy-light mb-4">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-navy-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            RAG on case files
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-navy-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Citation drill-down
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-navy-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Similar case assessment
+                        </li>
+                    </ul>
+                    <div class="flex items-center text-navy-primary font-medium">
+                        Start Research
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- CREATE -->
+                <a href="create.html" class="framework-card bg-white rounded-xl border border-gray-200 p-6 block">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-success-green to-teal-600 rounded-xl flex items-center justify-center">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-navy-primary">Create</h2>
+                            <p class="text-sm text-professional-gray">Canvas & Auditor</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-professional-gray mb-4">Generate briefs, LODs, and contracts. AI auditor checks compliance and detects tone across documents.</p>
+                    <ul class="space-y-2 text-sm text-navy-light mb-4">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Generate briefs & LOD
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Compliance auditor
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Defendant/Plaintiff tone
+                        </li>
+                    </ul>
+                    <div class="flex items-center text-success-green font-medium">
+                        Open Canvas
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Case Overview -->
+            <div class="bg-white rounded-xl border border-gray-200 p-6 mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-lg font-semibold text-navy-primary">Netflix Bundling Complaint</h2>
+                        <p class="text-sm text-professional-gray">Ombudsman Complaint • <span class="text-success-green font-medium">Active</span></p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1 bg-tech-accent/10 text-tech-accent text-sm font-medium rounded-full">125 Documents</span>
+                        <span class="px-3 py-1 bg-navy-primary/10 text-navy-primary text-sm font-medium rounded-full">3 Team Members</span>
+                    </div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <h3 class="text-sm font-medium text-navy-primary mb-2">Case Summary</h3>
+                    <p class="text-sm text-professional-gray">The claimant paid £150 on 01/03/2024 to settle their account, unaware of any additional charges. They later discovered a default notice on their credit file, causing distress and potential financial harm. They acknowledge their move to a new address may have contributed to the issue but expected better communication from the company.</p>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="bg-white rounded-xl border border-gray-200 p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-tech-accent/10 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-tech-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-navy-primary">125</div>
+                    <div class="text-sm text-professional-gray">Total Documents</div>
+                </div>
+
+                <div class="bg-white rounded-xl border border-gray-200 p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-success-green/10 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-success-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-navy-primary">89</div>
+                    <div class="text-sm text-professional-gray">Processed</div>
+                </div>
+
+                <div class="bg-white rounded-xl border border-gray-200 p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-navy-primary">36</div>
+                    <div class="text-sm text-professional-gray">Pending Review</div>
+                </div>
+
+                <div class="bg-white rounded-xl border border-gray-200 p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-navy-primary/10 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-navy-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-navy-primary">12</div>
+                    <div class="text-sm text-professional-gray">Research Chats</div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

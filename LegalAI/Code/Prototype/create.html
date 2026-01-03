@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create - Canvas & Auditor | Mirai Legal OS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy-primary': '#1B365D',
+                        'navy-light': '#405A7A',
+                        'tech-accent': '#2E86C1',
+                        'neutral-base': '#FAFBFC',
+                        'success-green': '#28B463',
+                        'professional-gray': '#566573',
+                        'warning-amber': '#F39C12',
+                        'danger-red': '#E74C3C',
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .editor-content { min-height: 400px; }
+        .editor-content:focus { outline: none; }
+        .toolbar-btn { transition: all 0.15s ease; }
+        .toolbar-btn:hover { background-color: #F1F5F9; }
+        .toolbar-btn.active { background-color: #E0E7FF; color: #1B365D; }
+        .evidence-row { transition: all 0.15s ease; }
+        .evidence-row:hover { background-color: #F8FAFC; }
+        .tab-btn { transition: all 0.15s ease; }
+        .tab-btn.active { border-bottom: 2px solid #1B365D; color: #1B365D; }
+        .compliance-item { transition: all 0.15s ease; }
+        .compliance-item:hover { transform: translateX(4px); }
+        .ai-suggestion { animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .slide-panel { transform: translateX(100%); transition: transform 0.3s ease; }
+        .slide-panel.open { transform: translateX(0); }
+    </style>
+</head>
+<body class="bg-neutral-base min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
+        <div class="max-w-full mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-6">
+                    <a href="index.html" class="flex items-center gap-2">
+                        <span class="text-2xl font-bold text-navy-primary">mirai360</span>
+                        <span class="text-2xl font-medium text-tech-accent">.ai</span>
+                    </a>
+                    <span class="text-sm text-professional-gray border-l border-gray-200 pl-6">Create</span>
+                    <div class="flex items-center gap-1 ml-4">
+                        <a href="lawyer.html" class="px-3 py-1.5 text-sm text-professional-gray hover:text-navy-primary transition-colors">Dashboard</a>
+                        <span class="text-gray-300">/</span>
+                        <a href="prepare.html" class="px-3 py-1.5 text-sm text-professional-gray hover:text-navy-primary transition-colors">Prepare</a>
+                        <span class="text-gray-300">/</span>
+                        <a href="research.html" class="px-3 py-1.5 text-sm text-professional-gray hover:text-navy-primary transition-colors">Research</a>
+                        <span class="text-gray-300">/</span>
+                        <span class="px-3 py-1.5 text-sm text-navy-primary font-medium bg-navy-primary/10 rounded-lg">Create</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="px-4 py-2 text-sm border border-gray-200 rounded-lg text-professional-gray hover:bg-gray-50 transition-colors flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+                        </svg>
+                        Save Draft
+                    </button>
+                    <button class="px-4 py-2 text-sm bg-success-green text-white rounded-lg hover:bg-success-green/90 transition-colors flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                        </svg>
+                        Export
+                    </button>
+                    <div class="w-10 h-10 bg-navy-primary rounded-full flex items-center justify-center text-white font-medium">
+                        AK
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex pt-16 h-screen">
+        <!-- Left Panel - Evidence & Case Files -->
+        <aside class="w-80 bg-white border-r border-gray-200 flex flex-col">
+            <!-- Tabs -->
+            <div class="flex border-b border-gray-200">
+                <button class="tab-btn active flex-1 px-4 py-3 text-sm font-medium text-navy-primary border-b-2 border-navy-primary">Evidence</button>
+                <button class="tab-btn flex-1 px-4 py-3 text-sm font-medium text-professional-gray border-b-2 border-transparent">Templates</button>
+            </div>
+
+            <!-- Evidence Table -->
+            <div class="flex-1 overflow-y-auto">
+                <div class="p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-medium text-professional-gray uppercase tracking-wide">Case Files</span>
+                        <button class="text-xs text-tech-accent hover:underline">View All</button>
+                    </div>
+
+                    <!-- Evidence Items -->
+                    <div class="space-y-2">
+                        <div class="evidence-row p-3 bg-gray-50 rounded-lg cursor-pointer border border-transparent hover:border-tech-accent" draggable="true">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 bg-red-100 rounded flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/>
+                                    </svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-sm font-medium text-navy-primary truncate">Payment Receipt.pdf</div>
+                                    <div class="text-xs text-professional-gray">01 Mar 2024</div>
+                                    <div class="flex items-center gap-2 mt-1.5">
+                                        <div class="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                            <div class="h-full bg-tech-accent rounded-full" style="width: 85%"></div>
+                                        </div>
+                                        <span class="text-xs text-tech-accent font-medium">85%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="evidence-row p-3 bg-gray-50 rounded-lg cursor-pointer border border-transparent hover:border-tech-accent" draggable="true">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 bg-blue-100 rounded flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                                    </svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-sm font-medium text-navy-primary truncate">Default Notice Email.eml</div>
+                                    <div class="text-xs text-professional-gray">15 Apr 2024</div>
+                                    <div class="flex items-center gap-2 mt-1.5">
+                                        <div class="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                            <div class="h-full bg-tech-accent rounded-full" style="width: 90%"></div>
+                                        </div>
+                                        <span class="text-xs text-tech-accent font-medium">90%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="evidence-row p-3 bg-gray-50 rounded-lg cursor-pointer border border-transparent hover:border-tech-accent" draggable="true">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 bg-orange-100 rounded flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/>
+                                    </svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-sm font-medium text-navy-primary truncate">Credit Report.pdf</div>
+                                    <div class="text-xs text-professional-gray">20 May 2024</div>
+                                    <div class="flex items-center gap-2 mt-1.5">
+                                        <div class="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                            <div class="h-full bg-tech-accent rounded-full" style="width: 95%"></div>
+                                        </div>
+                                        <span class="text-xs text-tech-accent font-medium">95%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="evidence-row p-3 bg-gray-50 rounded-lg cursor-pointer border border-transparent hover:border-tech-accent" draggable="true">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 bg-green-100 rounded flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/>
+                                    </svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-sm font-medium text-navy-primary truncate">Terms of Service.pdf</div>
+                                    <div class="text-xs text-professional-gray">01 Jan 2023</div>
+                                    <div class="flex items-center gap-2 mt-1.5">
+                                        <div class="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                            <div class="h-full bg-danger-red rounded-full" style="width: 30%"></div>
+                                        </div>
+                                        <span class="text-xs text-danger-red font-medium">30%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="evidence-row p-3 bg-gray-50 rounded-lg cursor-pointer border border-transparent hover:border-tech-accent" draggable="true">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 bg-purple-100 rounded flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4 text-purple-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                                    </svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-sm font-medium text-navy-primary truncate">Address Change Request.eml</div>
+                                    <div class="text-xs text-professional-gray">15 Feb 2024</div>
+                                    <div class="flex items-center gap-2 mt-1.5">
+                                        <div class="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                            <div class="h-full bg-tech-accent rounded-full" style="width: 75%"></div>
+                                        </div>
+                                        <span class="text-xs text-tech-accent font-medium">75%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 p-3 border border-dashed border-gray-300 rounded-lg text-center">
+                        <p class="text-xs text-professional-gray">Drag files to editor to insert citations</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generate Actions -->
+            <div class="p-4 border-t border-gray-200 space-y-2">
+                <button onclick="openGenerateModal('brief')" class="w-full px-4 py-2.5 bg-navy-primary text-white font-medium rounded-lg hover:bg-navy-primary/90 transition-colors flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                    Generate Brief
+                </button>
+                <button onclick="openGenerateModal('lod')" class="w-full px-4 py-2 text-sm border border-gray-200 rounded-lg text-professional-gray hover:bg-gray-50 transition-colors">
+                    Generate Letter of Demand
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Editor Canvas -->
+        <main class="flex-1 flex flex-col bg-white">
+            <!-- Document Title -->
+            <div class="px-8 py-4 border-b border-gray-200">
+                <input type="text" value="Legal Brief - Netflix Bundling Complaint" class="text-xl font-semibold text-navy-primary w-full focus:outline-none">
+                <div class="flex items-center gap-4 mt-2 text-sm text-professional-gray">
+                    <span>Case: Netflix Bundling Complaint</span>
+                    <span>•</span>
+                    <span>Last edited: 2 minutes ago</span>
+                    <span>•</span>
+                    <span class="flex items-center gap-1">
+                        <span class="w-2 h-2 bg-success-green rounded-full"></span>
+                        Auto-saved
+                    </span>
+                </div>
+            </div>
+
+            <!-- Editor Toolbar -->
+            <div class="px-8 py-2 border-b border-gray-200 flex items-center gap-1">
+                <button class="toolbar-btn p-2 rounded">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn p-2 rounded">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 10h-10a8 8 0 00-8 8v2M21 10l-6 6m6-6l-6-6"/>
+                    </svg>
+                </button>
+                <div class="w-px h-6 bg-gray-200 mx-2"></div>
+                <button class="toolbar-btn active p-2 rounded font-bold">B</button>
+                <button class="toolbar-btn p-2 rounded italic">I</button>
+                <button class="toolbar-btn p-2 rounded underline">U</button>
+                <div class="w-px h-6 bg-gray-200 mx-2"></div>
+                <button class="toolbar-btn p-2 rounded">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn p-2 rounded">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+                <div class="w-px h-6 bg-gray-200 mx-2"></div>
+                <button class="toolbar-btn p-2 rounded">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                    </svg>
+                </button>
+                <button class="toolbar-btn p-2 rounded">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+                <div class="flex-1"></div>
+                <button onclick="openAuditorPanel()" class="px-3 py-1.5 text-sm bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-200 transition-colors flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Run Auditor
+                </button>
+            </div>
+
+            <!-- Editor Content -->
+            <div class="flex-1 overflow-y-auto p-8">
+                <div class="max-w-3xl mx-auto">
+                    <div class="editor-content prose prose-slate" contenteditable="true">
+                        <h1>Legal Brief</h1>
+                        <h2>IN THE MATTER OF: Netflix Bundling Complaint</h2>
+                        <h3>Ombudsman Reference: OMB-2024-15892</h3>
+
+                        <h2>1. Introduction</h2>
+                        <p>This brief is submitted on behalf of the Claimant, Mr. James Smith, in relation to an erroneous default notice filed by Netflix UK Ltd ("the Defendant") that has caused significant financial harm to the Claimant's credit standing.</p>
+
+                        <h2>2. Statement of Facts</h2>
+                        <p>The following timeline establishes the sequence of events:</p>
+                        <ol>
+                            <li><strong>15 February 2024:</strong> The Claimant submitted an address change request to the Defendant via email. <span class="text-tech-accent cursor-pointer hover:underline">[Exhibit A: Address Change Request.eml]</span></li>
+                            <li><strong>1 March 2024:</strong> The Claimant made a payment of £150.00 to settle the outstanding account balance. <span class="text-tech-accent cursor-pointer hover:underline">[Exhibit B: Payment Receipt.pdf]</span></li>
+                            <li><strong>15 April 2024:</strong> Despite the payment, the Defendant issued a default notice to the Claimant's previous address. <span class="text-tech-accent cursor-pointer hover:underline">[Exhibit C: Default Notice Email.eml]</span></li>
+                            <li><strong>20 May 2024:</strong> The Claimant discovered a default marker on their credit file, resulting in a 150-point reduction to their credit score. <span class="text-tech-accent cursor-pointer hover:underline">[Exhibit D: Credit Report.pdf]</span></li>
+                        </ol>
+
+                        <h2>3. Legal Arguments</h2>
+                        <h3>3.1 Breach of Consumer Credit Act 1974</h3>
+                        <p>Section 87(1) of the Consumer Credit Act 1974 requires creditors to serve a default notice on the debtor before taking any adverse action. The Defendant failed to properly serve this notice as it was sent to an incorrect address despite having been notified of the address change.</p>
+
+                        <!-- AI Suggestion Highlight -->
+                        <div class="ai-suggestion my-4 p-4 bg-tech-accent/10 border-l-4 border-tech-accent rounded-r-lg">
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 bg-tech-accent rounded-full flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="text-sm font-medium text-navy-primary mb-1">AI Suggestion</div>
+                                    <p class="text-sm text-professional-gray mb-2">Consider citing <em>Thompson v. Disney+ (2023)</em> - a similar case where the claimant was awarded £2,500 for erroneous credit default filing.</p>
+                                    <div class="flex gap-2">
+                                        <button class="px-3 py-1 text-xs bg-tech-accent text-white rounded hover:bg-tech-accent/90 transition-colors">Insert Citation</button>
+                                        <button class="px-3 py-1 text-xs border border-gray-300 text-professional-gray rounded hover:bg-gray-50 transition-colors">Dismiss</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3>3.2 Violation of Data Protection Act 2018</h3>
+                        <p>The Defendant's failure to update the Claimant's address despite notification constitutes a breach of the accuracy principle under Article 5(1)(d) of the UK GDPR.</p>
+
+                        <h2>4. Relief Sought</h2>
+                        <p>The Claimant respectfully requests:</p>
+                        <ol>
+                            <li>Immediate removal of the default notice from all credit reference agencies;</li>
+                            <li>Compensation in the amount of £5,000 for distress and financial harm;</li>
+                            <li>A formal apology from the Defendant;</li>
+                            <li>Costs of this complaint.</li>
+                        </ol>
+
+                        <h2>5. Conclusion</h2>
+                        <p>The evidence clearly demonstrates that the Defendant acted improperly in filing a default notice after the Claimant had already settled the account. The Claimant is entitled to full compensation for the harm caused.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tone Analysis Bar -->
+            <div class="px-8 py-3 border-t border-gray-200 bg-gray-50">
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-medium text-professional-gray">Tone Analysis:</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-tech-accent"></div>
+                            <span class="text-xs text-navy-primary font-medium">Claimant: 78%</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-danger-red"></div>
+                            <span class="text-xs text-navy-primary font-medium">Defendant: 22%</span>
+                        </div>
+                    </div>
+                    <div class="flex-1"></div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-professional-gray">Word count: 487</span>
+                        <span class="text-gray-300">|</span>
+                        <span class="text-xs text-professional-gray">Reading time: 3 min</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Auditor Panel -->
+        <div id="auditorPanel" class="slide-panel fixed right-0 top-16 bottom-0 w-[400px] bg-white border-l border-gray-200 shadow-xl z-40 overflow-hidden">
+            <div class="flex flex-col h-full">
+                <!-- Panel Header -->
+                <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                    <div>
+                        <h3 class="font-semibold text-navy-primary">Compliance Auditor</h3>
+                        <p class="text-sm text-professional-gray">AI-powered document review</p>
+                    </div>
+                    <button onclick="closeAuditorPanel()" class="p-2 text-professional-gray hover:text-navy-primary hover:bg-gray-100 rounded-lg transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Audit Results -->
+                <div class="flex-1 overflow-y-auto p-6">
+                    <!-- Overall Score -->
+                    <div class="text-center mb-6">
+                        <div class="relative inline-flex items-center justify-center">
+                            <svg class="w-24 h-24 transform -rotate-90">
+                                <circle cx="48" cy="48" r="40" stroke="#E5E7EB" stroke-width="8" fill="none"/>
+                                <circle cx="48" cy="48" r="40" stroke="#28B463" stroke-width="8" fill="none" stroke-dasharray="251.2" stroke-dashoffset="50.24" stroke-linecap="round"/>
+                            </svg>
+                            <span class="absolute text-2xl font-bold text-success-green">80%</span>
+                        </div>
+                        <div class="text-sm font-medium text-navy-primary mt-2">Compliance Score</div>
+                        <div class="text-xs text-professional-gray">4 issues found</div>
+                    </div>
+
+                    <!-- Issue Categories -->
+                    <div class="space-y-4">
+                        <!-- Passed -->
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-2 h-2 rounded-full bg-success-green"></div>
+                                <span class="text-sm font-medium text-navy-primary">Passed (8)</span>
+                            </div>
+                            <div class="space-y-2 ml-4">
+                                <div class="compliance-item flex items-center gap-2 text-sm text-professional-gray">
+                                    <svg class="w-4 h-4 text-success-green flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Case reference present
+                                </div>
+                                <div class="compliance-item flex items-center gap-2 text-sm text-professional-gray">
+                                    <svg class="w-4 h-4 text-success-green flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Timeline documented
+                                </div>
+                                <div class="compliance-item flex items-center gap-2 text-sm text-professional-gray">
+                                    <svg class="w-4 h-4 text-success-green flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Evidence cited
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Warnings -->
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-2 h-2 rounded-full bg-warning-amber"></div>
+                                <span class="text-sm font-medium text-navy-primary">Warnings (3)</span>
+                            </div>
+                            <div class="space-y-2 ml-4">
+                                <div class="compliance-item p-3 bg-amber-50 rounded-lg border border-amber-200 cursor-pointer hover:bg-amber-100">
+                                    <div class="flex items-start gap-2">
+                                        <svg class="w-4 h-4 text-warning-amber flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                        </svg>
+                                        <div>
+                                            <div class="text-sm font-medium text-amber-800">Missing case law citation</div>
+                                            <div class="text-xs text-amber-700 mt-1">Section 3.1 mentions Consumer Credit Act but no supporting case law</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="compliance-item p-3 bg-amber-50 rounded-lg border border-amber-200 cursor-pointer hover:bg-amber-100">
+                                    <div class="flex items-start gap-2">
+                                        <svg class="w-4 h-4 text-warning-amber flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                        </svg>
+                                        <div>
+                                            <div class="text-sm font-medium text-amber-800">Compensation amount not justified</div>
+                                            <div class="text-xs text-amber-700 mt-1">£5,000 claim needs breakdown or precedent</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="compliance-item p-3 bg-amber-50 rounded-lg border border-amber-200 cursor-pointer hover:bg-amber-100">
+                                    <div class="flex items-start gap-2">
+                                        <svg class="w-4 h-4 text-warning-amber flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                        </svg>
+                                        <div>
+                                            <div class="text-sm font-medium text-amber-800">Informal tone detected</div>
+                                            <div class="text-xs text-amber-700 mt-1">Paragraph 2, sentence 3 - consider more formal phrasing</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Errors -->
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-2 h-2 rounded-full bg-danger-red"></div>
+                                <span class="text-sm font-medium text-navy-primary">Errors (1)</span>
+                            </div>
+                            <div class="space-y-2 ml-4">
+                                <div class="compliance-item p-3 bg-red-50 rounded-lg border border-red-200 cursor-pointer hover:bg-red-100">
+                                    <div class="flex items-start gap-2">
+                                        <svg class="w-4 h-4 text-danger-red flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                        </svg>
+                                        <div>
+                                            <div class="text-sm font-medium text-red-800">Exhibit reference mismatch</div>
+                                            <div class="text-xs text-red-700 mt-1">Exhibit D referenced but document shows as Exhibit C in attachments</div>
+                                            <button class="mt-2 px-2 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors">Fix Now</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel Footer -->
+                <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
+                    <button class="w-full px-4 py-2.5 bg-navy-primary text-white font-medium rounded-lg hover:bg-navy-primary/90 transition-colors flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                        Auto-Fix All Issues
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generate Modal -->
+    <div id="generateModal" class="hidden fixed inset-0 z-50">
+        <div class="absolute inset-0 bg-navy-primary/30 backdrop-blur-sm" onclick="closeGenerateModal()"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white rounded-xl shadow-2xl">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                <div>
+                    <h3 id="generateModalTitle" class="text-lg font-semibold text-navy-primary">Generate Brief</h3>
+                    <p class="text-sm text-professional-gray">AI will generate content based on case files</p>
+                </div>
+                <button onclick="closeGenerateModal()" class="p-2 text-professional-gray hover:text-navy-primary hover:bg-gray-100 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="p-6">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-navy-primary mb-2">Template</label>
+                    <select class="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/20 focus:border-tech-accent">
+                        <option>Standard Legal Brief</option>
+                        <option>Ombudsman Complaint</option>
+                        <option>Court Submission</option>
+                        <option>Custom Template...</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-navy-primary mb-2">Tone</label>
+                    <div class="flex gap-2">
+                        <button class="flex-1 px-4 py-2 text-sm bg-navy-primary/10 text-navy-primary rounded-lg font-medium">Formal</button>
+                        <button class="flex-1 px-4 py-2 text-sm border border-gray-200 text-professional-gray rounded-lg hover:bg-gray-50 transition-colors">Neutral</button>
+                        <button class="flex-1 px-4 py-2 text-sm border border-gray-200 text-professional-gray rounded-lg hover:bg-gray-50 transition-colors">Assertive</button>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-navy-primary mb-2">Include Sections</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" checked class="w-4 h-4 rounded border-gray-300 text-tech-accent focus:ring-tech-accent">
+                            <span class="text-sm text-professional-gray">Introduction & Background</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" checked class="w-4 h-4 rounded border-gray-300 text-tech-accent focus:ring-tech-accent">
+                            <span class="text-sm text-professional-gray">Statement of Facts</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" checked class="w-4 h-4 rounded border-gray-300 text-tech-accent focus:ring-tech-accent">
+                            <span class="text-sm text-professional-gray">Legal Arguments</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" checked class="w-4 h-4 rounded border-gray-300 text-tech-accent focus:ring-tech-accent">
+                            <span class="text-sm text-professional-gray">Relief Sought</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-tech-accent focus:ring-tech-accent">
+                            <span class="text-sm text-professional-gray">Exhibit List</span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-navy-primary mb-2">Additional Instructions</label>
+                    <textarea rows="3" placeholder="Any specific requirements or customizations..." class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/20 focus:border-tech-accent resize-none"></textarea>
+                </div>
+            </div>
+            <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
+                <button onclick="closeGenerateModal()" class="px-4 py-2 text-sm border border-gray-200 rounded-lg text-professional-gray hover:bg-white transition-colors">
+                    Cancel
+                </button>
+                <button class="px-4 py-2 text-sm bg-navy-primary text-white rounded-lg hover:bg-navy-primary/90 transition-colors flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                    Generate
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openAuditorPanel() {
+            document.getElementById('auditorPanel').classList.add('open');
+        }
+
+        function closeAuditorPanel() {
+            document.getElementById('auditorPanel').classList.remove('open');
+        }
+
+        function openGenerateModal(type) {
+            const modal = document.getElementById('generateModal');
+            const title = document.getElementById('generateModalTitle');
+            if (type === 'brief') {
+                title.textContent = 'Generate Brief';
+            } else if (type === 'lod') {
+                title.textContent = 'Generate Letter of Demand';
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function closeGenerateModal() {
+            document.getElementById('generateModal').classList.add('hidden');
+        }
+
+        // Close on escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeAuditorPanel();
+                closeGenerateModal();
+            }
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

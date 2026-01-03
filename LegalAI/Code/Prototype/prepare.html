@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prepare - Tabular Review | Mirai Legal OS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy-primary': '#1B365D',
+                        'navy-light': '#405A7A',
+                        'tech-accent': '#2E86C1',
+                        'neutral-base': '#FAFBFC',
+                        'success-green': '#28B463',
+                        'professional-gray': '#566573',
+                        'claimant-blue': '#2E86C1',
+                        'defendant-red': '#E74C3C',
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .table-row { transition: all 0.15s ease; }
+        .table-row:hover { background-color: #F8FAFC; }
+        .support-bar { height: 6px; border-radius: 3px; }
+        .modal-overlay { backdrop-filter: blur(4px); }
+        .slide-panel { transform: translateX(100%); transition: transform 0.3s ease; }
+        .slide-panel.open { transform: translateX(0); }
+        .tag { transition: all 0.15s ease; }
+        .tag:hover { transform: scale(1.05); }
+    </style>
+</head>
+<body class="bg-neutral-base min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
+        <div class="max-w-full mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-6">
+                    <a href="index.html" class="flex items-center gap-2">
+                        <span class="text-2xl font-bold text-navy-primary">mirai360</span>
+                        <span class="text-2xl font-medium text-tech-accent">.ai</span>
+                    </a>
+                    <span class="text-sm text-professional-gray border-l border-gray-200 pl-6">Prepare</span>
+                    <div class="flex items-center gap-1 ml-4">
+                        <a href="lawyer.html" class="px-3 py-1.5 text-sm text-professional-gray hover:text-navy-primary transition-colors">Dashboard</a>
+                        <span class="text-gray-300">/</span>
+                        <span class="px-3 py-1.5 text-sm text-navy-primary font-medium bg-navy-primary/10 rounded-lg">Prepare</span>
+                        <span class="text-gray-300">/</span>
+                        <a href="research.html" class="px-3 py-1.5 text-sm text-professional-gray hover:text-navy-primary transition-colors">Research</a>
+                        <span class="text-gray-300">/</span>
+                        <a href="create.html" class="px-3 py-1.5 text-sm text-professional-gray hover:text-navy-primary transition-colors">Create</a>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-lg">
+                        <span class="text-sm text-professional-gray">Case:</span>
+                        <span class="text-sm font-medium text-navy-primary">Netflix Bundling Complaint</span>
+                    </div>
+                    <div class="w-10 h-10 bg-navy-primary rounded-full flex items-center justify-center text-white font-medium">
+                        AK
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex pt-16">
+        <!-- Main Content -->
+        <main class="flex-1 p-6">
+            <!-- Header Actions -->
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h1 class="text-2xl font-bold text-navy-primary mb-1">Document Review</h1>
+                    <p class="text-sm text-professional-gray">125 documents • Auto-organized with AI-generated columns</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="openTagModal()" class="px-4 py-2 text-sm border border-gray-200 rounded-lg text-professional-gray hover:bg-gray-50 transition-colors flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                        </svg>
+                        Tag Documents
+                    </button>
+                    <button onclick="openAddColumnModal()" class="px-4 py-2 text-sm bg-tech-accent text-white rounded-lg hover:bg-tech-accent/90 transition-colors flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        Add Column
+                    </button>
+                    <button onclick="openChatPanel()" class="px-4 py-2 text-sm bg-navy-primary text-white rounded-lg hover:bg-navy-primary/90 transition-colors flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+                        </svg>
+                        Chat
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filters Bar -->
+            <div class="bg-white rounded-lg border border-gray-200 p-4 mb-4">
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-professional-gray">Filter:</span>
+                        <button class="px-3 py-1.5 text-sm bg-navy-primary/10 text-navy-primary rounded-lg font-medium">All</button>
+                        <button class="px-3 py-1.5 text-sm text-professional-gray hover:bg-gray-100 rounded-lg transition-colors">Evidence</button>
+                        <button class="px-3 py-1.5 text-sm text-professional-gray hover:bg-gray-100 rounded-lg transition-colors">Correspondence</button>
+                        <button class="px-3 py-1.5 text-sm text-professional-gray hover:bg-gray-100 rounded-lg transition-colors">Contracts</button>
+                        <button class="px-3 py-1.5 text-sm text-professional-gray hover:bg-gray-100 rounded-lg transition-colors">Reports</button>
+                    </div>
+                    <div class="h-6 w-px bg-gray-200"></div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-professional-gray">Sort:</span>
+                        <select class="text-sm border border-gray-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-tech-accent/20">
+                            <option>Chronological (Newest)</option>
+                            <option>Chronological (Oldest)</option>
+                            <option>Relevance</option>
+                            <option>Claimant Support</option>
+                            <option>Defendant Support</option>
+                        </select>
+                    </div>
+                    <div class="flex-1"></div>
+                    <div class="relative">
+                        <input type="text" placeholder="Search documents..." class="w-64 pl-10 pr-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/20">
+                        <svg class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document Table -->
+            <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-200">
+                                <th class="text-left px-4 py-3 text-xs font-semibold text-professional-gray uppercase tracking-wide w-12">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-gray-300">
+                                </th>
+                                <th class="text-left px-4 py-3 text-xs font-semibold text-professional-gray uppercase tracking-wide">Document</th>
+                                <th class="text-left px-4 py-3 text-xs font-semibold text-professional-gray uppercase tracking-wide">Date</th>
+                                <th class="text-left px-4 py-3 text-xs font-semibold text-professional-gray uppercase tracking-wide">Type</th>
+                                <th class="text-left px-4 py-3 text-xs font-semibold text-professional-gray uppercase tracking-wide w-64">Summary</th>
+                                <th class="text-left px-4 py-3 text-xs font-semibold text-professional-gray uppercase tracking-wide">Author</th>
+                                <th class="text-left px-4 py-3 text-xs font-semibold text-professional-gray uppercase tracking-wide">Persons</th>
+                                <th class="text-left px-4 py-3 text-xs font-semibold text-professional-gray uppercase tracking-wide w-40">
+                                    <div class="flex items-center gap-1">
+                                        Support
+                                        <button class="text-tech-accent hover:text-tech-accent/80">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </th>
+                                <th class="text-left px-4 py-3 text-xs font-semibold text-professional-gray uppercase tracking-wide">Tags</th>
+                                <th class="text-left px-4 py-3 text-xs font-semibold text-tech-accent uppercase tracking-wide bg-tech-accent/5 border-l border-tech-accent/20">
+                                    <div class="flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                                        </svg>
+                                        Key Claims
+                                        <button onclick="openAddColumnModal()" class="ml-1 text-tech-accent/60 hover:text-tech-accent">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </th>
+                                <th class="w-12"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Row 1 -->
+                            <tr class="table-row border-b border-gray-100 cursor-pointer" onclick="openDrillDown(1)">
+                                <td class="px-4 py-4">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-gray-300" onclick="event.stopPropagation()">
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-navy-primary text-sm">Payment Receipt.pdf</div>
+                                            <div class="text-xs text-professional-gray">2 pages</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <span class="text-sm text-navy-primary">01 Mar 2024</span>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <span class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded">Evidence</span>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <p class="text-sm text-professional-gray line-clamp-2">Payment confirmation of £150 made by claimant to settle outstanding account balance.</p>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <span class="text-sm text-navy-primary">Netflix UK</span>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-professional-gray">J. Smith</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="space-y-1">
+                                        <div class="flex items-center gap-2">
+                                            <div class="flex-1 bg-gray-200 support-bar overflow-hidden">
+                                                <div class="bg-claimant-blue support-bar" style="width: 85%"></div>
+                                            </div>
+                                            <span class="text-xs font-medium text-claimant-blue w-8">85%</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <div class="flex-1 bg-gray-200 support-bar overflow-hidden">
+                                                <div class="bg-defendant-red support-bar" style="width: 15%"></div>
+                                            </div>
+                                            <span class="text-xs font-medium text-defendant-red w-8">15%</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="tag px-2 py-0.5 text-xs bg-green-100 text-green-700 rounded cursor-pointer">Key Evidence</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4 bg-tech-accent/5 border-l border-tech-accent/20">
+                                    <p class="text-sm text-navy-primary line-clamp-2">Proves claimant attempted to settle debt in good faith before default notice.</p>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <button class="p-1 text-professional-gray hover:text-navy-primary">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Row 2 -->
+                            <tr class="table-row border-b border-gray-100 cursor-pointer" onclick="openDrillDown(2)">
+                                <td class="px-4 py-4">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-gray-300" onclick="event.stopPropagation()">
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-navy-primary text-sm">Default Notice Email.eml</div>
+                                            <div class="text-xs text-professional-gray">1 page</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <span class="text-sm text-navy-primary">15 Apr 2024</span>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <span class="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded">Correspondence</span>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <p class="text-sm text-professional-gray line-clamp-2">Default notice sent to claimant's old address after payment was already made.</p>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <span class="text-sm text-navy-primary">Netflix Collections</span>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-professional-gray">J. Smith</span>
+                                        <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-professional-gray">Collections</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="space-y-1">
+                                        <div class="flex items-center gap-2">
+                                            <div class="flex-1 bg-gray-200 support-bar overflow-hidden">
+                                                <div class="bg-claimant-blue support-bar" style="width: 90%"></div>
+                                            </div>
+                                            <span class="text-xs font-medium text-claimant-blue w-8">90%</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <div class="flex-1 bg-gray-200 support-bar overflow-hidden">
+                                                <div class="bg-defendant-red support-bar" style="width: 10%"></div>
+                                            </div>
+                                            <span class="text-xs font-medium text-defendant-red w-8">10%</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="tag px-2 py-0.5 text-xs bg-red-100 text-red-700 rounded cursor-pointer">Disputed</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4 bg-tech-accent/5 border-l border-tech-accent/20">
+                                    <p class="text-sm text-navy-primary line-clamp-2">Shows Netflix sent notice to wrong address, supporting claim of poor communication.</p>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <button class="p-1 text-professional-gray hover:text-navy-primary">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Row 3 -->
+                            <tr class="table-row border-b border-gray-100 cursor-pointer" onclick="openDrillDown(3)">
+                                <td class="px-4 py-4">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-gray-300" onclick="event.stopPropagation()">
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-navy-primary text-sm">Credit Report.pdf</div>
+                                            <div class="text-xs text-professional-gray">5 pages</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <span class="text-sm text-navy-primary">20 May 2024</span>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <span class="px-2 py-1 text-xs font-medium bg-orange-100 text-orange-700 rounded">Report</span>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <p class="text-sm text-professional-gray line-clamp-2">Credit file showing default notice impacting claimant's credit score by 150 points.</p>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <span class="text-sm text-navy-primary">Experian</span>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-professional-gray">J. Smith</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="space-y-1">
+                                        <div class="flex items-center gap-2">
+                                            <div class="flex-1 bg-gray-200 support-bar overflow-hidden">
+                                                <div class="bg-claimant-blue support-bar" style="width: 95%"></div>
+                                            </div>
+                                            <span class="text-xs font-medium text-claimant-blue w-8">95%</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <div class="flex-1 bg-gray-200 support-bar overflow-hidden">
+                                                <div class="bg-defendant-red support-bar" style="width: 5%"></div>
+                                            </div>
+                                            <span class="text-xs font-medium text-defendant-red w-8">5%</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="tag px-2 py-0.5 text-xs bg-green-100 text-green-700 rounded cursor-pointer">Key Evidence</span>
+                                        <span class="tag px-2 py-0.5 text-xs bg-amber-100 text-amber-700 rounded cursor-pointer">Damages</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4 bg-tech-accent/5 border-l border-tech-accent/20">
+                                    <p class="text-sm text-navy-primary line-clamp-2">Demonstrates quantifiable harm to claimant from incorrect default filing.</p>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <button class="p-1 text-professional-gray hover:text-navy-primary">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Row 4 -->
+                            <tr class="table-row border-b border-gray-100 cursor-pointer" onclick="openDrillDown(4)">
+                                <td class="px-4 py-4">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-gray-300" onclick="event.stopPropagation()">
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-navy-primary text-sm">Terms of Service.pdf</div>
+                                            <div class="text-xs text-professional-gray">24 pages</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <span class="text-sm text-navy-primary">01 Jan 2023</span>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <span class="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded">Contract</span>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <p class="text-sm text-professional-gray line-clamp-2">Netflix subscriber agreement outlining payment terms, cancellation policy, and dispute resolution.</p>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <span class="text-sm text-navy-primary">Netflix Inc</span>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-professional-gray">Legal</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="space-y-1">
+                                        <div class="flex items-center gap-2">
+                                            <div class="flex-1 bg-gray-200 support-bar overflow-hidden">
+                                                <div class="bg-claimant-blue support-bar" style="width: 30%"></div>
+                                            </div>
+                                            <span class="text-xs font-medium text-claimant-blue w-8">30%</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <div class="flex-1 bg-gray-200 support-bar overflow-hidden">
+                                                <div class="bg-defendant-red support-bar" style="width: 70%"></div>
+                                            </div>
+                                            <span class="text-xs font-medium text-defendant-red w-8">70%</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="tag px-2 py-0.5 text-xs bg-gray-100 text-gray-700 rounded cursor-pointer">Reference</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4 bg-tech-accent/5 border-l border-tech-accent/20">
+                                    <p class="text-sm text-navy-primary line-clamp-2">Section 8.2 requires 30-day notice before credit reporting - may not have been followed.</p>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <button class="p-1 text-professional-gray hover:text-navy-primary">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Row 5 -->
+                            <tr class="table-row border-b border-gray-100 cursor-pointer" onclick="openDrillDown(5)">
+                                <td class="px-4 py-4">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-gray-300" onclick="event.stopPropagation()">
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-navy-primary text-sm">Address Change Request.eml</div>
+                                            <div class="text-xs text-professional-gray">1 page</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <span class="text-sm text-navy-primary">15 Feb 2024</span>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <span class="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded">Correspondence</span>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <p class="text-sm text-professional-gray line-clamp-2">Email from claimant requesting address update sent prior to payment date.</p>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <span class="text-sm text-navy-primary">J. Smith (Claimant)</span>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-professional-gray">J. Smith</span>
+                                        <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-professional-gray">Support</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="space-y-1">
+                                        <div class="flex items-center gap-2">
+                                            <div class="flex-1 bg-gray-200 support-bar overflow-hidden">
+                                                <div class="bg-claimant-blue support-bar" style="width: 75%"></div>
+                                            </div>
+                                            <span class="text-xs font-medium text-claimant-blue w-8">75%</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <div class="flex-1 bg-gray-200 support-bar overflow-hidden">
+                                                <div class="bg-defendant-red support-bar" style="width: 25%"></div>
+                                            </div>
+                                            <span class="text-xs font-medium text-defendant-red w-8">25%</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="tag px-2 py-0.5 text-xs bg-blue-100 text-blue-700 rounded cursor-pointer">Timeline</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4 bg-tech-accent/5 border-l border-tech-accent/20">
+                                    <p class="text-sm text-navy-primary line-clamp-2">Shows claimant attempted to update address before issues arose.</p>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <button class="p-1 text-professional-gray hover:text-navy-primary">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+                    <div class="text-sm text-professional-gray">
+                        Showing 1-5 of 125 documents
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button class="px-3 py-1.5 text-sm border border-gray-200 rounded-lg text-professional-gray hover:bg-white transition-colors disabled:opacity-50" disabled>
+                            Previous
+                        </button>
+                        <button class="px-3 py-1.5 text-sm bg-navy-primary text-white rounded-lg">1</button>
+                        <button class="px-3 py-1.5 text-sm border border-gray-200 rounded-lg text-professional-gray hover:bg-white transition-colors">2</button>
+                        <button class="px-3 py-1.5 text-sm border border-gray-200 rounded-lg text-professional-gray hover:bg-white transition-colors">3</button>
+                        <span class="text-professional-gray">...</span>
+                        <button class="px-3 py-1.5 text-sm border border-gray-200 rounded-lg text-professional-gray hover:bg-white transition-colors">25</button>
+                        <button class="px-3 py-1.5 text-sm border border-gray-200 rounded-lg text-professional-gray hover:bg-white transition-colors">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Drill Down Slide Panel -->
+        <div id="drillDownPanel" class="slide-panel fixed right-0 top-16 bottom-0 w-[480px] bg-white border-l border-gray-200 shadow-xl z-40 overflow-hidden">
+            <div class="flex flex-col h-full">
+                <!-- Panel Header -->
+                <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-navy-primary">Payment Receipt.pdf</h3>
+                            <p class="text-sm text-professional-gray">01 Mar 2024 • 2 pages</p>
+                        </div>
+                    </div>
+                    <button onclick="closeDrillDown()" class="p-2 text-professional-gray hover:text-navy-primary hover:bg-gray-100 rounded-lg transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Panel Content -->
+                <div class="flex-1 overflow-y-auto p-6">
+                    <!-- Quick Stats -->
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="bg-claimant-blue/10 rounded-lg p-4">
+                            <div class="text-sm text-professional-gray mb-1">Claimant Support</div>
+                            <div class="text-2xl font-bold text-claimant-blue">85%</div>
+                        </div>
+                        <div class="bg-defendant-red/10 rounded-lg p-4">
+                            <div class="text-sm text-professional-gray mb-1">Defendant Support</div>
+                            <div class="text-2xl font-bold text-defendant-red">15%</div>
+                        </div>
+                    </div>
+
+                    <!-- Answer Section -->
+                    <div class="mb-6">
+                        <h4 class="text-sm font-semibold text-navy-primary mb-3 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-tech-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                            </svg>
+                            AI Analysis: Key Claims
+                        </h4>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <p class="text-sm text-navy-primary leading-relaxed">
+                                This document proves the claimant attempted to settle their debt in good faith before any default notice was issued. The payment of £150 on 01/03/2024 demonstrates proactive effort to resolve the outstanding balance.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Reasoning Section -->
+                    <div class="mb-6">
+                        <h4 class="text-sm font-semibold text-navy-primary mb-3 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-success-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                            Reasoning
+                        </h4>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                                <div class="w-6 h-6 bg-tech-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="text-xs font-semibold text-tech-accent">1</span>
+                                </div>
+                                <p class="text-sm text-professional-gray">Payment receipt shows date of 01/03/2024, which is <span class="font-medium text-navy-primary">45 days before</span> the default notice date of 15/04/2024.</p>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                                <div class="w-6 h-6 bg-tech-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="text-xs font-semibold text-tech-accent">2</span>
+                                </div>
+                                <p class="text-sm text-professional-gray">Amount of £150 matches the disputed outstanding balance mentioned in Netflix account records.</p>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                                <div class="w-6 h-6 bg-tech-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <span class="text-xs font-semibold text-tech-accent">3</span>
+                                </div>
+                                <p class="text-sm text-professional-gray">Transaction reference can be cross-verified with Netflix's internal payment systems.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Related Documents -->
+                    <div class="mb-6">
+                        <h4 class="text-sm font-semibold text-navy-primary mb-3">Related Documents</h4>
+                        <div class="space-y-2">
+                            <a href="#" class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                                <div class="w-8 h-8 bg-blue-100 rounded flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="text-sm font-medium text-navy-primary">Default Notice Email.eml</div>
+                                    <div class="text-xs text-professional-gray">15 Apr 2024</div>
+                                </div>
+                                <svg class="w-4 h-4 text-professional-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </a>
+                            <a href="#" class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                                <div class="w-8 h-8 bg-red-100 rounded flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/>
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="text-sm font-medium text-navy-primary">Credit Report.pdf</div>
+                                    <div class="text-xs text-professional-gray">20 May 2024</div>
+                                </div>
+                                <svg class="w-4 h-4 text-professional-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Tags -->
+                    <div>
+                        <h4 class="text-sm font-semibold text-navy-primary mb-3">Tags</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tag px-3 py-1 text-sm bg-green-100 text-green-700 rounded-lg cursor-pointer">Key Evidence</span>
+                            <span class="tag px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-lg cursor-pointer">Payment</span>
+                            <button class="px-3 py-1 text-sm border border-dashed border-gray-300 rounded-lg text-professional-gray hover:border-tech-accent hover:text-tech-accent transition-colors">
+                                + Add Tag
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel Footer -->
+                <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
+                    <button class="w-full px-4 py-2.5 bg-navy-primary text-white font-medium rounded-lg hover:bg-navy-primary/90 transition-colors flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                        </svg>
+                        Open Original Document
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Column Modal -->
+    <div id="addColumnModal" class="hidden fixed inset-0 z-50">
+        <div class="modal-overlay absolute inset-0 bg-navy-primary/30" onclick="closeAddColumnModal()"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white rounded-xl shadow-2xl">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                <div>
+                    <h3 class="text-lg font-semibold text-navy-primary">Add Custom Column</h3>
+                    <p class="text-sm text-professional-gray">Use AI to generate a new column from your documents</p>
+                </div>
+                <button onclick="closeAddColumnModal()" class="p-2 text-professional-gray hover:text-navy-primary hover:bg-gray-100 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="p-6">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-navy-primary mb-2">Column Name</label>
+                    <input type="text" placeholder="e.g., Key Claims, Damage Amount..." class="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/20 focus:border-tech-accent">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-navy-primary mb-2">Prompt</label>
+                    <textarea rows="4" placeholder="Describe what you want to extract from each document...&#10;&#10;Example: Identify the main claims made in this document and summarize them in 1-2 sentences." class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/20 focus:border-tech-accent resize-none"></textarea>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                    <h4 class="text-sm font-medium text-navy-primary mb-2">Suggested Prompts</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="px-3 py-1.5 text-xs bg-white border border-gray-200 rounded-lg text-professional-gray hover:border-tech-accent hover:text-tech-accent transition-colors">
+                            Extract monetary amounts
+                        </button>
+                        <button class="px-3 py-1.5 text-xs bg-white border border-gray-200 rounded-lg text-professional-gray hover:border-tech-accent hover:text-tech-accent transition-colors">
+                            Identify key dates
+                        </button>
+                        <button class="px-3 py-1.5 text-xs bg-white border border-gray-200 rounded-lg text-professional-gray hover:border-tech-accent hover:text-tech-accent transition-colors">
+                            Find legal citations
+                        </button>
+                        <button class="px-3 py-1.5 text-xs bg-white border border-gray-200 rounded-lg text-professional-gray hover:border-tech-accent hover:text-tech-accent transition-colors">
+                            Summarize obligations
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
+                <button onclick="closeAddColumnModal()" class="px-4 py-2 text-sm border border-gray-200 rounded-lg text-professional-gray hover:bg-white transition-colors">
+                    Cancel
+                </button>
+                <button class="px-4 py-2 text-sm bg-tech-accent text-white rounded-lg hover:bg-tech-accent/90 transition-colors flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                    Generate Column
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tag Modal -->
+    <div id="tagModal" class="hidden fixed inset-0 z-50">
+        <div class="modal-overlay absolute inset-0 bg-navy-primary/30" onclick="closeTagModal()"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-xl shadow-2xl">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-navy-primary">Tag Documents</h3>
+                <button onclick="closeTagModal()" class="p-2 text-professional-gray hover:text-navy-primary hover:bg-gray-100 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="p-6">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-navy-primary mb-2">Existing Tags</label>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="px-3 py-1.5 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors">Key Evidence</button>
+                        <button class="px-3 py-1.5 text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors">Disputed</button>
+                        <button class="px-3 py-1.5 text-sm bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-200 transition-colors">Damages</button>
+                        <button class="px-3 py-1.5 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors">Timeline</button>
+                        <button class="px-3 py-1.5 text-sm bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors">Police Report</button>
+                        <button class="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">Reference</button>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-navy-primary mb-2">Create New Tag</label>
+                    <div class="flex gap-2">
+                        <input type="text" placeholder="Tag name..." class="flex-1 px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/20 focus:border-tech-accent">
+                        <button class="px-4 py-2 bg-tech-accent text-white rounded-lg hover:bg-tech-accent/90 transition-colors">
+                            Add
+                        </button>
+                    </div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <svg class="w-4 h-4 text-tech-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                        <span class="text-sm font-medium text-navy-primary">AI Auto-Tag</span>
+                    </div>
+                    <p class="text-xs text-professional-gray mb-3">Let AI automatically categorize your documents</p>
+                    <button class="w-full px-4 py-2 text-sm border border-tech-accent text-tech-accent rounded-lg hover:bg-tech-accent hover:text-white transition-colors">
+                        Auto-Tag Selected Documents
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Panel -->
+    <div id="chatPanel" class="slide-panel fixed right-0 top-16 bottom-0 w-[400px] bg-white border-l border-gray-200 shadow-xl z-40 overflow-hidden">
+        <div class="flex flex-col h-full">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                <div>
+                    <h3 class="font-semibold text-navy-primary">Chat with Documents</h3>
+                    <p class="text-sm text-professional-gray">Ask questions about your case files</p>
+                </div>
+                <button onclick="closeChatPanel()" class="p-2 text-professional-gray hover:text-navy-primary hover:bg-gray-100 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-6">
+                <!-- Welcome Message -->
+                <div class="text-center py-8">
+                    <div class="w-16 h-16 bg-navy-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-navy-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+                        </svg>
+                    </div>
+                    <h4 class="font-semibold text-navy-primary mb-2">How can I help?</h4>
+                    <p class="text-sm text-professional-gray mb-6">Ask questions about documents in your current view</p>
+
+                    <!-- Suggestion Chips -->
+                    <div class="space-y-2">
+                        <button class="w-full px-4 py-3 text-left text-sm border border-gray-200 rounded-lg hover:border-tech-accent hover:bg-tech-accent/5 transition-colors">
+                            <span class="text-navy-primary">What are the key dates in this case?</span>
+                        </button>
+                        <button class="w-full px-4 py-3 text-left text-sm border border-gray-200 rounded-lg hover:border-tech-accent hover:bg-tech-accent/5 transition-colors">
+                            <span class="text-navy-primary">Summarize documents that support claimant</span>
+                        </button>
+                        <button class="w-full px-4 py-3 text-left text-sm border border-gray-200 rounded-lg hover:border-tech-accent hover:bg-tech-accent/5 transition-colors">
+                            <span class="text-navy-primary">Find inconsistencies across documents</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
+                <div class="flex items-center gap-2">
+                    <input type="text" placeholder="Ask about your documents..." class="flex-1 px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-tech-accent/20 focus:border-tech-accent">
+                    <button class="p-2.5 bg-navy-primary text-white rounded-lg hover:bg-navy-primary/90 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openDrillDown(id) {
+            document.getElementById('drillDownPanel').classList.add('open');
+        }
+
+        function closeDrillDown() {
+            document.getElementById('drillDownPanel').classList.remove('open');
+        }
+
+        function openAddColumnModal() {
+            document.getElementById('addColumnModal').classList.remove('hidden');
+        }
+
+        function closeAddColumnModal() {
+            document.getElementById('addColumnModal').classList.add('hidden');
+        }
+
+        function openTagModal() {
+            document.getElementById('tagModal').classList.remove('hidden');
+        }
+
+        function closeTagModal() {
+            document.getElementById('tagModal').classList.add('hidden');
+        }
+
+        function openChatPanel() {
+            closeDrillDown();
+            document.getElementById('chatPanel').classList.add('open');
+        }
+
+        function closeChatPanel() {
+            document.getElementById('chatPanel').classList.remove('open');
+        }
+
+        // Close panels on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeDrillDown();
+                closeAddColumnModal();
+                closeTagModal();
+                closeChatPanel();
+            }
+        });
+    </script>
+</body>
+</html>

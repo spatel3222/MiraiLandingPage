@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Court Portal - Mirai Legal OS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy-primary': '#1B365D',
+                        'navy-light': '#405A7A',
+                        'tech-accent': '#2E86C1',
+                        'neutral-base': '#FAFBFC',
+                        'success-green': '#28B463',
+                        'professional-gray': '#566573',
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .card-hover { transition: all 0.2s ease; }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(27, 54, 93, 0.1); }
+    </style>
+</head>
+<body class="bg-neutral-base min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-6">
+                    <a href="index.html" class="flex items-center gap-2">
+                        <span class="text-2xl font-bold text-navy-primary">mirai360</span>
+                        <span class="text-2xl font-medium text-tech-accent">.ai</span>
+                    </a>
+                    <span class="text-sm text-professional-gray border-l border-gray-200 pl-6">Court & Agency Portal</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="p-2 text-professional-gray hover:text-navy-primary transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                    </button>
+                    <div class="w-10 h-10 bg-success-green rounded-full flex items-center justify-center text-white font-medium">
+                        CT
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex pt-16">
+        <!-- Sidebar -->
+        <aside class="fixed left-0 top-16 bottom-0 w-64 bg-white border-r border-gray-200 p-6">
+            <nav class="space-y-2">
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-navy-primary bg-success-green/10 rounded-lg font-medium">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-professional-gray hover:bg-gray-50 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Case Management
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-professional-gray hover:bg-gray-50 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                    </svg>
+                    E-Filing
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-professional-gray hover:bg-gray-50 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    Hearing Schedule
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-professional-gray hover:bg-gray-50 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                    </svg>
+                    Compliance
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-professional-gray hover:bg-gray-50 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                    Reports
+                </a>
+            </nav>
+
+            <div class="absolute bottom-6 left-6 right-6">
+                <a href="index.html" class="flex items-center gap-2 text-sm text-professional-gray hover:text-navy-primary transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"/>
+                    </svg>
+                    Back to Portal Selection
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="ml-64 flex-1 p-8">
+            <!-- Welcome Header -->
+            <div class="flex items-start justify-between mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-navy-primary mb-2">Court & Agency Portal</h1>
+                    <p class="text-professional-gray">E-filing integration, case management, and regulatory compliance dashboard.</p>
+                </div>
+                <button class="px-5 py-2.5 bg-success-green text-white font-medium rounded-lg hover:bg-success-green/90 transition-colors flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                    </svg>
+                    New E-Filing
+                </button>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl border border-gray-200 p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-success-green/10 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-success-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-navy-primary">156</div>
+                    <div class="text-sm text-professional-gray">Filed Successfully</div>
+                    <div class="flex items-center gap-1 mt-2 text-xs text-success-green">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+                        </svg>
+                        +23 this month
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl border border-gray-200 p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-tech-accent/10 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-tech-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-navy-primary">12</div>
+                    <div class="text-sm text-professional-gray">Pending Review</div>
+                </div>
+
+                <div class="bg-white rounded-xl border border-gray-200 p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-navy-primary">8</div>
+                    <div class="text-sm text-professional-gray">Hearings This Week</div>
+                </div>
+
+                <div class="bg-white rounded-xl border border-gray-200 p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-navy-primary/10 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-navy-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-navy-primary">99.2%</div>
+                    <div class="text-sm text-professional-gray">Compliance Rate</div>
+                </div>
+            </div>
+
+            <!-- Main Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left Column -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- E-Filing Status -->
+                    <div class="bg-white rounded-xl border border-gray-200">
+                        <div class="p-6 border-b border-gray-100">
+                            <div class="flex items-center justify-between">
+                                <h2 class="text-lg font-semibold text-navy-primary">Recent E-Filings</h2>
+                                <button class="text-sm text-tech-accent hover:underline">View All</button>
+                            </div>
+                        </div>
+                        <div class="divide-y divide-gray-100">
+                            <div class="p-6 hover:bg-gray-50 transition-colors cursor-pointer">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <h3 class="font-medium text-navy-primary">Case #DHC/2025/4521</h3>
+                                            <span class="px-2 py-0.5 bg-success-green/10 text-success-green text-xs font-medium rounded-full">Accepted</span>
+                                        </div>
+                                        <p class="text-sm text-professional-gray mb-2">Written Submission - Delhi High Court</p>
+                                        <div class="flex items-center gap-4 text-xs text-professional-gray">
+                                            <span>Filed by: Advocate Kumar</span>
+                                            <span>Dec 1, 2025</span>
+                                        </div>
+                                    </div>
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="p-6 hover:bg-gray-50 transition-colors cursor-pointer">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <h3 class="font-medium text-navy-primary">Case #BHC/2025/8892</h3>
+                                            <span class="px-2 py-0.5 bg-tech-accent/10 text-tech-accent text-xs font-medium rounded-full">Processing</span>
+                                        </div>
+                                        <p class="text-sm text-professional-gray mb-2">Petition Filing - Bombay High Court</p>
+                                        <div class="flex items-center gap-4 text-xs text-professional-gray">
+                                            <span>Filed by: Advocate Sharma</span>
+                                            <span>Nov 30, 2025</span>
+                                        </div>
+                                    </div>
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="p-6 hover:bg-gray-50 transition-colors cursor-pointer">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <h3 class="font-medium text-navy-primary">Case #SC/2025/1203</h3>
+                                            <span class="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-medium rounded-full">Pending Review</span>
+                                        </div>
+                                        <p class="text-sm text-professional-gray mb-2">Appeal Filing - Supreme Court</p>
+                                        <div class="flex items-center gap-4 text-xs text-professional-gray">
+                                            <span>Filed by: Advocate Patel</span>
+                                            <span>Nov 28, 2025</span>
+                                        </div>
+                                    </div>
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Court Integration Status -->
+                    <div class="bg-white rounded-xl border border-gray-200 p-6">
+                        <h2 class="text-lg font-semibold text-navy-primary mb-6">Court System Integration</h2>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <div class="w-2 h-2 bg-success-green rounded-full"></div>
+                                    <span class="text-sm font-medium text-navy-primary">Supreme Court</span>
+                                </div>
+                                <p class="text-xs text-professional-gray">E-Filing Active</p>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <div class="w-2 h-2 bg-success-green rounded-full"></div>
+                                    <span class="text-sm font-medium text-navy-primary">Delhi HC</span>
+                                </div>
+                                <p class="text-xs text-professional-gray">E-Filing Active</p>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <div class="w-2 h-2 bg-success-green rounded-full"></div>
+                                    <span class="text-sm font-medium text-navy-primary">Bombay HC</span>
+                                </div>
+                                <p class="text-xs text-professional-gray">E-Filing Active</p>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <div class="w-2 h-2 bg-success-green rounded-full"></div>
+                                    <span class="text-sm font-medium text-navy-primary">Karnataka HC</span>
+                                </div>
+                                <p class="text-xs text-professional-gray">E-Filing Active</p>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <div class="w-2 h-2 bg-amber-500 rounded-full"></div>
+                                    <span class="text-sm font-medium text-navy-primary">NCLT</span>
+                                </div>
+                                <p class="text-xs text-professional-gray">Partial Integration</p>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <div class="w-2 h-2 bg-success-green rounded-full"></div>
+                                    <span class="text-sm font-medium text-navy-primary">MCA</span>
+                                </div>
+                                <p class="text-xs text-professional-gray">Full Integration</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="space-y-8">
+                    <!-- Upcoming Hearings -->
+                    <div class="bg-white rounded-xl border border-gray-200 p-6">
+                        <h3 class="font-semibold text-navy-primary mb-4">Upcoming Hearings</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                                <div class="w-12 h-12 bg-red-100 rounded-lg flex flex-col items-center justify-center flex-shrink-0">
+                                    <span class="text-xs text-red-700 font-medium">Dec</span>
+                                    <span class="text-sm text-red-700 font-bold">03</span>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-navy-primary">Case #DHC/2025/4521</div>
+                                    <div class="text-xs text-professional-gray">Delhi High Court</div>
+                                    <div class="text-xs text-tech-accent mt-1">10:30 AM - Court Room 5</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                                <div class="w-12 h-12 bg-amber-100 rounded-lg flex flex-col items-center justify-center flex-shrink-0">
+                                    <span class="text-xs text-amber-700 font-medium">Dec</span>
+                                    <span class="text-sm text-amber-700 font-bold">05</span>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-navy-primary">Case #BHC/2025/8892</div>
+                                    <div class="text-xs text-professional-gray">Bombay High Court</div>
+                                    <div class="text-xs text-tech-accent mt-1">2:00 PM - Court Room 12</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                                <div class="w-12 h-12 bg-tech-accent/10 rounded-lg flex flex-col items-center justify-center flex-shrink-0">
+                                    <span class="text-xs text-tech-accent font-medium">Dec</span>
+                                    <span class="text-sm text-tech-accent font-bold">08</span>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-navy-primary">Case #SC/2025/1203</div>
+                                    <div class="text-xs text-professional-gray">Supreme Court</div>
+                                    <div class="text-xs text-tech-accent mt-1">11:00 AM - Court Room 1</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="w-full mt-4 py-2 text-sm text-tech-accent hover:underline">
+                            View Full Calendar
+                        </button>
+                    </div>
+
+                    <!-- Regulatory Updates -->
+                    <div class="bg-gradient-to-br from-success-green to-teal-600 rounded-xl p-6 text-white">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold">Regulatory Updates</h3>
+                        </div>
+                        <ul class="space-y-3 text-sm text-white/90">
+                            <li class="flex items-start gap-2">
+                                <span class="w-1.5 h-1.5 bg-white rounded-full mt-1.5 flex-shrink-0"></span>
+                                <span>New GST filing deadline: Dec 20</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="w-1.5 h-1.5 bg-white rounded-full mt-1.5 flex-shrink-0"></span>
+                                <span>MCA V3 updates effective Jan 1</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="w-1.5 h-1.5 bg-white rounded-full mt-1.5 flex-shrink-0"></span>
+                                <span>DPDP 2023 compliance checklist</span>
+                            </li>
+                        </ul>
+                        <button class="w-full mt-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium transition-colors">
+                            View All Updates
+                        </button>
+                    </div>
+
+                    <!-- Compliance Checklist -->
+                    <div class="bg-white rounded-xl border border-gray-200 p-6">
+                        <h3 class="font-semibold text-navy-primary mb-4">Compliance Checklist</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-5 h-5 bg-success-green rounded flex items-center justify-center">
+                                    <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                </div>
+                                <span class="text-sm text-navy-primary">Annual Return Filing</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-5 h-5 bg-success-green rounded flex items-center justify-center">
+                                    <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                </div>
+                                <span class="text-sm text-navy-primary">Board Resolution Updates</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-5 h-5 border-2 border-gray-300 rounded"></div>
+                                <span class="text-sm text-professional-gray">Quarterly GST Filing</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-5 h-5 border-2 border-gray-300 rounded"></div>
+                                <span class="text-sm text-professional-gray">DPDP Compliance Audit</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

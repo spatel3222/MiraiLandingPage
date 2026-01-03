@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirai Legal OS - Transform Your Legal Practice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy-primary': '#1B365D',
+                        'navy-light': '#405A7A',
+                        'tech-accent': '#2E86C1',
+                        'neutral-base': '#FAFBFC',
+                        'success-green': '#28B463',
+                        'professional-gray': '#566573',
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        .card-hover {
+            transition: all 0.2s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(27, 54, 93, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-neutral-base min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center gap-2">
+                    <span class="text-3xl font-bold text-navy-primary tracking-tight">mirai</span>
+                    <span class="text-3xl font-bold text-navy-primary tracking-tight">360</span>
+                    <span class="text-3xl font-medium text-tech-accent tracking-tight">.ai</span>
+                </div>
+                <!-- CTA -->
+                <button class="px-5 py-2.5 bg-tech-accent text-white font-medium rounded-md hover:bg-tech-accent/90 transition-colors">
+                    Get Started
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-16 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-5xl md:text-6xl font-bold text-navy-primary leading-tight mb-6">
+                Mirai Legal OS
+            </h1>
+            <p class="text-xl text-navy-light max-w-2xl mx-auto mb-4">
+                Build AI Once. Scale Everywhere.
+            </p>
+            <p class="text-lg text-professional-gray max-w-3xl mx-auto mb-12">
+                Transform your legal practice with enterprise-grade AI tools. Enable boutique firms to compete with Big Law while preserving personalized expertise.
+            </p>
+        </div>
+    </section>
+
+    <!-- Role Selection Section -->
+    <section class="py-16 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-semibold text-navy-primary mb-4">Select Your Portal</h2>
+                <p class="text-professional-gray">Choose your role to access the appropriate workspace</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Client Card -->
+                <a href="client.html" class="card-hover block">
+                    <div class="bg-white rounded-xl border border-gray-200 p-8 h-full">
+                        <div class="w-16 h-16 bg-tech-accent/10 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-tech-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-navy-primary mb-3">Client</h3>
+                        <p class="text-professional-gray mb-6">
+                            Access your case progress, documents, and billing transparency through a secure client portal.
+                        </p>
+                        <ul class="space-y-2 text-sm text-navy-light mb-6">
+                            <li class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Case Status Tracking
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Document Access
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Billing Transparency
+                            </li>
+                        </ul>
+                        <div class="flex items-center text-tech-accent font-medium">
+                            Enter Client Portal
+                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Lawyer Card -->
+                <a href="lawyer.html" class="card-hover block">
+                    <div class="bg-white rounded-xl border border-gray-200 p-8 h-full relative overflow-hidden">
+                        <div class="absolute top-4 right-4">
+                            <span class="px-3 py-1 bg-navy-primary text-white text-xs font-medium rounded-full">Primary</span>
+                        </div>
+                        <div class="w-16 h-16 bg-navy-primary/10 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-navy-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-navy-primary mb-3">Lawyer</h3>
+                        <p class="text-professional-gray mb-6">
+                            AI-powered document drafting, legal research, and practice management tools for legal professionals.
+                        </p>
+                        <ul class="space-y-2 text-sm text-navy-light mb-6">
+                            <li class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                150+ Legal Templates
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                AI Document Drafting
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                30% Productivity Gains
+                            </li>
+                        </ul>
+                        <div class="flex items-center text-navy-primary font-medium">
+                            Enter Lawyer Dashboard
+                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Court Card -->
+                <a href="court.html" class="card-hover block">
+                    <div class="bg-white rounded-xl border border-gray-200 p-8 h-full">
+                        <div class="w-16 h-16 bg-success-green/10 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-success-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-navy-primary mb-3">Court</h3>
+                        <p class="text-professional-gray mb-6">
+                            E-filing integration, case management, and court system connectivity for judicial workflows.
+                        </p>
+                        <ul class="space-y-2 text-sm text-navy-light mb-6">
+                            <li class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                E-Filing Integration
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Case Status Updates
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                                Regulatory Compliance
+                            </li>
+                        </ul>
+                        <div class="flex items-center text-success-green font-medium">
+                            Enter Court Portal
+                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 px-6 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-4xl font-bold text-navy-primary mb-2">150+</div>
+                    <div class="text-professional-gray">Legal Templates</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-tech-accent mb-2">30%</div>
+                    <div class="text-professional-gray">Time Savings</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-success-green mb-2">95%</div>
+                    <div class="text-professional-gray">AI Accuracy</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-navy-primary mb-2">500+</div>
+                    <div class="text-professional-gray">Law Firms</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 border-t border-gray-200">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-xl font-bold text-navy-primary">mirai360</span>
+                    <span class="text-xl font-medium text-tech-accent">.ai</span>
+                </div>
+                <p class="text-sm text-professional-gray">
+                    &copy; 2025 CRTX.in. All rights reserved. Build AI Once. Scale Everywhere.
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

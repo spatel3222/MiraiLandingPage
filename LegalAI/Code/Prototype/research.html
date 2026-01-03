@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research - AI Chat | Mirai Legal OS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'navy-primary': '#1B365D',
+                        'navy-light': '#405A7A',
+                        'tech-accent': '#2E86C1',
+                        'neutral-base': '#FAFBFC',
+                        'success-green': '#28B463',
+                        'professional-gray': '#566573',
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .chat-bubble { animation: fadeInUp 0.3s ease-out; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .typing-indicator span {
+            animation: typingDot 1.4s infinite;
+            animation-fill-mode: both;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typingDot {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        .chip-hover { transition: all 0.2s ease; }
+        .chip-hover:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(27, 54, 93, 0.15); }
+        .history-item { transition: all 0.15s ease; }
+        .history-item:hover { background-color: #F8FAFC; }
+        .citation-link { transition: all 0.15s ease; }
+        .citation-link:hover { background-color: rgba(46, 134, 193, 0.1); }
+        .slide-panel { transform: translateX(100%); transition: transform 0.3s ease; }
+        .slide-panel.open { transform: translateX(0); }
+        .pulse-ring {
+            animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1); opacity: 0.3; }
+            100% { transform: scale(0.8); opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="bg-neutral-base min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
+        <div class="max-w-full mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-6">
+                    <a href="index.html" class="flex items-center gap-2">
+                        <span class="text-2xl font-bold text-navy-primary">mirai360</span>
+                        <span class="text-2xl font-medium text-tech-accent">.ai</span>
+                    </a>
+                    <span class="text-sm text-professional-gray border-l border-gray-200 pl-6">Research</span>
+                    <div class="flex items-center gap-1 ml-4">
+                        <a href="lawyer.html" class="px-3 py-1.5 text-sm text-professional-gray hover:text-navy-primary transition-colors">Dashboard</a>
+                        <span class="text-gray-300">/</span>
+                        <a href="prepare.html" class="px-3 py-1.5 text-sm text-professional-gray hover:text-navy-primary transition-colors">Prepare</a>
+                        <span class="text-gray-300">/</span>
+                        <span class="px-3 py-1.5 text-sm text-navy-primary font-medium bg-navy-primary/10 rounded-lg">Research</span>
+                        <span class="text-gray-300">/</span>
+                        <a href="create.html" class="px-3 py-1.5 text-sm text-professional-gray hover:text-navy-primary transition-colors">Create</a>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-lg">
+                        <span class="text-sm text-professional-gray">Case:</span>
+                        <span class="text-sm font-medium text-navy-primary">Netflix Bundling Complaint</span>
+                    </div>
+                    <div class="w-10 h-10 bg-navy-primary rounded-full flex items-center justify-center text-white font-medium">
+                        AK
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex pt-16 h-screen">
+        <!-- Chat History Sidebar -->
+        <aside class="w-72 bg-white border-r border-gray-200 flex flex-col">
+            <div class="p-4 border-b border-gray-200">
+                <button class="w-full px-4 py-2.5 bg-navy-primary text-white font-medium rounded-lg hover:bg-navy-primary/90 transition-colors flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                    New Conversation
+                </button>
+            </div>
+
+            <!-- Knowledge Base Selector -->
+            <div class="p-4 border-b border-gray-200">
+                <label class="text-xs font-medium text-professional-gray uppercase tracking-wide">Knowledge Base</label>
+                <div class="mt-2 space-y-2">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" checked class="w-4 h-4 rounded border-gray-300 text-tech-accent focus:ring-tech-accent">
+                        <span class="text-sm text-navy-primary">Case Files (125)</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" checked class="w-4 h-4 rounded border-gray-300 text-tech-accent focus:ring-tech-accent">
+                        <span class="text-sm text-navy-primary">Firm KB (2,340)</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-tech-accent focus:ring-tech-accent">
+                        <span class="text-sm text-navy-primary">Indian Kanoon</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-tech-accent focus:ring-tech-accent">
+                        <span class="text-sm text-navy-primary">CaseMine</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Chat History -->
+            <div class="flex-1 overflow-y-auto">
+                <div class="p-4">
+                    <div class="text-xs font-medium text-professional-gray uppercase tracking-wide mb-3">Today</div>
+                    <div class="space-y-1">
+                        <div class="history-item px-3 py-2.5 rounded-lg bg-navy-primary/10 cursor-pointer">
+                            <div class="text-sm font-medium text-navy-primary truncate">Payment timeline analysis</div>
+                            <div class="text-xs text-professional-gray mt-0.5">3 messages</div>
+                        </div>
+                        <div class="history-item px-3 py-2.5 rounded-lg cursor-pointer">
+                            <div class="text-sm text-navy-primary truncate">Credit default impact</div>
+                            <div class="text-xs text-professional-gray mt-0.5">8 messages</div>
+                        </div>
+                    </div>
+
+                    <div class="text-xs font-medium text-professional-gray uppercase tracking-wide mb-3 mt-6">Yesterday</div>
+                    <div class="space-y-1">
+                        <div class="history-item px-3 py-2.5 rounded-lg cursor-pointer">
+                            <div class="text-sm text-navy-primary truncate">Similar Netflix cases</div>
+                            <div class="text-xs text-professional-gray mt-0.5">12 messages</div>
+                        </div>
+                        <div class="history-item px-3 py-2.5 rounded-lg cursor-pointer">
+                            <div class="text-sm text-navy-primary truncate">Consumer protection clauses</div>
+                            <div class="text-xs text-professional-gray mt-0.5">5 messages</div>
+                        </div>
+                    </div>
+
+                    <div class="text-xs font-medium text-professional-gray uppercase tracking-wide mb-3 mt-6">This Week</div>
+                    <div class="space-y-1">
+                        <div class="history-item px-3 py-2.5 rounded-lg cursor-pointer">
+                            <div class="text-sm text-navy-primary truncate">UK credit reporting laws</div>
+                            <div class="text-xs text-professional-gray mt-0.5">15 messages</div>
+                        </div>
+                        <div class="history-item px-3 py-2.5 rounded-lg cursor-pointer">
+                            <div class="text-sm text-navy-primary truncate">Ombudsman procedures</div>
+                            <div class="text-xs text-professional-gray mt-0.5">7 messages</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back Link -->
+            <div class="p-4 border-t border-gray-200">
+                <a href="lawyer.html" class="flex items-center gap-2 text-sm text-professional-gray hover:text-navy-primary transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"/>
+                    </svg>
+                    Back to Dashboard
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="flex-1 flex flex-col bg-neutral-base">
+            <!-- Chat Messages -->
+            <div class="flex-1 overflow-y-auto p-6" id="chatMessages">
+                <!-- Welcome State -->
+                <div id="welcomeState" class="hidden max-w-2xl mx-auto text-center py-16">
+                    <div class="w-20 h-20 bg-gradient-to-br from-navy-primary to-tech-accent rounded-2xl flex items-center justify-center mx-auto mb-6 relative">
+                        <div class="absolute inset-0 bg-gradient-to-br from-navy-primary to-tech-accent rounded-2xl pulse-ring"></div>
+                        <svg class="w-10 h-10 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                    </div>
+                    <h1 class="text-2xl font-bold text-navy-primary mb-2">Legal Research Assistant</h1>
+                    <p class="text-professional-gray mb-8">Ask questions about your case files, find similar cases, or explore legal precedents</p>
+
+                    <!-- Suggestion Chips -->
+                    <div class="grid grid-cols-2 gap-3 max-w-lg mx-auto">
+                        <button class="chip-hover px-4 py-3 bg-white border border-gray-200 rounded-xl text-left hover:border-tech-accent">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-tech-accent/10 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-tech-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-navy-primary text-sm">Legal Research</div>
+                                    <div class="text-xs text-professional-gray">Search case files</div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="chip-hover px-4 py-3 bg-white border border-gray-200 rounded-xl text-left hover:border-navy-primary">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-navy-primary/10 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-navy-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-navy-primary text-sm">Web Search</div>
+                                    <div class="text-xs text-professional-gray">External sources</div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="chip-hover px-4 py-3 bg-white border border-gray-200 rounded-xl text-left hover:border-success-green">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-success-green/10 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-success-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-navy-primary text-sm">Similar Cases</div>
+                                    <div class="text-xs text-professional-gray">Find precedents</div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="chip-hover px-4 py-3 bg-white border border-gray-200 rounded-xl text-left hover:border-amber-500">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-navy-primary text-sm">Clause Analysis</div>
+                                    <div class="text-xs text-professional-gray">Check violations</div>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Active Conversation -->
+                <div id="conversationState" class="max-w-3xl mx-auto space-y-6">
+                    <!-- Chain of Thought Toggle -->
+                    <div class="flex items-center justify-end mb-4">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <span class="text-sm text-professional-gray">Show reasoning</span>
+                            <div class="relative">
+                                <input type="checkbox" id="cotToggle" class="sr-only" checked>
+                                <div class="w-10 h-6 bg-gray-200 rounded-full shadow-inner transition-colors" id="cotTrack"></div>
+                                <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transition-transform" id="cotThumb"></div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- User Message -->
+                    <div class="chat-bubble flex justify-end">
+                        <div class="max-w-xl">
+                            <div class="bg-navy-primary text-white px-4 py-3 rounded-2xl rounded-tr-md">
+                                <p>What is the timeline of events for the Netflix payment dispute?</p>
+                            </div>
+                            <div class="text-xs text-professional-gray mt-1 text-right">2:34 PM</div>
+                        </div>
+                    </div>
+
+                    <!-- AI Response with Chain of Thought -->
+                    <div class="chat-bubble">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-gradient-to-br from-navy-primary to-tech-accent rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                                </svg>
+                            </div>
+                            <div class="flex-1 max-w-xl">
+                                <!-- Chain of Thought -->
+                                <div id="cotSection" class="mb-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                                        </svg>
+                                        <span class="text-xs font-medium text-amber-700">Reasoning</span>
+                                    </div>
+                                    <div class="text-xs text-amber-800 space-y-1">
+                                        <p>→ Searching case files for date-related mentions...</p>
+                                        <p>→ Found 5 documents with timeline relevance</p>
+                                        <p>→ Cross-referencing payment receipt with default notice</p>
+                                        <p>→ Calculating time gaps between events</p>
+                                    </div>
+                                </div>
+
+                                <!-- Answer -->
+                                <div class="bg-white border border-gray-200 px-4 py-3 rounded-2xl rounded-tl-md">
+                                    <p class="text-navy-primary mb-3">Based on the case documents, here's the timeline of key events:</p>
+
+                                    <div class="space-y-3 mb-4">
+                                        <div class="flex items-start gap-3">
+                                            <div class="w-6 h-6 bg-tech-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                <span class="text-xs font-bold text-tech-accent">1</span>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-navy-primary">15 Feb 2024</div>
+                                                <div class="text-sm text-professional-gray">Claimant sent address change request to Netflix</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start gap-3">
+                                            <div class="w-6 h-6 bg-tech-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                <span class="text-xs font-bold text-tech-accent">2</span>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-navy-primary">01 Mar 2024</div>
+                                                <div class="text-sm text-professional-gray">Payment of £150 made to settle account</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start gap-3">
+                                            <div class="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                <span class="text-xs font-bold text-red-500">3</span>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-navy-primary">15 Apr 2024</div>
+                                                <div class="text-sm text-professional-gray">Default notice sent to old address (45 days after payment)</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start gap-3">
+                                            <div class="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                <span class="text-xs font-bold text-red-500">4</span>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-navy-primary">20 May 2024</div>
+                                                <div class="text-sm text-professional-gray">Claimant discovers default on credit file (-150 points)</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Citations -->
+                                    <div class="border-t border-gray-100 pt-3">
+                                        <div class="text-xs font-medium text-professional-gray mb-2">Sources</div>
+                                        <div class="flex flex-wrap gap-2">
+                                            <button onclick="openCitationPanel(1)" class="citation-link inline-flex items-center gap-1.5 px-2 py-1 bg-gray-50 rounded text-xs text-tech-accent hover:underline">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/>
+                                                </svg>
+                                                Payment Receipt.pdf
+                                            </button>
+                                            <button onclick="openCitationPanel(2)" class="citation-link inline-flex items-center gap-1.5 px-2 py-1 bg-gray-50 rounded text-xs text-tech-accent hover:underline">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                                                </svg>
+                                                Default Notice Email.eml
+                                            </button>
+                                            <button onclick="openCitationPanel(3)" class="citation-link inline-flex items-center gap-1.5 px-2 py-1 bg-gray-50 rounded text-xs text-tech-accent hover:underline">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/>
+                                                </svg>
+                                                Credit Report.pdf
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-professional-gray mt-1">2:35 PM</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Follow-up User Message -->
+                    <div class="chat-bubble flex justify-end">
+                        <div class="max-w-xl">
+                            <div class="bg-navy-primary text-white px-4 py-3 rounded-2xl rounded-tr-md">
+                                <p>Are there any similar cases with Netflix or other streaming services?</p>
+                            </div>
+                            <div class="text-xs text-professional-gray mt-1 text-right">2:36 PM</div>
+                        </div>
+                    </div>
+
+                    <!-- AI Response with Similar Cases -->
+                    <div class="chat-bubble">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-gradient-to-br from-navy-primary to-tech-accent rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                                </svg>
+                            </div>
+                            <div class="flex-1 max-w-xl">
+                                <div class="bg-white border border-gray-200 px-4 py-3 rounded-2xl rounded-tl-md">
+                                    <p class="text-navy-primary mb-4">I found 3 similar cases involving streaming services and credit reporting disputes:</p>
+
+                                    <!-- Similar Case Cards -->
+                                    <div class="space-y-3">
+                                        <div class="p-3 bg-gray-50 rounded-lg border border-gray-100 hover:border-tech-accent transition-colors cursor-pointer" onclick="openCitationPanel(4)">
+                                            <div class="flex items-start justify-between">
+                                                <div>
+                                                    <div class="font-medium text-navy-primary text-sm">Thompson v. Disney+ (2023)</div>
+                                                    <div class="text-xs text-professional-gray mt-1">Similar credit default after disputed charges. Claimant awarded £2,500 compensation.</div>
+                                                </div>
+                                                <span class="px-2 py-1 bg-success-green/10 text-success-green text-xs font-medium rounded">92% Match</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="p-3 bg-gray-50 rounded-lg border border-gray-100 hover:border-tech-accent transition-colors cursor-pointer" onclick="openCitationPanel(5)">
+                                            <div class="flex items-start justify-between">
+                                                <div>
+                                                    <div class="font-medium text-navy-primary text-sm">Roberts v. Amazon Prime (2022)</div>
+                                                    <div class="text-xs text-professional-gray mt-1">Address update not processed, default issued incorrectly. Case settled.</div>
+                                                </div>
+                                                <span class="px-2 py-1 bg-success-green/10 text-success-green text-xs font-medium rounded">87% Match</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="p-3 bg-gray-50 rounded-lg border border-gray-100 hover:border-tech-accent transition-colors cursor-pointer" onclick="openCitationPanel(6)">
+                                            <div class="flex items-start justify-between">
+                                                <div>
+                                                    <div class="font-medium text-navy-primary text-sm">Chen v. Spotify (2023)</div>
+                                                    <div class="text-xs text-professional-gray mt-1">Payment processed but not recorded, leading to erroneous default.</div>
+                                                </div>
+                                                <span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded">78% Match</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <p class="text-sm text-professional-gray mt-4">Would you like me to analyze the legal arguments used in any of these cases?</p>
+                                </div>
+                                <div class="text-xs text-professional-gray mt-1">2:37 PM</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="border-t border-gray-200 bg-white p-4">
+                <div class="max-w-3xl mx-auto">
+                    <div class="flex items-end gap-3">
+                        <div class="flex-1 relative">
+                            <textarea id="chatInput" rows="1" placeholder="Ask about your case files, find similar cases, or explore legal precedents..." class="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-tech-accent/20 focus:border-tech-accent resize-none" style="min-height: 48px; max-height: 120px;"></textarea>
+                            <button class="absolute right-3 bottom-3 p-1 text-professional-gray hover:text-navy-primary transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <button class="p-3 bg-navy-primary text-white rounded-xl hover:bg-navy-primary/90 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                        <div class="flex items-center gap-4 text-xs text-professional-gray">
+                            <span class="flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                </svg>
+                                Press Enter to send
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-professional-gray">Agents:</span>
+                            <span class="px-2 py-0.5 text-xs bg-tech-accent/10 text-tech-accent rounded">ClauseAgent</span>
+                            <span class="px-2 py-0.5 text-xs bg-success-green/10 text-success-green rounded">SimilarCaseAgent</span>
+                            <span class="px-2 py-0.5 text-xs bg-amber-100 text-amber-700 rounded">JudgeBiasAgent</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Citation Drill-Down Panel -->
+    <div id="citationPanel" class="slide-panel fixed right-0 top-16 bottom-0 w-[480px] bg-white border-l border-gray-200 shadow-xl z-40 overflow-hidden">
+        <div class="flex flex-col h-full">
+            <!-- Panel Header -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-navy-primary">Payment Receipt.pdf</h3>
+                        <p class="text-sm text-professional-gray">Source Document</p>
+                    </div>
+                </div>
+                <button onclick="closeCitationPanel()" class="p-2 text-professional-gray hover:text-navy-primary hover:bg-gray-100 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Panel Content -->
+            <div class="flex-1 overflow-y-auto p-6">
+                <!-- Relevance Score -->
+                <div class="flex items-center gap-3 mb-6 p-4 bg-success-green/10 rounded-lg">
+                    <div class="w-12 h-12 bg-success-green/20 rounded-full flex items-center justify-center">
+                        <span class="text-lg font-bold text-success-green">95%</span>
+                    </div>
+                    <div>
+                        <div class="font-medium text-navy-primary">High Relevance</div>
+                        <div class="text-sm text-professional-gray">Directly supports timeline query</div>
+                    </div>
+                </div>
+
+                <!-- Summary -->
+                <div class="mb-6">
+                    <h4 class="text-sm font-semibold text-navy-primary mb-3">Summary</h4>
+                    <p class="text-sm text-professional-gray leading-relaxed">
+                        Official payment confirmation showing £150 transaction on 01/03/2024. Receipt includes transaction ID, date, amount, and account details. Demonstrates claimant's attempt to settle outstanding balance before default notice was issued.
+                    </p>
+                </div>
+
+                <!-- Relevant Excerpt -->
+                <div class="mb-6">
+                    <h4 class="text-sm font-semibold text-navy-primary mb-3">Relevant Excerpt</h4>
+                    <div class="bg-gray-50 rounded-lg p-4 border-l-4 border-tech-accent">
+                        <p class="text-sm text-navy-primary italic">
+                            "Payment received: £150.00<br>
+                            Transaction Date: 01 March 2024<br>
+                            Reference: NF-2024-03-15892<br>
+                            Account Status: Settled"
+                        </p>
+                        <div class="text-xs text-professional-gray mt-2">Page 1, Paragraph 2</div>
+                    </div>
+                </div>
+
+                <!-- Why This Matters -->
+                <div class="mb-6">
+                    <h4 class="text-sm font-semibold text-navy-primary mb-3 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-tech-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                        Reasoning
+                    </h4>
+                    <div class="space-y-2">
+                        <div class="flex items-start gap-2 text-sm text-professional-gray">
+                            <svg class="w-4 h-4 text-success-green flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Establishes payment occurred 45 days before default notice</span>
+                        </div>
+                        <div class="flex items-start gap-2 text-sm text-professional-gray">
+                            <svg class="w-4 h-4 text-success-green flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Account marked as "Settled" contradicts default action</span>
+                        </div>
+                        <div class="flex items-start gap-2 text-sm text-professional-gray">
+                            <svg class="w-4 h-4 text-success-green flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <span>Transaction reference enables verification with Netflix</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Related Documents -->
+                <div>
+                    <h4 class="text-sm font-semibold text-navy-primary mb-3">Cross-References</h4>
+                    <div class="space-y-2">
+                        <a href="#" class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                            <div class="w-8 h-8 bg-blue-100 rounded flex items-center justify-center">
+                                <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-navy-primary">Default Notice Email.eml</div>
+                                <div class="text-xs text-professional-gray">Contradicts settled status</div>
+                            </div>
+                        </a>
+                        <a href="#" class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                            <div class="w-8 h-8 bg-orange-100 rounded flex items-center justify-center">
+                                <svg class="w-4 h-4 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"/>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-navy-primary">Credit Report.pdf</div>
+                                <div class="text-xs text-professional-gray">Shows default impact</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel Footer -->
+            <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
+                <button class="w-full px-4 py-2.5 bg-navy-primary text-white font-medium rounded-lg hover:bg-navy-primary/90 transition-colors flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                    Open Full Document
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-resize textarea
+        const textarea = document.getElementById('chatInput');
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        // Chain of Thought toggle
+        const cotToggle = document.getElementById('cotToggle');
+        const cotTrack = document.getElementById('cotTrack');
+        const cotThumb = document.getElementById('cotThumb');
+        const cotSection = document.getElementById('cotSection');
+
+        cotToggle.addEventListener('change', function() {
+            if (this.checked) {
+                cotTrack.classList.add('bg-tech-accent');
+                cotTrack.classList.remove('bg-gray-200');
+                cotThumb.style.transform = 'translateX(16px)';
+                cotSection.style.display = 'block';
+            } else {
+                cotTrack.classList.remove('bg-tech-accent');
+                cotTrack.classList.add('bg-gray-200');
+                cotThumb.style.transform = 'translateX(0)';
+                cotSection.style.display = 'none';
+            }
+        });
+
+        // Initialize toggle state
+        cotTrack.classList.add('bg-tech-accent');
+        cotThumb.style.transform = 'translateX(16px)';
+
+        // Citation panel
+        function openCitationPanel(id) {
+            document.getElementById('citationPanel').classList.add('open');
+        }
+
+        function closeCitationPanel() {
+            document.getElementById('citationPanel').classList.remove('open');
+        }
+
+        // Close on escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeCitationPanel();
+            }
+        });
+    </script>
+</body>
+</html>
