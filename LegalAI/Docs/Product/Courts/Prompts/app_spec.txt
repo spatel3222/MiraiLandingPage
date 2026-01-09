@@ -1,0 +1,367 @@
+<project_specification>
+  <project_name>Legal AI System V2</project_name>
+
+  <overview>
+    AI-powered legal document management platform for law firms.
+    Enables case management, document processing with OCR, chronology extraction,
+    and AI-assisted legal analysis.
+
+    Core Value: Automate document analysis, extract key dates/events, enable AI chat with documents.
+  </overview>
+
+  <version_info>
+    <backend>
+      <name>legalai-backend</name>
+      <version>0.1.0</version>
+      <branch>main</branch>
+      <last_commit>e10346bc - Merge pull request #105 from mirai360-ai/dev</last_commit>
+    </backend>
+    <frontend>
+      <name>legal-ai</name>
+      <version>0.1.0</version>
+      <branch>dev</branch>
+      <last_commit>8bd40aa5 - Merge branch 'dev'</last_commit>
+    </frontend>
+  </version_info>
+
+  <tech_stack>
+    <backend>
+      <framework>FastAPI 0.109.0</framework>
+      <runtime>Python 3.10.13+, Uvicorn 0.27.0</runtime>
+      <database>MongoDB (Motor 3.3.2, Beanie ODM 1.24.0)</database>
+      <authentication>Supabase Auth + JWT (python-jose)</authentication>
+      <storage>Google Cloud Storage (signed URLs)</storage>
+      <ai_services>
+        <ocr>Google Gemini 2.0-Flash (primary), Tesseract (fallback)</ocr>
+        <chronology>Gemini 2.5-Flash (configurable)</chronology>
+        <chat>OpenAI via LangChain 0.1.4</chat>
+      </ai_services>
+      <deployment>Cloud Run (Cloud Build pipeline)</deployment>
+      <key_libraries>
+        <item>google-genai >= 0.6.0 (Gemini API)</item>
+        <item>google-generativeai 0.8.3 (legacy Gemini)</item>
+        <item>langchain-openai 0.0.5</item>
+        <item>pytesseract 0.3.10</item>
+        <item>pdf2image 1.17.0, pypdf 4.0.1</item>
+        <item>reportlab 4.0.7 (PDF generation)</item>
+        <item>pydantic 2.11.7+</item>
+        <item>httpx 0.26-0.28</item>
+      </key_libraries>
+    </backend>
+    <frontend>
+      <framework>Next.js 16.1.1 (App Router)</framework>
+      <runtime>React 19.1.0, TypeScript 5</runtime>
+      <styling>Tailwind CSS 4</styling>
+      <ui_library>Radix UI + Shadcn/ui components</ui_library>
+      <state_management>TanStack React Query 5.90.5</state_management>
+      <forms>TanStack React Form + Zod 4.1.12</forms>
+      <authentication>Supabase SSR 0.7.0</authentication>
+      <key_libraries>
+        <item>@react-pdf-viewer/core 3.12.0</item>
+        <item>react-markdown 10.1.0</item>
+        <item>recharts 2.15.4</item>
+        <item>motion 12.23.24</item>
+        <item>lucide-react 0.552.0</item>
+        <item>date-fns 4.1.0</item>
+      </key_libraries>
+      <deployment>Cloud Run (standalone output)</deployment>
+    </frontend>
+  </tech_stack>
+
+  <architecture>
+    <pattern>Client-Server with API Proxy</pattern>
+    <description>
+      Frontend proxies API requests through Next.js API routes to backend.
+      Backend handles business logic, AI processing, and data persistence.
+      Real-time updates via WebSocket for document processing progress.
+    </description>
+    <api_versioning>
+      <v1>Deprecated legacy API</v1>
+      <v2>Current recommended API with standardized responses</v2>
+    </api_versioning>
+    <response_format>{"success": boolean, "data": object, "message": string, "pagination": object}</response_format>
+  </architecture>
+
+  <database_models count="13">
+    <model name="User">
+      <purpose>User accounts linked to Supabase Auth</purpose>
+      <key_fields>supabase_id, email, username, global_role (Admin/Member), profile_picture_url</key_fields>
+    </model>
+    <model name="Organization">
+      <purpose>Company/law firm entity</purpose>
+      <key_fields>name, details, leader_id</key_fields>
+    </model>
+    <model name="OrgMember">
+      <purpose>User-organization membership</purpose>
+      <key_fields>org_id, user_id, role (Leader/Member)</key_fields>
+    </model>
+    <model name="Role">
+      <purpose>Role definitions</purpose>
+      <key_fields>role_name (Admin, Member)</key_fields>
+    </model>
+    <model name="Client">
+      <purpose>External clients (Company/Individual)</purpose>
+      <key_fields>org_id, client_type, company_name, first_name, last_name, email, phone, tax_id, address</key_fields>
+    </model>
+    <model name="Matter">
+      <purpose>Legal matter grouping</purpose>
+      <key_fields>org_id, client_id, matter_name, practice_area, team_member_ids</key_fields>
+    </model>
+    <model name="Case">
+      <purpose>Individual legal cases</purpose>
+      <key_fields>org_id, created_by_id, case_name, case_number, cnr_number, court, judge, practice_area, firm_representation, filing_date, current_stage, next_hearing_date, monitoring_settings</key_fields>
+    </model>
+    <model name="CaseAssignment">
+      <purpose>Team assignments to cases</purpose>
+      <key_fields>case_id, user_id, role</key_fields>
+    </model>
+    <model name="Document">
+      <purpose>Uploaded documents with processing state</purpose>
+      <key_fields>case_id, org_id, filename, file_size, file_type, gcs_path, status (uploading/processing/completed/failed), uploaded_by, processing_progress, chronology_progress, current_version_number, extracted_text</key_fields>
+    </model>
+    <model name="DocumentVersion">
+      <purpose>Document version history</purpose>
+      <key_fields>document_id, org_id, version_number, extracted_text, extracted_metadata, pages (markdown), processing_status, error_message</key_fields>
+    </model>
+    <model name="DocumentChronology">
+      <purpose>Extracted timeline events</purpose>
+      <key_fields>organization_id, case_id, document_id, items [{date, event, brief_summary, references}]</key_fields>
+    </model>
+    <model name="ChatMessage">
+      <purpose>Case-specific chat history</purpose>
+      <key_fields>case_id, role (user/assistant), content</key_fields>
+    </model>
+    <model name="Invitation">
+      <purpose>Organization invitations</purpose>
+      <key_fields>email, org_id, token, status (pending/accepted/expired)</key_fields>
+    </model>
+  </database_models>
+
+  <api_endpoints>
+    <domain name="Authentication">
+      <endpoint method="POST" path="/auth/login">Email/password login</endpoint>
+      <endpoint method="GET" path="/auth/me">Current user info</endpoint>
+      <endpoint method="POST" path="/auth/accept-invitation">Accept org invitation</endpoint>
+      <endpoint method="POST" path="/auth/logout">Session cleanup</endpoint>
+    </domain>
+    <domain name="Users">
+      <endpoint method="GET" path="/users">List users (admin)</endpoint>
+      <endpoint method="GET" path="/users/{id}">Get user details</endpoint>
+    </domain>
+    <domain name="Organizations">
+      <endpoint method="GET" path="/organizations">List organizations</endpoint>
+      <endpoint method="POST" path="/organizations">Create organization</endpoint>
+      <endpoint method="GET" path="/organizations/{id}">Get organization</endpoint>
+      <endpoint method="PUT" path="/organizations/{id}">Update organization</endpoint>
+      <endpoint method="GET" path="/organizations/{id}/members">List members</endpoint>
+      <endpoint method="POST" path="/organizations/{id}/members">Add member</endpoint>
+    </domain>
+    <domain name="Clients">
+      <endpoint method="GET" path="/clients">List clients</endpoint>
+      <endpoint method="POST" path="/clients">Create client</endpoint>
+      <endpoint method="GET" path="/clients/{id}">Get client</endpoint>
+      <endpoint method="PUT" path="/clients/{id}">Update client</endpoint>
+      <endpoint method="DELETE" path="/clients/{id}">Delete client</endpoint>
+    </domain>
+    <domain name="Matters">
+      <endpoint method="GET" path="/matters">List matters</endpoint>
+      <endpoint method="POST" path="/matters">Create matter</endpoint>
+      <endpoint method="GET" path="/matters/{id}">Get matter</endpoint>
+      <endpoint method="PUT" path="/matters/{id}">Update matter</endpoint>
+      <endpoint method="DELETE" path="/matters/{id}">Delete matter</endpoint>
+    </domain>
+    <domain name="Cases">
+      <endpoint method="GET" path="/cases">List cases</endpoint>
+      <endpoint method="POST" path="/cases">Create case</endpoint>
+      <endpoint method="GET" path="/cases/{id}">Get case</endpoint>
+      <endpoint method="PUT" path="/cases/{id}">Update case</endpoint>
+      <endpoint method="DELETE" path="/cases/{id}">Delete case</endpoint>
+      <endpoint method="GET" path="/cases/{id}/assignments">List assignments</endpoint>
+      <endpoint method="POST" path="/cases/{id}/assignments">Add assignment</endpoint>
+    </domain>
+    <domain name="Documents">
+      <endpoint method="GET" path="/documents">List documents</endpoint>
+      <endpoint method="POST" path="/documents/upload">Upload document</endpoint>
+      <endpoint method="GET" path="/documents/{id}">Get document</endpoint>
+      <endpoint method="GET" path="/documents/{id}/download">Download document</endpoint>
+      <endpoint method="POST" path="/documents/{id}/process">Trigger OCR processing</endpoint>
+      <endpoint method="POST" path="/documents/{id}/extract-chronology">Extract timeline</endpoint>
+      <endpoint method="GET" path="/documents/{id}/versions">List versions</endpoint>
+      <endpoint method="DELETE" path="/documents/{id}">Delete document</endpoint>
+    </domain>
+    <domain name="Document Uploads">
+      <endpoint method="POST" path="/documents/uploads/initiate">Start resumable upload</endpoint>
+      <endpoint method="GET" path="/documents/uploads/session/{session_id}">Get upload session</endpoint>
+    </domain>
+    <domain name="WebSocket">
+      <endpoint method="WS" path="/ws?token={jwt}">Real-time updates</endpoint>
+      <message_types>document_update, version_update</message_types>
+    </domain>
+    <domain name="Webhooks">
+      <endpoint method="POST" path="/webhooks/supabase/auth">Supabase auth events</endpoint>
+    </domain>
+  </api_endpoints>
+
+  <frontend_pages>
+    <group name="Protected App Routes">
+      <page path="/dashboard">Main analytics dashboard</page>
+      <page path="/cases">Case list management</page>
+      <page path="/cases/[id]">Case detail with documents</page>
+      <page path="/clients">Client management</page>
+      <page path="/matters">Legal matters tracking</page>
+      <page path="/files">Document upload/management</page>
+      <page path="/documents">Document list view</page>
+      <page path="/timeline">Case chronology view</page>
+      <page path="/research">Legal research section</page>
+      <page path="/prepare">Document preparation</page>
+      <page path="/create">Create new cases</page>
+      <page path="/profile">User profile</page>
+      <page path="/settings">Application settings</page>
+    </group>
+    <group name="Auth Routes">
+      <page path="/login">SSO login</page>
+      <page path="/signup">User registration</page>
+      <page path="/forgot-password">Password recovery</page>
+      <page path="/reset-password">Password reset</page>
+      <page path="/accept-invite">Accept organization invite</page>
+      <page path="/user-confirm">Email confirmation</page>
+      <page path="/create-organization">Organization setup</page>
+      <page path="/setup-password">Initial password setup</page>
+      <page path="/set-password">Password management</page>
+    </group>
+    <group name="Admin Routes">
+      <page path="/admin/login">Admin login</page>
+      <page path="/admin/">Admin dashboard</page>
+    </group>
+  </frontend_pages>
+
+  <key_features>
+    <feature name="Document Processing">
+      <description>Upload legal documents, extract text via OCR, create searchable versions</description>
+      <processing_stages>Upload -> OCR Extraction -> Version Creation</processing_stages>
+      <supported_formats>PDF, Images (via pdf2image)</supported_formats>
+      <ocr_engines>Gemini 2.0-Flash (primary), Tesseract (fallback)</ocr_engines>
+    </feature>
+    <feature name="Chronology Extraction">
+      <description>AI extracts key dates, events, and timeline from legal documents</description>
+      <output_format>Structured JSON with date, event, brief_summary, references</output_format>
+      <ai_model>Gemini 2.5-Flash (configurable)</ai_model>
+      <max_tokens>800k tokens</max_tokens>
+    </feature>
+    <feature name="Resumable Uploads">
+      <description>Large file uploads to GCS with resumable session support</description>
+      <storage>Google Cloud Storage with V4 signed URLs</storage>
+      <chunk_tracking>Progress percentage, session expiration</chunk_tracking>
+    </feature>
+    <feature name="Real-Time Updates">
+      <description>WebSocket notifications for document processing progress</description>
+      <events>document_update, version_update</events>
+      <auth>JWT via query parameter</auth>
+    </feature>
+    <feature name="Document Versioning">
+      <description>Track document versions with ability to restore previous versions</description>
+      <denormalization>Current version text stored on Document for fast access</denormalization>
+    </feature>
+    <feature name="AI Chat">
+      <description>Chat with documents using OpenAI integration</description>
+      <context>Document content injected into conversation</context>
+      <date_extraction>AI-assisted date parsing with regex fallback</date_extraction>
+    </feature>
+    <feature name="Multi-Tenancy">
+      <description>Organization-based data isolation</description>
+      <roles>Global (Admin/Member), Org (Leader/Member), Case (team assignments)</roles>
+      <access_control>All queries filtered by user's organization</access_control>
+    </feature>
+  </key_features>
+
+  <environment_variables>
+    <backend>
+      <var name="ENVIRONMENT">development/production</var>
+      <var name="MONGODB_URL">MongoDB connection string</var>
+      <var name="MONGODB_DB_NAME">Database name (default: legal_ai)</var>
+      <var name="SUPABASE_URL">Supabase project URL</var>
+      <var name="SUPABASE_ANON_KEY">Supabase anonymous key</var>
+      <var name="SUPABASE_SERVICE_ROLE_KEY">Supabase server key</var>
+      <var name="SUPABASE_WEBHOOK_SECRET">Webhook signature verification</var>
+      <var name="SECRET_KEY">JWT secret (legacy)</var>
+      <var name="ALGORITHM">JWT algorithm (HS256)</var>
+      <var name="ACCESS_TOKEN_EXPIRE_MINUTES">Token expiry (default: 30)</var>
+      <var name="OPENAI_API_KEY">OpenAI API key</var>
+      <var name="GEMINI_API_KEY">Google Gemini API key</var>
+      <var name="GEMINI_CHRONOLOGY_MODEL">Model for chronology (gemini-2.5-flash)</var>
+      <var name="GEMINI_CHRONOLOGY_TEMPERATURE">Extraction temperature (0.2)</var>
+      <var name="GEMINI_CHRONOLOGY_TIMEOUT_SECONDS">Processing timeout (240s)</var>
+      <var name="GCP_STORAGE_BUCKET">GCS bucket name</var>
+      <var name="GCP_SERVICE_ACCOUNT_JSON">Path to GCP credentials</var>
+      <var name="GCP_SIGNING_SERVICE_ACCOUNT_EMAIL">Service account for signed URLs</var>
+      <var name="ALLOWED_ORIGINS">CORS origins (comma-separated)</var>
+      <var name="FRONTEND_URL">Frontend URL for redirects</var>
+      <var name="EMAIL_PROVIDER">smtp or sendgrid</var>
+      <var name="SMTP_HOST/PORT/USERNAME/PASSWORD">SMTP settings</var>
+      <var name="LOG_LEVEL">DEBUG/INFO/WARNING/ERROR</var>
+      <var name="GCP_CLOUD_LOGGING">Enable Cloud Logging export</var>
+    </backend>
+    <frontend>
+      <var name="NEXT_PUBLIC_SUPABASE_URL">Supabase project URL</var>
+      <var name="NEXT_PUBLIC_SUPABASE_ANON_KEY">Supabase anon key</var>
+      <var name="NEXT_PUBLIC_BACKEND_URL">Backend API base URL</var>
+    </frontend>
+  </environment_variables>
+
+  <authentication_flow>
+    <step number="1">User submits email/password via /login</step>
+    <step number="2">Supabase Auth validates credentials</step>
+    <step number="3">Supabase returns JWT tokens (access + refresh)</step>
+    <step number="4">Session stored in browser (Supabase SSR)</step>
+    <step number="5">Next.js middleware validates on each request</step>
+    <step number="6">API proxy injects Bearer token to backend</step>
+    <step number="7">Backend validates token via Supabase service role key</step>
+    <step number="8">Backend retrieves MongoDB user by supabase_id</step>
+    <invitation_flow>
+      <step>Admin invites user via email</step>
+      <step>Email contains hash with access_token + type=invite</step>
+      <step>User clicks link, frontend parses hash</step>
+      <step>Redirects to /accept-invite</step>
+      <step>User sets password, session established</step>
+    </invitation_flow>
+  </authentication_flow>
+
+  <deployment>
+    <backend>
+      <platform>Google Cloud Run</platform>
+      <build>Cloud Build (cloudbuild.api.yml)</build>
+      <container>Dockerfile (API only, no Celery workers)</container>
+      <region>asia-south1</region>
+      <note>Background work done in-process (async + threads)</note>
+    </backend>
+    <frontend>
+      <platform>Google Cloud Run</platform>
+      <build>Cloud Build (cloudbuild.yaml)</build>
+      <container>Dockerfile (standalone Next.js output)</container>
+      <script>scripts/deploy-cloudrun.ps1</script>
+      <note>NEXT_PUBLIC_* vars injected at build time</note>
+    </frontend>
+  </deployment>
+
+  <api_documentation>
+    <swagger_urls>
+      <url path="/docs">Combined V1 + V2</url>
+      <url path="/v2/docs">V2-only view</url>
+      <url path="/admin/docs">Admin V1</url>
+      <url path="/admin-v2/docs">Admin V2</url>
+    </swagger_urls>
+  </api_documentation>
+
+  <unresolved_questions>
+    <!-- Information not found in codebase -->
+    <question>Target user count / scale requirements?</question>
+    <question>SLA / uptime requirements?</question>
+    <question>Data retention policies?</question>
+    <question>Backup / disaster recovery strategy?</question>
+    <question>Rate limiting configuration?</question>
+    <question>Analytics / monitoring solution?</question>
+    <question>Testing strategy / coverage requirements?</question>
+    <question>CI/CD pipeline details beyond Cloud Build?</question>
+  </unresolved_questions>
+
+</project_specification>

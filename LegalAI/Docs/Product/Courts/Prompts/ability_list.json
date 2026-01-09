@@ -1,0 +1,1817 @@
+[
+  {
+    "ability_id": "petition_document_ingestion",
+    "ability": "Petition Document Ingestion",
+    "category": "ingestion",
+    "description": "Ingest petition documents in multiple formats (PDF, DOCX, scanned images) and extract structured content",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Legal officers need to process incoming judicial petitions filed against the state in various formats",
+        "steps": [
+          "step 1: System receives petition in PDF/DOCX/scanned format",
+          "step 2: Document is parsed and converted to machine-readable text",
+          "step 3: Structured content is extracted for further processing"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "System accepts unstructured documents in PDF and image formats for case management",
+        "steps": [
+          "step 1: System supports multi-format input including PDF and scanned images (JPEG/PNG)",
+          "step 2: Documents ingested into centralized data lake",
+          "step 3: Content pipeline processes raw document files"
+        ]
+      }
+    ],
+    "times_mentioned": 4,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "ocr_document_processing",
+    "ability": "OCR Document Processing",
+    "category": "ingestion",
+    "description": "Extract text from scanned documents and images using optical character recognition",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Process scanned petition documents that are not machine-readable",
+        "steps": [
+          "step 1: System detects scanned/image-based document",
+          "step 2: OCR engine extracts text from images",
+          "step 3: Extracted text is validated and structured"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Extract text from scanned case files and images for searchability",
+        "steps": [
+          "step 1: Advanced document processing services utilized",
+          "step 2: OCR and text parsing extracts text from scanned documents",
+          "step 3: Content becomes searchable and analyzable"
+        ]
+      },
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Extract text from 132 crore pages of scanned judicial and administrative files for searchable PDF creation",
+        "steps": [
+          "step 1: Scanned documents processed through OCR/ICR engines",
+          "step 2: Text extracted and embedded in PDF/A-2b format",
+          "step 3: Searchable PDF with XMP metadata created"
+        ]
+      }
+    ],
+    "times_mentioned": 5,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "petition_entity_extraction",
+    "ability": "Petition Entity Extraction",
+    "category": "processing",
+    "description": "Extract key entities from petitions including petitioner details, respondent details, prayer, grounds, dates, and case numbers",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Automatically identify and extract critical information from petition documents",
+        "steps": [
+          "step 1: System analyzes petition content",
+          "step 2: NLP models identify petitioner/respondent names, case numbers, dates",
+          "step 3: Extracted entities are structured into metadata fields"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "AI models extract key information from case documents including parties, acts, sections, dates",
+        "steps": [
+          "step 1: AI reads and analyzes case documents",
+          "step 2: Key information extraction identifies parties, acts, sections, dates, issues",
+          "step 3: Extracted entities replace manual laborious efforts"
+        ]
+      }
+    ],
+    "times_mentioned": 5,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "legal_context_analysis",
+    "ability": "Legal Context Analysis",
+    "category": "ai",
+    "description": "Analyze legal context and identify specific issues, claims, and legal provisions cited in petitions",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Understand the legal context of petitions to generate appropriate responses",
+        "steps": [
+          "step 1: System parses petition for legal claims and grounds",
+          "step 2: AI identifies relevant legal issues and provisions",
+          "step 3: Context is used to inform response drafting"
+        ]
+      }
+    ],
+    "times_mentioned": 2,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "document_section_parsing",
+    "ability": "Document Section Parsing",
+    "category": "processing",
+    "description": "Parse and identify document sections, headings, prayers, and grounds within legal documents",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Advanced parsing to identify structural elements of petitions",
+        "steps": [
+          "step 1: Document structure is analyzed",
+          "step 2: Sections, headings, prayers, grounds are identified",
+          "step 3: Parsed structure enables targeted content extraction"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "case_management_integration",
+    "ability": "Case Management System Integration",
+    "category": "integration",
+    "description": "Connect with existing case management systems and departmental databases to fetch relevant information",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Retrieve historical case data and departmental records to support response drafting",
+        "steps": [
+          "step 1: System identifies case reference numbers",
+          "step 2: Integration APIs fetch data from case management systems",
+          "step 3: Retrieved data is incorporated into response context"
+        ]
+      },
+      {
+        "source": "Kerala Kalpetta Paperless",
+        "scenario": "AI tools integrated into district court management systems using reliable captured data",
+        "steps": [
+          "step 1: AI accesses data from District Court Management System",
+          "step 2: Reliable data eliminates concerns about unreliable source data",
+          "step 3: In-house system delivers results without third-party platforms"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Integrate with existing departmental databases and systems for comprehensive case management",
+        "steps": [
+          "step 1: Robust API layer facilitates secure integration with external systems",
+          "step 2: System integrates with relevant existing databases",
+          "step 3: Interoperability achieved through standardized APIs"
+        ]
+      },
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Seamless integration of digitised documents with District Case Management System (DCMS)",
+        "steps": [
+          "step 1: CMS/DMS integrated with DCMS through APIs",
+          "step 2: Metadata auto-consumed to DCMS after approval",
+          "step 3: Digitised files uploaded with digital signatures to DCMS"
+        ]
+      }
+    ],
+    "times_mentioned": 7,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "legal_precedent_search",
+    "ability": "Legal Precedent Search",
+    "category": "ai",
+    "description": "Semantic search to retrieve relevant legal precedents, judgments, and case laws based on petition content",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Find relevant past judgments and precedents to strengthen government response",
+        "steps": [
+          "step 1: System extracts legal issues from petition",
+          "step 2: Semantic search queries knowledge base of judgments",
+          "step 3: Relevant precedents are ranked and presented"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "ML capabilities for extracting insights, patterns, and precedents from legal document repository",
+        "steps": [
+          "step 1: Case Analytics module processes legal documents",
+          "step 2: ML extracts patterns and precedents from repository",
+          "step 3: Insights used for drafting and analysis"
+        ]
+      }
+    ],
+    "times_mentioned": 4,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "statute_regulation_lookup",
+    "ability": "Statute and Regulation Lookup",
+    "category": "integration",
+    "description": "Connect to legal databases for statutes, regulations, and departmental policies",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Automatically reference applicable laws and regulations in response drafting",
+        "steps": [
+          "step 1: System identifies legal provisions cited in petition",
+          "step 2: Database lookup retrieves full text of statutes",
+          "step 3: Relevant sections are suggested for response"
+        ]
+      },
+      {
+        "source": "Kerala Kalpetta Paperless",
+        "scenario": "Judges can highlight relevant provisions directly on electronic case file",
+        "steps": [
+          "step 1: Judge reviews case in digital system",
+          "step 2: Relevant provisions are highlighted and annotated",
+          "step 3: Annotations are saved to electronic case file"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Seamless integration with centralized repository of legal acts and documents",
+        "steps": [
+          "step 1: Central repository contains all relevant legal acts",
+          "step 2: System links with legal acts and prior rulings",
+          "step 3: Unified source of legal information for cross-referencing"
+        ]
+      }
+    ],
+    "times_mentioned": 5,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "template_based_drafting",
+    "ability": "Template-Based Document Generation",
+    "category": "processing",
+    "description": "Generate legal documents using pre-defined, legally compliant templates for various petition types",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Use templates for service matters, land disputes, policy challenges to ensure format compliance",
+        "steps": [
+          "step 1: System identifies petition type/category",
+          "step 2: Appropriate template is selected",
+          "step 3: Template is populated with case-specific content"
+        ]
+      }
+    ],
+    "times_mentioned": 2,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "dynamic_content_insertion",
+    "ability": "Dynamic Content Insertion",
+    "category": "processing",
+    "description": "Automatically populate document templates with extracted data and retrieved facts",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Insert case-specific details into response templates automatically",
+        "steps": [
+          "step 1: Template placeholders are identified",
+          "step 2: Extracted entities and facts are mapped to placeholders",
+          "step 3: Document is generated with populated content"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "ai_drafting_suggestions",
+    "ability": "AI Drafting Suggestions",
+    "category": "ai",
+    "description": "Provide AI-powered suggestions for legal arguments, counter-affidavits, and relevant case laws",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Assist legal officers with intelligent drafting recommendations",
+        "steps": [
+          "step 1: System analyzes petition claims and grounds",
+          "step 2: AI generates suggested counter-arguments",
+          "step 3: Relevant case laws are recommended"
+        ]
+      }
+    ],
+    "times_mentioned": 2,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "legal_llm_fine_tuning",
+    "ability": "Legal Language Model Fine-Tuning",
+    "category": "ai",
+    "description": "Custom-trained AI models fine-tuned on Indian legal documents and court judgments",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Use domain-specific AI models for accurate legal language generation",
+        "steps": [
+          "step 1: Base LLM is fine-tuned on Indian legal corpus",
+          "step 2: Model learns legal terminology and formats",
+          "step 3: Fine-tuned model generates legally appropriate responses"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Training LLM with department case files for customized legal understanding",
+        "steps": [
+          "step 1: LLM trained with department case files",
+          "step 2: Model learns department-specific legal patterns",
+          "step 3: Fine-tuned model for accurate case analysis"
+        ]
+      }
+    ],
+    "times_mentioned": 3,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "lawyer_review_customization",
+    "ability": "Lawyer Review and Customization",
+    "category": "workflow",
+    "description": "Allow legal officers to review, customize, and approve AI-generated drafts before filing",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Human-in-the-loop review process before submission",
+        "steps": [
+          "step 1: AI generates initial draft response",
+          "step 2: Legal officer reviews and edits draft",
+          "step 3: Approved draft is finalized for filing"
+        ]
+      }
+    ],
+    "times_mentioned": 2,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "version_control",
+    "ability": "Document Version Control",
+    "category": "workflow",
+    "description": "Track changes and maintain detailed history of drafts and modifications",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Maintain audit trail of document revisions",
+        "steps": [
+          "step 1: Each draft version is saved with timestamp",
+          "step 2: Changes between versions are tracked",
+          "step 3: Previous versions can be restored if needed"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Version control for all case documents tracking changes over time",
+        "steps": [
+          "step 1: Document versioning implemented for legal documents",
+          "step 2: Changes tracked over time",
+          "step 3: Reversion to previous versions possible, maintaining integrity"
+        ]
+      },
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "CMS/DMS modules with bulk uploading and version control facility",
+        "steps": [
+          "step 1: Multiple access with bulk upload capability",
+          "step 2: Version control for updating documents",
+          "step 3: Metadata flagged as N (pending) or Y (approved)"
+        ]
+      }
+    ],
+    "times_mentioned": 4,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "collaborative_editing",
+    "ability": "Collaborative Editing",
+    "category": "workflow",
+    "description": "Enable multiple users to review and contribute to drafts with proper access controls",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Team-based review and approval workflow",
+        "steps": [
+          "step 1: Draft is shared with team members",
+          "step 2: Multiple reviewers can add comments/edits",
+          "step 3: Access controls ensure proper authorization"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "ai_content_highlighting",
+    "ability": "AI-Generated Content Highlighting",
+    "category": "workflow",
+    "description": "Highlight automatically generated sections for easy identification during review",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Visual distinction between AI-generated and human-written content",
+        "steps": [
+          "step 1: AI-generated sections are tagged",
+          "step 2: Visual highlighting is applied in UI",
+          "step 3: Reviewers can quickly identify auto-generated parts"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "precedent_library",
+    "ability": "Precedent Library Management",
+    "category": "admin",
+    "description": "Build and maintain searchable repository of past responses, judgments, and legal opinions",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Create institutional knowledge base for future reference",
+        "steps": [
+          "step 1: Past responses and judgments are ingested",
+          "step 2: Documents are indexed and categorized",
+          "step 3: Library is searchable for future cases"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "continuous_learning",
+    "ability": "Continuous Learning from Feedback",
+    "category": "ai",
+    "description": "System learns from user feedback and corrections to improve drafting accuracy over time",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Improve AI model performance through feedback loops",
+        "steps": [
+          "step 1: User corrections are captured",
+          "step 2: Feedback is used to retrain/fine-tune models",
+          "step 3: Future drafts reflect learned improvements"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "deadline_tracking",
+    "ability": "Deadline and Timeline Tracking",
+    "category": "workflow",
+    "description": "Identify and track procedural deadlines and filing requirements",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Ensure timely filing of responses by tracking court deadlines",
+        "steps": [
+          "step 1: System extracts deadline dates from petition",
+          "step 2: Alerts are generated for approaching deadlines",
+          "step 3: Compliance with filing timelines is monitored"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Track case progress in real-time and send timely alerts to officials",
+        "steps": [
+          "step 1: System routes cases to appropriate offices",
+          "step 2: Progress tracked in real-time",
+          "step 3: Timely alerts sent to officials"
+        ]
+      }
+    ],
+    "times_mentioned": 4,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "efiling_integration",
+    "ability": "Court eFiling Integration",
+    "category": "integration",
+    "description": "Integrate with court e-filing platforms for direct submission of responses",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Submit finalized responses directly to court systems",
+        "steps": [
+          "step 1: Response is finalized and approved",
+          "step 2: System connects to court e-filing portal",
+          "step 3: Document is submitted electronically"
+        ]
+      },
+      {
+        "source": "Kerala Kalpetta Paperless",
+        "scenario": "Fully paperless court from filing to final orders - first in India",
+        "steps": [
+          "step 1: Cases filed electronically without physical visits",
+          "step 2: All proceedings conducted digitally from inception to adjudication",
+          "step 3: Remote practitioners have equal real-time access to digital records"
+        ]
+      },
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Upload digitised files to DCMS with digital signature authentication",
+        "steps": [
+          "step 1: Digitised files approved by court officials",
+          "step 2: Files uploaded to DCMS with digital signature",
+          "step 3: Integration ensures searchable access across district judiciary"
+        ]
+      }
+    ],
+    "times_mentioned": 4,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "audit_logging",
+    "ability": "Audit Trail and Logging",
+    "category": "compliance",
+    "description": "Log document generation process and maintain audit trails for compliance",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Ensure regulatory/legal compliance through comprehensive logging",
+        "steps": [
+          "step 1: All system actions are logged with timestamps",
+          "step 2: User actions and AI decisions are recorded",
+          "step 3: Audit reports can be generated for compliance"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Complete audit trail recording every action, modification, and status change",
+        "steps": [
+          "step 1: Breadcrumb trail logs all actions and changes",
+          "step 2: Complete chronological case history maintained",
+          "step 3: Immutable log with timestamps for accountability"
+        ]
+      },
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Complete audit trail for digitisation process with access control logs",
+        "steps": [
+          "step 1: All access control and database log files securely maintained",
+          "step 2: Complete audit trail/log of each transaction",
+          "step 3: Role-based access with automatic revocation after predefined period"
+        ]
+      }
+    ],
+    "times_mentioned": 5,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "document_search",
+    "ability": "Document Search and Retrieval",
+    "category": "processing",
+    "description": "Quick search and retrieval of supporting documents from integrated systems",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Find relevant departmental documents to support response",
+        "steps": [
+          "step 1: User searches for supporting documents",
+          "step 2: System queries integrated databases",
+          "step 3: Relevant documents are retrieved and presented"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "AI enables intelligent search across case documents",
+        "steps": [
+          "step 1: AI-powered search with legal references",
+          "step 2: Semantic search provides contextual answers",
+          "step 3: Documents retrieved based on query context"
+        ]
+      },
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Boolean and nested keyword searches across 132 crore digitised pages",
+        "steps": [
+          "step 1: Complex and multiple criteria-based Boolean searches enabled",
+          "step 2: Nested searches with hierarchical keywords",
+          "step 3: Free text search within searchable PDFs"
+        ]
+      }
+    ],
+    "times_mentioned": 4,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "nlp_processing",
+    "ability": "Natural Language Processing",
+    "category": "ai",
+    "description": "Advanced NLP capabilities for legal text analysis and understanding",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Analyze and understand legal language in petitions",
+        "steps": [
+          "step 1: Petition text is processed by NLP engine",
+          "step 2: Named entities, relationships are extracted",
+          "step 3: Semantic understanding informs response generation"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Enable automatic summarization, tagging, and indexing of legal documents using NLP",
+        "steps": [
+          "step 1: NLP for para-to-para analysis and drafting",
+          "step 2: Automatic summarization and tagging",
+          "step 3: Indexing of legal documents"
+        ]
+      }
+    ],
+    "times_mentioned": 4,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "response_format_compliance",
+    "ability": "Legal Format Compliance",
+    "category": "compliance",
+    "description": "Generate responses adhering to prescribed procedural norms and legal format standards",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Ensure all generated responses comply with court formatting requirements",
+        "steps": [
+          "step 1: Template enforces required format structure",
+          "step 2: Content is validated against format rules",
+          "step 3: Compliant document is generated"
+        ]
+      }
+    ],
+    "times_mentioned": 2,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "image_processing",
+    "ability": "Image Processing",
+    "category": "ingestion",
+    "description": "Process images within legal documents for information extraction",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Handle image-based content in scanned petitions",
+        "steps": [
+          "step 1: Images in documents are identified",
+          "step 2: Image processing extracts relevant content",
+          "step 3: Extracted content is incorporated into analysis"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "machine_learning_analytics",
+    "ability": "Machine Learning Analytics",
+    "category": "ai",
+    "description": "Apply ML models for predictive analytics and pattern recognition in legal documents",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Identify patterns in petition types and predict outcomes",
+        "steps": [
+          "step 1: Historical case data is analyzed",
+          "step 2: ML models identify patterns and trends",
+          "step 3: Insights inform response strategy"
+        ]
+      },
+      {
+        "source": "Kerala Kalpetta Paperless",
+        "scenario": "AI uses reliable data from District Court Management System for machine learning",
+        "steps": [
+          "step 1: Reliable captured data feeds ML models",
+          "step 2: Models trained on actual court records",
+          "step 3: Overcomes global AI limitation of unreliable source data"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "ML capabilities for extracting insights from vast legal document repository",
+        "steps": [
+          "step 1: Case Analytics module uses ML",
+          "step 2: Patterns and precedents extracted",
+          "step 3: Actionable insights for policymakers"
+        ]
+      }
+    ],
+    "times_mentioned": 4,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "rpa_automation",
+    "ability": "Robotic Process Automation",
+    "category": "workflow",
+    "description": "Automate repetitive tasks in the petition response workflow",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Automate data entry and routine document processing tasks",
+        "steps": [
+          "step 1: Repetitive tasks are identified",
+          "step 2: RPA bots execute routine operations",
+          "step 3: Human effort is redirected to complex tasks"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "multi_department_support",
+    "ability": "Multi-Department Support",
+    "category": "admin",
+    "description": "Support legal officers across multiple government departments",
+    "use_cases": [
+      {
+        "source": "Odisha HC AI Petition",
+        "scenario": "Serve legal officers from various departments of Government of Odisha",
+        "steps": [
+          "step 1: System is configured for multiple departments",
+          "step 2: Department-specific templates and rules are applied",
+          "step 3: Cross-department analytics are available"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Streamline case handling across departments with centralized platform",
+        "steps": [
+          "step 1: Centralized platform for multiple departments",
+          "step 2: Land Resources and IT departments as project initiators",
+          "step 3: Cross-department case management and analytics"
+        ]
+      }
+    ],
+    "times_mentioned": 4,
+    "first_seen_in": "Odisha HC AI Petition",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "ai_case_summarization",
+    "ability": "AI Case Summarization",
+    "category": "ai",
+    "description": "Generate structured case summaries from digital records for quick judicial review",
+    "use_cases": [
+      {
+        "source": "Kerala Kalpetta Paperless",
+        "scenario": "AI generates case summaries making it easier for judges to glance at factual and procedural background",
+        "steps": [
+          "step 1: System analyzes complete digital case record",
+          "step 2: AI generates structured summary of facts and procedure",
+          "step 3: Judge quickly reviews case background before proceedings"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "AI-powered document summarization for 50-500 page documents",
+        "steps": [
+          "step 1: RAG-based summarization engine processes documents",
+          "step 2: LLM generates key insights and summaries",
+          "step 3: Quick understanding of lengthy legal documents"
+        ]
+      }
+    ],
+    "times_mentioned": 4,
+    "first_seen_in": "Kerala Kalpetta Paperless",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "interactive_case_qa",
+    "ability": "Interactive Case Q&A",
+    "category": "ai",
+    "description": "Allow judicial officers to query the system on case-specific aspects through interactive Q&A",
+    "use_cases": [
+      {
+        "source": "Kerala Kalpetta Paperless",
+        "scenario": "Judges can ask questions about specific case details through AI interface",
+        "steps": [
+          "step 1: Judge poses question about case specifics",
+          "step 2: AI searches digital record for relevant information",
+          "step 3: System provides contextual answer with references"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "GenAI chatbot queries documents and provides contextual answers",
+        "steps": [
+          "step 1: User queries documents through chatbot",
+          "step 2: Semantic search retrieves relevant information",
+          "step 3: Contextual answers provided with legal references"
+        ]
+      }
+    ],
+    "times_mentioned": 3,
+    "first_seen_in": "Kerala Kalpetta Paperless",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "judicial_notes_annotation",
+    "ability": "Judicial Notes and Annotation",
+    "category": "workflow",
+    "description": "Enable judges to record notes, highlight provisions, and annotate documents on electronic case files",
+    "use_cases": [
+      {
+        "source": "Kerala Kalpetta Paperless",
+        "scenario": "Judges annotate and make notes directly on digital case files",
+        "steps": [
+          "step 1: Judge opens electronic case file",
+          "step 2: Notes, highlights, annotations added directly to document",
+          "step 3: Annotations saved and accessible for future reference"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala Kalpetta Paperless",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "voice_to_text_transcription",
+    "ability": "Voice-to-Text Transcription",
+    "category": "processing",
+    "description": "Transcribe witness depositions and judicial dictation using speech recognition technology",
+    "use_cases": [
+      {
+        "source": "Kerala Kalpetta Paperless",
+        "scenario": "Accurate transcription of witness depositions and judicial dictation",
+        "steps": [
+          "step 1: Witness deposition or judicial dictation captured via audio",
+          "step 2: Voice-to-text engine transcribes speech accurately",
+          "step 3: Transcription added to digital case record"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala Kalpetta Paperless",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "digital_signature_authentication",
+    "ability": "Digital Signature Authentication",
+    "category": "security",
+    "description": "Authenticate judicial orders and judgments using secure digital signatures for legal validity",
+    "use_cases": [
+      {
+        "source": "Kerala Kalpetta Paperless",
+        "scenario": "Orders and judgments authenticated with digital signatures conferring full legal validity",
+        "steps": [
+          "step 1: Judge finalizes order or judgment",
+          "step 2: Secure digital signature applied to document",
+          "step 3: Signed document has full legal validity, integrity and authenticity"
+        ]
+      },
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Digital signature solution for PDF documents using open source tools",
+        "steps": [
+          "step 1: PDF/A-2b documents prepared for digital signature",
+          "step 2: PKCS#7 compliant digital signature applied in batch mode",
+          "step 3: Verification possible using free Adobe Reader"
+        ]
+      }
+    ],
+    "times_mentioned": 2,
+    "first_seen_in": "Kerala Kalpetta Paperless",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "end_to_end_digital_workflow",
+    "ability": "End-to-End Digital Workflow",
+    "category": "workflow",
+    "description": "Complete digital processing from case inception through pre-trial, evidence recording, interlocutory proceedings to final adjudication",
+    "use_cases": [
+      {
+        "source": "Kerala Kalpetta Paperless",
+        "scenario": "Every judicial process conducted digitally from start to finish",
+        "steps": [
+          "step 1: Case filed electronically",
+          "step 2: Pre-trial, evidence, interlocutory proceedings all digital",
+          "step 3: Final adjudication and order delivery fully electronic"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Manage end-to-end lifecycle of court cases with integrated platform",
+        "steps": [
+          "step 1: Case intake and filing automated",
+          "step 2: Hearing scheduling, evidence submission, order issuance automated",
+          "step 3: Appeal filing and full case lifecycle managed digitally"
+        ]
+      }
+    ],
+    "times_mentioned": 3,
+    "first_seen_in": "Kerala Kalpetta Paperless",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "real_time_record_access",
+    "ability": "Real-Time Record Access",
+    "category": "integration",
+    "description": "Provide all stakeholders with real-time access to electronic case records regardless of location",
+    "use_cases": [
+      {
+        "source": "Kerala Kalpetta Paperless",
+        "scenario": "Democratized access - practitioners in remote areas have equal access to digital records",
+        "steps": [
+          "step 1: Stakeholder authenticates to system",
+          "step 2: Real-time access to compute electronic case records",
+          "step 3: Single source of truth equally available, immediate, and incorruptible"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Departmental users access real-time information and track case progress",
+        "steps": [
+          "step 1: Users access centralized platform",
+          "step 2: Real-time case information available",
+          "step 3: Court decisions and case progress tracked"
+        ]
+      }
+    ],
+    "times_mentioned": 3,
+    "first_seen_in": "Kerala Kalpetta Paperless",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "paperless_filing",
+    "ability": "Paperless Case Filing",
+    "category": "workflow",
+    "description": "Enable electronic case filing without physical visits to court office",
+    "use_cases": [
+      {
+        "source": "Kerala Kalpetta Paperless",
+        "scenario": "Cases filed electronically eliminating need for repeated court visits",
+        "steps": [
+          "step 1: Lawyer/litigant prepares case documents digitally",
+          "step 2: Documents submitted through electronic filing system",
+          "step 3: No physical paper filing required"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala Kalpetta Paperless",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "electronic_file_routing",
+    "ability": "Electronic File Routing",
+    "category": "workflow",
+    "description": "Automated digital file movement eliminating delays from physical file transfer between desks",
+    "use_cases": [
+      {
+        "source": "Kerala Kalpetta Paperless",
+        "scenario": "Files no longer move table to table or get delayed due to misplaced paper",
+        "steps": [
+          "step 1: Case file created in digital system",
+          "step 2: Automated routing to relevant court officers",
+          "step 3: No delays from physical file movement or misplacement"
+        ]
+      },
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Smart workflow automation routes cases to appropriate offices",
+        "steps": [
+          "step 1: System automatically sorts cases into categories",
+          "step 2: Cases routed to appropriate offices",
+          "step 3: Progress tracked in real-time"
+        ]
+      }
+    ],
+    "times_mentioned": 3,
+    "first_seen_in": "Kerala Kalpetta Paperless",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "data_lake_storage",
+    "ability": "Data Lake Foundation",
+    "category": "integration",
+    "description": "Secure, scalable data lake architecture for storing case documents and metadata",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Robust data lake architecture ensures scalable and secure storage for all case documents",
+        "steps": [
+          "step 1: Data lake architecture established",
+          "step 2: Case documents and metadata stored securely",
+          "step 3: Scalable storage for growing case volumes"
+        ]
+      },
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Intermediate server storage and High Court data centre replication",
+        "steps": [
+          "step 1: Data stored on intermediate servers at digitisation centres",
+          "step 2: Replicated to rack-mounted server at High Court data centre",
+          "step 3: Servers handed over to High Court on project completion"
+        ]
+      }
+    ],
+    "times_mentioned": 3,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "unique_case_identifier",
+    "ability": "Unique Case Identifier Generation",
+    "category": "processing",
+    "description": "Auto-generate persistent unique case IDs for all cases serving as primary keys across systems",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Systematic mechanism for generating unique, persistent case IDs upon intake",
+        "steps": [
+          "step 1: Case intake triggers ID generation",
+          "step 2: Unique persistent case ID assigned",
+          "step 3: ID serves as primary key across all linked data structures"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "metadata_tagging_indexing",
+    "ability": "Metadata Tagging and Indexing",
+    "category": "processing",
+    "description": "Extract and tag comprehensive metadata including case type, parties, dates, acts for efficient searching",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Comprehensive metadata automatically extracted and manually tagged for documents",
+        "steps": [
+          "step 1: Metadata extraction includes case types, parties, dates, acts",
+          "step 2: Case types tagged: Land disputes, Mutations, Encroachments, PIL, Writ Petitions",
+          "step 3: Efficient searching and retrieval enabled"
+        ]
+      },
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Complete indexing with nested keywords and document taxonomy for 132 crore pages",
+        "steps": [
+          "step 1: Metadata includes parties, addresses, PIN codes, advocates, court fees, subject",
+          "step 2: IA details, counter/objection details, exhibit details, appeal case details indexed",
+          "step 3: XMP-compliant metadata embedded in PDF for CMS import"
+        ]
+      }
+    ],
+    "times_mentioned": 3,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "vector_db_embeddings",
+    "ability": "Vector Database and Embeddings",
+    "category": "ai",
+    "description": "Integration with vector databases for contextual retrieval and understanding relationships between documents",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Vector databases enable contextual retrieval across case documents",
+        "steps": [
+          "step 1: Documents converted to embeddings",
+          "step 2: Vector DB stores document representations",
+          "step 3: Contextual retrieval understands document relationships"
+        ]
+      }
+    ],
+    "times_mentioned": 2,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "para_wise_reply_drafting",
+    "ability": "Para-Wise Reply Drafting",
+    "category": "ai",
+    "description": "AI-driven para-to-para analysis and drafting for preparing replies and counter-affidavits",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Quick para-wise reply drafting reducing response time from days to hours",
+        "steps": [
+          "step 1: NLP for para-to-para analysis implemented",
+          "step 2: AI understands detailed arguments",
+          "step 3: Counter-affidavits/replies drafted efficiently"
+        ]
+      }
+    ],
+    "times_mentioned": 3,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "rag_summarization",
+    "ability": "RAG-Based Summarization",
+    "category": "ai",
+    "description": "Retrieval Augmented Generation combining document retrieval with generative response for accurate summaries with citations",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "RAG model architecture ensures contextual accuracy and coherence in summaries",
+        "steps": [
+          "step 1: Document retrieval from knowledge base",
+          "step 2: LLM generates summary with retrieved context",
+          "step 3: Citations ensure accuracy and reduce hallucinations"
+        ]
+      }
+    ],
+    "times_mentioned": 2,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "interactive_dashboard",
+    "ability": "Interactive Dashboards and Analytics",
+    "category": "reporting",
+    "description": "Real-time dashboards displaying KPIs including pendency, case duration, workloads, and outcome statistics",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Comprehensive dashboards for tracking case volume, duration, and outcomes",
+        "steps": [
+          "step 1: Data aggregation from all case activities",
+          "step 2: Real-time analytics display pendency by age categories",
+          "step 3: Departmental workload and resolution rates visualized"
+        ]
+      }
+    ],
+    "times_mentioned": 3,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "custom_report_generation",
+    "ability": "Custom Report Generation",
+    "category": "reporting",
+    "description": "Generate custom reports based on case-type distribution, age of cases, resolution rates, and team performance",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Users generate custom MIS reports for granular analysis",
+        "steps": [
+          "step 1: User selects report parameters",
+          "step 2: System generates custom report",
+          "step 3: Case disposal metrics and performance analytics presented"
+        ]
+      },
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Customised MIS reports for digitisation progress tracking",
+        "steps": [
+          "step 1: Web application generates daily/weekly/monthly/quarterly/yearly reports",
+          "step 2: Progress tracked across multiple court complexes",
+          "step 3: Dashboard displays inward files, scanning stages, approved/rejected files"
+        ]
+      }
+    ],
+    "times_mentioned": 3,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "rbac_access_control",
+    "ability": "Role-Based Access Control",
+    "category": "security",
+    "description": "Granular RBAC system defining specific permissions for different user roles with central administration",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Granular permissions for officials, legal officers with central administration",
+        "steps": [
+          "step 1: RBAC system defines role-specific permissions",
+          "step 2: Central administration manages access via UI",
+          "step 3: Appropriate data handling ensured"
+        ]
+      },
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Role-based access for viewing, updating, modifying, and deleting files and metadata",
+        "steps": [
+          "step 1: Minimum built-in roles for viewing files, metadata, updating, deleting",
+          "step 2: Roles assigned for predefined period with automatic revocation",
+          "step 3: Complete audit trail of each transaction maintained"
+        ]
+      }
+    ],
+    "times_mentioned": 4,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "mfa_authentication",
+    "ability": "Multi-Factor Authentication",
+    "category": "security",
+    "description": "Mandatory MFA for all users to enhance security during login",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "MFA enforced for all users adding extra layer of protection",
+        "steps": [
+          "step 1: User initiates login",
+          "step 2: MFA challenge presented",
+          "step 3: Enhanced security achieved with successful verification"
+        ]
+      }
+    ],
+    "times_mentioned": 2,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "sensitive_data_protection",
+    "ability": "Sensitive Data Protection",
+    "category": "security",
+    "description": "Tokenization or anonymization of confidential information to safeguard sensitive data",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Sensitive data protected through tokenization and anonymization",
+        "steps": [
+          "step 1: Sensitive data fields identified",
+          "step 2: Tokenization/anonymization applied",
+          "step 3: Confidential information safeguarded"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "ai_guardrails",
+    "ability": "Responsible AI Guardrails",
+    "category": "compliance",
+    "description": "Implementation of guardrails to restrict inappropriate prompts and ensure ethical, safe AI operation",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Guardrails ensure responsible, safe, and compliant GenAI usage",
+        "steps": [
+          "step 1: Guardrails configured for AI models",
+          "step 2: Inappropriate prompts restricted",
+          "step 3: Fairness, transparency, and accountability maintained"
+        ]
+      }
+    ],
+    "times_mentioned": 3,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "case_classification",
+    "ability": "AI-Driven Case Classification",
+    "category": "ai",
+    "description": "Automatically classify cases into categories such as mutations, disputes, land document issuance, tenders/works, service-related matters",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "System automatically sorts cases into categories for routing",
+        "steps": [
+          "step 1: AI analyzes incoming case",
+          "step 2: Case classified into appropriate category",
+          "step 3: Routed to appropriate offices based on classification"
+        ]
+      }
+    ],
+    "times_mentioned": 2,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "policy_insights",
+    "ability": "Policy Improvement Insights",
+    "category": "reporting",
+    "description": "Data-driven insights from aggregated case data to inform and improve departmental policies",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Advanced analytics generate actionable insights for policymakers",
+        "steps": [
+          "step 1: Case data aggregated and analyzed",
+          "step 2: Bottlenecks and improvements identified",
+          "step 3: Proactive decision-making enabled for litigation management"
+        ]
+      }
+    ],
+    "times_mentioned": 2,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "multimodal_llm",
+    "ability": "Multimodal Foundation Model",
+    "category": "ai",
+    "description": "State-of-the-art multimodal foundation model processing text, images, audio, and video in single prompt with 1M token context",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "LLM capable of processing multiple input types with large context window",
+        "steps": [
+          "step 1: Multimodal model processes text, images, audio, video",
+          "step 2: 1 million token context enables large document analysis",
+          "step 3: Complex government documents analyzed in single pass"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "cloud_hosting",
+    "ability": "MeitY Certified Cloud Hosting",
+    "category": "admin",
+    "description": "Host solution on MeitY certified cloud service provider with data residency within India",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Cloud infrastructure with 99.9% SLA and India data residency",
+        "steps": [
+          "step 1: Solution hosted on MeitY certified cloud",
+          "step 2: Data processing confined to Indian cloud regions",
+          "step 3: High availability with auto-scaling and fault tolerance"
+        ]
+      }
+    ],
+    "times_mentioned": 2,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "user_training",
+    "ability": "User Training and Capacity Building",
+    "category": "admin",
+    "description": "Comprehensive onsite training for officials on AI concepts and application usage with user manuals and video tutorials",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Training officials and administrative users on effective system usage",
+        "steps": [
+          "step 1: Comprehensive onsite training conducted",
+          "step 2: User manuals and step-by-step help documents provided",
+          "step 3: Instructional video tutorials for reference"
+        ]
+      },
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Training district judiciary staff on scanning, digitisation, storage, and retrieval",
+        "steps": [
+          "step 1: Training on scanning/digitising/storage procedures",
+          "step 2: Training on integrated retrieval and printing of scanned records",
+          "step 3: Training on CMS/DMS maintenance and system administration"
+        ]
+      }
+    ],
+    "times_mentioned": 2,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "microservices_architecture",
+    "ability": "Microservices Architecture",
+    "category": "integration",
+    "description": "Design and implementation using microservices for independent scaling and greater fault isolation",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Scalable, modular architecture enabling independent component scaling",
+        "steps": [
+          "step 1: Microservices architecture designed",
+          "step 2: Components scale independently",
+          "step 3: Fault isolation enhances resilience"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "admin_panel",
+    "ability": "Admin Panel for System Management",
+    "category": "admin",
+    "description": "Dedicated admin panel for document management, user management, and access provisioning",
+    "use_cases": [
+      {
+        "source": "Manipur AI-CCMS",
+        "scenario": "Central administration manages documents, users, and permissions",
+        "steps": [
+          "step 1: Admin accesses dedicated panel",
+          "step 2: Document and user management performed",
+          "step 3: Access provisioning controlled centrally"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Manipur AI-CCMS",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "high_volume_document_scanning",
+    "ability": "High-Volume Document Scanning",
+    "category": "ingestion",
+    "description": "Large-scale scanning infrastructure capable of processing millions of pages daily across multiple locations",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Digitise 132 crore pages across 161 court complexes with 20 lakh pages daily target",
+        "steps": [
+          "step 1: Digitisation centres established with flatbed/book/ADF/overhead scanners",
+          "step 2: 240-300 DPI scanning with 12/24-bit colour depth",
+          "step 3: 20 lakh pages per day across all centres in Kerala"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "fragile_document_handling",
+    "ability": "Fragile Document Restoration and Handling",
+    "category": "ingestion",
+    "description": "Specialized handling for old, fragile, deteriorating documents including restoration before scanning",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Handle fragile/very old/old/moderate condition judicial files with proper restoration",
+        "steps": [
+          "step 1: Dust removal, tags, pins, threads, rubber bands removed",
+          "step 2: Torn pages pasted, documents unfolded, ironed if needed",
+          "step 3: Files reinstated to original condition after digitisation"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "batch_processing_management",
+    "ability": "Batch Processing and File Tracking",
+    "category": "workflow",
+    "description": "Manage file batches with unique IDs, track inward/outward movement, and monitor digitisation progress",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Track 132 crore pages through scanning workflow with batch management",
+        "steps": [
+          "step 1: Unique batch identification numbers assigned by court",
+          "step 2: Web application tracks file/batch creation, movement, pre-scanning data",
+          "step 3: Mismatch detection when returning digitised files to respective batches"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "content_management_system",
+    "ability": "Content Management System / Document Management System",
+    "category": "admin",
+    "description": "Open-source CMS/DMS for cataloguing, managing, searching, and archiving digitised documents",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Platform-independent CMS/DMS using open-source technology with PostgreSQL database",
+        "steps": [
+          "step 1: Open-source CMS/DMS developed specific to court needs",
+          "step 2: Multi-access with bulk upload, security features, version control",
+          "step 3: Source code and IPR handed over to High Court"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "disaster_recovery_backup",
+    "ability": "Disaster Recovery and Data Backup",
+    "category": "compliance",
+    "description": "Secure backup mechanisms and disaster recovery management for digitised records",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "DRM facility for proper backup of highly vulnerable digital data",
+        "steps": [
+          "step 1: Data replicated from digitisation centres to High Court server",
+          "step 2: Firewall, geo-fencing and security measures implemented",
+          "step 3: Disaster recovery mechanism established during project"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "multi_level_quality_check",
+    "ability": "Multi-Level Quality Assurance",
+    "category": "compliance",
+    "description": "Multiple quality check levels including service provider QC, court staff verification, and random inspection",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "100% data accuracy with Level 1 and Level 2 quality checks",
+        "steps": [
+          "step 1: Level 1 QC by service provider ensures image clarity, resolution, de-skewing",
+          "step 2: Level 2 QC by court staff with defect correction by provider",
+          "step 3: Random inspection with printout verification by nominated staff"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "pdf_a_document_generation",
+    "ability": "PDF/A-2b Archival Document Generation",
+    "category": "processing",
+    "description": "Generate ISO-compliant PDF/A-2b archival documents with XMP metadata, bookmarks, and security features",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Create searchable PDF/A-2b files with embedded metadata and security",
+        "steps": [
+          "step 1: Lossless PDF/A-2b for archival and compressed PDFs for viewing generated in single step",
+          "step 2: XMP metadata embedded, annotations and bookmarks added",
+          "step 3: Security features include password protection, AES-256 encryption, dynamic watermarks"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "document_hyperlinking",
+    "ability": "Document Hyperlinking and Cross-Reference",
+    "category": "processing",
+    "description": "Create hyperlinks within documents based on table of contents or to parts of other documents",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Hyperlink PDF documents for easy navigation across case files",
+        "steps": [
+          "step 1: Table of contents identified in documents",
+          "step 2: Hyperlinks created based on TOC or cross-references",
+          "step 3: Linked documents enable quick navigation"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "document_watermarking",
+    "ability": "Dynamic Document Watermarking",
+    "category": "security",
+    "description": "Apply dynamic watermarks on documents based on policy for access control and confidentiality",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Policy-protected PDFs with dynamic watermarks based on user and context",
+        "steps": [
+          "step 1: Security policy defined for document protection",
+          "step 2: Dynamic watermarks applied based on policy",
+          "step 3: Usage rights can be changed even after distribution"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "api_integration_services",
+    "ability": "API Integration Services",
+    "category": "integration",
+    "description": "Provide comprehensive API services for data integration between systems",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Bulk upload API and metadata integration with DCMS",
+        "steps": [
+          "step 1: Unique Digitisation ID created for data integration",
+          "step 2: API services for digitised data fully compatible with DCMS",
+          "step 3: Bulk file upload API with XML/JSON format support"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "data_accuracy_validation",
+    "ability": "Data Accuracy Validation",
+    "category": "compliance",
+    "description": "Validate digitised data accuracy with penalty provisions for accuracy below thresholds",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "100% sample verification with accuracy thresholds and penalty structure",
+        "steps": [
+          "step 1: 100% sample of digitised data verified",
+          "step 2: Accuracy thresholds: 98%+ acceptable, 95-98% = 10% penalty, 90-95% = 25% penalty",
+          "step 3: Accuracy below 90% constitutes breach of contract"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "confidentiality_compliance",
+    "ability": "Confidentiality and NDA Compliance",
+    "category": "security",
+    "description": "Ensure strict confidentiality of judicial records with oath requirements and security protocols",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Staff oath of confidentiality with USB/WiFi/Bluetooth disabled on equipment",
+        "steps": [
+          "step 1: Staff submit non-involvement certificate from police",
+          "step 2: Oath of confidentiality required, breach triggers penal action",
+          "step 3: USB, WiFi, Bluetooth disabled; only LAN/ethernet permitted"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "express_priority_processing",
+    "ability": "Express/Priority Processing",
+    "category": "workflow",
+    "description": "Dedicated counter for urgent scanning needs with priority processing",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Express counter in each digitisation centre for urgent scanning",
+        "steps": [
+          "step 1: Express counter designated for urgent files identified by court",
+          "step 2: Priority processing for urgent scanning needs",
+          "step 3: Functions as ordinary counter when no urgent files pending"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "mobile_digitisation_units",
+    "ability": "Mobile Digitisation Units",
+    "category": "ingestion",
+    "description": "Portable digitisation facilities for court complexes with space constraints",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Alternative arrangements for court complexes unable to provide space",
+        "steps": [
+          "step 1: Mobile digitisation units deployed to space-constrained locations",
+          "step 2: Temporary/makeshift arrangements or external provisions",
+          "step 3: 25% increase in per-page rate for alternative facility provision"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "image_enhancement_processing",
+    "ability": "Image Enhancement and Processing",
+    "category": "processing",
+    "description": "Enhance scanned images through de-skewing, de-speckling, cropping, and stabilization",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Optimize scanned images through automated enhancement processes",
+        "steps": [
+          "step 1: Black band and blemish removal, de-speckling performed",
+          "step 2: De-skewing to straighten images, cropping with equal margins",
+          "step 3: Image orientation corrected, blank pages deleted"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "handwritten_order_digitisation",
+    "ability": "Handwritten Order Digitisation",
+    "category": "processing",
+    "description": "Word processing and digital entry of handwritten order sheets and judicial notes",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Convert handwritten order sheets to searchable digital text",
+        "steps": [
+          "step 1: Handwritten orders identified in case files",
+          "step 2: Word processing and data entry of handwritten content",
+          "step 3: Typed content linked to scanned image of original"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "judge_signature_masking",
+    "ability": "Judge Signature Masking",
+    "category": "security",
+    "description": "Create dual copies of judgments - one with and one without judge signatures for different access levels",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Prepare two sets of digitised judgments for security purposes",
+        "steps": [
+          "step 1: Judgment scanned with original signature visible",
+          "step 2: Second copy created with judge signature masked",
+          "step 3: Different copies used for different access levels/purposes"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "post_implementation_support",
+    "ability": "Post-Implementation Support",
+    "category": "admin",
+    "description": "Dedicated technical support team for software and server maintenance after project completion",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Three years onsite maintenance and support without additional cost",
+        "steps": [
+          "step 1: Dedicated technical team deployed post-implementation",
+          "step 2: Software and server support for 3 years",
+          "step 3: MTTR of 24 hours for high severity, 48 hours for low severity events"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  },
+  {
+    "ability_id": "cert_in_security_audit",
+    "ability": "CERT-IN Security Audit Compliance",
+    "category": "security",
+    "description": "Security audit by CERT-IN empanelled agency for deployment architecture, application, server, and database security",
+    "use_cases": [
+      {
+        "source": "Kerala HC Digitisation",
+        "scenario": "Mandatory security audit for CMS/DMS by certified agency",
+        "steps": [
+          "step 1: CMS/DMS audited by CERT-IN empanelled agency",
+          "step 2: Deployment architecture, application, server, database security reviewed",
+          "step 3: Security vulnerabilities identified and remediated"
+        ]
+      }
+    ],
+    "times_mentioned": 1,
+    "first_seen_in": "Kerala HC Digitisation",
+    "last_updated": "2026-01-08T00:00:00Z"
+  }
+]
