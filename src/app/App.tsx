@@ -5,6 +5,7 @@ import { WhoItsFor } from './components/WhoItsFor';
 import { CoreCapabilities } from './components/CoreCapabilities';
 import { IndustrySolutions } from './components/IndustrySolutions';
 import { FeaturesSection } from './components/FeaturesSection';
+import { ROIMetrics } from './components/ROIMetrics';
 import { Footer } from './components/Footer';
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
         <CoreCapabilities />
       </section>
       <FeaturesSection />
+      <ROIMetrics />
       <Footer />
     </div>
   );

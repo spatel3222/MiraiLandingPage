@@ -408,7 +408,7 @@
       "Step 3: Verify 'Measurable Impact from Day One' headline",
       "Step 4: Verify subheadline about business transformation"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -418,7 +418,7 @@
       "Step 2: Locate 3x metric",
       "Step 3: Verify label 'Faster Claims Processing'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -429,7 +429,7 @@
       "Step 3: Verify label 'Saved Per Month'",
       "Step 4: Verify sublabel 'Average customer result'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -440,7 +440,7 @@
       "Step 3: Verify label 'Cost Reduction'",
       "Step 4: Verify sublabel 'Lower Operational Expenses'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -450,7 +450,7 @@
       "Step 2: Locate 60hrs metric",
       "Step 3: Verify label 'Time Saved'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -460,7 +460,7 @@
       "Step 2: Locate 40% metric",
       "Step 3: Verify label 'Faster Adoption'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -471,7 +471,7 @@
       "Step 3: Verify label 'Accuracy'",
       "Step 4: Verify sublabel 'Enterprise Grade'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -481,7 +481,7 @@
       "Step 2: Locate dashboard note",
       "Step 3: Verify text 'Real-time analytics dashboard available'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
