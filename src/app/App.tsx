@@ -8,6 +8,7 @@ import { FeaturesSection } from './components/FeaturesSection';
 import { ROIMetrics } from './components/ROIMetrics';
 import { Testimonials } from './components/Testimonials';
 import { SecuritySection } from './components/SecuritySection';
+import { CTASection } from './components/CTASection';
 import { Footer } from './components/Footer';
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
       <ROIMetrics />
       <Testimonials />
       <SecuritySection />
+      <CTASection />
       <Footer />
     </div>
   );

@@ -551,7 +551,7 @@
       "Step 1: Scroll to CTA section",
       "Step 2: Verify 'Ready to Scale AI Across Your Organization?' headline"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -560,7 +560,7 @@
       "Step 1: Scroll to CTA section",
       "Step 2: Verify subheadline mentions '500+ enterprises'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -570,7 +570,7 @@
       "Step 2: Locate 'Request a Demo' button",
       "Step 3: Verify button is clickable"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -580,7 +580,7 @@
       "Step 2: Inspect section background",
       "Step 3: Verify gradient or navy background color"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
