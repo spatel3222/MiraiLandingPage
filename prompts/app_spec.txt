@@ -1,0 +1,763 @@
+<project_specification>
+  <project_name>Mirai360 Landing Page</project_name>
+
+  <overview>
+    Build a static marketing landing page for Mirai360 - a 360° Legal Intelligence Platform.
+    The page showcases the AI-powered legal solutions for lawyers, courts, and companies.
+    Design pulled from Figma (file: GJsHNRnwnQ0WwhboPiRImb, frame: 9934-2700).
+    Focus: Clean, professional, enterprise-ready aesthetic with legal industry positioning.
+  </overview>
+
+  <technology_stack>
+    <frontend>
+      <framework>React with Vite</framework>
+      <styling>Tailwind CSS</styling>
+      <components>ShadCN UI components</components>
+      <icons>Lucide Icons</icons>
+      <fonts>Inter (Google Fonts)</fonts>
+    </frontend>
+    <deployment>
+      <hosting>GitHub Pages</hosting>
+      <domain>mirai360.ai</domain>
+    </deployment>
+  </technology_stack>
+
+  <git_workflow>
+    <repository>https://github.com/spatel3222/MiraiLandingPage</repository>
+    <base_branch>main</base_branch>
+    <feature_branch>figma-design-system</feature_branch>
+    <commit_convention>
+      <!-- Each milestone = 1 commit -->
+      <format>feat(section-name): brief description</format>
+      <examples>
+        <example>feat(hero): implement hero section with trust badges and CTA</example>
+        <example>feat(about): add vision/about us section</example>
+        <example>feat(capabilities): add core capabilities cards</example>
+      </examples>
+    </commit_convention>
+  </git_workflow>
+
+  <implementation_milestones>
+    <!-- Build one section at a time, commit after each, pause for testing -->
+
+    <milestone id="M1" status="pending">
+      <name>Hero Section</name>
+      <branch_work>Update Hero.tsx</branch_work>
+      <deliverables>
+        <item>Trust badges (Trusted by Enterprise, SOC 2 Certified)</item>
+        <item>Headline: 360° Legal Intelligence Platform</item>
+        <item>Subheadline: Agentic OS for Legal System</item>
+        <item>Description text</item>
+        <item>Request a Demo CTA button</item>
+        <item>Logo strip with "Trusted Globally" label</item>
+        <item>Background grid pattern (decorative)</item>
+      </deliverables>
+      <commit_message>feat(hero): implement hero section with trust badges, CTA, and logo strip</commit_message>
+    </milestone>
+
+    <milestone id="M2" status="pending">
+      <name>About Us / Vision Section</name>
+      <branch_work>Create VisionSection.tsx</branch_work>
+      <deliverables>
+        <item>Section label: About Us</item>
+        <item>Intro paragraph about Mirai360</item>
+        <item>Vision subsection with 3 paragraphs</item>
+        <item>Our Approach subsection with 2 paragraphs</item>
+      </deliverables>
+      <commit_message>feat(about): add vision/about us section with intro, vision, and approach text</commit_message>
+    </milestone>
+
+    <milestone id="M3" status="pending">
+      <name>Core Capabilities Section</name>
+      <branch_work>Update CoreCapabilities.tsx</branch_work>
+      <deliverables>
+        <item>Section header: Three Powerful Ways to Work Smarter</item>
+        <item>Subheadline text</item>
+        <item>3 capability cards (visual reference needed)</item>
+      </deliverables>
+      <commit_message>feat(capabilities): add core capabilities section with 3 cards</commit_message>
+    </milestone>
+
+    <milestone id="M4" status="pending">
+      <name>Industry Solutions Section</name>
+      <branch_work>Create IndustrySolutions.tsx</branch_work>
+      <deliverables>
+        <item>Section header: Tailored for Your Industry</item>
+        <item>Tab interface: Courts, Lawyers, Companies</item>
+        <item>Courts card: 60hrs metric, 5 features (digitization, AI research, eCourts, etc.)</item>
+        <item>Lawyers card: 40hrs metric, 7 features (entity extraction, drafting, etc.)</item>
+        <item>Companies card: 67% metric, 4 features (compliance, smart docs, etc.)</item>
+      </deliverables>
+      <commit_message>feat(industry): add industry solutions section with 3 tabbed cards</commit_message>
+    </milestone>
+
+    <milestone id="M5" status="pending">
+      <name>Features Section (What Mirai360 Delivers)</name>
+      <branch_work>Create FeaturesSection.tsx</branch_work>
+      <deliverables>
+        <item>Section header: What Mirai360 Delivers</item>
+        <item>3 feature cards: Document Management, Timeline, Legal Research</item>
+      </deliverables>
+      <commit_message>feat(features): add features section with 3 detailed cards</commit_message>
+    </milestone>
+
+    <milestone id="M6" status="pending">
+      <name>ROI Metrics Section</name>
+      <branch_work>Create ROIMetrics.tsx</branch_work>
+      <deliverables>
+        <item>Section header: Measurable Impact from Day One</item>
+        <item>6 metrics: 3x Claims, 40hrs Saved, 67% Cost, 60hrs Time, 40% Adoption, 99% Accuracy</item>
+        <item>Analytics dashboard note</item>
+      </deliverables>
+      <commit_message>feat(roi): add ROI metrics section with 6 impact stats</commit_message>
+    </milestone>
+
+    <milestone id="M7" status="pending">
+      <name>Customer Testimonials Section</name>
+      <branch_work>Create Testimonials.tsx</branch_work>
+      <deliverables>
+        <item>Section header: Trusted by Industry Leaders</item>
+        <item>3 testimonial cards: Healthcare, Legal, Retail (author details as placeholders)</item>
+      </deliverables>
+      <commit_message>feat(testimonials): add customer testimonials section with 3 cards</commit_message>
+    </milestone>
+
+    <milestone id="M8" status="pending">
+      <name>Security Compliance Section</name>
+      <branch_work>Create SecuritySection.tsx</branch_work>
+      <deliverables>
+        <item>Section header: Enterprise-Grade Security</item>
+        <item>Compliance badges/certifications</item>
+        <item>Security feature highlights</item>
+      </deliverables>
+      <commit_message>feat(security): add security and compliance section</commit_message>
+    </milestone>
+
+    <milestone id="M9" status="pending">
+      <name>CTA Section</name>
+      <branch_work>Create CTASection.tsx</branch_work>
+      <deliverables>
+        <item>Full-width banner</item>
+        <item>Headline: Ready to Scale AI...</item>
+        <item>Request a Demo button</item>
+        <item>Branded background</item>
+      </deliverables>
+      <commit_message>feat(cta): add call-to-action banner section</commit_message>
+    </milestone>
+
+    <milestone id="M10" status="pending">
+      <name>Footer Section</name>
+      <branch_work>Update Footer.tsx</branch_work>
+      <deliverables>
+        <item>Logo and tagline</item>
+        <item>Multi-column links (Product, Resources, Company)</item>
+        <item>Copyright and legal links</item>
+      </deliverables>
+      <commit_message>feat(footer): implement full footer with multi-column links</commit_message>
+    </milestone>
+
+    <milestone id="M11" status="pending">
+      <name>Nav Bar</name>
+      <branch_work>Create NavBar.tsx</branch_work>
+      <deliverables>
+        <item>Logo</item>
+        <item>Nav links: Solutions, Capabilities, Customers, Security</item>
+        <item>Sign In and Book a Demo buttons</item>
+        <item>Sticky behavior on scroll</item>
+      </deliverables>
+      <commit_message>feat(nav): add sticky navigation bar</commit_message>
+    </milestone>
+
+  </implementation_milestones>
+
+  <workflow_instructions>
+    <!-- Instructions for Claude agent -->
+    <step>1. Start working on the current pending milestone</step>
+    <step>2. Implement the deliverables listed</step>
+    <step>3. Update App.tsx to include the new component</step>
+    <step>4. Commit changes with the specified commit message</step>
+    <step>5. Update this spec: change milestone status from "pending" to "completed"</step>
+    <step>6. PAUSE and notify user for testing</step>
+    <step>7. Wait for user approval before proceeding to next milestone</step>
+  </workflow_instructions>
+
+  <page_sections>
+    <!-- Section order from Figma frame 9934-2700 -->
+
+    <section id="1" name="Nav Bar">
+      <elements>
+        <logo>mirai360</logo>
+        <nav_links>
+          <link>Solutions</link>
+          <link>Capabilities</link>
+          <link>Customers</link>
+          <link>Security</link>
+        </nav_links>
+        <buttons>
+          <button variant="ghost">Sign In</button>
+          <button variant="primary">Book a Demo</button>
+        </buttons>
+      </elements>
+      <behavior>Sticky header on scroll</behavior>
+    </section>
+
+    <section id="2" name="Hero Section">
+      <elements>
+        <trust_badges>
+          <badge>Trusted by Enterprise</badge>
+          <badge icon="shield">SOC 2 Certified</badge>
+        </trust_badges>
+        <headline>360° Legal Intelligence Platform</headline>
+        <subheadline>Agentic OS for Legal System</subheadline>
+        <description>Enterprise-ready AI solutions that connects lawyers, courts, and companies</description>
+        <cta>
+          <button variant="primary" icon="arrow-right">Request a Demo</button>
+        </cta>
+        <logo_strip>
+          <label>Trusted Globally</label>
+          <!-- PLACEHOLDER: Brands below are placeholders - replace with actual client logos -->
+          <brands>
+            <brand>Slack</brand>
+            <brand>Zoom</brand>
+            <brand>GitHub</brand>
+            <brand>PayPal</brand>
+            <brand>Netflix</brand>
+            <brand>Spotify</brand>
+            <brand>Notion</brand>
+            <brand>Dropbox</brand>
+            <brand>Webflow</brand>
+            <brand>Discord</brand>
+          </brands>
+        </logo_strip>
+      </elements>
+      <background>Grid pattern with decorative elements (lines, ellipses, rectangles)</background>
+    </section>
+
+    <section id="3" name="Vision Section (About Us)">
+      <elements>
+        <section_label>About Us</section_label>
+        <intro_text>Mirai360 builds the intelligence layer for the legal system, helping legal professionals turn documents, cases, and expertise into reusable knowledge — without compromising trust or confidentiality.</intro_text>
+        <subsection_label>Vision</subsection_label>
+        <vision_text>
+          Mirai is built to support legal expertise, not replace it. By organizing legal information and turning expert judgment into reusable intelligence, we help legal professionals work with more clarity and control.
+
+          We take care of the repetitive, mechanical work so lawyers, courts, and organizations can focus on judgment, reasoning, and meaningful outcomes.
+
+          Everything we build is guided by trust, legal-grade quality, and system-level thinking—protecting data, meeting real professional standards, and scaling responsibly across the legal system.
+        </vision_text>
+        <subsection_label>Our Approach</subsection_label>
+        <approach_text>
+          Mirai360 is designed around real-world workflows — not generic automation.
+
+          We start by understanding how professionals research, review, and make decisions. From there, we build AI that integrates seamlessly into existing processes, enhancing speed and accuracy without disrupting judgment.
+        </approach_text>
+      </elements>
+    </section>
+
+    <section id="4" name="Core Capabilities (Wireframe-3)">
+      <elements>
+        <section_label>Core Capabilities</section_label>
+        <headline>Three Powerful Ways to Work Smarter</headline>
+        <subheadline>Everything you need to transform your operations with AI</subheadline>
+        <!-- CONTENT_REVIEW: Specific capability cards not detailed in Figma text extraction - may need visual reference -->
+      </elements>
+    </section>
+
+    <section id="5" name="Industry Solutions">
+      <elements>
+        <section_label>Industry Solutions</section_label>
+        <headline>Tailored for Your Industry</headline>
+        <subheadline>One platform, infinite possibilities across Healthcare, Legal, and Retail</subheadline>
+        <tabs>
+          <tab>Courts</tab>
+          <tab>Lawyers</tab>
+          <tab>Companies</tab>
+        </tabs>
+        <content_card industry="Courts">
+          <card_title>For Courts</card_title>
+          <tagline>Pan-India AI case management for Law</tagline>
+          <metric>60hrs</metric>
+          <metric_label>Time Saved</metric_label>
+          <features_label>Key Features</features_label>
+          <features>
+            <feature>20L pages/day digitization</feature>
+            <feature>AI legal research</feature>
+            <feature>eCourts integration</feature>
+            <feature>Precedent search & RAG</feature>
+            <feature>Vernacular support</feature>
+          </features>
+        </content_card>
+        <content_card industry="Lawyers">
+          <card_title>For Lawyers</card_title>
+          <tagline>Move faster without compromising quality.</tagline>
+          <metric>40hrs</metric>
+          <metric_label>Saved Per Month</metric_label>
+          <features_label>Key Features</features_label>
+          <features>
+            <feature>AI entity extraction</feature>
+            <feature>Auto drafting</feature>
+            <feature>Contract lifecycle mgmt</feature>
+            <feature>Lawyer-client loop</feature>
+            <feature>File and Document Management</feature>
+            <feature>Timeline and Chronology Creation</feature>
+            <feature>Legal research</feature>
+          </features>
+        </content_card>
+        <content_card industry="Companies">
+          <card_title>For Companies</card_title>
+          <tagline>Legal risk to business intelligence.</tagline>
+          <metric>67%</metric>
+          <metric_label>Cost Reduction</metric_label>
+          <features_label>Key Features</features_label>
+          <features>
+            <feature>Compliance visibility</feature>
+            <feature>Smart docs</feature>
+            <feature>Risk detection</feature>
+            <feature>Contract analysis</feature>
+          </features>
+        </content_card>
+      </elements>
+    </section>
+
+    <section id="6" name="Features">
+      <elements>
+        <section_label>The Future of Legal AI</section_label>
+        <headline>What Mirai360 Delivers</headline>
+        <tagline>Draft, review, and research legal documents with confidence.</tagline>
+        <subheadline>Powerful tools built for document-heavy professional work</subheadline>
+        <feature_cards>
+          <card>
+            <title>Case Files and Document Management</title>
+            <description>All case-related documents in one place — scanned, structured, and ready for legal work.</description>
+          </card>
+          <card>
+            <title>Timeline and Chronology</title>
+            <description>Automatically generated timelines that stay accurate, readable, and aligned with your case.</description>
+          </card>
+          <card>
+            <title>Legal Research</title>
+            <description>Research grounded in your case, powered by authoritative sources, and tailored to how you work.</description>
+          </card>
+        </feature_cards>
+      </elements>
+    </section>
+
+    <section id="7" name="ROI Metrics">
+      <elements>
+        <section_label>ROI Metrics</section_label>
+        <headline>Measurable Impact from Day One</headline>
+        <subheadline>Real results that drive business transformation</subheadline>
+        <metrics>
+          <metric>
+            <value>3x</value>
+            <label>Faster Claims Processing</label>
+          </metric>
+          <metric>
+            <value>40hrs</value>
+            <label>Saved Per Month</label>
+            <sublabel>Average customer result</sublabel>
+          </metric>
+          <metric>
+            <value>67%</value>
+            <label>Cost Reduction</label>
+            <sublabel>Lower Operational Expenses</sublabel>
+          </metric>
+          <metric>
+            <value>60hrs</value>
+            <label>Time Saved</label>
+            <sublabel>Teams focus on strategic work, not repetitive tasks</sublabel>
+          </metric>
+          <metric>
+            <value>40%</value>
+            <label>Faster Adoption</label>
+            <sublabel>3x faster user adoption</sublabel>
+          </metric>
+          <metric>
+            <value>99%</value>
+            <label>Accuracy</label>
+            <sublabel>Enterprise Grade</sublabel>
+          </metric>
+        </metrics>
+        <note>Real-time analytics dashboard available</note>
+      </elements>
+    </section>
+
+    <section id="8" name="Customer Reviews">
+      <elements>
+        <section_label>Customer Testimonials</section_label>
+        <headline>Trusted by Industry Leaders</headline>
+        <subheadline>Real results from real customers across Healthcare, Legal, and Retail</subheadline>
+        <!-- PLACEHOLDER: Testimonials below are synthetic examples - replace with actual customer quotes -->
+        <testimonials>
+          <testimonial industry="Healthcare">
+            <quote>"Mirai360 reduced our claims processing time by 65%. The ROI was immediate and measurable. Our team now focuses on patient care instead of paperwork."</quote>
+            <author>
+              <name>X</name>
+              <title>X</title>
+              <company>X</company>
+            </author>
+          </testimonial>
+          <testimonial industry="Legal">
+            <quote>"Best AI platform we've implemented in 15 years. Setup took 10 minutes, not 10 weeks. The intelligent automation truly understands legal workflows."</quote>
+            <author>
+              <name>X</name>
+              <title>X</title>
+              <company>X</company>
+            </author>
+          </testimonial>
+          <testimonial industry="Retail">
+            <quote>"Our team saves 40+ hours weekly on inventory management. The AI predictions are incredibly accurate. This is the future of retail operations."</quote>
+            <author>
+              <name>X</name>
+              <title>X</title>
+              <company>X</company>
+            </author>
+          </testimonial>
+        </testimonials>
+      </elements>
+    </section>
+
+    <section id="9" name="Security Compliance">
+      <elements>
+        <section_label>Security & Compliance</section_label>
+        <headline>Enterprise-Grade Security You Can Trust</headline>
+        <subheadline>Built for Healthcare, Legal, and Retail with strict compliance requirements</subheadline>
+        <tagline>Every feature designed with security at its core</tagline>
+        <!-- CONTENT_REVIEW: Security badges/certifications details not extracted -->
+      </elements>
+    </section>
+
+    <section id="10" name="CTA Section">
+      <elements>
+        <headline>Ready to Scale AI Across Your Organization?</headline>
+        <subheadline>Join 500+ enterprises transforming their operations with Mirai360's intelligent AI platform.</subheadline>
+        <cta>
+          <button variant="primary">Request a Demo</button>
+        </cta>
+      </elements>
+      <background>Gradient or branded background</background>
+    </section>
+
+    <section id="11" name="Footer">
+      <elements>
+        <brand>
+          <logo>mirai360</logo>
+          <tagline>AI-powered automation for Healthcare, Legal, and Retail. Build once, scale everywhere.</tagline>
+        </brand>
+        <link_columns>
+          <column title="Product">
+            <link>Features</link>
+            <link>Industries</link>
+            <link>Pricing</link>
+            <link>Security</link>
+          </column>
+          <column title="Resources">
+            <link>Documentation</link>
+            <link>API Reference</link>
+            <link>Blog</link>
+            <link>Support</link>
+          </column>
+          <column title="Company">
+            <link>About</link>
+            <link>Careers</link>
+            <link>Contact</link>
+            <link>Privacy</link>
+          </column>
+        </link_columns>
+        <bottom_bar>
+          <copyright>© 2026 mirai360. All rights reserved.</copyright>
+          <legal_links>
+            <link>Terms</link>
+            <link>Privacy</link>
+            <link>Cookies</link>
+          </legal_links>
+        </bottom_bar>
+      </elements>
+    </section>
+  </page_sections>
+
+  <design_system>
+    <!-- Extracted from Figma variables -->
+
+    <color_palette>
+      <primary>
+        <navy_primary>#1B365D</navy_primary>
+        <navy_dark>#122442</navy_dark>
+        <tech_accent>#2E86C1</tech_accent>
+        <accent_blue>#4353FF</accent_blue>
+        <accent_purple>#8A38F5</accent_purple>
+      </primary>
+
+      <neutral>
+        <white>#FFFFFF</white>
+        <off_white>#F9F5F1</off_white>
+        <light_blue>#EAF1FF</light_blue>
+        <light_gray>#E9ECF0</light_gray>
+        <border_gray>#D5DAE1</border_gray>
+        <muted_gray>#C5D3E3</muted_gray>
+        <text_muted>#64748B</text_muted>
+        <text_secondary>#566573</text_secondary>
+        <slate>#5C7FA8</slate>
+        <dark_gray>#454F5B</dark_gray>
+        <dark_slate>#334155</dark_slate>
+        <near_black>#111827</near_black>
+        <black>#0F172A</black>
+      </neutral>
+
+      <semantic>
+        <success>#22C55E</success>
+        <error>#EF4444</error>
+        <error_dark>#DC3545</error_dark>
+        <warning>#ECB22E</warning>
+        <info>#1C58F7</info>
+      </semantic>
+
+      <brand_accent>
+        <tan>#BF9874</tan>
+        <beige>#D4BAA2</beige>
+        <tan_dark>#886C52</tan_dark>
+      </brand_accent>
+    </color_palette>
+
+    <shadows>
+      <shadow_sm>0 1px 2px rgba(27, 54, 93, 0.10), 0 1px 3px rgba(27, 54, 93, 0.10)</shadow_sm>
+      <shadow_card>0 2px 8px rgba(27, 54, 93, 0.08)</shadow_card>
+      <shadow_md>0 4px 6px rgba(27, 54, 93, 0.10), 0 4px 15px rgba(27, 54, 93, 0.10)</shadow_md>
+      <shadow_lg>0 8px 24px rgba(27, 54, 93, 0.30)</shadow_lg>
+      <shadow_xl>0 25px 50px rgba(27, 54, 93, 0.25)</shadow_xl>
+      <shadow_button>0 2px 2px rgba(255, 255, 255, 0.25)</shadow_button>
+      <shadow_accent>0 2px 2px rgba(83, 79, 235, 0.25)</shadow_accent>
+      <shadow_success>0 0 0 rgba(34, 197, 94, 0.60)</shadow_success>
+      <shadow_error>0 8px 32px rgba(239, 68, 68, 0.12)</shadow_error>
+    </shadows>
+
+    <typography>
+      <font_family>Inter, system-ui, -apple-system, sans-serif</font_family>
+      <weights>
+        <normal>400</normal>
+        <medium>500</medium>
+        <semibold>600</semibold>
+        <bold>700</bold>
+      </weights>
+    </typography>
+
+    <spacing>
+      <!-- 8px grid system -->
+      <xs>8px</xs>
+      <sm>16px</sm>
+      <md>45px</md>
+      <lg>90px</lg>
+      <xl>135px</xl>
+    </spacing>
+
+    <border_radius>
+      <sm>0.25rem</sm>
+      <md>0.5rem</md>
+      <lg>0.75rem</lg>
+      <xl>1rem</xl>
+    </border_radius>
+  </design_system>
+
+  <components_used>
+    <!-- ShadCN components from existing codebase -->
+    <component>Badge</component>
+    <component>Button</component>
+    <component>Card (CardHeader, CardContent, CardTitle, CardDescription)</component>
+    <component>Input</component>
+    <component>Separator</component>
+    <!-- Lucide icons -->
+    <icons>Lock, Shield, ArrowRight, Check, Users, FileText, Clock, Search, Scale, Zap, Eye, FolderCheck</icons>
+  </components_used>
+
+  <current_implementation>
+    <!-- What exists in codebase now -->
+    <file path="src/app/App.tsx">Main app with 4 sections: Hero, WhoItsFor, CoreCapabilities, Footer</file>
+    <file path="src/app/components/Hero.tsx">Basic hero with logo, headline, stealth badge</file>
+    <file path="src/app/components/WhoItsFor.tsx">Phase cards for Law Firms, Courts, Companies</file>
+    <file path="src/app/components/CoreCapabilities.tsx">4 capability cards</file>
+    <file path="src/app/components/Footer.tsx">Contact email, tagline, copyright</file>
+    <file path="src/styles/theme.css">Design tokens matching Figma</file>
+  </current_implementation>
+
+  <implementation_gap>
+    <!-- Sections in Figma but not yet implemented -->
+    <missing>Nav Bar (sticky header)</missing>
+    <missing>Vision Section (About Us)</missing>
+    <missing>Industry Solutions (tabbed interface)</missing>
+    <missing>Features Section (3 detailed cards)</missing>
+    <missing>ROI Metrics Section</missing>
+    <missing>Customer Reviews/Testimonials</missing>
+    <missing>Security Compliance Section</missing>
+    <missing>CTA Section (full-width banner)</missing>
+    <missing>Full Footer (multi-column links)</missing>
+    <missing>Logo slider in Hero</missing>
+    <missing>Hero background pattern</missing>
+  </implementation_gap>
+
+  <content_review_items>
+    <!-- Items marked for your review -->
+    <item section="Hero">Logo strip uses placeholder brands (Slack, GitHub, etc.) - replace with actual client logos when available</item>
+    <item section="Core Capabilities">Specific capability cards need visual reference from Figma</item>
+    <item section="Customer Reviews">Testimonial author details marked as X - replace with actual customer info when available</item>
+    <item section="Security">Security badges/certifications details needed</item>
+  </content_review_items>
+
+  <figma_reference>
+    <file_key>GJsHNRnwnQ0WwhboPiRImb</file_key>
+    <file_name>Mirai360 Branding Final Page</file_name>
+    <target_frame>9934-2700 (Mirai360)</target_frame>
+    <inner_frame>9849:5901 (Mirai360 8)</inner_frame>
+    <url>https://www.figma.com/design/GJsHNRnwnQ0WwhboPiRImb/Mirai360-Branding-Final-Page?node-id=9934-2700</url>
+  </figma_reference>
+
+  <design_tooling>
+    <!-- MCP-based Figma integration for design-to-code workflow -->
+    <mcp_figma_tools>
+      <description>Claude Code connects to Figma via MCP (Model Context Protocol) for real-time design extraction</description>
+      <available_tools>
+        <tool name="FIGMA_DISCOVER_FIGMA_RESOURCES">Extract file_key, node_ids from Figma URLs</tool>
+        <tool name="FIGMA_GET_FILE_JSON">Fetch design structure, nodes, properties (use simplify=true)</tool>
+        <tool name="FIGMA_GET_FILE_STYLES">Retrieve published styles (colors, text, effects)</tool>
+        <tool name="FIGMA_RENDER_IMAGES_OF_FILE_NODES">Export nodes as PNG/SVG/JPG/PDF</tool>
+        <tool name="FIGMA_DOWNLOAD_FIGMA_IMAGES">Download rendered images to local files</tool>
+        <tool name="FIGMA_EXTRACT_DESIGN_TOKENS">Extract color/spacing/typography tokens</tool>
+      </available_tools>
+      <workflow>
+        <step>1. Use FIGMA_DISCOVER_FIGMA_RESOURCES to resolve node IDs from URL</step>
+        <step>2. Use FIGMA_GET_FILE_JSON with ids parameter for specific frames</step>
+        <step>3. Use FIGMA_RENDER_IMAGES_OF_FILE_NODES for visual reference screenshots</step>
+        <step>4. Compare implementation against Figma renders for pixel-accuracy</step>
+      </workflow>
+      <connection>
+        <status>Active</status>
+        <user>shivang.patel@gmail.com</user>
+        <account_id>ca_K6JjkPEU1k2r</account_id>
+      </connection>
+    </mcp_figma_tools>
+  </design_tooling>
+
+  <testing_framework>
+    <!-- Playwright-based E2E testing with visual regression -->
+    <framework>Playwright</framework>
+    <version>latest</version>
+
+    <test_categories>
+      <category name="functional">
+        <description>End-to-end user journey tests</description>
+        <examples>
+          <example>Navigation links scroll to correct sections</example>
+          <example>CTA buttons are clickable and visible</example>
+          <example>Tab switching in Industry Solutions works</example>
+          <example>Sticky navbar behavior on scroll</example>
+        </examples>
+      </category>
+      <category name="style">
+        <description>Visual regression and design compliance tests</description>
+        <examples>
+          <example>Screenshot comparison against Figma renders</example>
+          <example>Color values match design system tokens</example>
+          <example>Typography matches Inter font specifications</example>
+          <example>Responsive breakpoints render correctly</example>
+        </examples>
+      </category>
+      <category name="accessibility">
+        <description>A11y compliance tests</description>
+        <examples>
+          <example>All images have alt text</example>
+          <example>Keyboard navigation works</example>
+          <example>Color contrast meets WCAG AA</example>
+        </examples>
+      </category>
+    </test_categories>
+
+    <playwright_config>
+      <browsers>chromium, firefox, webkit</browsers>
+      <viewports>
+        <viewport name="desktop">1920x1080</viewport>
+        <viewport name="tablet">768x1024</viewport>
+        <viewport name="mobile">375x667</viewport>
+      </viewports>
+      <screenshot_on_failure>true</screenshot_on_failure>
+      <video_on_failure>retain-on-failure</video_on_failure>
+    </playwright_config>
+
+    <test_structure>
+      <directory>tests/</directory>
+      <files>
+        <file>tests/navigation.spec.ts</file>
+        <file>tests/hero.spec.ts</file>
+        <file>tests/sections.spec.ts</file>
+        <file>tests/visual-regression.spec.ts</file>
+        <file>tests/accessibility.spec.ts</file>
+        <file>tests/responsive.spec.ts</file>
+      </files>
+    </test_structure>
+
+    <commands>
+      <install>npx playwright install</install>
+      <run_all>npx playwright test</run_all>
+      <run_headed>npx playwright test --headed</run_headed>
+      <run_ui>npx playwright test --ui</run_ui>
+      <update_snapshots>npx playwright test --update-snapshots</update_snapshots>
+      <show_report>npx playwright show-report</show_report>
+    </commands>
+  </testing_framework>
+
+  <ci_cd>
+    <!-- GitHub Actions integration -->
+    <platform>GitHub Actions</platform>
+    <workflows>
+      <workflow name="test.yml">
+        <trigger>pull_request, push to main</trigger>
+        <jobs>
+          <job name="playwright-tests">
+            <steps>
+              <step>Checkout code</step>
+              <step>Setup Node.js 20</step>
+              <step>Install dependencies (npm ci)</step>
+              <step>Install Playwright browsers</step>
+              <step>Build project (npm run build)</step>
+              <step>Run Playwright tests</step>
+              <step>Upload test artifacts on failure</step>
+            </steps>
+          </job>
+        </jobs>
+      </workflow>
+      <workflow name="deploy.yml">
+        <trigger>push to main (after tests pass)</trigger>
+        <jobs>
+          <job name="deploy-gh-pages">
+            <steps>
+              <step>Build production bundle</step>
+              <step>Deploy to GitHub Pages</step>
+            </steps>
+          </job>
+        </jobs>
+      </workflow>
+    </workflows>
+    <branch_protection>
+      <rule>Require Playwright tests to pass before merge to main</rule>
+      <rule>Require PR review before merge</rule>
+    </branch_protection>
+  </ci_cd>
+
+  <feature_tracking>
+    <!-- feature_list.json specification -->
+    <file>feature_list.json</file>
+    <description>Single source of truth for all features and their test status</description>
+    <format>
+      <field name="category">functional | style | accessibility</field>
+      <field name="description">What the test verifies</field>
+      <field name="steps">Array of Playwright test steps</field>
+      <field name="passes">boolean - ONLY field that can be modified after creation</field>
+    </format>
+    <rules>
+      <rule>Minimum 200 features total</rule>
+      <rule>At least 25 tests with 10+ steps each</rule>
+      <rule>Features ordered by priority (foundational first)</rule>
+      <rule>NEVER remove or edit features - only mark passes: true/false</rule>
+      <rule>All tests start with passes: false</rule>
+    </rules>
+  </feature_tracking>
+
+</project_specification>

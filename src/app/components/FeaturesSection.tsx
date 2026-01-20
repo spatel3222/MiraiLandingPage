@@ -1,25 +1,28 @@
-import { FileText, Search, Globe } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { FolderOpen, Clock, BookOpen } from 'lucide-react';
+import { Card, CardContent } from './ui/card';
 
-export function CoreCapabilities() {
-  const capabilities = [
-    {
-      icon: Globe,
-      title: 'Vernacular Support',
-      description: 'Read & understand 10+ Indian court languages with native accuracy',
-    },
-    {
-      icon: FileText,
-      title: 'Digital Twin Documents',
-      description: 'Transform images into AI-readable, structured, searchable documents',
-    },
-    {
-      icon: Search,
-      title: 'Research Assistant',
-      description: '1TB+ knowledge base of citations, laws, precedents, and legal analysis',
-    },
-  ];
+const features = [
+  {
+    icon: FolderOpen,
+    title: 'Case Files and Document Management',
+    description:
+      'All case-related documents in one place — scanned, structured, and ready for legal work.',
+  },
+  {
+    icon: Clock,
+    title: 'Timeline and Chronology',
+    description:
+      'Automatically generated timelines that stay accurate, readable, and aligned with your case.',
+  },
+  {
+    icon: BookOpen,
+    title: 'Legal Research',
+    description:
+      'Research grounded in your case, powered by authoritative sources, and tailored to how you work.',
+  },
+];
 
+export function FeaturesSection() {
   return (
     <section className="py-16 md:py-24 px-6" style={{ backgroundColor: '#FFFFFF' }}>
       <div className="max-w-6xl mx-auto">
@@ -32,7 +35,7 @@ export function CoreCapabilities() {
               color: '#1B365D',
             }}
           >
-            Core Capabilities
+            The Future of Legal AI
           </span>
         </div>
 
@@ -46,25 +49,37 @@ export function CoreCapabilities() {
             lineHeight: '1.2',
           }}
         >
-          Three Powerful Ways to Work Smarter
+          What Mirai360 Delivers
         </h2>
 
-        {/* Subheadline */}
+        {/* Tagline */}
         <p
-          className="text-center mb-12 max-w-2xl mx-auto"
+          className="text-center mb-2"
           style={{
             fontSize: '18px',
             color: '#64748B',
             lineHeight: '1.6',
           }}
         >
-          Everything you need to transform your operations with AI
+          Draft, review, and research legal documents with confidence.
         </p>
 
-        {/* Capability Cards */}
+        {/* Subheadline */}
+        <p
+          className="text-center mb-12 max-w-2xl mx-auto"
+          style={{
+            fontSize: '16px',
+            color: '#94A3B8',
+            lineHeight: '1.6',
+          }}
+        >
+          Powerful tools built for document-heavy professional work
+        </p>
+
+        {/* Feature Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {capabilities.map((capability, index) => {
-            const IconComponent = capability.icon;
+          {features.map((feature, index) => {
+            const IconComponent = feature.icon;
             return (
               <Card
                 key={index}
@@ -75,7 +90,7 @@ export function CoreCapabilities() {
                   borderRadius: '12px',
                 }}
               >
-                <CardHeader className="pb-2">
+                <CardContent className="p-6">
                   {/* Icon */}
                   <div
                     className="w-12 h-12 rounded-lg flex items-center justify-center mb-4"
@@ -83,7 +98,10 @@ export function CoreCapabilities() {
                   >
                     <IconComponent size={24} style={{ color: '#1B365D' }} />
                   </div>
-                  <CardTitle
+
+                  {/* Title */}
+                  <h3
+                    className="mb-3"
                     style={{
                       fontSize: '20px',
                       fontWeight: 600,
@@ -91,19 +109,19 @@ export function CoreCapabilities() {
                       lineHeight: '1.3',
                     }}
                   >
-                    {capability.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription
+                    {feature.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p
                     style={{
-                      fontSize: '16px',
+                      fontSize: '15px',
                       color: '#64748B',
                       lineHeight: '1.6',
                     }}
                   >
-                    {capability.description}
-                  </CardDescription>
+                    {feature.description}
+                  </p>
                 </CardContent>
               </Card>
             );
