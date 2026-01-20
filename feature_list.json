@@ -589,7 +589,7 @@
       "Step 1: Scroll to footer",
       "Step 2: Verify mirai360 logo/text is visible"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -598,7 +598,7 @@
       "Step 1: Scroll to footer",
       "Step 2: Verify tagline mentions 'AI-powered automation'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -611,7 +611,7 @@
       "Step 5: Verify Pricing link",
       "Step 6: Verify Security link"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -624,7 +624,7 @@
       "Step 5: Verify Blog link",
       "Step 6: Verify Support link"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -637,7 +637,7 @@
       "Step 5: Verify Contact link",
       "Step 6: Verify Privacy link"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -646,7 +646,7 @@
       "Step 1: Scroll to footer bottom",
       "Step 2: Verify copyright text contains '2026' and 'mirai360'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -657,7 +657,7 @@
       "Step 3: Verify Privacy link exists",
       "Step 4: Verify Cookies link exists"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
