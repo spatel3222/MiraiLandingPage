@@ -1,0 +1,2171 @@
+[
+  {
+    "category": "functional",
+    "description": "Page loads successfully with no console errors",
+    "steps": [
+      "Step 1: Navigate to localhost:5173",
+      "Step 2: Wait for page to fully load",
+      "Step 3: Check browser console for errors",
+      "Step 4: Verify no JavaScript exceptions"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "NavBar renders with mirai360 logo text",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Locate navbar element",
+      "Step 3: Verify mirai360 logo text is visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "NavBar Solutions link is visible and clickable",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Locate Solutions nav link",
+      "Step 3: Click Solutions link",
+      "Step 4: Verify scroll to Industry Solutions section"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "NavBar Capabilities link scrolls to Core Capabilities section",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Click Capabilities nav link",
+      "Step 3: Verify page scrolls to Core Capabilities section",
+      "Step 4: Verify section header is visible in viewport"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "NavBar Customers link scrolls to Testimonials section",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Click Customers nav link",
+      "Step 3: Verify page scrolls to Customer Testimonials section"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "NavBar Security link scrolls to Security section",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Click Security nav link",
+      "Step 3: Verify page scrolls to Security Compliance section"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "NavBar Sign In button is visible with ghost variant styling",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Locate Sign In button in navbar",
+      "Step 3: Verify button has ghost/outline styling",
+      "Step 4: Verify button is clickable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "NavBar Book a Demo button is visible with primary styling",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Locate Book a Demo button",
+      "Step 3: Verify button has primary tan/gold styling (#BF9874)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "NavBar becomes sticky on scroll",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Scroll down 500px",
+      "Step 3: Verify navbar remains fixed at top",
+      "Step 4: Verify navbar has correct z-index",
+      "Step 5: Scroll to bottom of page",
+      "Step 6: Verify navbar still visible at top"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Hero section displays trust badges",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Locate hero section",
+      "Step 3: Verify 'Trusted by Enterprise' badge is visible",
+      "Step 4: Verify 'SOC 2 Certified' badge with shield icon is visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Hero headline displays '360 Legal Intelligence Platform'",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Locate main headline in hero section",
+      "Step 3: Verify text contains '360' and 'Legal Intelligence Platform'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Hero subheadline displays 'Agentic OS for Legal System'",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Locate subheadline in hero",
+      "Step 3: Verify text is 'Agentic OS for Legal System'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Hero description text mentions lawyers, courts, and companies",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Locate description paragraph in hero",
+      "Step 3: Verify text mentions 'lawyers'",
+      "Step 4: Verify text mentions 'courts'",
+      "Step 5: Verify text mentions 'companies'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Hero Request a Demo CTA button is visible and clickable",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Locate 'Request a Demo' button in hero",
+      "Step 3: Verify button has arrow-right icon",
+      "Step 4: Click button",
+      "Step 5: Verify expected action (scroll or modal)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Hero logo strip displays 'Trusted Globally' label",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Scroll to logo strip section",
+      "Step 3: Verify 'Trusted Globally' label is visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Hero logo strip shows placeholder brand logos",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Locate logo strip in hero",
+      "Step 3: Verify multiple brand icons/logos are visible",
+      "Step 4: Count at least 6 brand logos present"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Hero background has grid pattern decoration",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Inspect hero section background",
+      "Step 3: Verify decorative grid pattern or lines are present"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "About Us section displays section label",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Scroll to About Us section",
+      "Step 3: Verify 'About Us' label is visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "About Us intro text mentions intelligence layer for legal system",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Scroll to About Us section",
+      "Step 3: Locate intro paragraph",
+      "Step 4: Verify text mentions 'intelligence layer' and 'legal system'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Vision subsection displays with 3 paragraphs",
+    "steps": [
+      "Step 1: Navigate to About Us section",
+      "Step 2: Locate Vision subsection",
+      "Step 3: Verify 'Vision' label is visible",
+      "Step 4: Count paragraphs - should be 3"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Our Approach subsection displays with 2 paragraphs",
+    "steps": [
+      "Step 1: Navigate to About Us section",
+      "Step 2: Locate Our Approach subsection",
+      "Step 3: Verify 'Our Approach' label is visible",
+      "Step 4: Count paragraphs - should be 2"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Core Capabilities section header displays correctly",
+    "steps": [
+      "Step 1: Scroll to Core Capabilities section",
+      "Step 2: Verify 'Core Capabilities' label is visible",
+      "Step 3: Verify headline 'Three Powerful Ways to Work Smarter'",
+      "Step 4: Verify subheadline about transforming operations"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Core Capabilities shows exactly 3 capability cards",
+    "steps": [
+      "Step 1: Scroll to Core Capabilities section",
+      "Step 2: Count capability cards",
+      "Step 3: Verify exactly 3 cards are present"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Industry Solutions section header displays correctly",
+    "steps": [
+      "Step 1: Scroll to Industry Solutions section",
+      "Step 2: Verify 'Industry Solutions' label",
+      "Step 3: Verify headline 'Tailored for Your Industry'",
+      "Step 4: Verify subheadline mentions Healthcare, Legal, Retail"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Industry Solutions has 3 tab buttons (Courts, Lawyers, Companies)",
+    "steps": [
+      "Step 1: Scroll to Industry Solutions section",
+      "Step 2: Locate tab interface",
+      "Step 3: Verify 'Courts' tab exists",
+      "Step 4: Verify 'Lawyers' tab exists",
+      "Step 5: Verify 'Companies' tab exists"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Courts tab shows 60hrs Time Saved metric",
+    "steps": [
+      "Step 1: Scroll to Industry Solutions",
+      "Step 2: Click Courts tab",
+      "Step 3: Verify card title 'For Courts'",
+      "Step 4: Verify metric '60hrs'",
+      "Step 5: Verify label 'Time Saved'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Courts tab shows all 5 key features",
+    "steps": [
+      "Step 1: Click Courts tab",
+      "Step 2: Locate Key Features section",
+      "Step 3: Verify '20L pages/day digitization' feature",
+      "Step 4: Verify 'AI legal research' feature",
+      "Step 5: Verify 'eCourts integration' feature",
+      "Step 6: Verify 'Precedent search & RAG' feature",
+      "Step 7: Verify 'Vernacular support' feature"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Lawyers tab shows 40hrs Saved Per Month metric",
+    "steps": [
+      "Step 1: Click Lawyers tab",
+      "Step 2: Verify card title 'For Lawyers'",
+      "Step 3: Verify metric '40hrs'",
+      "Step 4: Verify label 'Saved Per Month'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Lawyers tab shows all 7 key features",
+    "steps": [
+      "Step 1: Click Lawyers tab",
+      "Step 2: Verify 'AI entity extraction' feature",
+      "Step 3: Verify 'Auto drafting' feature",
+      "Step 4: Verify 'Contract lifecycle mgmt' feature",
+      "Step 5: Verify 'Lawyer-client loop' feature",
+      "Step 6: Verify 'File and Document Management' feature",
+      "Step 7: Verify 'Timeline and Chronology Creation' feature",
+      "Step 8: Verify 'Legal research' feature"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Companies tab shows 67% Cost Reduction metric",
+    "steps": [
+      "Step 1: Click Companies tab",
+      "Step 2: Verify card title 'For Companies'",
+      "Step 3: Verify metric '67%'",
+      "Step 4: Verify label 'Cost Reduction'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Companies tab shows all 4 key features",
+    "steps": [
+      "Step 1: Click Companies tab",
+      "Step 2: Verify 'Compliance visibility' feature",
+      "Step 3: Verify 'Smart docs' feature",
+      "Step 4: Verify 'Risk detection' feature",
+      "Step 5: Verify 'Contract analysis' feature"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Tab switching works correctly in Industry Solutions",
+    "steps": [
+      "Step 1: Click Courts tab - verify Courts content shown",
+      "Step 2: Click Lawyers tab - verify Lawyers content shown, Courts hidden",
+      "Step 3: Click Companies tab - verify Companies content shown, Lawyers hidden",
+      "Step 4: Click Courts tab again - verify Courts content returns"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Features section header displays What Mirai360 Delivers",
+    "steps": [
+      "Step 1: Scroll to Features section",
+      "Step 2: Verify 'The Future of Legal AI' label",
+      "Step 3: Verify 'What Mirai360 Delivers' headline",
+      "Step 4: Verify tagline about drafting, reviewing, researching"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Features section shows Document Management card",
+    "steps": [
+      "Step 1: Scroll to Features section",
+      "Step 2: Locate Document Management card",
+      "Step 3: Verify title 'Case Files and Document Management'",
+      "Step 4: Verify description mentions documents in one place"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Features section shows Timeline card",
+    "steps": [
+      "Step 1: Scroll to Features section",
+      "Step 2: Locate Timeline card",
+      "Step 3: Verify title 'Timeline and Chronology'",
+      "Step 4: Verify description mentions auto-generated timelines"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Features section shows Legal Research card",
+    "steps": [
+      "Step 1: Scroll to Features section",
+      "Step 2: Locate Legal Research card",
+      "Step 3: Verify title 'Legal Research'",
+      "Step 4: Verify description mentions authoritative sources"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "ROI Metrics section header displays correctly",
+    "steps": [
+      "Step 1: Scroll to ROI Metrics section",
+      "Step 2: Verify 'ROI Metrics' label",
+      "Step 3: Verify 'Measurable Impact from Day One' headline",
+      "Step 4: Verify subheadline about business transformation"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "ROI section shows 3x Faster Claims Processing metric",
+    "steps": [
+      "Step 1: Scroll to ROI section",
+      "Step 2: Locate 3x metric",
+      "Step 3: Verify label 'Faster Claims Processing'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "ROI section shows 40hrs Saved Per Month metric",
+    "steps": [
+      "Step 1: Scroll to ROI section",
+      "Step 2: Locate 40hrs metric",
+      "Step 3: Verify label 'Saved Per Month'",
+      "Step 4: Verify sublabel 'Average customer result'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "ROI section shows 67% Cost Reduction metric",
+    "steps": [
+      "Step 1: Scroll to ROI section",
+      "Step 2: Locate 67% metric",
+      "Step 3: Verify label 'Cost Reduction'",
+      "Step 4: Verify sublabel 'Lower Operational Expenses'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "ROI section shows 60hrs Time Saved metric",
+    "steps": [
+      "Step 1: Scroll to ROI section",
+      "Step 2: Locate 60hrs metric",
+      "Step 3: Verify label 'Time Saved'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "ROI section shows 40% Faster Adoption metric",
+    "steps": [
+      "Step 1: Scroll to ROI section",
+      "Step 2: Locate 40% metric",
+      "Step 3: Verify label 'Faster Adoption'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "ROI section shows 99% Accuracy metric",
+    "steps": [
+      "Step 1: Scroll to ROI section",
+      "Step 2: Locate 99% metric",
+      "Step 3: Verify label 'Accuracy'",
+      "Step 4: Verify sublabel 'Enterprise Grade'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "ROI section shows analytics dashboard note",
+    "steps": [
+      "Step 1: Scroll to ROI section",
+      "Step 2: Locate dashboard note",
+      "Step 3: Verify text 'Real-time analytics dashboard available'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Testimonials section header displays correctly",
+    "steps": [
+      "Step 1: Scroll to Testimonials section",
+      "Step 2: Verify 'Customer Testimonials' label",
+      "Step 3: Verify 'Trusted by Industry Leaders' headline"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Testimonials section shows Healthcare testimonial",
+    "steps": [
+      "Step 1: Scroll to Testimonials section",
+      "Step 2: Locate Healthcare testimonial card",
+      "Step 3: Verify quote mentions claims processing",
+      "Step 4: Verify author info placeholder (X)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Testimonials section shows Legal testimonial",
+    "steps": [
+      "Step 1: Scroll to Testimonials section",
+      "Step 2: Locate Legal testimonial card",
+      "Step 3: Verify quote mentions AI platform and legal workflows"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Testimonials section shows Retail testimonial",
+    "steps": [
+      "Step 1: Scroll to Testimonials section",
+      "Step 2: Locate Retail testimonial card",
+      "Step 3: Verify quote mentions inventory management"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Security section header displays correctly",
+    "steps": [
+      "Step 1: Scroll to Security section",
+      "Step 2: Verify 'Security & Compliance' label",
+      "Step 3: Verify 'Enterprise-Grade Security You Can Trust' headline"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Security section shows compliance badges",
+    "steps": [
+      "Step 1: Scroll to Security section",
+      "Step 2: Locate compliance badges area",
+      "Step 3: Verify at least one security badge/certification is visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "CTA section displays headline",
+    "steps": [
+      "Step 1: Scroll to CTA section",
+      "Step 2: Verify 'Ready to Scale AI Across Your Organization?' headline"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "CTA section displays subheadline with 500+ enterprises",
+    "steps": [
+      "Step 1: Scroll to CTA section",
+      "Step 2: Verify subheadline mentions '500+ enterprises'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "CTA section has Request a Demo button",
+    "steps": [
+      "Step 1: Scroll to CTA section",
+      "Step 2: Locate 'Request a Demo' button",
+      "Step 3: Verify button is clickable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "CTA section has gradient/branded background",
+    "steps": [
+      "Step 1: Scroll to CTA section",
+      "Step 2: Inspect section background",
+      "Step 3: Verify gradient or navy background color"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Footer displays mirai360 logo",
+    "steps": [
+      "Step 1: Scroll to footer",
+      "Step 2: Verify mirai360 logo/text is visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Footer displays tagline about AI-powered automation",
+    "steps": [
+      "Step 1: Scroll to footer",
+      "Step 2: Verify tagline mentions 'AI-powered automation'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Footer has Product column with 4 links",
+    "steps": [
+      "Step 1: Scroll to footer",
+      "Step 2: Locate Product column",
+      "Step 3: Verify Features link",
+      "Step 4: Verify Industries link",
+      "Step 5: Verify Pricing link",
+      "Step 6: Verify Security link"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Footer has Resources column with 4 links",
+    "steps": [
+      "Step 1: Scroll to footer",
+      "Step 2: Locate Resources column",
+      "Step 3: Verify Documentation link",
+      "Step 4: Verify API Reference link",
+      "Step 5: Verify Blog link",
+      "Step 6: Verify Support link"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Footer has Company column with 4 links",
+    "steps": [
+      "Step 1: Scroll to footer",
+      "Step 2: Locate Company column",
+      "Step 3: Verify About link",
+      "Step 4: Verify Careers link",
+      "Step 5: Verify Contact link",
+      "Step 6: Verify Privacy link"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Footer has copyright notice for 2026",
+    "steps": [
+      "Step 1: Scroll to footer bottom",
+      "Step 2: Verify copyright text contains '2026' and 'mirai360'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Footer has Terms, Privacy, Cookies legal links",
+    "steps": [
+      "Step 1: Scroll to footer bottom",
+      "Step 2: Verify Terms link exists",
+      "Step 3: Verify Privacy link exists",
+      "Step 4: Verify Cookies link exists"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "NavBar uses gradient background from design system",
+    "steps": [
+      "Step 1: Inspect navbar background",
+      "Step 2: Verify gradient from #0E1B33 to #1B365D"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Primary buttons use tan color #BF9874",
+    "steps": [
+      "Step 1: Locate primary CTA button",
+      "Step 2: Inspect background color",
+      "Step 3: Verify background is #BF9874 or close variant"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Primary button hover changes to #D4BAA2",
+    "steps": [
+      "Step 1: Locate primary button",
+      "Step 2: Hover over button",
+      "Step 3: Verify background changes to #D4BAA2 (beige)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Secondary buttons use #EAF1FF background",
+    "steps": [
+      "Step 1: Locate secondary button (Sign In)",
+      "Step 2: Inspect background color",
+      "Step 3: Verify background is #EAF1FF (light blue)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Font family is Inter throughout page",
+    "steps": [
+      "Step 1: Inspect body font-family",
+      "Step 2: Verify Inter is primary font",
+      "Step 3: Verify fallback to system-ui"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Headlines use font-weight 700 (bold)",
+    "steps": [
+      "Step 1: Inspect main headline font-weight",
+      "Step 2: Verify font-weight is 700"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Subheadlines use font-weight 600 (semibold)",
+    "steps": [
+      "Step 1: Inspect subheadline font-weight",
+      "Step 2: Verify font-weight is 600"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Body text uses font-weight 400 (normal)",
+    "steps": [
+      "Step 1: Inspect paragraph font-weight",
+      "Step 2: Verify font-weight is 400"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Cards have shadow-card styling (0 2px 8px rgba(27,54,93,0.08))",
+    "steps": [
+      "Step 1: Inspect a feature card",
+      "Step 2: Verify box-shadow matches design system shadow_card"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Cards have correct border-radius (0.75rem lg or 0.5rem md)",
+    "steps": [
+      "Step 1: Inspect card border-radius",
+      "Step 2: Verify border-radius is 0.75rem or 0.5rem"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Text muted color is #64748B",
+    "steps": [
+      "Step 1: Locate muted/secondary text",
+      "Step 2: Inspect color",
+      "Step 3: Verify color is #64748B"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Primary text color is #111827 (near-black)",
+    "steps": [
+      "Step 1: Inspect headline text color",
+      "Step 2: Verify color is #111827"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "White background sections use #FFFFFF",
+    "steps": [
+      "Step 1: Inspect About Us section background",
+      "Step 2: Verify background is #FFFFFF"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Off-white background sections use #F9F5F1",
+    "steps": [
+      "Step 1: Inspect alternating section background",
+      "Step 2: Verify background is #F9F5F1 if applicable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Border colors use #D5DAE1",
+    "steps": [
+      "Step 1: Inspect card border color",
+      "Step 2: Verify border-color is #D5DAE1"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Accent blue #4353FF used for interactive highlights",
+    "steps": [
+      "Step 1: Locate an active tab or link",
+      "Step 2: Verify accent color #4353FF is present"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Shield icon has correct color for trust badges",
+    "steps": [
+      "Step 1: Locate SOC 2 Certified badge",
+      "Step 2: Verify shield icon color matches design"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "8px grid spacing system is followed",
+    "steps": [
+      "Step 1: Inspect element margins",
+      "Step 2: Verify margins are multiples of 8px"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Section padding uses md (45px) or lg (90px)",
+    "steps": [
+      "Step 1: Inspect section vertical padding",
+      "Step 2: Verify padding is 45px or 90px"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Content max-width is constrained for readability",
+    "steps": [
+      "Step 1: Inspect main content container",
+      "Step 2: Verify max-width is set (e.g., 1280px or 1440px)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Hero section has decorative grid pattern background",
+    "steps": [
+      "Step 1: Take screenshot of hero section",
+      "Step 2: Verify grid pattern, lines, or decorative elements visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Lucide icons render correctly",
+    "steps": [
+      "Step 1: Locate Shield icon in hero",
+      "Step 2: Verify icon renders as SVG",
+      "Step 3: Verify icon has correct stroke width"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Badge component has correct styling",
+    "steps": [
+      "Step 1: Inspect trust badge",
+      "Step 2: Verify padding, border-radius, font-size match ShadCN Badge"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Button has correct padding (12px per design system)",
+    "steps": [
+      "Step 1: Inspect CTA button padding",
+      "Step 2: Verify padding is approximately 12px"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Button has correct border-radius (12px from Figma)",
+    "steps": [
+      "Step 1: Inspect button border-radius",
+      "Step 2: Verify border-radius is 12px or 0.75rem"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Drop shadow on buttons matches design (0 1px 2px rgba(27,54,93,0.10))",
+    "steps": [
+      "Step 1: Inspect button box-shadow",
+      "Step 2: Verify shadow matches effect1 from design system"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Tab active state has visible indicator",
+    "steps": [
+      "Step 1: Click a tab in Industry Solutions",
+      "Step 2: Verify active tab has visual distinction (color, underline, etc.)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Metric values use large font size",
+    "steps": [
+      "Step 1: Inspect ROI metric value (e.g., 3x)",
+      "Step 2: Verify font-size is significantly larger than body text"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Testimonial cards have quote styling",
+    "steps": [
+      "Step 1: Inspect testimonial quote",
+      "Step 2: Verify quote marks or italic styling"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Footer uses dark background (#0F172A or navy)",
+    "steps": [
+      "Step 1: Inspect footer background",
+      "Step 2: Verify background is #0F172A or #1B365D"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Footer text is light colored for contrast",
+    "steps": [
+      "Step 1: Inspect footer text color",
+      "Step 2: Verify text is white or light gray"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Footer links have hover state",
+    "steps": [
+      "Step 1: Hover over a footer link",
+      "Step 2: Verify color or underline changes on hover"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Visual hierarchy is clear - H1 > H2 > H3 > body",
+    "steps": [
+      "Step 1: Compare font sizes of headline levels",
+      "Step 2: Verify H1 is largest, decreasing for H2, H3",
+      "Step 3: Verify body text is smallest"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Logo strip brands have consistent sizing",
+    "steps": [
+      "Step 1: Inspect logo strip brand icons",
+      "Step 2: Verify all icons have same height/width"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Section labels have consistent styling",
+    "steps": [
+      "Step 1: Compare About Us, Core Capabilities, ROI Metrics labels",
+      "Step 2: Verify same font-size, weight, color across all"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "All images have alt text",
+    "steps": [
+      "Step 1: Find all img elements",
+      "Step 2: Verify each has alt attribute",
+      "Step 3: Verify alt text is descriptive"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Buttons are keyboard accessible",
+    "steps": [
+      "Step 1: Tab to first button",
+      "Step 2: Verify focus ring is visible",
+      "Step 3: Press Enter to activate",
+      "Step 4: Verify button action triggers"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Color contrast meets WCAG AA (4.5:1 for text)",
+    "steps": [
+      "Step 1: Check primary text on white (#111827 on #FFFFFF)",
+      "Step 2: Verify contrast ratio is at least 4.5:1",
+      "Step 3: Check muted text on white (#64748B on #FFFFFF)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Page has proper heading hierarchy",
+    "steps": [
+      "Step 1: List all headings on page",
+      "Step 2: Verify starts with h1",
+      "Step 3: Verify no skipped levels (h1 to h3 without h2)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Interactive elements have focus states",
+    "steps": [
+      "Step 1: Tab through page",
+      "Step 2: Verify each focusable element has visible focus indicator"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Links have descriptive text (no 'click here')",
+    "steps": [
+      "Step 1: Find all links",
+      "Step 2: Verify link text describes destination",
+      "Step 3: Verify no generic 'click here' or 'read more' without context"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Page has language attribute",
+    "steps": [
+      "Step 1: Inspect html element",
+      "Step 2: Verify lang='en' attribute exists"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Skip to content link exists for keyboard users",
+    "steps": [
+      "Step 1: Press Tab once on page load",
+      "Step 2: Check if skip link appears"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Tabs in Industry Solutions are keyboard navigable",
+    "steps": [
+      "Step 1: Tab to Industry Solutions tabs",
+      "Step 2: Use arrow keys to switch tabs",
+      "Step 3: Verify tab content updates"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Icons have aria-hidden or aria-label",
+    "steps": [
+      "Step 1: Inspect decorative icons",
+      "Step 2: Verify aria-hidden='true' on decorative icons",
+      "Step 3: Verify meaningful icons have aria-label"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Page scrolls smoothly to sections when nav links clicked",
+    "steps": [
+      "Step 1: Click Solutions nav link",
+      "Step 2: Verify smooth scroll animation occurs",
+      "Step 3: Verify scroll lands at correct section"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Responsive: Desktop viewport (1920x1080) renders correctly",
+    "steps": [
+      "Step 1: Set viewport to 1920x1080",
+      "Step 2: Navigate to homepage",
+      "Step 3: Verify all sections visible",
+      "Step 4: Verify no horizontal scroll",
+      "Step 5: Take full page screenshot"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Responsive: Tablet viewport (768x1024) renders correctly",
+    "steps": [
+      "Step 1: Set viewport to 768x1024",
+      "Step 2: Navigate to homepage",
+      "Step 3: Verify navbar adapts (hamburger or condensed)",
+      "Step 4: Verify cards stack appropriately",
+      "Step 5: Take full page screenshot"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Responsive: Mobile viewport (375x667) renders correctly",
+    "steps": [
+      "Step 1: Set viewport to 375x667",
+      "Step 2: Navigate to homepage",
+      "Step 3: Verify single column layout",
+      "Step 4: Verify text is readable",
+      "Step 5: Verify buttons are tap-friendly (min 44px)",
+      "Step 6: Take full page screenshot"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Mobile: Hamburger menu opens navigation",
+    "steps": [
+      "Step 1: Set viewport to 375x667",
+      "Step 2: Click hamburger menu icon",
+      "Step 3: Verify nav links appear",
+      "Step 4: Click a nav link",
+      "Step 5: Verify menu closes and page scrolls"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Mobile: All CTA buttons are visible and tappable",
+    "steps": [
+      "Step 1: Set viewport to 375x667",
+      "Step 2: Scroll to hero",
+      "Step 3: Verify Request a Demo button is visible",
+      "Step 4: Verify button has min 44px touch target"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Mobile: Industry Solutions tabs work on touch",
+    "steps": [
+      "Step 1: Set viewport to 375x667",
+      "Step 2: Scroll to Industry Solutions",
+      "Step 3: Tap Courts tab",
+      "Step 4: Tap Lawyers tab",
+      "Step 5: Verify content changes on each tap"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Mobile: Footer columns stack vertically",
+    "steps": [
+      "Step 1: Set viewport to 375x667",
+      "Step 2: Scroll to footer",
+      "Step 3: Verify columns stack (not side by side)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Page loads under 3 seconds on simulated 3G",
+    "steps": [
+      "Step 1: Throttle network to Slow 3G",
+      "Step 2: Navigate to homepage",
+      "Step 3: Measure DOMContentLoaded time",
+      "Step 4: Verify under 3000ms"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "No layout shift (CLS) above 0.1",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Wait for full load",
+      "Step 3: Measure Cumulative Layout Shift",
+      "Step 4: Verify CLS < 0.1"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Inter font loads correctly from Google Fonts",
+    "steps": [
+      "Step 1: Open Network tab",
+      "Step 2: Navigate to homepage",
+      "Step 3: Verify fonts.googleapis.com request",
+      "Step 4: Verify Inter font file loaded"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "All internal links work (no 404s)",
+    "steps": [
+      "Step 1: Collect all anchor href values",
+      "Step 2: Filter for internal links (# anchors)",
+      "Step 3: Click each link",
+      "Step 4: Verify no broken link errors"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Browser back button works after nav link click",
+    "steps": [
+      "Step 1: Click Solutions nav link",
+      "Step 2: Click Security nav link",
+      "Step 3: Press browser back button",
+      "Step 4: Verify returns to previous scroll position"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Hero section visual matches Figma design",
+    "steps": [
+      "Step 1: Take screenshot of hero section",
+      "Step 2: Compare with Figma frame 9849:5901 hero area",
+      "Step 3: Verify layout, spacing, colors match",
+      "Step 4: Verify trust badges position",
+      "Step 5: Verify CTA button styling",
+      "Step 6: Verify logo strip layout"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "About Us section visual matches Figma design",
+    "steps": [
+      "Step 1: Take screenshot of About Us section",
+      "Step 2: Compare with Figma",
+      "Step 3: Verify text alignment",
+      "Step 4: Verify section spacing"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Core Capabilities section visual matches Figma design",
+    "steps": [
+      "Step 1: Take screenshot of Core Capabilities section",
+      "Step 2: Compare with Figma Wireframe-3 section",
+      "Step 3: Verify 3-card layout",
+      "Step 4: Verify card styling"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Industry Solutions section visual matches Figma design",
+    "steps": [
+      "Step 1: Take screenshot of Industry Solutions section",
+      "Step 2: Compare with Figma",
+      "Step 3: Verify tab styling",
+      "Step 4: Verify card content layout"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Features section visual matches Figma design",
+    "steps": [
+      "Step 1: Take screenshot of Features section",
+      "Step 2: Compare with Figma",
+      "Step 3: Verify 3-card layout",
+      "Step 4: Verify card icons/illustrations"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "ROI Metrics section visual matches Figma design",
+    "steps": [
+      "Step 1: Take screenshot of ROI Metrics section",
+      "Step 2: Compare with Figma",
+      "Step 3: Verify 6-metric grid layout",
+      "Step 4: Verify metric value styling"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Testimonials section visual matches Figma design",
+    "steps": [
+      "Step 1: Take screenshot of Testimonials section",
+      "Step 2: Compare with Figma",
+      "Step 3: Verify 3-card layout",
+      "Step 4: Verify quote styling"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Security section visual matches Figma design",
+    "steps": [
+      "Step 1: Take screenshot of Security section",
+      "Step 2: Compare with Figma",
+      "Step 3: Verify badges layout",
+      "Step 4: Verify security features display"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "CTA section visual matches Figma design",
+    "steps": [
+      "Step 1: Take screenshot of CTA section",
+      "Step 2: Compare with Figma",
+      "Step 3: Verify full-width banner",
+      "Step 4: Verify gradient background",
+      "Step 5: Verify button centering"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Footer visual matches Figma design",
+    "steps": [
+      "Step 1: Take screenshot of footer",
+      "Step 2: Compare with Figma",
+      "Step 3: Verify 3-column link layout",
+      "Step 4: Verify copyright bar",
+      "Step 5: Verify logo positioning"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "NavBar visual matches Figma design",
+    "steps": [
+      "Step 1: Take screenshot of navbar",
+      "Step 2: Compare with Figma Nav Bars F component",
+      "Step 3: Verify logo position",
+      "Step 4: Verify nav link spacing",
+      "Step 5: Verify button styling"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Comprehensive end-to-end user journey - first-time visitor",
+    "steps": [
+      "Step 1: Navigate to homepage",
+      "Step 2: Verify hero loads with headline visible",
+      "Step 3: Scroll down to see About Us section",
+      "Step 4: Continue to Core Capabilities",
+      "Step 5: Click Lawyers tab in Industry Solutions",
+      "Step 6: Verify 40hrs metric displays",
+      "Step 7: Scroll to Features section",
+      "Step 8: Scroll to ROI Metrics",
+      "Step 9: Scroll to Testimonials",
+      "Step 10: Scroll to Security section",
+      "Step 11: Scroll to CTA section",
+      "Step 12: Click Request a Demo button"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Comprehensive navigation test - all nav links",
+    "steps": [
+      "Step 1: Click Solutions - verify scrolls to Industry Solutions",
+      "Step 2: Click Capabilities - verify scrolls to Core Capabilities",
+      "Step 3: Click Customers - verify scrolls to Testimonials",
+      "Step 4: Click Security - verify scrolls to Security section",
+      "Step 5: Click logo - verify scrolls to top",
+      "Step 6: Click Book a Demo - verify CTA action",
+      "Step 7: Scroll manually to footer",
+      "Step 8: Click each footer Product link",
+      "Step 9: Click each footer Resources link",
+      "Step 10: Click each footer Company link"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Comprehensive Industry Solutions interaction test",
+    "steps": [
+      "Step 1: Navigate to Industry Solutions section",
+      "Step 2: Verify Courts tab is default active",
+      "Step 3: Verify Courts card shows 60hrs, 5 features",
+      "Step 4: Click Lawyers tab",
+      "Step 5: Verify animation/transition occurs",
+      "Step 6: Verify Lawyers card shows 40hrs, 7 features",
+      "Step 7: Click Companies tab",
+      "Step 8: Verify Companies card shows 67%, 4 features",
+      "Step 9: Rapidly click between tabs",
+      "Step 10: Verify no flickering or broken states"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Comprehensive full-page visual regression test - Desktop",
+    "steps": [
+      "Step 1: Set viewport to 1440x900",
+      "Step 2: Navigate to homepage",
+      "Step 3: Wait for all images and fonts to load",
+      "Step 4: Take full-page screenshot",
+      "Step 5: Compare with baseline Figma render",
+      "Step 6: Verify pixel-level accuracy within 5% threshold",
+      "Step 7: Check all 11 sections render correctly",
+      "Step 8: Verify no overlapping elements",
+      "Step 9: Verify no text cutoff",
+      "Step 10: Verify consistent spacing throughout"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Comprehensive full-page visual regression test - Tablet",
+    "steps": [
+      "Step 1: Set viewport to 768x1024",
+      "Step 2: Navigate to homepage",
+      "Step 3: Wait for all assets to load",
+      "Step 4: Take full-page screenshot",
+      "Step 5: Verify responsive breakpoint applied",
+      "Step 6: Verify cards reflow correctly",
+      "Step 7: Verify navbar responsive behavior",
+      "Step 8: Verify no horizontal overflow",
+      "Step 9: Verify touch-friendly spacing",
+      "Step 10: Compare with tablet design specs"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Comprehensive full-page visual regression test - Mobile",
+    "steps": [
+      "Step 1: Set viewport to 375x667",
+      "Step 2: Navigate to homepage",
+      "Step 3: Wait for all assets to load",
+      "Step 4: Take full-page screenshot",
+      "Step 5: Verify single-column layout",
+      "Step 6: Verify hamburger menu visible",
+      "Step 7: Verify all text readable (min 16px)",
+      "Step 8: Verify buttons have 44px min touch target",
+      "Step 9: Verify footer stacks vertically",
+      "Step 10: Verify no text truncation"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Comprehensive keyboard navigation test",
+    "steps": [
+      "Step 1: Focus on body element",
+      "Step 2: Press Tab - verify first focusable element",
+      "Step 3: Continue Tab through all nav links",
+      "Step 4: Tab to hero CTA button",
+      "Step 5: Press Enter - verify action",
+      "Step 6: Continue Tab through all sections",
+      "Step 7: Tab through Industry Solutions tabs",
+      "Step 8: Use arrow keys to switch tabs",
+      "Step 9: Tab through footer links",
+      "Step 10: Verify logical tab order throughout"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Comprehensive performance test",
+    "steps": [
+      "Step 1: Clear browser cache",
+      "Step 2: Navigate to homepage",
+      "Step 3: Measure First Contentful Paint (FCP)",
+      "Step 4: Verify FCP < 1.8s",
+      "Step 5: Measure Largest Contentful Paint (LCP)",
+      "Step 6: Verify LCP < 2.5s",
+      "Step 7: Measure Cumulative Layout Shift (CLS)",
+      "Step 8: Verify CLS < 0.1",
+      "Step 9: Measure Total Blocking Time (TBT)",
+      "Step 10: Verify TBT < 200ms",
+      "Step 11: Run Lighthouse audit",
+      "Step 12: Verify Performance score > 90"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Comprehensive cross-browser test - Chromium",
+    "steps": [
+      "Step 1: Launch Chromium browser",
+      "Step 2: Navigate to homepage",
+      "Step 3: Verify all sections render",
+      "Step 4: Verify all interactions work",
+      "Step 5: Take screenshot for comparison"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Comprehensive cross-browser test - Firefox",
+    "steps": [
+      "Step 1: Launch Firefox browser",
+      "Step 2: Navigate to homepage",
+      "Step 3: Verify all sections render",
+      "Step 4: Verify all interactions work",
+      "Step 5: Take screenshot for comparison"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Comprehensive cross-browser test - WebKit (Safari)",
+    "steps": [
+      "Step 1: Launch WebKit browser",
+      "Step 2: Navigate to homepage",
+      "Step 3: Verify all sections render",
+      "Step 4: Verify all interactions work",
+      "Step 5: Take screenshot for comparison"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Build process completes without errors",
+    "steps": [
+      "Step 1: Run npm run build",
+      "Step 2: Verify build completes successfully",
+      "Step 3: Verify no TypeScript errors",
+      "Step 4: Verify no ESLint errors",
+      "Step 5: Verify dist folder created"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Production build serves correctly",
+    "steps": [
+      "Step 1: Run npm run build",
+      "Step 2: Serve dist folder",
+      "Step 3: Navigate to served page",
+      "Step 4: Verify all functionality works",
+      "Step 5: Verify assets load correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "GitHub Pages deployment works",
+    "steps": [
+      "Step 1: Push to main branch",
+      "Step 2: Verify GitHub Actions workflow triggers",
+      "Step 3: Verify deployment succeeds",
+      "Step 4: Navigate to mirai360.ai",
+      "Step 5: Verify site loads correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Courts tagline displays 'Pan-India AI case management for Law'",
+    "steps": [
+      "Step 1: Click Courts tab",
+      "Step 2: Verify tagline text matches"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Lawyers tagline displays 'Move faster without compromising quality'",
+    "steps": [
+      "Step 1: Click Lawyers tab",
+      "Step 2: Verify tagline text matches"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Companies tagline displays 'Legal risk to business intelligence'",
+    "steps": [
+      "Step 1: Click Companies tab",
+      "Step 2: Verify tagline text matches"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Vision text mentions 'support legal expertise, not replace it'",
+    "steps": [
+      "Step 1: Scroll to About Us section",
+      "Step 2: Locate Vision text",
+      "Step 3: Verify phrase 'support legal expertise, not replace it'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Approach text mentions 'real-world workflows'",
+    "steps": [
+      "Step 1: Scroll to About Us section",
+      "Step 2: Locate Our Approach text",
+      "Step 3: Verify phrase 'real-world workflows'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Success color #22C55E used appropriately",
+    "steps": [
+      "Step 1: Locate any success indicator",
+      "Step 2: Verify color is #22C55E"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Error color #EF4444 used appropriately",
+    "steps": [
+      "Step 1: Trigger form error (if applicable)",
+      "Step 2: Verify error color is #EF4444"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Warning color #ECB22E used appropriately",
+    "steps": [
+      "Step 1: Locate any warning indicator",
+      "Step 2: Verify color is #ECB22E"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Info color #1C58F7 used appropriately",
+    "steps": [
+      "Step 1: Locate any info indicator",
+      "Step 2: Verify color is #1C58F7"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Tech accent #2E86C1 used for highlights",
+    "steps": [
+      "Step 1: Locate tech-related highlights",
+      "Step 2: Verify accent color #2E86C1"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Navy primary #1B365D used correctly",
+    "steps": [
+      "Step 1: Inspect navbar or dark sections",
+      "Step 2: Verify navy color #1B365D present"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Navy dark #122442 used for active states",
+    "steps": [
+      "Step 1: Click a button to see active state",
+      "Step 2: Verify active background #122442"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "All Lucide icons render without errors",
+    "steps": [
+      "Step 1: List all icon components on page",
+      "Step 2: Verify Lock icon renders",
+      "Step 3: Verify Shield icon renders",
+      "Step 4: Verify ArrowRight icon renders",
+      "Step 5: Verify Check icon renders",
+      "Step 6: Verify Users icon renders",
+      "Step 7: Verify FileText icon renders",
+      "Step 8: Verify Clock icon renders",
+      "Step 9: Verify Search icon renders",
+      "Step 10: Verify Scale icon renders"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "ShadCN Badge component works correctly",
+    "steps": [
+      "Step 1: Locate Badge component",
+      "Step 2: Verify proper styling applied",
+      "Step 3: Verify variant props work"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "ShadCN Button component works correctly",
+    "steps": [
+      "Step 1: Locate Button component",
+      "Step 2: Verify primary variant styling",
+      "Step 3: Verify ghost variant styling",
+      "Step 4: Verify hover states"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "ShadCN Card component works correctly",
+    "steps": [
+      "Step 1: Locate Card component",
+      "Step 2: Verify CardHeader renders",
+      "Step 3: Verify CardContent renders",
+      "Step 4: Verify CardTitle renders",
+      "Step 5: Verify CardDescription renders"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "ShadCN Separator component works correctly",
+    "steps": [
+      "Step 1: Locate Separator component",
+      "Step 2: Verify horizontal line renders",
+      "Step 3: Verify correct color"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Vite HMR (Hot Module Replacement) works in dev mode",
+    "steps": [
+      "Step 1: Start dev server",
+      "Step 2: Make a text change in Hero.tsx",
+      "Step 3: Save file",
+      "Step 4: Verify browser updates without refresh"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Tailwind CSS purges unused styles in production",
+    "steps": [
+      "Step 1: Run npm run build",
+      "Step 2: Check CSS bundle size",
+      "Step 3: Verify CSS is minified",
+      "Step 4: Verify unused utilities removed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Theme CSS variables load correctly",
+    "steps": [
+      "Step 1: Inspect :root CSS variables",
+      "Step 2: Verify --navy-primary exists",
+      "Step 3: Verify --tan-primary exists",
+      "Step 4: Verify variables match theme.css"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "No React console warnings",
+    "steps": [
+      "Step 1: Open browser console",
+      "Step 2: Navigate to homepage",
+      "Step 3: Verify no React warnings (key, deprecated lifecycle, etc.)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "No TypeScript type errors in codebase",
+    "steps": [
+      "Step 1: Run npx tsc --noEmit",
+      "Step 2: Verify no type errors reported"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "ESLint passes with no errors",
+    "steps": [
+      "Step 1: Run npm run lint",
+      "Step 2: Verify no lint errors"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Images are optimized (proper format, compression)",
+    "steps": [
+      "Step 1: List all image assets",
+      "Step 2: Verify images use modern formats (WebP, SVG)",
+      "Step 3: Verify file sizes are reasonable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Fonts have proper fallbacks",
+    "steps": [
+      "Step 1: Disable Google Fonts loading",
+      "Step 2: Verify page renders with system fonts",
+      "Step 3: Verify layout doesn't break"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Gradient background in navbar is smooth",
+    "steps": [
+      "Step 1: Inspect navbar gradient",
+      "Step 2: Verify linear-gradient syntax",
+      "Step 3: Verify no banding artifacts"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Box shadows are consistent across similar elements",
+    "steps": [
+      "Step 1: Compare card shadows",
+      "Step 2: Verify all cards use same shadow",
+      "Step 3: Compare button shadows"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Transitions are smooth (0.2-0.3s)",
+    "steps": [
+      "Step 1: Hover over button",
+      "Step 2: Verify smooth color transition",
+      "Step 3: Verify transition duration is 200-300ms"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Hero badge with shield icon has correct shield variant",
+    "steps": [
+      "Step 1: Locate SOC 2 badge",
+      "Step 2: Verify shield icon is shield-check or similar",
+      "Step 3: Verify icon color matches design"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Feature card icons match their content",
+    "steps": [
+      "Step 1: Locate Document Management card",
+      "Step 2: Verify icon is folder or file related",
+      "Step 3: Locate Timeline card",
+      "Step 4: Verify icon is clock related",
+      "Step 5: Locate Research card",
+      "Step 6: Verify icon is search related"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Metric values animate or highlight on scroll into view",
+    "steps": [
+      "Step 1: Scroll to ROI Metrics section",
+      "Step 2: Observe if numbers animate in",
+      "Step 3: Verify visual emphasis on metrics"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Testimonial industry labels are visible",
+    "steps": [
+      "Step 1: Scroll to Testimonials",
+      "Step 2: Verify Healthcare label visible",
+      "Step 3: Verify Legal label visible",
+      "Step 4: Verify Retail label visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "ARIA landmarks are properly used",
+    "steps": [
+      "Step 1: Inspect page for main landmark",
+      "Step 2: Verify nav landmark for navbar",
+      "Step 3: Verify footer landmark",
+      "Step 4: Verify section/article usage"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Form inputs have associated labels",
+    "steps": [
+      "Step 1: Locate any input fields",
+      "Step 2: Verify label element or aria-label",
+      "Step 3: Verify label describes input purpose"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Page has correct meta title",
+    "steps": [
+      "Step 1: Inspect document title",
+      "Step 2: Verify contains 'Mirai360'",
+      "Step 3: Verify descriptive title"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Page has correct meta description",
+    "steps": [
+      "Step 1: Inspect meta description tag",
+      "Step 2: Verify describes legal AI platform",
+      "Step 3: Verify length 150-160 characters"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Page has Open Graph meta tags",
+    "steps": [
+      "Step 1: Inspect og:title tag",
+      "Step 2: Inspect og:description tag",
+      "Step 3: Inspect og:image tag"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Page has Twitter Card meta tags",
+    "steps": [
+      "Step 1: Inspect twitter:card tag",
+      "Step 2: Inspect twitter:title tag",
+      "Step 3: Inspect twitter:description tag"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Favicon loads correctly",
+    "steps": [
+      "Step 1: Check link rel='icon' tag",
+      "Step 2: Verify favicon file exists",
+      "Step 3: Verify favicon displays in browser tab"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Scrollbar styling matches design (if custom)",
+    "steps": [
+      "Step 1: Inspect scrollbar CSS",
+      "Step 2: Verify scrollbar color if customized",
+      "Step 3: Verify thumb and track styling"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Page handles JavaScript disabled gracefully",
+    "steps": [
+      "Step 1: Disable JavaScript",
+      "Step 2: Load homepage",
+      "Step 3: Verify basic content visible",
+      "Step 4: Verify noscript fallback if present"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Console has no 404 errors for assets",
+    "steps": [
+      "Step 1: Open Network tab",
+      "Step 2: Navigate to homepage",
+      "Step 3: Verify all requests succeed (no 404)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Robots.txt exists and is valid",
+    "steps": [
+      "Step 1: Navigate to /robots.txt",
+      "Step 2: Verify file loads",
+      "Step 3: Verify allows search engines"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Sitemap.xml exists and is valid",
+    "steps": [
+      "Step 1: Navigate to /sitemap.xml",
+      "Step 2: Verify file loads",
+      "Step 3: Verify valid XML structure"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Line height is comfortable for reading (1.5-1.7)",
+    "steps": [
+      "Step 1: Inspect body text line-height",
+      "Step 2: Verify line-height is between 1.5 and 1.7"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Paragraph max-width limits for readability",
+    "steps": [
+      "Step 1: Inspect paragraph max-width",
+      "Step 2: Verify max-width around 65-75 characters",
+      "Step 3: Verify text doesn't span full width on large screens"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Playwright test infrastructure is set up",
+    "steps": [
+      "Step 1: Verify playwright.config.ts exists",
+      "Step 2: Verify tests/ directory exists",
+      "Step 3: Run npx playwright test --list",
+      "Step 4: Verify tests are discovered"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "GitHub Actions workflow for tests exists",
+    "steps": [
+      "Step 1: Verify .github/workflows/test.yml exists",
+      "Step 2: Verify workflow triggers on PR",
+      "Step 3: Verify Playwright steps included"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "All React components export default correctly",
+    "steps": [
+      "Step 1: Check Hero.tsx exports",
+      "Step 2: Check all component files have default export",
+      "Step 3: Verify no import errors in App.tsx"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "App.tsx includes all section components",
+    "steps": [
+      "Step 1: Open App.tsx",
+      "Step 2: Verify NavBar imported and rendered",
+      "Step 3: Verify Hero imported and rendered",
+      "Step 4: Verify VisionSection imported",
+      "Step 5: Verify CoreCapabilities imported",
+      "Step 6: Verify IndustrySolutions imported",
+      "Step 7: Verify FeaturesSection imported",
+      "Step 8: Verify ROIMetrics imported",
+      "Step 9: Verify Testimonials imported",
+      "Step 10: Verify SecuritySection imported",
+      "Step 11: Verify CTASection imported",
+      "Step 12: Verify Footer imported"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Print stylesheet exists or page prints cleanly",
+    "steps": [
+      "Step 1: Open print preview",
+      "Step 2: Verify page prints without major issues",
+      "Step 3: Verify backgrounds don't waste ink"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Error boundary catches React errors",
+    "steps": [
+      "Step 1: Introduce deliberate error in component",
+      "Step 2: Verify error boundary catches it",
+      "Step 3: Verify fallback UI displays"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Motion reduced when prefers-reduced-motion set",
+    "steps": [
+      "Step 1: Enable prefers-reduced-motion in OS",
+      "Step 2: Navigate to homepage",
+      "Step 3: Verify animations are reduced or disabled"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "CNAME file exists for custom domain",
+    "steps": [
+      "Step 1: Verify CNAME file in root",
+      "Step 2: Verify contains mirai360.ai",
+      "Step 3: Verify DNS configured correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "HTTPS enforced on production domain",
+    "steps": [
+      "Step 1: Navigate to http://mirai360.ai",
+      "Step 2: Verify redirect to https://mirai360.ai",
+      "Step 3: Verify SSL certificate is valid"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Accent purple #8A38F5 used for component borders",
+    "steps": [
+      "Step 1: Inspect component set borders in dev tools",
+      "Step 2: Verify accent purple #8A38F5 is used"
+    ],
+    "passes": false
+  },
+  {
+    "category": "accessibility",
+    "description": "Reduced motion respects user preference",
+    "steps": [
+      "Step 1: Set prefers-reduced-motion in system",
+      "Step 2: Verify smooth-scroll disabled",
+      "Step 3: Verify tab transitions simplified"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Service worker caches assets for offline (if PWA)",
+    "steps": [
+      "Step 1: Load page online",
+      "Step 2: Go offline",
+      "Step 3: Verify cached content loads"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Dark slate #334155 used for secondary text on dark backgrounds",
+    "steps": [
+      "Step 1: Inspect footer text",
+      "Step 2: Verify muted text uses appropriate light color for contrast"
+    ],
+    "passes": false
+  }
+]
