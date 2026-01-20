@@ -105,7 +105,7 @@
       "Step 3: Verify 'Trusted by Enterprise' badge is visible",
       "Step 4: Verify 'SOC 2 Certified' badge with shield icon is visible"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -115,7 +115,7 @@
       "Step 2: Locate main headline in hero section",
       "Step 3: Verify text contains '360' and 'Legal Intelligence Platform'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -125,7 +125,7 @@
       "Step 2: Locate subheadline in hero",
       "Step 3: Verify text is 'Agentic OS for Legal System'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -137,7 +137,7 @@
       "Step 4: Verify text mentions 'courts'",
       "Step 5: Verify text mentions 'companies'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -149,7 +149,7 @@
       "Step 4: Click button",
       "Step 5: Verify expected action (scroll or modal)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -159,7 +159,7 @@
       "Step 2: Scroll to logo strip section",
       "Step 3: Verify 'Trusted Globally' label is visible"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -170,7 +170,7 @@
       "Step 3: Verify multiple brand icons/logos are visible",
       "Step 4: Count at least 6 brand logos present"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -180,7 +180,7 @@
       "Step 2: Inspect hero section background",
       "Step 3: Verify decorative grid pattern or lines are present"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
