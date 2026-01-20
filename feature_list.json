@@ -234,7 +234,7 @@
       "Step 3: Verify headline 'Three Powerful Ways to Work Smarter'",
       "Step 4: Verify subheadline about transforming operations"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -244,7 +244,7 @@
       "Step 2: Count capability cards",
       "Step 3: Verify exactly 3 cards are present"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
