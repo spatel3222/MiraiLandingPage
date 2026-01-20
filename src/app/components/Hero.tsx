@@ -1,4 +1,4 @@
-import { Shield, ArrowRight, Building2, Users, CheckCircle } from 'lucide-react';
+import { Shield, ArrowRight, Building2 } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
 
@@ -18,27 +18,36 @@ const brandLogos = [
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden" style={{ backgroundColor: '#FFFFFF' }}>
+    <section
+      className="relative overflow-hidden"
+      style={{
+        background: 'linear-gradient(180deg, #0e1b33 11%, #1b365d 48%, #0e1b33 79%)',
+      }}
+    >
       {/* Background Grid Pattern */}
       <div
-        className="absolute inset-0 opacity-[0.03]"
+        className="absolute inset-0 opacity-[0.08]"
         style={{
           backgroundImage: `
-            linear-gradient(to right, #1B365D 1px, transparent 1px),
-            linear-gradient(to bottom, #1B365D 1px, transparent 1px)
+            linear-gradient(to right, rgba(255,255,255,0.3) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255,255,255,0.3) 1px, transparent 1px)
           `,
           backgroundSize: '40px 40px',
         }}
       />
 
-      {/* Decorative elements */}
+      {/* Decorative ellipse - matching Figma */}
       <div
-        className="absolute top-20 right-10 w-32 h-32 rounded-full opacity-5"
-        style={{ backgroundColor: '#2E86C1' }}
+        className="absolute -top-32 -right-64 w-[800px] h-[600px] rounded-full opacity-80"
+        style={{
+          background: 'radial-gradient(ellipse at center, rgba(217,217,217,0.15) 0%, transparent 70%)',
+        }}
       />
       <div
-        className="absolute bottom-40 left-10 w-24 h-24 rounded-full opacity-5"
-        style={{ backgroundColor: '#4353FF' }}
+        className="absolute -bottom-32 -left-64 w-[600px] h-[400px] rounded-full opacity-80"
+        style={{
+          background: 'radial-gradient(ellipse at center, rgba(217,217,217,0.1) 0%, transparent 70%)',
+        }}
       />
 
       <div className="relative max-w-6xl mx-auto px-6 pt-16 md:pt-24 pb-12 md:pb-16">
@@ -48,9 +57,9 @@ export function Hero() {
             variant="outline"
             className="gap-2 py-2 px-4 rounded-full"
             style={{
-              backgroundColor: '#F9F5F1',
-              borderColor: '#D5DAE1',
-              color: '#1B365D',
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              borderColor: 'rgba(255, 255, 255, 0.2)',
+              color: '#FFFFFF',
               fontSize: '14px',
               fontWeight: 500,
             }}
@@ -62,9 +71,9 @@ export function Hero() {
             variant="outline"
             className="gap-2 py-2 px-4 rounded-full"
             style={{
-              backgroundColor: '#F9F5F1',
-              borderColor: '#D5DAE1',
-              color: '#1B365D',
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              borderColor: 'rgba(255, 255, 255, 0.2)',
+              color: '#FFFFFF',
               fontSize: '14px',
               fontWeight: 500,
             }}
@@ -81,7 +90,7 @@ export function Hero() {
             style={{
               fontSize: 'clamp(40px, 8vw, 64px)',
               fontWeight: 700,
-              color: '#111827',
+              color: '#FFFFFF',
               letterSpacing: '-0.025em',
               lineHeight: '1.1'
             }}
@@ -95,7 +104,7 @@ export function Hero() {
           className="text-center mb-4"
           style={{
             fontSize: 'clamp(20px, 4vw, 28px)',
-            color: '#1B365D',
+            color: '#BF9874',
             fontWeight: 600,
             lineHeight: '1.3'
           }}
@@ -108,7 +117,7 @@ export function Hero() {
           className="text-center max-w-2xl mx-auto mb-8 px-4"
           style={{
             fontSize: 'clamp(16px, 3vw, 18px)',
-            color: '#64748B',
+            color: 'rgba(255, 255, 255, 0.8)',
             lineHeight: '1.6'
           }}
         >
@@ -138,13 +147,13 @@ export function Hero() {
         </div>
 
         {/* Logo Strip */}
-        <div className="border-t pt-10" style={{ borderColor: '#E9ECF0' }}>
+        <div className="border-t pt-10" style={{ borderColor: 'rgba(255, 255, 255, 0.15)' }}>
           {/* Label */}
           <p
             className="text-center mb-6"
             style={{
               fontSize: '14px',
-              color: '#64748B',
+              color: 'rgba(255, 255, 255, 0.6)',
               fontWeight: 500,
               letterSpacing: '0.05em',
               textTransform: 'uppercase'
@@ -154,12 +163,12 @@ export function Hero() {
           </p>
 
           {/* Brand Logos */}
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-40">
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-50">
             {brandLogos.map((brand) => (
               <div
                 key={brand.name}
                 className="flex items-center gap-2"
-                style={{ color: '#64748B' }}
+                style={{ color: 'rgba(255, 255, 255, 0.7)' }}
               >
                 <span style={{ fontSize: '24px' }}>{brand.icon}</span>
                 <span style={{ fontSize: '14px', fontWeight: 500 }}>{brand.name}</span>
