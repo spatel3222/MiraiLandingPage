@@ -491,7 +491,7 @@
       "Step 2: Verify 'Customer Testimonials' label",
       "Step 3: Verify 'Trusted by Industry Leaders' headline"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -502,7 +502,7 @@
       "Step 3: Verify quote mentions claims processing",
       "Step 4: Verify author info placeholder (X)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -512,7 +512,7 @@
       "Step 2: Locate Legal testimonial card",
       "Step 3: Verify quote mentions AI platform and legal workflows"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -522,7 +522,7 @@
       "Step 2: Locate Retail testimonial card",
       "Step 3: Verify quote mentions inventory management"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
