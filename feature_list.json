@@ -18,7 +18,7 @@
       "Step 2: Locate navbar element",
       "Step 3: Verify mirai360 logo text is visible"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -29,7 +29,7 @@
       "Step 3: Click Solutions link",
       "Step 4: Verify scroll to Industry Solutions section"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -40,7 +40,7 @@
       "Step 3: Verify page scrolls to Core Capabilities section",
       "Step 4: Verify section header is visible in viewport"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -50,7 +50,7 @@
       "Step 2: Click Customers nav link",
       "Step 3: Verify page scrolls to Customer Testimonials section"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -60,7 +60,7 @@
       "Step 2: Click Security nav link",
       "Step 3: Verify page scrolls to Security Compliance section"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -71,7 +71,7 @@
       "Step 3: Verify button has ghost/outline styling",
       "Step 4: Verify button is clickable"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -81,7 +81,7 @@
       "Step 2: Locate Book a Demo button",
       "Step 3: Verify button has primary tan/gold styling (#BF9874)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -94,7 +94,7 @@
       "Step 5: Scroll to bottom of page",
       "Step 6: Verify navbar still visible at top"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
