@@ -4,6 +4,7 @@ import { VisionSection } from './components/VisionSection';
 import { WhoItsFor } from './components/WhoItsFor';
 import { CoreCapabilities } from './components/CoreCapabilities';
 import { IndustrySolutions } from './components/IndustrySolutions';
+import { FeaturesSection } from './components/FeaturesSection';
 import { Footer } from './components/Footer';
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
       <section id="capabilities">
         <CoreCapabilities />
       </section>
+      <FeaturesSection />
       <Footer />
     </div>
   );

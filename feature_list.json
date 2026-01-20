@@ -364,7 +364,7 @@
       "Step 3: Verify 'What Mirai360 Delivers' headline",
       "Step 4: Verify tagline about drafting, reviewing, researching"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -375,7 +375,7 @@
       "Step 3: Verify title 'Case Files and Document Management'",
       "Step 4: Verify description mentions documents in one place"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -386,7 +386,7 @@
       "Step 3: Verify title 'Timeline and Chronology'",
       "Step 4: Verify description mentions auto-generated timelines"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -397,7 +397,7 @@
       "Step 3: Verify title 'Legal Research'",
       "Step 4: Verify description mentions authoritative sources"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
