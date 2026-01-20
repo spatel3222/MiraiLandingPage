@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 export function VisionSection() {
   return (
     <section
@@ -64,7 +62,7 @@ export function VisionSection() {
                 '0px 4px 6px -4px rgba(27, 54, 93, 0.10), 0px 10px 15px -3px rgba(27, 54, 93, 0.10)',
             }}
           >
-            <Image
+            <img
               src="/images/lady-justice.png"
               alt="Lady Justice statue representing legal expertise"
               width={566}
