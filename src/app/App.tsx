@@ -3,6 +3,7 @@ import { Hero } from './components/Hero';
 import { VisionSection } from './components/VisionSection';
 import { WhoItsFor } from './components/WhoItsFor';
 import { CoreCapabilities } from './components/CoreCapabilities';
+import { IndustrySolutions } from './components/IndustrySolutions';
 import { Footer } from './components/Footer';
 
 export default function App() {
@@ -14,7 +15,7 @@ export default function App() {
       <Hero />
       <VisionSection />
       <section id="solutions">
-        <WhoItsFor />
+        <IndustrySolutions />
       </section>
       <section id="capabilities">
         <CoreCapabilities />
