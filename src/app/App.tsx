@@ -7,6 +7,7 @@ import { IndustrySolutions } from './components/IndustrySolutions';
 import { FeaturesSection } from './components/FeaturesSection';
 import { ROIMetrics } from './components/ROIMetrics';
 import { Testimonials } from './components/Testimonials';
+import { SecuritySection } from './components/SecuritySection';
 import { Footer } from './components/Footer';
 
 export default function App() {
@@ -26,6 +27,7 @@ export default function App() {
       <FeaturesSection />
       <ROIMetrics />
       <Testimonials />
+      <SecuritySection />
       <Footer />
     </div>
   );
