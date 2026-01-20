@@ -1,5 +1,6 @@
 import { NavBar } from './components/NavBar';
 import { Hero } from './components/Hero';
+import { VisionSection } from './components/VisionSection';
 import { WhoItsFor } from './components/WhoItsFor';
 import { CoreCapabilities } from './components/CoreCapabilities';
 import { Footer } from './components/Footer';
@@ -11,6 +12,7 @@ export default function App() {
       {/* Spacer for fixed navbar */}
       <div style={{ height: '72px' }} />
       <Hero />
+      <VisionSection />
       <section id="solutions">
         <WhoItsFor />
       </section>

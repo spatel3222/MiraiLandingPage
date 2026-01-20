@@ -190,7 +190,7 @@
       "Step 2: Scroll to About Us section",
       "Step 3: Verify 'About Us' label is visible"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -201,7 +201,7 @@
       "Step 3: Locate intro paragraph",
       "Step 4: Verify text mentions 'intelligence layer' and 'legal system'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -212,7 +212,7 @@
       "Step 3: Verify 'Vision' label is visible",
       "Step 4: Count paragraphs - should be 3"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -223,7 +223,7 @@
       "Step 3: Verify 'Our Approach' label is visible",
       "Step 4: Count paragraphs - should be 2"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
